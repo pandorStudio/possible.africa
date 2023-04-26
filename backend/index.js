@@ -23,8 +23,13 @@ app.get(API_URL_BASE, (req, res) => {
 });
 
 // generate all other user endpoints
-app.get(API_URL_BASE + "users", (req, res) => {
-  res.json({ message: "Get all users" });
+app.get(API_URL_BASE + "users", async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 });
 
 app.get(API_URL_BASE + "users/:id", (req, res) => {
