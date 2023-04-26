@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const connection = require("./db");
+const bcrypt = require("bcrypt");
 const User = require("./models/userModel");
 // import dotenv
 require("dotenv").config();
@@ -42,6 +43,10 @@ app.post(API_URL_BASE + "users", async (req, res) => {
           .status(400)
           .json({ message: "Existing user !" });
       } else {
+        // Hash password with bcrypt
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        req.body.password = hashedPassword;
         const user = await User.create(req.body);
         res.status(201).json(user);
       }
