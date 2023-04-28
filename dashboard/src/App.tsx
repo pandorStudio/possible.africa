@@ -39,6 +39,8 @@ import { authProvider } from "./authProvider";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { AntdInferencer } from "@refinedev/inferencer/antd";
+import { UserList } from "pages/users/list";
+import { UserEdit } from "pages/users/edit";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -54,32 +56,14 @@ function App() {
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
-            dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+            dataProvider={dataProvider(
+              "https://backend-possible-africa.onrender.com"
+            )}
             notificationProvider={notificationProvider}
             authProvider={authProvider}
             i18nProvider={i18nProvider}
             routerProvider={routerBindings}
             resources={[
-              {
-                name: "blog_posts",
-                list: "/blog-posts",
-                create: "/blog-posts/create",
-                edit: "/blog-posts/edit/:id",
-                show: "/blog-posts/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
-              {
-                name: "categories",
-                list: "/categories",
-                create: "/categories/create",
-                edit: "/categories/edit/:id",
-                show: "/categories/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
               {
                 name: "users",
                 list: "/users",
@@ -132,9 +116,9 @@ function App() {
                   <Route path="show/:id" element={<CategoryShow />} />
                 </Route>
                 <Route path="users">
-                  <Route index element={<AntdInferencer />} />
+                  <Route index element={<UserList />} />
                   <Route path="show/:id" element={<AntdInferencer />} />
-                  <Route path="edit/:id" element={<AntdInferencer />} />
+                  <Route path="edit/:id" element={<UserEdit />} />
                   <Route path="create" element={<AntdInferencer />} />
                 </Route>
               </Route>
