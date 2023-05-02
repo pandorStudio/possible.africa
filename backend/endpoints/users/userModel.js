@@ -5,6 +5,7 @@ const userSchema = mongoose.Schema(
     username: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -13,6 +14,7 @@ const userSchema = mongoose.Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     firstname: {
       type: String,
@@ -26,7 +28,7 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "user"],
+      enum: ["admin", "user", "contributor"],
       default: "user",
     },
     gender: {
@@ -36,6 +38,7 @@ const userSchema = mongoose.Schema(
     },
     phone: {
       type: String,
+      unique: true,
     },
     address: {
       type: String,
