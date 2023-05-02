@@ -9,7 +9,6 @@ import {
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
 
-
 import { dataProvider } from "./custom-data-provider/data-provider";
 import routerBindings, {
   CatchAllNavigate,
@@ -18,18 +17,6 @@ import routerBindings, {
 } from "@refinedev/react-router-v6";
 //import dataProvider from "@refinedev/simple-rest";
 import { AppIcon } from "components/app-icon";
-import {
-  BlogPostCreate,
-  BlogPostEdit,
-  BlogPostList,
-  BlogPostShow,
-} from "pages/blog-posts";
-import {
-  CategoryCreate,
-  CategoryEdit,
-  CategoryList,
-  CategoryShow,
-} from "pages/categories";
 import { ForgotPassword } from "pages/forgotPassword";
 import { Login } from "pages/login";
 import { Register } from "pages/register";
@@ -41,6 +28,8 @@ import { ColorModeContextProvider } from "./contexts/color-mode";
 import { AntdInferencer } from "@refinedev/inferencer/antd";
 import { UserList } from "pages/users/list";
 import { UserEdit } from "pages/users/edit";
+import { UserCreate } from "pages/users/create";
+import { UserShow } from "pages/users/show";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -68,8 +57,28 @@ function App() {
                 name: "users",
                 list: "/users",
                 show: "/users/show/:id",
-                create: "/users/show/create",
+                create: "/users/create",
                 edit: "/users/edit/:id",
+                meta: {
+                  canDelete: true,
+                },
+              },
+              {
+                name: "organisation_types",
+                list: "/organisation_types",
+                show: "/organisation_types/show/:id",
+                create: "/organisation_types/create",
+                edit: "/organisation_types/edit/:id",
+                meta: {
+                  canDelete: true,
+                },
+              },
+              {
+                name: "organisations",
+                list: "/organisations",
+                show: "/organisations/show/:id",
+                create: "/organisations/create",
+                edit: "/organisations/edit/:id",
                 meta: {
                   canDelete: true,
                 },
@@ -101,24 +110,24 @@ function App() {
               >
                 <Route
                   index
-                  element={<NavigateToResource resource="blog_posts" />}
+                  element={<NavigateToResource resource="users" />}
                 />
-                <Route path="/blog-posts">
-                  <Route index element={<BlogPostList />} />
-                  <Route path="create" element={<BlogPostCreate />} />
-                  <Route path="edit/:id" element={<BlogPostEdit />} />
-                  <Route path="show/:id" element={<BlogPostShow />} />
-                </Route>
-                <Route path="/categories">
-                  <Route index element={<CategoryList />} />
-                  <Route path="create" element={<CategoryCreate />} />
-                  <Route path="edit/:id" element={<CategoryEdit />} />
-                  <Route path="show/:id" element={<CategoryShow />} />
-                </Route>
                 <Route path="users">
                   <Route index element={<UserList />} />
-                  <Route path="show/:id" element={<AntdInferencer />} />
+                  <Route path="show/:id" element={<UserShow />} />
                   <Route path="edit/:id" element={<UserEdit />} />
+                  <Route path="create" element={<UserCreate />} />
+                </Route>
+                <Route path="organisation_types">
+                  <Route index element={<AntdInferencer />} />
+                  <Route path="show/:id" element={<AntdInferencer />} />
+                  <Route path="edit/:id" element={<AntdInferencer />} />
+                  <Route path="create" element={<AntdInferencer />} />
+                </Route>
+                <Route path="organisations">
+                  <Route index element={<AntdInferencer />} />
+                  <Route path="show/:id" element={<AntdInferencer />} />
+                  <Route path="edit/:id" element={<AntdInferencer />} />
                   <Route path="create" element={<AntdInferencer />} />
                 </Route>
               </Route>

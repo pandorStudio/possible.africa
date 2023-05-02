@@ -1,21 +1,18 @@
 import React from "react";
 import { IResourceComponentsProps } from "@refinedev/core";
-import { Edit, useForm } from "@refinedev/antd";
+import { Create, useForm } from "@refinedev/antd";
 import { Form, Input, Select } from "antd";
-// import dayjs from "dayjs";
 
 const { Option } = Select;
 
-export const UserEdit: React.FC<IResourceComponentsProps> = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm();
-
-  // const usersData = queryResult?.data?.data;
+export const UserCreate: React.FC<IResourceComponentsProps> = () => {
+  const { formProps, saveButtonProps } = useForm();
 
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label="Prénom.s"
+          label="N. Utilisateur"
           name={["username"]}
           rules={[
             {
@@ -37,7 +34,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Firstname"
+          label="Prénom.s"
           name={["firstname"]}
           rules={[
             {
@@ -48,7 +45,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Lastname"
+          label="N. Famille"
           name={["lastname"]}
           rules={[
             {
@@ -58,26 +55,10 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Description"
-          name={["description"]}
-          rules={[
-            {
-              required: false,
-            },
-          ]}
-        >
+        <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Role"
-          name={["role"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Role" name={["role"]}>
           <Select defaultValue="user" style={{ width: 120 }}>
             <Option value="admin">Administrateur</Option>
             <Option value="contributor">Contributeur</Option>
@@ -85,7 +66,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           </Select>
         </Form.Item>
         <Form.Item
-          label="Gender"
+          label="Genre"
           name={["gender"]}
           rules={[
             {
@@ -99,62 +80,22 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
             <Option value="o">Autres</Option>
           </Select>
         </Form.Item>
-        <Form.Item
-          label="Phone"
-          name={["phone"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Tèl." name={["phone"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Address"
-          name={["address"]}
-          rules={[
-            {
-              required: false,
-            },
-          ]}
-        >
+        <Form.Item label="Adresse" name={["address"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Facebook Profile"
-          name={["facebook_profile"]}
-          rules={[
-            {
-              required: false,
-            },
-          ]}
-        >
+        <Form.Item label="Profile Fb." name={["facebook_profile"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Twitter Profile"
-          name={["twitter_profile"]}
-          rules={[
-            {
-              required: false,
-            },
-          ]}
-        >
+        <Form.Item label="Profile Tw." name={["twitter_profile"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Linkedin Profile"
-          name={["linkedin_profile"]}
-          rules={[
-            {
-              required: false,
-            },
-          ]}
-        >
+        <Form.Item label="Profile Li." name={["linkedin_profile"]}>
           <Input />
         </Form.Item>
       </Form>
-    </Edit>
+    </Create>
   );
 };

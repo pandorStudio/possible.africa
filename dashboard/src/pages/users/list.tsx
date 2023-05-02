@@ -5,9 +5,7 @@ import {
   List,
   EditButton,
   ShowButton,
-  TagField,
   EmailField,
-  DateField,
 } from "@refinedev/antd";
 import { Table, Space } from "antd";
 
@@ -19,7 +17,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
   return (
     <List>
       <Table {...tableProps} rowKey="_id">
-        <Table.Column dataIndex="username" title="Username" />
+        <Table.Column dataIndex="username" title="N. Utilisateur" />
         {/* <Table.Column dataIndex="password" title="Password" /> */}
         <Table.Column
           dataIndex={["email"]}
@@ -33,7 +31,11 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           dataIndex="role"
           title="Role"
           render={(value: any) =>
-            value === "admin" ? "Administrateur" : value === "user" ? "Utilisateur" : "_-_"
+            value === "admin"
+              ? "Administrateur"
+              : value === "user"
+              ? "Utilisateur"
+              : "Contributeur"
           }
         />
         <Table.Column
@@ -44,28 +46,17 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           }
         />
         <Table.Column dataIndex="phone" title="Tèl." />
-        <Table.Column dataIndex="address" title="Address" />
+        <Table.Column dataIndex="address" title="Adresse" />
         <Table.Column dataIndex="facebook_profile" title="Profile Fb." />
         <Table.Column dataIndex="twitter_profile" title="Profile Tw." />
         <Table.Column dataIndex="linkedin_profile" title="Profile Li." />
-        <Table.Column
-          dataIndex={["createdAt"]}
-          title="Créé à"
-          render={(value: any) => <DateField value={value} />}
-        />
-        <Table.Column
-          dataIndex={["updatedAt"]}
-          title="Mise à jour à"
-          render={(value: any) => <DateField value={value} />}
-        />
-        {/* <Table.Column dataIndex="__v" title="  V" /> */}
         <Table.Column
           title="Actions"
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>
-              <EditButton hideText size="small" recordItemId={record._id} />
-              <ShowButton hideText size="small" recordItemId={record._id} />
+              <EditButton hideText size="small" recordItemId={record.id} />
+              <ShowButton hideText size="small" recordItemId={record.id} />
             </Space>
           )}
         />
