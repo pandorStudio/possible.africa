@@ -11,6 +11,7 @@ const organisationSchema = mongoose.Schema(
     contributeur: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     description: { type: String },
     email: { type: String, required: true, unique: true },
