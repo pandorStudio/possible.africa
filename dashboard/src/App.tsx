@@ -51,7 +51,9 @@ function App() {
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
-            dataProvider={dataProvider(OnDev)}
+            dataProvider={dataProvider(
+              process.env.NODE_ENV === "production" ? OnProd : OnDev
+            )}
             notificationProvider={notificationProvider}
             authProvider={authProvider}
             i18nProvider={i18nProvider}
