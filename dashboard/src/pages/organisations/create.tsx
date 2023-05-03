@@ -7,9 +7,16 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult } = useForm();
 
   const { selectProps: contributorSelectProps } = useSelect({
-    resource: "users",
+    resource: "users?role=contributor",
     optionValue: "_id",
     optionLabel: "username",
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contributor",
+      },
+    ],
   });
 
   const { selectProps: organisationTypeSelectProps } = useSelect({
@@ -53,6 +60,21 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
           ]}
         >
           <Select {...contributorSelectProps} />
+        </Form.Item>
+
+        <Form.Item
+          label="Propriétaire"
+          name={["owner"]}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Select>
+            <Select.Option value={true}>Oui</Select.Option>
+            <Select.Option value={false}>Non</Select.Option>
+          </Select>
         </Form.Item>
         <Form.Item label="Description" name={["description"]}>
           <Input />

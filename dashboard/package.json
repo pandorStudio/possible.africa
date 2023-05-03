@@ -19,7 +19,7 @@
     "react-dom": "^18.0.0",
     "react-i18next": "^11.8.11",
     "react-router-dom": "^6.8.1",
-    "react-scripts": "^5.0.0"
+    "react-scripts": "^5.0.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",

@@ -13,6 +13,10 @@ const organisationSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
+    owner: {
+      type: Boolean,
+      default: false,
+    },
     description: { type: String },
     email: { type: String, required: true, unique: true },
     telephone: { type: String, required: true, unique: true },
@@ -41,7 +45,7 @@ organisationSchema.pre(/^find/, function (next) {
   });
   this.populate({
     path: "contributeur",
-    select: "username firstname lastname email phone",
+    select: "username firstname lastname email phone role",
   });
   next();
 });

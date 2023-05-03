@@ -16,7 +16,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   });
 
   const { selectProps: contributorSelectProps } = useSelect({
-    resource: "users",
+    resource: "users?role=contributor",
     optionValue: "_id",
     optionLabel: "username",
     filters: [
@@ -66,14 +66,21 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
           <Select {...contributorSelectProps} />
         </Form.Item>
         <Form.Item
-          label="Description"
-          name={["description"]}
+          label="Propriétaire"
+          name={["owner"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
+          <Select>
+            <Select.Option value={true}>Oui</Select.Option>
+            <Select.Option value={false}>Non</Select.Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
         <Form.Item

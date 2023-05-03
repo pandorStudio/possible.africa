@@ -18,11 +18,16 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   return (
     <List>
       <Table {...tableProps} rowKey="id">
-        <Table.Column dataIndex="name" title="Name" />
+        <Table.Column dataIndex="name" title="Nom" />
         <Table.Column dataIndex={["type", "name"]} title="Type" />
         <Table.Column
           dataIndex={["contributeur", "username"]}
           title="Contributeur"
+        />
+        <Table.Column
+          dataIndex={"owner"}
+          title="Propriétaire"
+          render={(value) => (value ? "Oui" : "Non")}
         />
         <Table.Column dataIndex="description" title="Description" />
         <Table.Column

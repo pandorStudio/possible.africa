@@ -34,10 +34,12 @@ import { OrganisationTypeList } from "pages/organisation_types/list";
 import { OrganisationCreate } from "pages/organisations/create";
 import { OrganisationList } from "pages/organisations/list";
 import { OrganisationEdit } from "pages/organisations/edit";
+import { OrganisationShow } from "pages/organisations/show";
 
 function App() {
   const { t, i18n } = useTranslation();
-
+  const OnProd = "https://backend-possible-africa.onrender.com";
+  const OnDev = "http://localhost:5000";
   const i18nProvider = {
     translate: (key: string, params: object) => t(key, params),
     changeLocale: (lang: string) => i18n.changeLanguage(lang),
@@ -49,9 +51,7 @@ function App() {
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
-            dataProvider={dataProvider(
-              "https://backend-possible-africa.onrender.com"
-            )}
+            dataProvider={dataProvider(OnDev)}
             notificationProvider={notificationProvider}
             authProvider={authProvider}
             i18nProvider={i18nProvider}
@@ -130,7 +130,7 @@ function App() {
                 </Route>
                 <Route path="organisations">
                   <Route index element={<OrganisationList />} />
-                  <Route path="show/:id" element={<AntdInferencer />} />
+                  <Route path="show/:id" element={<OrganisationShow />} />
                   <Route path="edit/:id" element={<OrganisationEdit />} />
                   <Route path="create" element={<OrganisationCreate />} />
                 </Route>

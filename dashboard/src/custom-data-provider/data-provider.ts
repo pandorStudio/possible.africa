@@ -98,7 +98,7 @@ export const dataProvider = (apiUrl: string): DataProvider => ({
     }
 
     const queryFilters = generateFilters(filters);
-
+    console.log(`${url}?${stringify(query)}&${stringify(queryFilters)}`);
     const { data, headers } = await axiosInstance.get(
       `${url}?${stringify(query)}&${stringify(queryFilters)}`
     );
