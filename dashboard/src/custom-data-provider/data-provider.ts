@@ -8,7 +8,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { stringify } from "query-string";
 
 // Error handling ...
-const axiosInstance = axios.create();
+export const axiosInstance = axios.create();
 // Map refine operators to API operators
 
 axiosInstance.interceptors.response.use(

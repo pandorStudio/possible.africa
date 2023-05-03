@@ -34,7 +34,6 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column dataIndex="site_web" title="Site Web" />
         <Table.Column dataIndex="linkedin_url" title="Linkedin Url" />
         <Table.Column dataIndex="adresse" title="Adresse" />
-        <Table.Column dataIndex="id" title="Id" />
         <Table.Column
           title="Actions"
           dataIndex="actions"

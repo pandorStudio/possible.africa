@@ -32,6 +32,8 @@ import { UserCreate } from "pages/users/create";
 import { UserShow } from "pages/users/show";
 import { OrganisationTypeList } from "pages/organisation_types/list";
 import { OrganisationCreate } from "pages/organisations/create";
+import { OrganisationList } from "pages/organisations/list";
+import { OrganisationEdit } from "pages/organisations/edit";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -127,9 +129,9 @@ function App() {
                   <Route path="create" element={<AntdInferencer />} />
                 </Route>
                 <Route path="organisations">
-                  <Route index element={<AntdInferencer />} />
+                  <Route index element={<OrganisationList />} />
                   <Route path="show/:id" element={<AntdInferencer />} />
-                  <Route path="edit/:id" element={<AntdInferencer />} />
+                  <Route path="edit/:id" element={<OrganisationEdit />} />
                   <Route path="create" element={<OrganisationCreate />} />
                 </Route>
               </Route>

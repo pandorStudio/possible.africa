@@ -1,12 +1,33 @@
 import React from "react";
 import { IResourceComponentsProps } from "@refinedev/core";
-import { Edit, useForm } from "@refinedev/antd";
-import { Form, Input } from "antd";
+import { Edit, useForm, useSelect } from "@refinedev/antd";
+import { Form, Input, Select } from "antd";
 
 export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult } = useForm();
 
   const organisationsData = queryResult?.data?.data;
+
+  const { selectProps: typeSelectProps } = useSelect({
+    resource: "organisation_types",
+    optionValue: "_id",
+    optionLabel: "name",
+    defaultValue: organisationsData?.type?.name,
+  });
+
+  const { selectProps: contributorSelectProps } = useSelect({
+    resource: "users",
+    optionValue: "_id",
+    optionLabel: "username",
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contributor",
+      },
+    ],
+    defaultValue: organisationsData?.contributeur?.username,
+  });
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
@@ -24,25 +45,25 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item
           label="Type"
-          name={["type", "name"]}
+          name={["type", "_id"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Input />
+          <Select {...typeSelectProps} />
         </Form.Item>
         <Form.Item
           label="Contributeur"
-          name={["contributeur", "username"]}
+          name={["contributeur", "_id"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Input />
+          <Select {...contributorSelectProps} />
         </Form.Item>
         <Form.Item
           label="Description"
@@ -109,17 +130,6 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
           ]}
         >
           <Input />
-        </Form.Item>
-        <Form.Item
-          label="Id"
-          name={["id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input readOnly disabled />
         </Form.Item>
       </Form>
     </Edit>

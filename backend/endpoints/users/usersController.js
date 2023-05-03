@@ -6,7 +6,10 @@ const bcrypt = require("bcrypt");
 // @access Public
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}, "-__v");
+    const queryObject = { ...req.query };
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((el) => delete queryObject[el]);
+    const users = await User.find(queryObject);
     res.status(200).json(users);
   } catch (error) {
     res.status(404).json({ message: error.message });
