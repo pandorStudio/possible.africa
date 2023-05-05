@@ -1,32 +1,27 @@
 import { AuthBindings } from "@refinedev/core";
+// import jwt from "jsonwebtoken";
+import axios from "axios";
+
+export const axiosInstance = axios.create();
 
 export const TOKEN_KEY = "refine-auth";
 
-const mockUsers = [
-  {
-    email: "john@mail.com",
-    password: "iuhfiuqhewufhw",
-    remenber: true,
-    token: "ezfieqbiqueufhquhewudw",
-    role: ["admin"],
-  },
-  {
-    email: "jane@mail.com",
-    password: "uzgf3uiwqgwhre",
-    remenber: true,
-    token: "ouewzgiuqhwofhqwhfuqhw",
-    role: ["editor"],
-  },
-];
-
 export const authProvider: AuthBindings = {
   login: async ({ username, email, password }) => {
-    const user = mockUsers.find((item) => {
-      return item.email === email && item.password === password;
+    const {
+      data: { status, token },
+    } = await axiosInstance.post("http://localhost:5000/signin", {
+      email,
+      password,
     });
-
-    if ((username || email) && password && user) {
-      localStorage.setItem(TOKEN_KEY, username);
+    console.log(status, token);
+    if ((username || email) && password && status) {
+      localStorage.setItem(TOKEN_KEY, token);
+      // if ((username || email) && password) {
+      //   localStorage.setItem(TOKEN_KEY, username);
+      axiosInstance.defaults.headers.common = {
+        Authorization: `Bearer ${token}`,
+      };
       return {
         success: true,
         redirectTo: "/",
@@ -39,32 +34,6 @@ export const authProvider: AuthBindings = {
         name: "LoginError",
         message: "Invalid username or password",
       },
-    };
-  },
-  register: async ({ email, password }) => {
-    const user = mockUsers.find((user) => user.email === email);
-
-    if (user) {
-      return {
-        success: false,
-        error: {
-          name: "Register Error",
-          message: "User already exists",
-        },
-      };
-    }
-
-    mockUsers.push({
-      email,
-      password,
-      remenber: true,
-      token: "iugeigqufguwqgufguw",
-      role: ["editor"],
-    });
-
-    return {
-      success: true,
-      redirectTo: "/login",
     };
   },
   logout: async () => {
@@ -90,6 +59,9 @@ export const authProvider: AuthBindings = {
   getPermissions: async () => null,
   getIdentity: async () => {
     const token = localStorage.getItem(TOKEN_KEY);
+    // decode the token
+    // const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
+    console.log(process.env.JWT_SECRET);
     if (token) {
       return {
         id: 1,

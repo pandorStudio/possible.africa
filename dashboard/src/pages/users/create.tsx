@@ -12,6 +12,28 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
+          label="Prénom.s"
+          name={["firstname"]}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="N. Famille"
+          name={["lastname"]}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           label="N. Utilisateur"
           name={["username"]}
           rules={[
@@ -34,26 +56,28 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="Prénom.s"
-          name={["firstname"]}
+          label="Mot de passe"
+          name={["password"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Input />
+          <Input.Password />
         </Form.Item>
+
+        {/* Input for confirmPassword it must be the same as password input */}
         <Form.Item
-          label="N. Famille"
-          name={["lastname"]}
+          label="Confirmer le mot de passe"
+          name={["confirmPassword"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Input />
+          <Input.Password />
         </Form.Item>
         <Form.Item label="Description" name={["description"]}>
           <Input />

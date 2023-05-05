@@ -7,8 +7,6 @@ const {
   deleteOrganisation,
 } = require("./organisationController");
 
-const API_URL_BASE = process.env.API_URL_BASE ? process.env.API_URL_BASE : "/";
-
 router.route("/").get(getAllOrganisations).post(createOrganisation);
 
 router

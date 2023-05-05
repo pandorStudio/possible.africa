@@ -1,45 +1,55 @@
-import { Authenticated, Refine } from "@refinedev/core";
+import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import {
   ErrorComponent,
   notificationProvider,
   ThemedLayoutV2,
-  ThemedTitleV2,
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
 
-import { dataProvider } from "./custom-data-provider/data-provider";
 import routerBindings, {
   CatchAllNavigate,
   NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
-//import dataProvider from "@refinedev/simple-rest";
-import { AppIcon } from "components/app-icon";
-import { ForgotPassword } from "pages/forgotPassword";
-import { Login } from "pages/login";
-import { Register } from "pages/register";
+import dataProvider from "@refinedev/simple-rest";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { authProvider } from "./authProvider";
+import { authProvider, axiosInstance } from "./authProvider";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
+import {
+  BlogPostCreate,
+  BlogPostEdit,
+  BlogPostList,
+  BlogPostShow,
+} from "./pages/blog-posts";
+import {
+  CategoryCreate,
+  CategoryEdit,
+  CategoryList,
+  CategoryShow,
+} from "./pages/categories";
+import { ForgotPassword } from "./pages/forgotPassword";
+import { Login } from "./pages/login";
+import { Register } from "./pages/register";
+import { UserList } from "./pages/users/list";
+import { UserShow } from "./pages/users/show";
+import { UserEdit } from "./pages/users/edit";
+import { UserCreate } from "./pages/users/create";
+import { OrganisationTypeList } from "./pages/organisation_types/list";
 import { AntdInferencer } from "@refinedev/inferencer/antd";
-import { UserList } from "pages/users/list";
-import { UserEdit } from "pages/users/edit";
-import { UserCreate } from "pages/users/create";
-import { UserShow } from "pages/users/show";
-import { OrganisationTypeList } from "pages/organisation_types/list";
-import { OrganisationCreate } from "pages/organisations/create";
-import { OrganisationList } from "pages/organisations/list";
-import { OrganisationEdit } from "pages/organisations/edit";
-import { OrganisationShow } from "pages/organisations/show";
+import { OrganisationList } from "./pages/organisations/list";
+import { OrganisationShow } from "./pages/organisations/show";
+import { OrganisationEdit } from "./pages/organisations/edit";
+import { OrganisationCreate } from "./pages/organisations/create";
 
 function App() {
   const { t, i18n } = useTranslation();
-  const OnProd = "https://backend-possible-africa.onrender.com";
-  const OnDev = "http://localhost:5000";
+
+  const onProd = "https://backend-possible-africa.onrender.com";
+  const onDev = "http://localhost:5000";
   const i18nProvider = {
     translate: (key: string, params: object) => t(key, params),
     changeLocale: (lang: string) => i18n.changeLanguage(lang),
@@ -48,16 +58,18 @@ function App() {
 
   return (
     <BrowserRouter>
+      <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
             dataProvider={dataProvider(
-              process.env.NODE_ENV === "production" ? OnProd : OnDev
+              process.env.NODE_ENV === "production" ? onProd : onDev,
+              axiosInstance
             )}
             notificationProvider={notificationProvider}
+            routerProvider={routerBindings}
             authProvider={authProvider}
             i18nProvider={i18nProvider}
-            routerProvider={routerBindings}
             resources={[
               {
                 name: "users",
@@ -67,6 +79,7 @@ function App() {
                 edit: "/users/edit/:id",
                 meta: {
                   canDelete: true,
+                  token: localStorage.getItem("refine-auth"),
                 },
               },
               {
@@ -99,16 +112,7 @@ function App() {
               <Route
                 element={
                   <Authenticated fallback={<CatchAllNavigate to="/login" />}>
-                    <ThemedLayoutV2
-                      Header={Header}
-                      Title={({ collapsed }) => (
-                        <ThemedTitleV2
-                          collapsed={collapsed}
-                          text=""
-                          icon={<AppIcon />}
-                        />
-                      )}
-                    >
+                    <ThemedLayoutV2 Header={() => <Header isSticky={true} />}>
                       <Outlet />
                     </ThemedLayoutV2>
                   </Authenticated>
@@ -147,26 +151,6 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
-              </Route>
-              <Route
-                element={
-                  <Authenticated>
-                    <ThemedLayoutV2
-                      Header={Header}
-                      Title={({ collapsed }) => (
-                        <ThemedTitleV2
-                          collapsed={collapsed}
-                          text="refine Project"
-                          icon={<AppIcon />}
-                        />
-                      )}
-                    >
-                      <Outlet />
-                    </ThemedLayoutV2>
-                  </Authenticated>
-                }
-              >
-                <Route path="*" element={<ErrorComponent />} />
               </Route>
             </Routes>
 

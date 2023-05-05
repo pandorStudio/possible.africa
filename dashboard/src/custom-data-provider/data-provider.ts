@@ -4,45 +4,46 @@ import {
   DataProvider,
   HttpError,
 } from "@refinedev/core";
-import axios, { AxiosRequestConfig } from "axios";
+// import axios, { AxiosRequestConfig } from "axios";
 import { stringify } from "query-string";
+import { axiosInstance } from "../authProvider";
 
 // Error handling ...
-export const axiosInstance = axios.create();
+// export const axiosInstance = axios.create();
 // Map refine operators to API operators
 
-axiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    const customError: HttpError = {
-      ...error,
-      message: error.response?.data?.message,
-      statusCode: error.response?.status,
-    };
+// axiosInstance.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   (error) => {
+//     const customError: HttpError = {
+//       ...error,
+//       message: error.response?.data?.message,
+//       statusCode: error.response?.status,
+//     };
 
-    return Promise.reject(customError);
-  }
-);
+//     return Promise.reject(customError);
+//   }
+// );
 
-axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
-  // Retrive the token from Local Storage
-  const token = JSON.parse(localStorage.getItem("auth")!);
+// axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
+//   // Retrive the token from Local Storage
+//   const token = JSON.parse(localStorage.getItem("auth")!);
 
-  // Check if the header property exists
-  if (request.headers) {
-    // Set the Authorization header if exists ...
-    request.headers["Authorization"] = `Bearer ${token}`;
-  } else {
-    // Create the header property if it doesn't exist
-    request.headers = {
-      Authorization: `Bearer ${token}`,
-    };
-  }
+//   // Check if the header property exists
+//   if (request.headers) {
+//     // Set the Authorization header if exists ...
+//     request.headers["Authorization"] = `Bearer ${token}`;
+//   } else {
+//     // Create the header property if it doesn't exist
+//     request.headers = {
+//       Authorization: `Bearer ${token}`,
+//     };
+//   }
 
-  return request;
-});
+//   return request;
+// });
 const mapOperator = (operator: CrudOperators): string => {
   switch (operator) {
     case "ne":
@@ -73,6 +74,8 @@ const generateFilters = (filters?: CrudFilters) => {
   return queryFilters;
 };
 
+const token = localStorage.getItem("refine-auth");
+
 export const dataProvider = (apiUrl: string): DataProvider => ({
   // Implement methods
 
@@ -98,7 +101,10 @@ export const dataProvider = (apiUrl: string): DataProvider => ({
     }
 
     const queryFilters = generateFilters(filters);
-    console.log(`${url}?${stringify(query)}&${stringify(queryFilters)}`);
+    axiosInstance.defaults.headers.common = {
+      Authorization: `Bearer ${token}`,
+    };
+
     const { data, headers } = await axiosInstance.get(
       `${url}?${stringify(query)}&${stringify(queryFilters)}`
     );

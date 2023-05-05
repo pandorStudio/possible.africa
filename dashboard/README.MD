@@ -1,4 +1,4 @@
-# refine-project
+# possible.africa
 
 <div align="center" style="margin: 30px;">
     <a href="https://refine.dev">
@@ -7,7 +7,7 @@
 </div>
 <br/>
 
-This [refine](https://github.com/pankod/refine) project was generated with [superplate](https://github.com/pankod/refine).
+This [refine](https://github.com/refinedev/refine) project was generated with [superplate](https://github.com/pankod/superplate).
 
 ## Getting Started
 
@@ -42,9 +42,9 @@ To learn more about **refine**, please check out the [Documentation](https://ref
 - **REST Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
 - **Ant Design** [Docs](https://refine.dev/docs/ui-frameworks/antd/tutorial/)
 - **Inferencer** [Docs](https://refine.dev/docs/packages/documentation/inferencer)
+- **React Router** [Docs](https://refine.dev/docs/core/providers/router-provider/)
 - **Custom Auth Provider** [Docs](https://refine.dev/docs/core/providers/auth-provider/)
 - **i18n** [Docs](https://refine.dev/docs/core/providers/i18n-provider/)
-- **React Router** [Docs](https://refine.dev/docs/core/providers/router-provider/)
 
 ## License
 

@@ -37,6 +37,20 @@ organisationSchema.path("contributeur").validate(async (value) => {
   return user.role === "contributor";
 }, "Contributeur must be a contributor");
 
+// Run validators on update
+organisationSchema.pre("findOneAndUpdate", async function (next) {
+  const docToUpdate = await this.model.findOne(this.getQuery());
+  if (docToUpdate.contributeur !== this.getUpdate().contributeur) {
+    const user = await mongoose
+      .model("User")
+      .findById(this.getUpdate().contributeur);
+    if (user.role !== "contributor") {
+      next(new Error("Contributeur must be a contributor"));
+    }
+  }
+  next();
+});
+
 // populate response with organisationType
 organisationSchema.pre(/^find/, function (next) {
   this.populate({

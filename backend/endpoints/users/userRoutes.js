@@ -6,6 +6,7 @@ const {
   updateUser,
   deleteUser,
 } = require("./usersController");
+const { protect, restrictTo } = require("../auth/authController");
 
 router.route("/").get(getAllUsers).post(createUser);
 
