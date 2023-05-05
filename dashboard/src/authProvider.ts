@@ -61,7 +61,7 @@ export const authProvider: AuthBindings = {
     const token = localStorage.getItem(TOKEN_KEY);
     // decode the token
     // const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
-    console.log(process.env.JWT_SECRET);
+    // console.log(process.env.JWT_SECRET);
     if (token) {
       return {
         id: 1,
