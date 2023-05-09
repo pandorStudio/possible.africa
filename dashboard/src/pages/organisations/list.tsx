@@ -60,7 +60,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             setImportLoading(true);
             await axiosInstance
               .post(
-                "http://localhost:5000/organisations",
+                "https://backend-possible-africa.onrender.com/organisations",
                 {
                   ...ob,
                 },
