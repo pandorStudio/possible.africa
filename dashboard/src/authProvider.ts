@@ -15,15 +15,10 @@ export const authProvider: AuthBindings = {
   login: async ({ username, email, password }) => {
     const {
       data: { status, token },
-    } = await axiosInstance.post(
-      `${
-        API_URL ? API_URL : "https://backend-possible-africa.onrender.com"
-      }/signin`,
-      {
-        email,
-        password,
-      }
-    );
+    } = await axiosInstance.post(`${API_URL}/signin`, {
+      email,
+      password,
+    });
     console.log(status, token);
     if ((username || email) && password && status) {
       localStorage.setItem(TOKEN_KEY, token);
