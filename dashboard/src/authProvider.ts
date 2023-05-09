@@ -1,6 +1,11 @@
 import { AuthBindings } from "@refinedev/core";
 // import jwt from "jsonwebtoken";
 import axios from "axios";
+const ENV = import.meta.env.VITE_NODE_ENV;
+export const API_URL =
+  ENV === "developement"
+    ? import.meta.env.VITE_BACKEND_DEV
+    : import.meta.env.VITE_BACKEND_PROD;
 
 export const axiosInstance = axios.create();
 
@@ -10,7 +15,7 @@ export const authProvider: AuthBindings = {
   login: async ({ username, email, password }) => {
     const {
       data: { status, token },
-    } = await axiosInstance.post("http://localhost:5000/signin", {
+    } = await axiosInstance.post(`${API_URL}/signin`, {
       email,
       password,
     });

@@ -46,10 +46,16 @@ import { OrganisationCreate } from "./pages/organisations/create";
 import { dataProvider } from "./custom-data-provider/data-provider";
 import { EventList } from "./pages/events/list";
 
+// const prodapi = import.meta.env.VITE_BACKEND_PROD;
+const ENV = import.meta.env.VITE_NODE_ENV;
+export const API_URL =
+  ENV === "developement"
+    ? import.meta.env.VITE_BACKEND_DEV
+    : import.meta.env.VITE_BACKEND_PROD;
+
 function App() {
   const { t, i18n } = useTranslation();
 
-  const onProd = "https://backend-possible-africa.onrender.com";
   const onDev = "http://localhost:5000";
   const i18nProvider = {
     translate: (key: string, params: object) => t(key, params),
@@ -62,10 +68,7 @@ function App() {
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
-            dataProvider={dataProvider(
-              process.env.NODE_ENV === "production" ? onProd : onDev,
-              axiosInstance
-            )}
+            dataProvider={dataProvider(API_URL, axiosInstance)}
             notificationProvider={notificationProvider}
             routerProvider={routerBindings}
             authProvider={authProvider}
