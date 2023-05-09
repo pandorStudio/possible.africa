@@ -105,37 +105,19 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Site Web"
-          name={["site_web"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Site Web" name={["site_web"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Linkedin Url"
-          name={["linkedin_url"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Url Linkedin" name={["linkedin_url"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Adresse"
-          name={["adresse"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Url Facebook" name={["facebook_url"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Url Twitter" name={["twitter_url"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Adresse" name={["adresse"]}>
           <Input />
         </Form.Item>
       </Form>

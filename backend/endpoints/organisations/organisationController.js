@@ -18,33 +18,26 @@ exports.getAllOrganisations = async (req, res) => {
 // @access Public
 exports.getOrganisationById = async (req, res) => {
   // get organisation by id
-  const organisation = await Organisation.findById(req.params.id);
-  if (!organisation)
-    return res
-      .status(404)
-      .json({ message: `Organisation with id: ${req.params.id} not found !` });
-  res.status(200).json(organisation);
+  try {
+    const organisation = await Organisation.findById(req.params.id);
+    if (!organisation)
+      return res.status(404).json({
+        message: `Organisation with id: ${req.params.id} not found !`,
+      });
+    res.status(200).json(organisation);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 };
 
 // @Create organisation
 // @route POST /api/v1/organisations
 // @access Public
 exports.createOrganisation = async (req, res) => {
+  console.log(req.body);
   try {
-    if (req.body.name) {
-      const existingName = await Organisation.findOne({
-        name: req.body.name,
-      });
-      const existing = existingName;
-      if (existing) {
-        res.status(400).json({ message: "Existing organisation !" });
-      } else {
-        const organisation = await Organisation.create(req.body);
-        res.status(201).json(organisation);
-      }
-    } else {
-      res.status(400).json({ message: "Bad Request !" });
-    }
+    const organisation = await Organisation.create(req.body);
+    res.status(201).json(organisation);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -104,7 +104,13 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Site Web" name={["site_web"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Linkedin Url" name={["linkedin_url"]}>
+        <Form.Item label="Url LinkeDin" name={["linkedin_url"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Url Facebook" name={["facebook_url"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Url Twitter" name={["twitter_url"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Adresse" name={["adresse"]}>

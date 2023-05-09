@@ -5,20 +5,17 @@ const opportunitySchema = mongoose.Schema(
     organisation: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Organisation",
-      required: true,
     },
-    contributeur: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
     },
     title: { type: String, required: true },
     beginning_date: { type: Date, required: true },
     ending_date: { type: Date, required: true },
-    type: {
+    opportunity_type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "OpportunityType",
-      required: true,
     },
     target_people: {
       type: String,
@@ -29,11 +26,9 @@ const opportunitySchema = mongoose.Schema(
         "pme-eti",
         "support_structure",
       ],
-      required: true,
     },
     target_country: {
       type: String,
-      required: true,
     },
     activity_area: {
       type: String,
@@ -49,7 +44,6 @@ const opportunitySchema = mongoose.Schema(
         "administration",
         "other",
       ],
-      required: true,
     },
     description: { type: String },
     eligibility: { type: String },
@@ -76,7 +70,7 @@ opportunitySchema.pre("find", function (next) {
 // populate contributeur
 opportunitySchema.pre("find", function (next) {
   this.populate({
-    path: "contributeur",
+    path: "user",
     select: "username firstname lastname email phone role",
   });
   next();
@@ -85,7 +79,7 @@ opportunitySchema.pre("find", function (next) {
 // populate type
 opportunitySchema.pre("find", function (next) {
   this.populate({
-    path: "type",
+    path: "opportunity_type",
     select: "name slug",
   });
   next();

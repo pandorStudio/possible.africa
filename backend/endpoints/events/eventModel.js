@@ -5,29 +5,24 @@ const eventSchema = mongoose.Schema(
     organisation: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Organisation",
-      required: true,
     },
-    contributeurs: {
-      type: [mongoose.Schema.Types.ObjectId],
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
     },
     title: { type: String, required: true },
     beginningDate: { type: Date, required: true },
-    endDate: { type: Date, required: true },
-    type: {
+    endingDate: { type: Date, required: true },
+    event_type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "EventType",
-      required: true,
     },
     format: {
       type: String,
       enum: ["online", "hybrid", "physical"],
-      required: true,
     },
     target_countriy: {
       type: String,
-      required: true,
     },
     activity_area: {
       type: String,
@@ -43,21 +38,11 @@ const eventSchema = mongoose.Schema(
         "administration",
         "other",
       ],
-      required: true,
     },
     description: { type: String, required: true },
     registration_link: { type: String, required: true },
     location: {
-      type: {
-        type: String,
-        enum: ["Point"],
-        Default: "Point",
-        required: true,
-      },
-      coordinates: [Number],
-      address: String,
-      description: String,
-      day: Number,
+      type: String,
     },
     is_recurrent: { type: Boolean, required: true, default: false },
     frequence: String,
@@ -70,7 +55,7 @@ const eventSchema = mongoose.Schema(
 // populate the event with the organisation name and type
 eventSchema.pre("find", function (next) {
   this.populate({
-    path: "organisateur",
+    path: "organisation",
     select: "name type",
   });
   next();
@@ -79,7 +64,7 @@ eventSchema.pre("find", function (next) {
 // populate the event with the contributeur username, firstname, lastname, email, phone and role
 eventSchema.pre("find", function (next) {
   this.populate({
-    path: "contributeurs",
+    path: "user",
     select: "username firstname lastname email phone role",
   });
   next();
@@ -88,7 +73,7 @@ eventSchema.pre("find", function (next) {
 // populate the event with the event type name and slug
 eventSchema.pre("find", function (next) {
   this.populate({
-    path: "type",
+    path: "event_type",
     select: "name slug",
   });
   next();

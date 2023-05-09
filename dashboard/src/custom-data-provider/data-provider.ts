@@ -4,9 +4,9 @@ import {
   DataProvider,
   HttpError,
 } from "@refinedev/core";
+import { AxiosInstance } from "axios";
 // import axios, { AxiosRequestConfig } from "axios";
 import { stringify } from "query-string";
-import { axiosInstance } from "../authProvider";
 
 // Error handling ...
 // export const axiosInstance = axios.create();
@@ -76,7 +76,10 @@ const generateFilters = (filters?: CrudFilters) => {
 
 const token = localStorage.getItem("refine-auth");
 
-export const dataProvider = (apiUrl: string): DataProvider => ({
+export const dataProvider = (
+  apiUrl: string,
+  axiosInstance: AxiosInstance
+): DataProvider => ({
   // Implement methods
 
   // getList method

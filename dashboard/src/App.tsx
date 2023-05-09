@@ -13,7 +13,6 @@ import routerBindings, {
   NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
-import dataProvider from "@refinedev/simple-rest";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { authProvider, axiosInstance } from "./authProvider";
@@ -44,6 +43,8 @@ import { OrganisationList } from "./pages/organisations/list";
 import { OrganisationShow } from "./pages/organisations/show";
 import { OrganisationEdit } from "./pages/organisations/edit";
 import { OrganisationCreate } from "./pages/organisations/create";
+import { dataProvider } from "./custom-data-provider/data-provider";
+import { EventList } from "./pages/events/list";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -58,7 +59,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
@@ -83,12 +83,16 @@ function App() {
                 },
               },
               {
+                name: "Organisation",
+              },
+              {
                 name: "organisation_types",
                 list: "/organisation_types",
                 show: "/organisation_types/show/:id",
                 create: "/organisation_types/create",
                 edit: "/organisation_types/edit/:id",
                 meta: {
+                  parent: "Organisation",
                   canDelete: true,
                 },
               },
@@ -99,6 +103,67 @@ function App() {
                 create: "/organisations/create",
                 edit: "/organisations/edit/:id",
                 meta: {
+                  parent: "Organisation",
+                  canDelete: true,
+                },
+              },
+              {
+                name: "jobs",
+                list: "/jobs",
+                show: "/jobs/show/:id",
+                create: "/jobs/create",
+                edit: "/jobs/edit/:id",
+                meta: {
+                  canDelete: true,
+                },
+              },
+              {
+                name: "Opportunité",
+              },
+              {
+                name: "opportunity_types",
+                list: "/opportunity_types",
+                show: "/opportunity_types/show/:id",
+                create: "/opportunity_types/create",
+                edit: "/opportunity_types/edit/:id",
+                meta: {
+                  parent: "Opportunité",
+                  canDelete: true,
+                },
+              },
+              {
+                name: "opportunities",
+                list: "/opportunities",
+                show: "/opportunities/show/:id",
+                create: "/opportunities/create",
+                edit: "/opportunities/edit/:id",
+                meta: {
+                  parent: "Opportunité",
+                  canDelete: true,
+                },
+              },
+              {
+                name: "Evenement",
+              },
+              {
+                name: "event_types",
+                list: "/event_types",
+                show: "/event_types/show/:id",
+                create: "/event_types/create",
+                edit: "/event_types/edit/:id",
+                meta: {
+                  parent: "Evenement",
+                  canDelete: true,
+                },
+              },
+              {
+                name: "events",
+                list: "/events",
+                show: "/events/show/:id",
+                create: "/events/create",
+                edit: "/events/edit/:id",
+                meta: {
+                  parent: "Evenement",
                   canDelete: true,
                 },
               },
@@ -139,6 +204,37 @@ function App() {
                   <Route path="show/:id" element={<OrganisationShow />} />
                   <Route path="edit/:id" element={<OrganisationEdit />} />
                   <Route path="create" element={<OrganisationCreate />} />
+                </Route>
+                <Route path="jobs">
+                  <Route index element={<AntdInferencer />} />
+                  <Route path="show/:id" element={<AntdInferencer />} />
+                  <Route path="edit/:id" element={<AntdInferencer />} />
+                  <Route path="create" element={<AntdInferencer />} />
+                </Route>
+
+                <Route path="opportunity_types">
+                  <Route index element={<AntdInferencer />} />
+                  <Route path="show/:id" element={<AntdInferencer />} />
+                  <Route path="edit/:id" element={<AntdInferencer />} />
+                  <Route path="create" element={<AntdInferencer />} />
+                </Route>
+                <Route path="opportunities">
+                  <Route index element={<AntdInferencer />} />
+                  <Route path="show/:id" element={<AntdInferencer />} />
+                  <Route path="edit/:id" element={<AntdInferencer />} />
+                  <Route path="create" element={<AntdInferencer />} />
+                </Route>
+                <Route path="event_types">
+                  <Route index element={<AntdInferencer />} />
+                  <Route path="show/:id" element={<AntdInferencer />} />
+                  <Route path="edit/:id" element={<AntdInferencer />} />
+                  <Route path="create" element={<AntdInferencer />} />
+                </Route>
+                <Route path="events">
+                  <Route index element={<AntdInferencer />} />
+                  <Route path="show/:id" element={<AntdInferencer />} />
+                  <Route path="edit/:id" element={<AntdInferencer />} />
+                  <Route path="create" element={<AntdInferencer />} />
                 </Route>
               </Route>
               <Route
