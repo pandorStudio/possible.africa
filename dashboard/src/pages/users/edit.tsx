@@ -20,6 +20,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: true,
+              type: "email",
             },
           ]}
         >
@@ -31,6 +32,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: true,
+              type: "email",
             },
           ]}
         >
@@ -42,6 +44,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: true,
+              type: "string",
             },
           ]}
         >
@@ -53,6 +56,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: true,
+              type: "string",
             },
           ]}
         >
@@ -64,6 +68,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: false,
+              type: "string",
             },
           ]}
         >
@@ -105,6 +110,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: true,
+              type: "string",
             },
           ]}
         >
@@ -116,6 +122,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: false,
+              type: "string",
             },
           ]}
         >
@@ -127,6 +134,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: false,
+              type: "string",
             },
           ]}
         >
@@ -138,6 +146,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: false,
+              type: "string",
             },
           ]}
         >
@@ -149,6 +158,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: false,
+              type: "string",
             },
           ]}
         >

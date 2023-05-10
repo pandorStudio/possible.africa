@@ -8,6 +8,7 @@ import {
   EmailField,
 } from "@refinedev/antd";
 import { Table, Space } from "antd";
+import Link from "antd/es/typography/Link";
 
 export const UserList: React.FC<IResourceComponentsProps> = () => {
   const { tableProps } = useTable({
@@ -46,9 +47,33 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
         />
         <Table.Column dataIndex="phone" title="Tèl." />
         <Table.Column dataIndex="address" title="Adresse" />
-        <Table.Column dataIndex="facebook_profile" title="Profile Fb." />
-        <Table.Column dataIndex="twitter_profile" title="Profile Tw." />
-        <Table.Column dataIndex="linkedin_profile" title="Profile Li." />
+        <Table.Column
+          dataIndex="facebook_profile"
+          title="Profile Fb."
+          render={(value: any) => (
+            <Link href={value} target="_blank">
+              {value}
+            </Link>
+          )}
+        />
+        <Table.Column
+          dataIndex="twitter_profile"
+          title="Profile Tw."
+          render={(value: any) => (
+            <Link href={value} target="_blank">
+              {value}
+            </Link>
+          )}
+        />
+        <Table.Column
+          dataIndex="linkedin_profile"
+          title="Profile Li."
+          render={(value: any) => (
+            <Link href={value} target="_blank">
+              {value}
+            </Link>
+          )}
+        />
         <Table.Column
           title="Actions"
           dataIndex="actions"

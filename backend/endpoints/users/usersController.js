@@ -45,6 +45,7 @@ exports.createUser = async (req, res) => {
     const bodyWR = { ...req.body };
     delete bodyWR.role;
     const newUser = await User.create(bodyWR);
+    await User.findByIdAndUpdate(newUser._id, { password: body.password });
 
     res.status(201).json(newUser);
   } catch (error) {

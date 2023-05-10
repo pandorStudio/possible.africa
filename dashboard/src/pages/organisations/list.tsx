@@ -25,6 +25,7 @@ import papa from "papaparse";
 import { dataProvider } from "../../custom-data-provider/data-provider";
 import axios from "axios";
 import { axiosInstance } from "../../authProvider";
+import Link from "antd/es/typography/Link";
 export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
   const fileImportInput = useRef<HTMLInputElement>(null);
@@ -45,15 +46,15 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               name: el[0],
               type: "645534cee152aea2d0ad2296",
               contributeur: "645535e833d097b57f68af31",
-              owner: 0,
               description: el[1],
-              email: el[2],
-              telephone: el[3],
-              site_web: el[4],
-              linkedin_url: el[5],
-              facebook_url: el[6],
-              twitter_url: el[7],
-              adresse: el[8],
+              owner: el[2],
+              email: el[3],
+              telephone: el[4],
+              site_web: el[5],
+              linkedin_url: el[6],
+              facebook_url: el[7],
+              twitter_url: el[8],
+              adresse: el[9],
             };
             body.push({ ...ob });
             //await axios.post("http://localhost:5000/organisations", el);
@@ -117,23 +118,67 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           dataIndex={["contributeur", "username"]}
           title="Contributeur"
         />
-        <Table.Column
-          dataIndex={"owner"}
-          title="Propriétaire"
-          render={(value) => (value ? "Oui" : "Non")}
-        />
+        <Table.Column dataIndex={"owner"} title="Propriétaire" />
         <Table.Column dataIndex="description" title="Description" />
         <Table.Column
           dataIndex={["email"]}
           title="Email"
           render={(value: any) => <EmailField value={value} />}
         />
-        <Table.Column dataIndex="telephone" title="Telephone" />
-        <Table.Column dataIndex="site_web" title="Site Web" />
-        <Table.Column dataIndex="linkedin_url" title="Url Linkedin " />
-        <Table.Column dataIndex="facebook_url" title="Url Facebook" />
-        <Table.Column dataIndex="twitter_url" title="Url Twitter" />
-        <Table.Column dataIndex="adresse" title="Adresse" />
+        <Table.Column
+          dataIndex="telephone"
+          title="Telephone"
+          render={(value: any) => (
+            <Link href={value} target="_blank">
+              {value}
+            </Link>
+          )}
+        />
+        <Table.Column
+          dataIndex="site_web"
+          title="Site Web"
+          render={(value: any) => (
+            <Link href={value} target="_blank">
+              {value}
+            </Link>
+          )}
+        />
+        <Table.Column
+          dataIndex="linkedin_url"
+          title="Url Linkedin "
+          render={(value: any) => (
+            <Link href={value} target="_blank">
+              {value}
+            </Link>
+          )}
+        />
+        <Table.Column
+          dataIndex="facebook_url"
+          title="Url Facebook"
+          render={(value: any) => (
+            <Link href={value} target="_blank">
+              {value}
+            </Link>
+          )}
+        />
+        <Table.Column
+          dataIndex="twitter_url"
+          title="Url Twitter"
+          render={(value: any) => (
+            <Link href={value} target="_blank">
+              {value}
+            </Link>
+          )}
+        />
+        <Table.Column
+          dataIndex="adresse"
+          title="Adresse"
+          render={(value: any) => (
+            <Link href={value} target="_blank">
+              {value}
+            </Link>
+          )}
+        />
         <Table.Column
           title="Actions"
           dataIndex="actions"

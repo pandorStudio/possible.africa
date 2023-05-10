@@ -14,8 +14,8 @@ const organisationSchema = mongoose.Schema(
       required: true,
     },
     owner: {
-      type: Boolean,
-      default: false,
+      type: String,
+      default: "Inconnu",
     },
     description: { type: String },
     email: { type: String, required: true, unique: true },
