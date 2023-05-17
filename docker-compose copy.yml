@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  node:
+    image: node:18.16.0
+    volumes:
+      - "./backend:/var/www"  
+    ports:
+      - "8081:3000"
+    links:
+      - mongo
+    command: sh -c "cd /var/www && npm install && npm run dev"
+    environment:
+      - API_URL_BASE=/
+      - SERVER_PORT=8000
+      # - URL_CONNECT_DEV="mongodb+srv://possibleDotAfrica:G2ZvNz2CpenOP7NK@possibleafrica.a1m306q.mongodb.net/db_v1?retryWrites=true&w=majority"
+      - URL_CONNECT_DEV="mongodb+srv://possibleDotAfrica:P@55Ißl3.Äfr1c4@mongo"
+      - JWT_SECRET=43c9bc8f067cfa44420bc5c9c05f780be8bb71a538442bf128564a1f8063143d-_$_§-&63db3ab18fa99b0c2a4e06c2ed1875af16b91e7692ded24f0304b74d0a464ab4-_$_§-&5ee7c1d706eef144ce9c9eaf0891c6e3105bc2d6aaab5a49e3895fbff5192896-_$_§-&1572c9da94fb074a3799bb1fd1b70729b79db248cf225fd7bbf095163883b0e9-_$_§-&38907bed226090ec62617db4d9b6b4c2aca9fb2188b9b87f172872f1fb8b574c-_$_§-&a97a7c161bdbca44f4261fb03ee310083efa2bc4cc734313accb68899e2999cb-_$_§-&d47ed07a3aa6bff3685248c869eb246a9078d070dfb36cae056015867bc7ace5-_$_§-&c14e16f5c23ebbe213d37489df71feb11e2fe3be1bcb8b725c9764a726fefaae-_$_§-&f958abcf59af1a26752a9f4614570a9561c085700335f2c3bbb7ed1b1c6912b0-_$_§-&c68e23c772cecf76ae755d0a7ebae6dc5d45b2d18f77cbda129080c11f7a6756-_$_§-&7643b372245841815fb631ffcbc60f856bfbda9fdf117c472055d086aa985313-_$_§-&b0b10da06907a12ce13d83431d4d196398f147f8b609029dfcb9d9ba4ec40347
+      - JWT_EXPIRES_IN=7d
+
+  mongo:
+    image: mongo:4.0
+    volumes:
+      - "./mongo/data:/data/db"
+    ports: 
+      - "27017:27017"
+    hostname: 0.0.0.0
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=possibleDotAfrica
+      - MONGO_INITDB_ROOT_PASSWORD=P@55Ißl3.Äfr1c4

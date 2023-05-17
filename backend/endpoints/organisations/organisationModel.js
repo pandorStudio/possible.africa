@@ -3,6 +3,12 @@ const mongoose = require("mongoose");
 const organisationSchema = mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
+
+    avatar: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dxkufsejm/image/upload/v1620158103/avatars/default-avatar.png",
+    },
     type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "OrganisationType",

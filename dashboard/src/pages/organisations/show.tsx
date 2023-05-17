@@ -25,7 +25,7 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       <TextField value={record?.type?.name} />
       <Title level={5}>Contributeur</Title>
       <TextField value={record?.contributeur?.username} />
-      <Title level={5}>Propriétaire</Title>
+      <Title level={5}>Contact</Title>
       <BooleanField value={record?.owner} />
       <Title level={5}>Description</Title>
       <TextField value={record?.description} />

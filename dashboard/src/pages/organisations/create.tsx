@@ -63,7 +63,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
 
         <Form.Item
-          label="Propriétaire"
+          label="Contact"
           name={["owner"]}
           rules={[
             {
@@ -71,10 +71,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
             },
           ]}
         >
-          <Select>
-            <Select.Option value={true}>Oui</Select.Option>
-            <Select.Option value={false}>Non</Select.Option>
-          </Select>
+          <Input />
         </Form.Item>
         <Form.Item label="Description" name={["description"]}>
           <Input />

@@ -1,5 +1,5 @@
 const User = require("./userModel");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 // @Get all users
 // @route GET /api/v1/users

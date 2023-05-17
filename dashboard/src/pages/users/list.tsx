@@ -46,7 +46,19 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           }
         />
         <Table.Column dataIndex="phone" title="Tèl." />
-        <Table.Column dataIndex="address" title="Adresse" />
+
+        <Table.Column
+          dataIndex="adresse"
+          title="Adresse"
+          render={(value: any) => (
+            <Link
+              href={"https://www.google.com/search?q=" + value}
+              target="_blank"
+            >
+              {value}
+            </Link>
+          )}
+        />
         <Table.Column
           dataIndex="facebook_profile"
           title="Profile Fb."

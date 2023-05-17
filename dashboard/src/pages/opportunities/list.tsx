@@ -11,7 +11,7 @@ import {
 } from "@refinedev/antd";
 import { Table, Space } from "antd";
 
-export const EventList: React.FC<IResourceComponentsProps> = () => {
+export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
   const { tableProps } = useTable({
     syncWithLocation: true,
   });
@@ -20,40 +20,38 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
     <List>
       <Table {...tableProps} rowKey="id">
         <Table.Column dataIndex="title" title="Titre" />
+        <Table.Column dataIndex={["user", "username"]} title="Contributeur" />
         <Table.Column
-          dataIndex={["beginningDate"]}
+          dataIndex={["opportunity_type", "name"]}
+          title="Type d'opportunité"
+        />
+        <Table.Column
+          dataIndex={["beginning_date"]}
           title="Date de début"
           render={(value: any) => <DateField value={value} />}
         />
         <Table.Column
-          dataIndex={["endingDate"]}
+          dataIndex={["ending_date"]}
           title="Date de fin"
           render={(value: any) => <DateField value={value} />}
         />
-        <Table.Column
-          dataIndex={["organisation", "name"]}
-          title="Organisation"
-        />
-        <Table.Column
-          dataIndex={["event_type", "name"]}
-          title="Type d'évenement"
-        />
-        <Table.Column dataIndex="format" title="Format" />
-        <Table.Column dataIndex="target_countriy" title="Pays Cible" />
-        <Table.Column dataIndex="activity_area" title="Secteur d'activité" />
+        <Table.Column dataIndex="target_people" title="Cible" />
+        <Table.Column dataIndex="target_country" title="pays" />
+        <Table.Column dataIndex="activity_area" title="Secteur D'Activité" />
         <Table.Column dataIndex="description" title="Description" />
+        <Table.Column dataIndex="eligibility" title="Éligibilité" />
+        <Table.Column dataIndex="processus" title="Processus" />
+        <Table.Column dataIndex="beneficies" title="Bénéfices" />
         <Table.Column
           dataIndex="registration_link"
           title="Lien d'inscription"
         />
-        <Table.Column dataIndex="location" title="Emplacement" />
         <Table.Column
-          dataIndex={["is_recurrent"]}
+          dataIndex={["isRecurrent"]}
           title="Est Récurrent"
           render={(value: any) => <BooleanField value={value} />}
         />
-        <Table.Column dataIndex="frequence" title="Frequence" />
-        <Table.Column dataIndex={["user", "username"]} title="Contributeur" />
+        <Table.Column dataIndex="frequency" title="Fréquence" />
         <Table.Column
           title="Actions"
           dataIndex="actions"

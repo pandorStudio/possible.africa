@@ -45,6 +45,25 @@ import { OrganisationEdit } from "./pages/organisations/edit";
 import { OrganisationCreate } from "./pages/organisations/create";
 import { dataProvider } from "./custom-data-provider/data-provider";
 import { EventList } from "./pages/events/list";
+import { JobList } from "./pages/jobs/list";
+import { JobShow } from "./pages/jobs/show";
+import { JobEdit } from "./pages/jobs/edit";
+import { JobCreate } from "./pages/jobs/create";
+import { OpportunityTypeList } from "./pages/opportunity_types/list";
+import { OpportunityTypeShow } from "./pages/opportunity_types/show";
+import { OpportunityTypeEdit } from "./pages/opportunity_types/edit";
+import { OpportunityTypeCreate } from "./pages/opportunity_types/create";
+import { OpportunityList } from "./pages/opportunities/list";
+import { OpportunityEdit } from "./pages/opportunities/edit";
+import { OpportunityCreate } from "./pages/opportunities/create";
+import { OpportunityShow } from "./pages/opportunities/show";
+import { EventTypeList } from "./pages/event_types/list";
+import { EventTypeEdit } from "./pages/event_types/edit";
+import { EventTypeShow } from "./pages/event_types/show";
+import { EventTypeCreate } from "./pages/event_types/create";
+import { EventEdit } from "./pages/events/edit";
+import { EventCreate } from "./pages/events/create";
+import { EventShow } from "./pages/events/show";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -209,35 +228,35 @@ function App() {
                   <Route path="create" element={<OrganisationCreate />} />
                 </Route>
                 <Route path="jobs">
-                  <Route index element={<AntdInferencer />} />
-                  <Route path="show/:id" element={<AntdInferencer />} />
-                  <Route path="edit/:id" element={<AntdInferencer />} />
-                  <Route path="create" element={<AntdInferencer />} />
+                  <Route index element={<JobList />} />
+                  <Route path="show/:id" element={<JobShow />} />
+                  <Route path="edit/:id" element={<JobEdit />} />
+                  <Route path="create" element={<JobCreate />} />
                 </Route>
 
                 <Route path="opportunity_types">
-                  <Route index element={<AntdInferencer />} />
-                  <Route path="show/:id" element={<AntdInferencer />} />
-                  <Route path="edit/:id" element={<AntdInferencer />} />
-                  <Route path="create" element={<AntdInferencer />} />
+                  <Route index element={<OpportunityTypeList />} />
+                  <Route path="show/:id" element={<OpportunityTypeShow />} />
+                  <Route path="edit/:id" element={<OpportunityTypeEdit />} />
+                  <Route path="create" element={<OpportunityTypeCreate />} />
                 </Route>
                 <Route path="opportunities">
-                  <Route index element={<AntdInferencer />} />
-                  <Route path="show/:id" element={<AntdInferencer />} />
-                  <Route path="edit/:id" element={<AntdInferencer />} />
-                  <Route path="create" element={<AntdInferencer />} />
+                  <Route index element={<OpportunityList />} />
+                  <Route path="show/:id" element={<OpportunityShow />} />
+                  <Route path="edit/:id" element={<OpportunityEdit />} />
+                  <Route path="create" element={<OpportunityCreate />} />
                 </Route>
                 <Route path="event_types">
-                  <Route index element={<AntdInferencer />} />
-                  <Route path="show/:id" element={<AntdInferencer />} />
-                  <Route path="edit/:id" element={<AntdInferencer />} />
-                  <Route path="create" element={<AntdInferencer />} />
+                  <Route index element={<EventTypeList />} />
+                  <Route path="show/:id" element={<EventTypeShow />} />
+                  <Route path="edit/:id" element={<EventTypeEdit />} />
+                  <Route path="create" element={<EventTypeCreate />} />
                 </Route>
                 <Route path="events">
-                  <Route index element={<AntdInferencer />} />
-                  <Route path="show/:id" element={<AntdInferencer />} />
-                  <Route path="edit/:id" element={<AntdInferencer />} />
-                  <Route path="create" element={<AntdInferencer />} />
+                  <Route index element={<EventList />} />
+                  <Route path="show/:id" element={<EventShow />} />
+                  <Route path="edit/:id" element={<EventEdit />} />
+                  <Route path="create" element={<EventCreate />} />
                 </Route>
               </Route>
               <Route

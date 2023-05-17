@@ -66,7 +66,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
           <Select {...contributorSelectProps} />
         </Form.Item>
         <Form.Item
-          label="Propriétaire"
+          label="Contact"
           name={["owner"]}
           rules={[
             {

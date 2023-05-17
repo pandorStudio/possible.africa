@@ -34,7 +34,7 @@ export const BlogPostList: React.FC<IResourceComponentsProps> = () => {
     <List>
       <Table {...tableProps} rowKey="id">
         <Table.Column dataIndex="id" title="Id" sorter />
-        <Table.Column dataIndex="title" title="Title" sorter />
+        <Table.Column dataIndex="title" title="Titre" sorter />
         <Table.Column
           dataIndex="content"
           title="Content"

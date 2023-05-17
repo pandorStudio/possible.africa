@@ -118,7 +118,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           dataIndex={["contributeur", "username"]}
           title="Contributeur"
         />
-        <Table.Column dataIndex={"owner"} title="Propriétaire" />
+        <Table.Column dataIndex={"owner"} title="Contact" />
         <Table.Column dataIndex="description" title="Description" />
         <Table.Column
           dataIndex={["email"]}
@@ -174,7 +174,10 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           dataIndex="adresse"
           title="Adresse"
           render={(value: any) => (
-            <Link href={value} target="_blank">
+            <Link
+              href={"https://www.google.com/search?q=" + value}
+              target="_blank"
+            >
               {value}
             </Link>
           )}

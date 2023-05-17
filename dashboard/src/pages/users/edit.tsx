@@ -20,7 +20,6 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           rules={[
             {
               required: true,
-              type: "email",
             },
           ]}
         >
