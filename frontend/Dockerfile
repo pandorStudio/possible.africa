@@ -1,20 +1,20 @@
- # This tells us the version of node image we want to use.
+FROM node:18-alpine
 
- FROM node:latest
+# Create a directory to store the application code inside the image
+WORKDIR /app
 
- # This tells Docker to create a directory so that other commands will use it
- WORKDIR /app
+# Layer caching 
+COPY package.json .
+RUN npm install
 
- #Copy Our package.json and package-lock.json file into the app directory to tell node the module we want to use
- COPY package.json /app
+# Copy the package.json and package-lock.json files to the image
+COPY . .
 
- #To install the dependencies inside our image
+# Install the dependencies
+# RUN npm install
 
- RUN npm install
+# Expose the port 3000
+EXPOSE 3000
 
- # Copy everything from ourlocal directory to the image in the code directory
- COPY . /app
-
- # Navigate to the application entry point and run the image
-
- CMD [ "npm", "run", "dev" ]
+# Run the application
+CMD [ "npm", "run", "dev" ]

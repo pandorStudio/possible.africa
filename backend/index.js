@@ -41,7 +41,7 @@ app.get(API_URL_BASE, (req, res) => {
 // Start server
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 // connection(URL_CONNECT_DEV);
-connection("mongodb://mongo:27017");
+connection(URL_CONNECT_DEV);
 
 // export app
 module.exports.API_URL_BASE = API_URL_BASE;
