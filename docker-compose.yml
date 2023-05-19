@@ -12,7 +12,7 @@ services:
     networks:
       - app-network
     environment:
-      - API_URL_BASE=https://api.pandore-demo.fr/
+      - API_URL_BASE=https://api.pandore-demo.fr
       - SERVER_PORT=5000
       - JWT_SECRET=43c9bc8f067cfa44420bc5c9c05f780be8bb71a538442bf128564a1f8063143d-__§-&63db3ab18fa99b0c2a4e06c2ed1875af16b91e7692ded24f0304b74d0a464ab4-__§-&5ee7c1d706eef144ce9c9eaf0891c6e3105bc2d6aaab5a49e3895fbff5192896-__§-&1572c9da94fb074a3799bb1fd1b70729b79db248cf225fd7bbf095163883b0e9-__§-&38907bed226090ec62617db4d9b6b4c2aca9fb2188b9b87f172872f1fb8b574c-__§-&a97a7c161bdbca44f4261fb03ee310083efa2bc4cc734313accb68899e2999cb-__§-&d47ed07a3aa6bff3685248c869eb246a9078d070dfb36cae056015867bc7ace5-__§-&c14e16f5c23ebbe213d37489df71feb11e2fe3be1bcb8b725c9764a726fefaae-__§-&f958abcf59af1a26752a9f4614570a9561c085700335f2c3bbb7ed1b1c6912b0-__§-&c68e23c772cecf76ae755d0a7ebae6dc5d45b2d18f77cbda129080c11f7a6756-__§-&7643b372245841815fb631ffcbc60f856bfbda9fdf117c472055d086aa985313-__§-&b0b10da06907a12ce13d83431d4d196398f147f8b609029dfcb9d9ba4ec40347
       - JWT_EXPIRES_IN=7d
@@ -63,6 +63,8 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    environment:
+      - VITE_API_URL_BASE=https://api.pandore-demo.fr
     stdin_open: true
     tty: true
     networks:

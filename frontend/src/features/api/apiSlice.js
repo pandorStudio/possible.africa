@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const token = import.meta.env.VITE_BACKEND_DEV;
+const base_url = import.meta.env.VITE_API_URL_BASE;
 
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.pandore-demo.fr/",
+    baseUrl: base_url,
   }),
   prepareHeaders: (headers) => {
     headers.set("authorization", `Bearer ${token}`);
