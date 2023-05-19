@@ -6,13 +6,10 @@ const userSchema = mongoose.Schema(
   {
     username: {
       type: String,
-      required: true,
-      unique: true,
     },
     avatar: {
       type: String,
-      default:
-        "https://res.cloudinary.com/dxkufsejm/image/upload/v1620158103/avatars/default-avatar.png",
+      default: "https://i.pravatar.cc/300",
     },
     password: {
       type: String,
@@ -38,7 +35,6 @@ const userSchema = mongoose.Schema(
     },
     firstname: {
       type: String,
-      required: true,
     },
     lastname: {
       type: String,
@@ -54,11 +50,10 @@ const userSchema = mongoose.Schema(
     gender: {
       type: String,
       enum: ["m", "f", "o"],
-      required: true,
+      default: "o",
     },
     phone: {
       type: String,
-      unique: true,
     },
     address: {
       type: String,

@@ -14,33 +14,18 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item
           label="Prénom.s"
           name={["firstname"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="N. Famille"
           name={["lastname"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="N. Utilisateur"
           name={["username"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
         >
           <Input />
         </Form.Item>

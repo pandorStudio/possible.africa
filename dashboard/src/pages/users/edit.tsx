@@ -14,15 +14,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
-        <Form.Item
-          label="Prénom.s"
-          name={["username"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Prénom.s" name={["username"]}>
           <Input />
         </Form.Item>
         <Form.Item
@@ -37,130 +29,42 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Firstname"
-          name={["firstname"]}
-          rules={[
-            {
-              required: true,
-              type: "string",
-            },
-          ]}
-        >
+        <Form.Item label="Prénom.s" name={["firstname"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Lastname"
-          name={["lastname"]}
-          rules={[
-            {
-              required: true,
-              type: "string",
-            },
-          ]}
-        >
+        <Form.Item label="Nom de famille" name={["lastname"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Description"
-          name={["description"]}
-          rules={[
-            {
-              required: false,
-              type: "string",
-            },
-          ]}
-        >
+        <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Role"
-          name={["role"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Role" name={["role"]}>
           <Select defaultValue="user" style={{ width: 120 }}>
             <Option value="admin">Administrateur</Option>
             <Option value="contributor">Contributeur</Option>
             <Option value="user">Utilisateur</Option>
           </Select>
         </Form.Item>
-        <Form.Item
-          label="Gender"
-          name={["gender"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Genre" name={["gender"]}>
           <Select defaultValue="f" style={{ width: 120 }}>
             <Option value="f">Féminin</Option>
             <Option value="m">Masculin</Option>
             <Option value="o">Autres</Option>
           </Select>
         </Form.Item>
-        <Form.Item
-          label="Phone"
-          name={["phone"]}
-          rules={[
-            {
-              required: true,
-              type: "string",
-            },
-          ]}
-        >
+        <Form.Item label="Téléphone" name={["phone"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Address"
-          name={["address"]}
-          rules={[
-            {
-              required: false,
-              type: "string",
-            },
-          ]}
-        >
+        <Form.Item label="Addresse" name={["address"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Facebook Profile"
-          name={["facebook_profile"]}
-          rules={[
-            {
-              required: false,
-              type: "string",
-            },
-          ]}
-        >
+        <Form.Item label="Profile Facebook" name={["facebook_profile"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Twitter Profile"
-          name={["twitter_profile"]}
-          rules={[
-            {
-              required: false,
-              type: "string",
-            },
-          ]}
-        >
+        <Form.Item label="Profile Twitter" name={["twitter_profile"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Linkedin Profile"
-          name={["linkedin_profile"]}
-          rules={[
-            {
-              required: false,
-              type: "string",
-            },
-          ]}
-        >
+        <Form.Item label="Profile Linkedin" name={["linkedin_profile"]}>
           <Input />
         </Form.Item>
       </Form>

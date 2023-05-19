@@ -64,6 +64,7 @@ import { EventTypeCreate } from "./pages/event_types/create";
 import { EventEdit } from "./pages/events/edit";
 import { EventCreate } from "./pages/events/create";
 import { EventShow } from "./pages/events/show";
+import { RegisterPage } from "./components/pages/auth/components";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -267,7 +268,7 @@ function App() {
                 }
               >
                 <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+                <Route path="/register" element={<RegisterPage />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
               </Route>
             </Routes>

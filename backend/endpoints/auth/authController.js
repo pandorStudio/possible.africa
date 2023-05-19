@@ -1,3 +1,4 @@
+const CustomUtils = require("../../utils");
 const User = require("../users/userModel");
 const jwt = require("jsonwebtoken");
 
@@ -11,8 +12,19 @@ exports.signup = async (req, res, next) => {
   try {
     const bodyWR = { ...req.body };
     delete bodyWR.role;
+
+    // Generate a random four digit number
+    let usernameExist = true;
+    while (usernameExist) {
+      bodyWR.username = CustomUtils.generateUsername();
+      const existingUser = await User.find({ username: bodyWR.username });
+      if (!existingUser.length) {
+        usernameExist = false;
+      }
+    }
+
     const newUser = await User.create(bodyWR);
-    await User.findByIdAndUpdate(newUser._id, { password: body.password });
+    await User.findByIdAndUpdate(newUser._id, { password: req.body.password });
     const token = signToken(newUser._id);
 
     res.status(201).json({

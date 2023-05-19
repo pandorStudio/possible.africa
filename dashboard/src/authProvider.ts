@@ -1,6 +1,7 @@
 import { AuthBindings } from "@refinedev/core";
 // import jwt from "jsonwebtoken";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
   ENV === "developement"
@@ -41,6 +42,48 @@ export const authProvider: AuthBindings = {
       },
     };
   },
+  register: async ({ email, password, confirmPassword }) => {
+    const {
+      data: { status, token },
+    } = await axiosInstance.post(
+      `${API_URL}/signup`,
+      {
+        password,
+        confirmPassword,
+        email,
+      },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+
+    if (
+      email &&
+      password &&
+      confirmPassword &&
+      password === confirmPassword &&
+      status
+    ) {
+      localStorage.setItem(TOKEN_KEY, token);
+      axiosInstance.defaults.headers.common = {
+        Authorization: `Bearer ${token}`,
+      };
+      return {
+        success: true,
+        redirectTo: "/",
+      };
+    }
+
+    return {
+      success: false,
+      error: {
+        name: "RegisterError",
+        message: "Invalid Informations",
+      },
+    };
+  },
   logout: async () => {
     localStorage.removeItem(TOKEN_KEY);
     return {
@@ -64,14 +107,20 @@ export const authProvider: AuthBindings = {
   getPermissions: async () => null,
   getIdentity: async () => {
     const token = localStorage.getItem(TOKEN_KEY);
-    // decode the token
-    // const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
-    // console.log(process.env.JWT_SECRET);
+
     if (token) {
+      const key = import.meta.env.VITE_JWT_SECRET;
+      const decoded: { id: string; iat: number; exp: number } = jwt_decode(
+        token,
+        key
+      );
+      const { data } = await axiosInstance.get(
+        `${API_URL}/users/${decoded.id}`
+      );
       return {
         id: 1,
-        name: "John Doe",
-        avatar: "https://i.pravatar.cc/300",
+        name: data.username,
+        avatar: data.avatar,
       };
     }
     return null;
