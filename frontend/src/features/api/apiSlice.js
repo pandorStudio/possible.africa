@@ -1,8 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const token = import.meta.env.VITE_BACKEND_DEV;
+
 export const apiSlice = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: "localhost:5000" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://api.pandore-demo.fr/",
+  }),
+  prepareHeaders: (headers) => {
+    headers.set("authorization", `Bearer ${token}`);
+    headers.set("content-type", "application/json");
+    headers.set("access-control-allow-origin", "*");
+    return headers;
+  },
   tagTypes: ["Organisations"],
   endpoints: (builder) => ({
     getPosts: builder.query({

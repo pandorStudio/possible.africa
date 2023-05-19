@@ -1,22 +1,18 @@
 import "./Home.css";
 import { Link } from "react-router-dom";
-import PodcastsIcon from '@mui/icons-material/Podcasts';
-import NewspaperIcon from '@mui/icons-material/Newspaper';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import WorkIcon from '@mui/icons-material/Work';
+import PodcastsIcon from "@mui/icons-material/Podcasts";
+import NewspaperIcon from "@mui/icons-material/Newspaper";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import WorkIcon from "@mui/icons-material/Work";
 import Interviews from "./Interviews";
 
-
 function Home() {
-
-  
-
   return (
-<div className="App">
-<div className="tab_head">
-<div className="searchPage__headerBody">
-<div className="searchPage_options">
+    <div className="App">
+      <div className="tab_head">
+        <div className="searchPage__headerBody">
+          <div className="searchPage_options">
             <div className="searchPage_optionsLeft">
               <div className="searchPage_option">
                 <PodcastsIcon />
@@ -38,15 +34,13 @@ function Home() {
                 <WorkIcon />
                 <Link to="/emplois">Emplois</Link>
               </div>
-             
             </div>
-
-
           </div>
-</div>
-</div>
-<Interviews/>
-</div>  )
+        </div>
+      </div>
+      <Interviews />
+    </div>
+  );
 }
 
-export default Home
+export default Home;
