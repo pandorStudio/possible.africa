@@ -1,6 +1,6 @@
-const CustomUtils = require("../../utils");
 const User = require("../users/userModel");
 const jwt = require("jsonwebtoken");
+const CustomUtils = require("../../utils/index.js");
 
 function signToken(id) {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -43,16 +43,14 @@ exports.signin = async (req, res, next) => {
     // Test if email and password exist
     const { email, password } = req.body;
     if (!email || !password)
-      return res
-        .status(400)
-        .json({ message: "Please provide email and password" });
+      return res.status(400).json({ message: CustomUtils.consts.MISSING_DATA });
 
     // Test if user exists && password is correct
     const user = await User.findOne({ email }).select("+password");
     console.log(user);
 
     if (!user || !(await user.comparePassword(password))) {
-      return res.status(401).json({ message: "Incorrect email or password" });
+      return res.status(401).json({ message: CustomUtils.consts.UNAUTHORIZED });
     } else {
       // If everything ok, send token to client
       token = signToken(user._id);
@@ -78,7 +76,7 @@ exports.protect = async (req, res, next) => {
 
     if (!token) {
       return res.status(401).json({
-        message: "You are not logged in! Please log in to get access.",
+        message: CustomUtils.consts.NOT_LOGGED_IN,
       });
     }
 
@@ -90,7 +88,7 @@ exports.protect = async (req, res, next) => {
     const currentUser = await User.findById(decoded.id);
     if (!currentUser) {
       return res.status(401).json({
-        message: "The user belonging to this token does no longer exist.",
+        message: CustomUtils.consts.UNAUTHORIZED,
       });
     }
 
@@ -109,7 +107,7 @@ exports.restrictTo = (...roles) => {
     // roles ['admin', 'lead-guide']. role='user'
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
-        message: "You do not have permission to perform this action",
+        message: CustomUtils.consts.UNAUTHORIZED,
       });
     }
 

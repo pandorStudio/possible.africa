@@ -1,3 +1,4 @@
+import "./init";
 import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
@@ -65,6 +66,14 @@ import { EventEdit } from "./pages/events/edit";
 import { EventCreate } from "./pages/events/create";
 import { EventShow } from "./pages/events/show";
 import { RegisterPage } from "./components/pages/auth/components";
+import { PostList } from "./pages/posts/list";
+import { PostEdit } from "./pages/posts/edit";
+import { PostCreate } from "./pages/posts/create";
+import { PostShow } from "./pages/posts/show";
+import { PostCategoryList } from "./pages/post_categories/list";
+import { PostCategoryEdit } from "./pages/post_categories/edit";
+import { PostCategoryShow } from "./pages/post_categories/show";
+import { PostCategoryCreate } from "./pages/post_categories/create";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -190,6 +199,31 @@ function App() {
                   canDelete: true,
                 },
               },
+              {
+                name: "Section Posts",
+              },
+              {
+                name: "post_categories",
+                list: "/post_categories",
+                show: "/post_categories/show/:id",
+                create: "/post_categories/create",
+                edit: "/post_categories/edit/:id",
+                meta: {
+                  parent: "Section Posts",
+                  canDelete: true,
+                },
+              },
+              {
+                name: "posts",
+                list: "/posts",
+                show: "/posts/show/:id",
+                create: "/posts/create",
+                edit: "/posts/edit/:id",
+                meta: {
+                  parent: "Section Posts",
+                  canDelete: true,
+                },
+              },
             ]}
             options={{
               syncWithLocation: true,
@@ -258,6 +292,18 @@ function App() {
                   <Route path="show/:id" element={<EventShow />} />
                   <Route path="edit/:id" element={<EventEdit />} />
                   <Route path="create" element={<EventCreate />} />
+                </Route>
+                <Route path="post_categories">
+                  <Route index element={<PostCategoryList />} />
+                  <Route path="show/:id" element={<PostCategoryShow />} />
+                  <Route path="edit/:id" element={<PostCategoryEdit />} />
+                  <Route path="create" element={<PostCategoryCreate />} />
+                </Route>
+                <Route path="posts">
+                  <Route index element={<PostList />} />
+                  <Route path="show/:id" element={<PostShow />} />
+                  <Route path="edit/:id" element={<PostEdit />} />
+                  <Route path="create" element={<PostCreate />} />
                 </Route>
               </Route>
               <Route

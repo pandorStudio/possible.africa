@@ -1,4 +1,5 @@
 const Job = require("./jobModel.js");
+const CustomUtils = require("../../utils/index.js");
 
 // GET ALL JOBS
 exports.getAllJobs = async (req, res, next) => {
@@ -14,7 +15,10 @@ exports.getAllJobs = async (req, res, next) => {
 exports.getJobById = async (req, res, next) => {
   try {
     const job = await Job.findById(req.params.id);
-    if (!job) return res.status(404).json({ message: `Job not found !` });
+    if (!job)
+      return res.status(404).json({
+        message: CustomUtils.consts.NOT_EXIST,
+      });
     res.status(200).json(job);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -35,11 +39,13 @@ exports.createJob = async (req, res, next) => {
 exports.updateJob = async (req, res, next) => {
   try {
     const job = await Job.findById(req.params.id);
-    if (!job) return res.status(404).json({ message: `Job not found !` });
-    await Job.findByIdAndUpdate(req.params.id, req.body, {
+    if (!job)
+      return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
+
+    const jobUpdated = await Job.findByIdAndUpdate(req.params.id, req.body, {
       runValidators: true,
+      new: true,
     });
-    const jobUpdated = await Job.findById(req.params.id);
     res.status(200).json(jobUpdated);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -50,9 +56,10 @@ exports.updateJob = async (req, res, next) => {
 exports.deleteJob = async (req, res, next) => {
   try {
     const job = await Job.findById(req.params.id);
-    if (!job) return res.status(404).json({ message: `Job not found !` });
+    if (!job)
+      return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     await Job.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Job deleted successfully !" });
+    res.status(200).json({});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

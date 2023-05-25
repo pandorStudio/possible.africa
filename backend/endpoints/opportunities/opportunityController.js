@@ -1,4 +1,5 @@
 const Opportunity = require("./opportunintyModel");
+const CustomUtils = require("../../utils/index.js");
 
 // @Get all opportunities
 // @route GET /api/v1/opportunities
@@ -21,7 +22,7 @@ exports.getOpportunityById = async (req, res) => {
     const opportunity = await Opportunity.findById(req.params.id);
     if (!opportunity)
       return res.status(404).json({
-        message: `Opportunity with id: ${req.params.id} not found !`,
+        message: CustomUtils.consts.NOT_EXIST,
       });
     res.status(200).json(opportunity);
   } catch (error) {
@@ -49,10 +50,14 @@ exports.updateOpportunity = async (req, res) => {
   try {
     const opportunity = await Opportunity.findById(req.params.id);
     if (!opportunity) {
-      return res.status(404).json({ message: "Opportunity not found !" });
+      return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     }
-    await Opportunity.findByIdAndUpdate(req.params.id, req.body);
-    const updated = await Opportunity.findById(req.params.id);
+
+    const updated = await Opportunity.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
     return res.status(200).json(updated);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -66,9 +71,9 @@ exports.deleteOpportunity = async (req, res, next) => {
   try {
     const opportunity = await Opportunity.findById(req.params.id);
     if (!opportunity)
-      return res.status(404).json({ message: `Opportunity not found !` });
+      return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     await Opportunity.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Opportunity deleted successfully !" });
+    res.status(200).json({});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

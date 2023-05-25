@@ -1,4 +1,5 @@
 const OrganisationType = require("./organisationTypeModel");
+const CustomUtils = require("../../utils/index.js");
 
 // @Get all organisationTypes
 // @route GET /api/v1/organisationTypes
@@ -20,11 +21,9 @@ exports.getOrganisationTypeById = async (req, res) => {
     // get organisationType by id
     const organisationType = await OrganisationType.findById(req.params.id);
     if (!organisationType)
-      return res
-        .status(404)
-        .json({
-          message: `OrganisationType with id: ${req.params.id} not found !`,
-        });
+      return res.status(404).json({
+        message: CustomUtils.consts.NOT_EXIST,
+      });
     res.status(200).json(organisationType);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -50,11 +49,14 @@ exports.updateOrganisationType = async (req, res) => {
   try {
     const organisationType = await OrganisationType.findById(req.params.id);
     if (!organisationType) {
-      return res.status(404).json({ message: "OrganisationType not found !" });
+      return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     }
 
-    await OrganisationType.findByIdAndUpdate(req.params.id, req.body);
-    const updated = await OrganisationType.findById(req.params.id);
+    const updated = await OrganisationType.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
     return res.status(200).json(updated);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -67,12 +69,11 @@ exports.updateOrganisationType = async (req, res) => {
 exports.deleteOrganisationType = async (req, res) => {
   try {
     const organisationType = await OrganisationType.findById(req.params.id);
-    if (organisationType) {
-      await OrganisationType.findByIdAndDelete(req.params.id);
-      res.status(200).json({ message: "OrganisationType removed !" });
-    } else {
-      res.status(404).json({ message: "OrganisationType not found !" });
-    }
+    if (!organisationType)
+      res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
+
+    await OrganisationType.findByIdAndDelete(req.params.id);
+    res.status(200).json({});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

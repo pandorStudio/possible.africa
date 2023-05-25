@@ -1,5 +1,6 @@
 const Organisation = require("./organisationModel");
 const OrganisationType = require("../organisationTypes/organisationTypeModel");
+const CustomUtils = require("../../utils/index.js");
 
 // @Get all organisations
 // @route GET /api/v1/organisations
@@ -22,7 +23,7 @@ exports.getOrganisationById = async (req, res) => {
     const organisation = await Organisation.findById(req.params.id);
     if (!organisation)
       return res.status(404).json({
-        message: `Organisation with id: ${req.params.id} not found !`,
+        message: CustomUtils.consts.NOT_EXIST,
       });
     res.status(200).json(organisation);
   } catch (error) {
@@ -50,10 +51,14 @@ exports.updateOrganisation = async (req, res) => {
   try {
     const organisation = await Organisation.findById(req.params.id);
     if (!organisation) {
-      return res.status(404).json({ message: "Organisation not found !" });
+      return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     }
-    await Organisation.findByIdAndUpdate(req.params.id, req.body);
-    const updatedOrganisation = await Organisation.findById(req.params.id);
+
+    const updatedOrganisation = await Organisation.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
     res.json(updatedOrganisation);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -67,10 +72,10 @@ exports.deleteOrganisation = async (req, res) => {
   try {
     const organisation = await Organisation.findById(req.params.id);
     if (!organisation) {
-      return res.status(404).json({ message: "Organisation not found !" });
+      return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     }
     await Organisation.findByIdAndDelete(req.params.id);
-    res.json({ message: "Organisation removed !" });
+    res.json({});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

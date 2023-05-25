@@ -9,6 +9,8 @@ class CustomUtils {
     NOT_FOUND: "Not Found",
     TOKEN_KEY: "miam_auth",
     SUCCESS: "Success",
+    UNAUTHORIZED: "Unauthorized",
+    NOT_LOGGED_IN: "You are not logged in! Please log in to get access.",
   };
 
   // Auth static methods

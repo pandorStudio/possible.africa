@@ -20,11 +20,9 @@ exports.getOpportunityTypeById = async (req, res) => {
     // get opportunity type by id
     const opportunityType = await OpportunityType.findById(req.params.id);
     if (!opportunityType)
-      return res
-        .status(404)
-        .json({
-          message: `OpportunityType with id: ${req.params.id} not found !`,
-        });
+      return res.status(404).json({
+        message: `OpportunityType with id: ${req.params.id} not found !`,
+      });
     res.status(200).json(opportunityType);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -54,8 +52,11 @@ exports.updateOpportunityType = async (req, res) => {
       return res.status(404).json({ message: "OpportunityType not found !" });
     }
 
-    await OpportunityType.findByIdAndUpdate(req.params.id, req.body);
-    const updated = await OpportunityType.findById(req.params.id);
+    const updated = await OpportunityType.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
     return res.status(200).json(updated);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -1,4 +1,5 @@
 const EventType = require("./eventTypeModel");
+const CustomUtils = require("../../utils/index.js");
 
 // @Get all event types
 // @route Get /api/v1/eventTypes
@@ -19,9 +20,7 @@ exports.getEventTypeById = async (req, res) => {
   try {
     const eventType = await EventType.findById(req.params.id);
     if (!eventType)
-      return res
-        .status(404)
-        .json({ message: `EventType with id: ${req.params.id} not found !` });
+      return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     res.status(200).json(eventType);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -47,11 +46,11 @@ exports.updateEventTypeById = async (req, res) => {
   try {
     const eventType = await EventType.findById(req.params.id);
     if (!eventType)
-      return res
-        .status(404)
-        .json({ message: `EventType with id: ${req.params.id} not found !` });
-    await EventType.findByIdAndUpdate(req.params.id, req.body);
-    const updated = await EventType.findById(req.params.id);
+      return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
+
+    const updated = await EventType.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     return res.status(200).json(updated);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -65,13 +64,9 @@ exports.deleteEventTypeById = async (req, res) => {
   try {
     const eventType = await EventType.findById(req.params.id);
     if (!eventType)
-      return res
-        .status(404)
-        .json({ message: `EventType with id: ${req.params.id} not found !` });
+      return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     await EventType.findByIdAndDelete(req.params.id);
-    return res
-      .status(200)
-      .json({ message: `EventType deleted successfully !` });
+    return res.status(200).json({});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

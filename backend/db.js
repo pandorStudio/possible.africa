@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const connection = (URL_CONNECT_DEV) => {
   mongoose
     .connect(URL_CONNECT_DEV)
-    .then(() => {
+    .then((connection) => {
       console.log("Database connection successful ...");
     })
     .catch((e) => {

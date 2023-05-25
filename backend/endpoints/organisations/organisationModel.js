@@ -6,8 +6,7 @@ const organisationSchema = mongoose.Schema(
 
     avatar: {
       type: String,
-      default:
-        "https://res.cloudinary.com/dxkufsejm/image/upload/v1620158103/avatars/default-avatar.png",
+      default: "https://i.pravatar.cc/300",
     },
     type: {
       type: mongoose.Schema.Types.ObjectId,
