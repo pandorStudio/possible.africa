@@ -61,7 +61,7 @@ app.use(API_URL_BASE + "upload", uploadRoutes);
 
 // Routes
 app.get(API_URL_BASE, (req, res) => {
-  res.json({ message: "Welcome to the API!" });
+  res.json({ message: "Welcome to the API! This is the official API of Possible.Africa" });
 });
 
 
