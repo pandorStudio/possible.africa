@@ -13,7 +13,7 @@ const postSchema = mongoose.Schema(
     title: { type: String, required: true, unique: true },
     slug: { type: String, required: true, unique: true },
     content: { type: String, required: true },
-    image: { type: String, default: "https://picsum.photos/200/300" },
+    image: { type: String, default: "https://picsum.photos/500/200" },
   },
   {
     timestamps: true,

@@ -58,12 +58,12 @@ exports.createPost = async (req, res) => {
 
   // console.log(imgPaths);
   // res.status(201).json({});
-  // try {
-  //   const post = await Post.create(req.body);
-  //   res.status(201).json(post);
-  // } catch (error) {
-  //   res.status(500).json({ message: error.message });
-  // }
+  try {
+    const post = await Post.create(req.body);
+    res.status(201).json(post);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // @Update post

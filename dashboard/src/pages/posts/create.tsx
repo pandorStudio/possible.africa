@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IResourceComponentsProps, useNavigation } from "@refinedev/core";
+import { IResourceComponentsProps, useCustomMutation, useNavigation } from "@refinedev/core";
 import { Create, useForm, getValueFromEvent, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, Upload } from "antd";
 // import BasicEditor from "../../components/Editors/basic";
@@ -17,7 +17,7 @@ const API_URL =
     : import.meta.env.VITE_BACKEND_PROD;
 
 export const PostCreate: React.FC<IResourceComponentsProps> = () => {
-  const { formProps, saveButtonProps, queryResult, onFinish, o } = useForm();
+  const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
   const [editorContent, setEditorContent] = useState("");
   const { list } = useNavigation();
 
@@ -74,16 +74,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     optionValue: "_id",
   });
 
-  async function onSubmitCapture(e: any) {
-    e.preventDefault();
-    console.log("onSubmitCapture");
-    console.log(e);
-    console.log(formProps.form.getFieldsValue());
-    console.log(editorContent);
-    const values: any = formProps.form.getFieldsValue();
-    //@ts-ignore
-    onFinish(data);
-
+  async function onSubmitCapture(values: any) {
     let imgTags = editorContent.match(/<img[^>]+src="([^">]+)"/g);
     if (imgTags && imgTags.length > 0) {
       let imgs = imgTags.map((imgTag) => {
@@ -98,20 +89,26 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
 
         return img;
       });
-
+      let content = editorContent;
       imgs.map(async (img) => {
         img.url = await imageUploadHandler(img.base64);
         console.log(img.url);
-        setEditorContent((s) => s.replace(img.base64, img.url));
+        content = content.replace(img.base64, img.url);
       });
-      values.content = editorContent;
+
+      onFinish({
+        ...values,
+        content: content,
+      });
+      return;
+
     }
     console.log(values);
 
+    onFinish(values);
+
     // redirect to the list page discarding the form data
     // list("/posts", "replace");
-
-    onFinish(values);
 
     // const data = formProps.form.getFieldsValue();
     // console.log(data);
@@ -124,7 +121,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
       saveButtonProps={saveButtonProps}
       // intercept onSubmit to add the editor content to the form data
     >
-      <Form {...formProps} layout="vertical" onSubmitCapture={onSubmitCapture}>
+      <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
         <Form.Item
           label="Auteur"
           name={["user"]}

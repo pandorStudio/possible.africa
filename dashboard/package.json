@@ -34,6 +34,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-i18next": "^11.8.11",
+    "react-query": "^3.39.3",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.8.1",
     "react-slate": "^0.5.1",
