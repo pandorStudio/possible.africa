@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { IResourceComponentsProps, useCustomMutation, useNavigation } from "@refinedev/core";
+import { IResourceComponentsProps, file2Base64, useApiUrl } from "@refinedev/core";
 import { Create, useForm, getValueFromEvent, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, Upload } from "antd";
 // import BasicEditor from "../../components/Editors/basic";
@@ -19,10 +19,10 @@ const API_URL =
 export const PostCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
   const [editorContent, setEditorContent] = useState("");
-  const { list } = useNavigation();
+  const apiUrl = useApiUrl();
 
   useEffect(() => {
-    console.log(editorContent);
+    //console.log(editorContent);
   }, [editorContent]);
 
   async function imageUploadHandler(image: any) {
@@ -36,11 +36,11 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     data.append("image", file);
 
     // send post request
-    const response = await axiosInstance.post(`${API_URL}/upload`, data);
+    const response = await axiosInstance.post(`${API_URL}/upload/images`, data);
 
     // return the image url
-    const filename = response.data.filename;
-    const imageUrl = `${API_URL}/uploads/images/${filename}`;
+    const imageUrl = response.data.url;
+    // const imageUrl = `${API_URL}/uploads/images/${filename}`;
 
     return imageUrl;
   }
@@ -90,19 +90,26 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
         return img;
       });
       let content = editorContent;
-      imgs.map(async (img) => {
+      const result = imgs.map(async (img) => {
         img.url = await imageUploadHandler(img.base64);
-        console.log(img.url);
-        content = content.replace(img.base64, img.url);
+        // console.log(img.url);
+        content = content.replace(`${img.base64}`, `${img.url}`);
+        return content;
       });
 
-      onFinish({
-        ...values,
-        content: content,
+      values.content = await Promise.all(result).then((values: string[]) => {
+        //return the last element of values array
+        content = values[values.length - 1];
+        return content;
       });
-      return;
-
     }
+
+    if (values.image) {
+      const base64 = await file2Base64(values.image[0]);
+      const url = await imageUploadHandler(base64);
+      values.image = url;
+    }
+
     console.log(values);
 
     onFinish(values);
@@ -113,7 +120,6 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     // const data = formProps.form.getFieldsValue();
     // console.log(data);
     // const response = await axiosInstance.post(`${API_URL}/posts`, data);
-    
   }
 
   return (
@@ -202,13 +208,17 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Image">
           <Form.Item
             name="image"
-            getValueProps={(value) => ({
-              fileList: [{ url: value, name: value, uid: value }],
-            })}
+            valuePropName="fileList"
             getValueFromEvent={getValueFromEvent}
             noStyle
           >
-            <Upload.Dragger listType="picture" beforeUpload={() => false}>
+            <Upload.Dragger
+              name="file"
+              action={`${API_URL}/upload/images`}
+              // Define the body of the request
+              listType="picture"
+              maxCount={1}
+            >
               <p className="ant-upload-text">Drag & drop a file in this area</p>
             </Upload.Dragger>
           </Form.Item>

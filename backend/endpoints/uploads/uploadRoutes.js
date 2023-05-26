@@ -1,14 +1,13 @@
 const router = require('express').Router();	
 
-const upload = require('./uploadsController');
+const { UploadImage } = require("./uploadsController");
 
-router.post('/', upload.single('image'), (req, res) => {
-    console.log(req.file);
-    return res.json({ message: 'Success', filename: req.file.filename });
+router.post("/images", UploadImage.single("image"), (req, res) => {
+  return res.json({ url: req.file.location });
 });
 
-router.post('/multiple', upload.array('images', 10), (req, res) => {
-    return res.send(`Success`);
- });
+router.post("images/multiple", UploadImage.array("images", 10), (req, res) => {
+  return res.send(`Success`);
+});
 
 module.exports = router;

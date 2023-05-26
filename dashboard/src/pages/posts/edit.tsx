@@ -81,7 +81,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Contenu"
           name={["content"]}
           rules={[
@@ -91,7 +91,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
           ]}
         >
           <Input />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="Contenu"
           name={["content"]}
@@ -112,6 +112,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
           <ReactQuill
             style={{ height: "500px", width: "100%" }}
             modules={modules}
+            value={editorContent}
             onChange={setEditorContent}
             theme="snow"
             placeholder="Placez votre contenu ici..."
