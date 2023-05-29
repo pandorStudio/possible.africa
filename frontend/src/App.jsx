@@ -24,7 +24,7 @@ function App() {
                 <Route path='/timeforafrica' element={<TimeForAfrica />} />
                 <Route path="/" element={<HomeHeader />}>
                     <Route path='/actualites' element={<Actualites />} />
-                    <Route path='/' element={<Interviews />} />
+                    <Route path='/interviews' element={<Interviews />} />
                     <Route path='/agenda' element={<Agenda />} />
                     <Route path='/opportunites' element={<Opportunites />} />
                     <Route path='/emplois' element={<Emplois />} />

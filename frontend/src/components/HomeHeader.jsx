@@ -44,7 +44,7 @@ export const HomeHeader = () => {
             {isDesktop ? (
               <Flex justify="center" gap="5">
 
-                  {[{name:'Podcast/Interview', link:"/", icons: <PodcastIcon/> },
+                  {[{name:'Podcast/Interview', link:"/interviews", icons: <PodcastIcon/> },
                   {name:'Actualités', link:"/actualites", icons: <NewspaperIcon/> },
                   {name:'Agenda', link:"/agenda", icons: <CalendarIcon/> },
                   {name:'Opportunités de financement', link:"/opportunites", icons: <LawIcon/> },

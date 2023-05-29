@@ -20,8 +20,9 @@ import { HomeHeader } from "../components/HomeHeader";
 
 function Home() {
   return (
-    <Container maxW="container.xl" p={0}>     
-       <HomeHeader/>
+    <Container maxW="container.xl" p={0}> 
+    <HomeHeader/>    
+       <Interviews/>
   {/* <Tabs colorScheme='teal'>
   <TabList>
     <Tab><Flex alignItems='center' gap='1'><PodcastIcon />
