@@ -11,6 +11,8 @@ import {
   HStack,
   IconButton,
   useBreakpointValue,
+  Heading,
+  Spacer,
 } from '@chakra-ui/react'
 
 
@@ -20,7 +22,7 @@ export const Header = () => {
     lg: true,
   })
   return (
-    <Box>
+    <>
     <Box
       as="section"
       pb={{
@@ -28,21 +30,25 @@ export const Header = () => {
         md: '5',
       }}
     >
-      <Box as="nav" bg="bg-surface" boxShadow="sm">
+      <Box as="nav" bg="bg-surface">
         <Container
           py={{
             base: '4',
-            lg: '5',
+            lg: '6',
           }}
+          maxW="container.xl"
         >
-          <HStack spacing="10" justify="space-between">
+          <Flex spacing="10">
             <Box>Logo</Box>
+          <Spacer/>
             {isDesktop ? (
-              <Flex justify="space-between" flex="1">
+              <Flex justify="space-between">
                 <ButtonGroup variant="link" spacing="8">
-                  {['Possible', 'Entrepreneurs', 'Time For Africa'].map((item) => (
+                  {[{name:'Possible', link:"/" }, {name:'Entrepreneurs', link:"/entrepreneurs" },{name:'Time For Africa', link:"/timeforafrica" }].map((item) => (
 
-                    <Link  key={item} as={ReachLink} to="/">{item}</Link>
+                    <Link  key={item.name} as={ReachLink} to={item.link}><Heading size="md">
+                      {item.name}
+                      </Heading></Link>
                   ))}
                 </ButtonGroup>
                
@@ -54,11 +60,11 @@ export const Header = () => {
                 aria-label="Open Menu"
               />
             )}
-          </HStack>
+          </Flex>
         </Container>
       </Box>
-    </Box>
+      </Box>
       <Outlet/>
-    </Box>  
+    </>  
   )
 }

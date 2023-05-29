@@ -8,6 +8,7 @@ import Interviews from "./pages/Interviews";
 import Agenda from "./pages/Agenda";
 import Opportunites from "./pages/Opportunites";
 import Emplois from "./pages/Emplois";
+import { HomeHeader } from "./components/HomeHeader";
 
 
 
@@ -17,15 +18,17 @@ function App() {
     <>
       <BrowserRouter>
           <Routes>
-              <Route path="/" element={<Header />}>
-              <Route index element={<Accueil />} />
-              <Route path="/entrepreneur" element={<Entrepreneurs />} />
-              <Route path='/time-to-africa' element={<TimeForAfrica />} />
-              <Route path='/actualites' element={<Actualites />} />
-              <Route path='/' element={<Interviews />} />
-              <Route path='/agenda' element={<Agenda />} />
-              <Route path='/opportunites' element={<Opportunites />} />
-              <Route path='/emplois' element={<Emplois />} />
+            <Route path="/" element={<Header />}>
+                <Route index element={<Accueil />} />
+                <Route path="/entrepreneurs" element={<Entrepreneurs />} />
+                <Route path='/timeforafrica' element={<TimeForAfrica />} />
+                <Route path="/" element={<HomeHeader />}>
+                    <Route path='/actualites' element={<Actualites />} />
+                    <Route path='/' element={<Interviews />} />
+                    <Route path='/agenda' element={<Agenda />} />
+                    <Route path='/opportunites' element={<Opportunites />} />
+                    <Route path='/emplois' element={<Emplois />} />
+                </Route>
             </Route>
           </Routes>
         </BrowserRouter>
