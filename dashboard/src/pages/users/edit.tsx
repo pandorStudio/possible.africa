@@ -14,7 +14,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
-        <Form.Item label="Prénom.s" name={["username"]}>
+        <Form.Item label="Nom D'Utilisateur" name={["username"]}>
           <Input />
         </Form.Item>
         <Form.Item

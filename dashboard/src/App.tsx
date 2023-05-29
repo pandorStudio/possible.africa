@@ -74,6 +74,8 @@ import { PostCategoryList } from "./pages/post_categories/list";
 import { PostCategoryEdit } from "./pages/post_categories/edit";
 import { PostCategoryShow } from "./pages/post_categories/show";
 import { PostCategoryCreate } from "./pages/post_categories/create";
+import {GroupOutlined, UserOutlined} from "@ant-design/icons";
+import CustomIconJob from "./components/CustomComponents/Icons/CustomIconJob";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -104,18 +106,10 @@ function App() {
             i18nProvider={i18nProvider}
             resources={[
               {
-                name: "users",
-                list: "/users",
-                show: "/users/show/:id",
-                create: "/users/create",
-                edit: "/users/edit/:id",
+                name: "Organisations",
                 meta: {
-                  canDelete: true,
-                  token: localStorage.getItem("refine-auth"),
+                  icon: null,
                 },
-              },
-              {
-                name: "Organisation",
               },
               {
                 name: "organisation_types",
@@ -124,6 +118,7 @@ function App() {
                 create: "/organisation_types/create",
                 edit: "/organisation_types/edit/:id",
                 meta: {
+                  label: "Types D'Organisations",
                   parent: "Organisation",
                   canDelete: true,
                 },
@@ -147,10 +142,15 @@ function App() {
                 edit: "/jobs/edit/:id",
                 meta: {
                   canDelete: true,
+                  label: "Emplois",
+                  icon: <CustomIconJob />
                 },
               },
               {
                 name: "Opportunité",
+                meta:{
+                  label: "Opportunités",
+                }
               },
               {
                 name: "opportunity_types",
@@ -159,6 +159,7 @@ function App() {
                 create: "/opportunity_types/create",
                 edit: "/opportunity_types/edit/:id",
                 meta: {
+                  label: "Types D'Opportunités",
                   parent: "Opportunité",
                   canDelete: true,
                 },
@@ -170,12 +171,16 @@ function App() {
                 create: "/opportunities/create",
                 edit: "/opportunities/edit/:id",
                 meta: {
+                  label: "Opportunités",
                   parent: "Opportunité",
                   canDelete: true,
                 },
               },
               {
                 name: "Evenement",
+                meta:{
+                  label: "Section Evènements",
+                }
               },
               {
                 name: "event_types",
@@ -184,6 +189,7 @@ function App() {
                 create: "/event_types/create",
                 edit: "/event_types/edit/:id",
                 meta: {
+                  label: "Types D'évènements",
                   parent: "Evenement",
                   canDelete: true,
                 },
@@ -195,12 +201,16 @@ function App() {
                 create: "/events/create",
                 edit: "/events/edit/:id",
                 meta: {
+                  label: "Evènements",
                   parent: "Evenement",
                   canDelete: true,
                 },
               },
               {
                 name: "Section Posts",
+                meta: {
+                  label: "Section Posts",
+                }
               },
               {
                 name: "post_categories",
@@ -209,6 +219,7 @@ function App() {
                 create: "/post_categories/create",
                 edit: "/post_categories/edit/:id",
                 meta: {
+                  label: "Catégories de posts",
                   parent: "Section Posts",
                   canDelete: true,
                 },
@@ -220,8 +231,22 @@ function App() {
                 create: "/posts/create",
                 edit: "/posts/edit/:id",
                 meta: {
+                  label: "Posts",
                   parent: "Section Posts",
                   canDelete: true,
+                },
+              },
+              {
+                name: "users",
+                list: "/users",
+                show: "/users/show/:id",
+                create: "/users/create",
+                edit: "/users/edit/:id",
+                meta: {
+                  label: "Utilisateur",
+                  icon: <UserOutlined />,
+                  canDelete: true,
+                  token: localStorage.getItem("refine-auth"),
                 },
               },
             ]}
@@ -244,12 +269,6 @@ function App() {
                   index
                   element={<NavigateToResource resource="users" />}
                 />
-                <Route path="users">
-                  <Route index element={<UserList />} />
-                  <Route path="show/:id" element={<UserShow />} />
-                  <Route path="edit/:id" element={<UserEdit />} />
-                  <Route path="create" element={<UserCreate />} />
-                </Route>
                 <Route path="organisation_types">
                   <Route index element={<OrganisationTypeList />} />
                   <Route path="show/:id" element={<AntdInferencer />} />
@@ -304,6 +323,12 @@ function App() {
                   <Route path="show/:id" element={<PostShow />} />
                   <Route path="edit/:id" element={<PostEdit />} />
                   <Route path="create" element={<PostCreate />} />
+                </Route>
+                <Route path="users">
+                  <Route index element={<UserList />} />
+                  <Route path="show/:id" element={<UserShow />} />
+                  <Route path="edit/:id" element={<UserEdit />} />
+                  <Route path="create" element={<UserCreate />} />
                 </Route>
               </Route>
               <Route

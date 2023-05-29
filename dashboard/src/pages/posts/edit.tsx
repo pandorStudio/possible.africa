@@ -40,6 +40,13 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     defaultValue: postsData?.categorie?._id,
   });
 
+  const { selectProps: organisationsSelectProps } = useSelect({
+    resource: "organisations",
+    optionValue: "_id",
+    optionLabel: "name",
+    defaultValue: postsData?._id,
+  });
+
   function handleImgSubmit(event: any) {
     console.log(event);
     event.preventDefault();
@@ -49,16 +56,36 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label="Auteur"
-          name={["user", "_id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
+            label="Auteur"
+            name={["user", "_id"]}
+            rules={[
+              {
+                required: true,
+              },
+            ]}
         >
           <Select {...userSelectProps} />
         </Form.Item>
+        <Form.Item
+          label="Organisations"
+          name={["organisations"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+          };
+          }}
+
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return {_id: item.value, name: item.label};
+            })
+            return toBeReteurned;
+          }}
+      >
+        <Select mode="multiple" key={organisationsSelectProps.value?.toString()} {...organisationsSelectProps} />
+      </Form.Item>
         <Form.Item
           label="Titre"
           name={["title"]}

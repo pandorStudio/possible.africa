@@ -6,6 +6,10 @@ const postSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+      organisations: {
+        type: [mongoose.Schema.Types.ObjectId],
+          ref: "Organisation",
+      },
     categorie: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "PostCategorie",
@@ -30,6 +34,10 @@ postSchema.pre(/^find/, function (next) {
   this.populate({
     path: "categorie",
     select: "name slug",
+  });
+  this.populate({
+      path: "organisations",
+      select: "name contributeur",
   });
   next();
 });

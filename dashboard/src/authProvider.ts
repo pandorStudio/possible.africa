@@ -119,7 +119,9 @@ export const authProvider: AuthBindings = {
       );
       return {
         id: 1,
-        name: data.username,
+        username: data.username,
+        lastname: "" || data.lastname,
+        firstname: "" || data.firstname,
         avatar: data.avatar,
       };
     }
