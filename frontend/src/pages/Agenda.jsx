@@ -1,9 +1,9 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex } from "@chakra-ui/react";
 
 
 function Agenda() {
   return (
-    <Box>Agenda</Box>
+    <Container>Agenda</Container>
   )
 }
 

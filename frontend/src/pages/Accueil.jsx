@@ -2,13 +2,14 @@ import { CalendarIcon, LawIcon, NewspaperIcon, PodcastIcon, WorkIcon } from "../
 // import "./Home.css";
 import { Link as ReachLink } from "react-router-dom";
 import Interviews from "./Interviews";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex } from "@chakra-ui/react";
 import { Link } from '@chakra-ui/react';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import Actualites from "./Actualites";
 import Agenda from "./Agenda";
 import Opportunites from "./Opportunites";
 import { Divider } from '@chakra-ui/react'
+import { HomeHeader } from "../components/HomeHeader";
 
 // import PodcastsIcon from "@mui/icons-material/Podcasts";
 // import NewspaperIcon from "@mui/icons-material/Newspaper";
@@ -19,10 +20,10 @@ import { Divider } from '@chakra-ui/react'
 
 function Home() {
   return (
-    <Box>
-     
-
-  <Tabs variant='soft-rounded' colorScheme='blue'>
+    <Container maxW="container.xl" p={0}> 
+    <HomeHeader/>    
+       <Interviews/>
+  {/* <Tabs colorScheme='teal'>
   <TabList>
     <Tab><Flex alignItems='center' gap='1'><PodcastIcon />
             <Link as={ReachLink} to="/">Podcast/Interview</Link></Flex></Tab>
@@ -50,8 +51,8 @@ function Home() {
       <Opportunites/>
     </TabPanel>
   </TabPanels>
-</Tabs>
-    </Box>
+</Tabs> */}
+    </Container>
   );
 }
 

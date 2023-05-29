@@ -1,8 +1,8 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex } from "@chakra-ui/react";
 
 function TimeForAfrica() {
   return (
-    <Box>This is the time to Africa</Box>
+    <Container>This is the time to Africa</Container>
   )
 }
 

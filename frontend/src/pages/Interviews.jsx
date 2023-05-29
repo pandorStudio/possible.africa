@@ -2,7 +2,7 @@ import Image from '../assets/hunters-race-MYbhN8KaaEc-unsplash.jpg'
 import { useGetOrganisationsQuery, useAddOrganisationMutation, useUpdateOrganisationMutation, useDeleteOrganisationMutation } from "../features/api/apiSlice";
 import CardComponent from '../components/CardComponent';
 import { Box, Spinner, Flex } from '@chakra-ui/react'
-
+import { Button } from '@chakra-ui/react'
 
 function Interviews() {
 
@@ -31,7 +31,10 @@ function Interviews() {
         return <div>{error.status}</div>;
       }
   return (
-    <Flex>{content}</Flex>
+    <Flex>{content}
+    <Button>Se connecter</Button>
+    </Flex>
+    
   )
 }
 

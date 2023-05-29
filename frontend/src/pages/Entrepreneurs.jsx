@@ -1,8 +1,8 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex } from "@chakra-ui/react";
 
 function Entrepreneurs() {
   return (
-    <Box>Entrepreneurs</Box>
+    <Container>Entrepreneurs</Container>
   )
 }
 
