@@ -74,6 +74,12 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     optionValue: "_id",
   });
 
+  const { selectProps: organisationsSelectProps } = useSelect({
+    resource: "organisations",
+    optionValue: "_id",
+    optionLabel: "name"
+  });
+
   async function onSubmitCapture(values: any) {
     let imgTags = editorContent.match(/<img[^>]+src="([^">]+)"/g);
     if (imgTags && imgTags.length > 0) {
@@ -129,15 +135,32 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     >
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
         <Form.Item
-          label="Auteur"
-          name={["user"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
+            label="Auteur"
+            name={["user"]}
+            rules={[
+              {
+                required: true,
+              },
+            ]}
         >
           <Select {...userSelectProps} />
+        </Form.Item>
+        <Form.Item
+            label="Organiisations"
+            name={["organisations"]}
+            getValueProps={(value: any[]) => {
+              return {
+                value: value?.map((item) => item),
+            };
+            }}
+            getValueFromEvent={(...args: any) => {
+              const toBeReturned = args[1].map((item: any) => {
+                return item.value;
+              })
+              return toBeReturned;
+            }}
+        >
+          <Select mode="multiple" {...organisationsSelectProps} />
         </Form.Item>
         <Form.Item
           label="Titre"
