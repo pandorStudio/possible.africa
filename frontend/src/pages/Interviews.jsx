@@ -1,6 +1,7 @@
 import Image from '../assets/hunters-race-MYbhN8KaaEc-unsplash.jpg'
 import { useGetOrganisationsQuery, useAddOrganisationMutation, useUpdateOrganisationMutation, useDeleteOrganisationMutation } from "../features/api/apiSlice";
-import Card from '../components/Card';
+import CardComponent from '../components/CardComponent';
+import { Box, Spinner, Flex } from '@chakra-ui/react'
 
 
 function Interviews() {
@@ -16,12 +17,12 @@ function Interviews() {
       let content;
     
       if (isLoading || isFetching) {
-        content = <div>loading...</div>;
+        content = <Spinner/>;
         return content
       } else if(isSuccess) {
          content = organisations.map(organisation => {
           return (
-            <Card key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={Image}/>
+            <CardComponent key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={Image}/>
     
           )
         })
@@ -30,7 +31,7 @@ function Interviews() {
         return <div>{error.status}</div>;
       }
   return (
-    <div className='main'>{content}</div>
+    <Flex>{content}</Flex>
   )
 }
 

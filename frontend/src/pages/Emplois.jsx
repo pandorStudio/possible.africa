@@ -1,7 +1,8 @@
+import { Box, Flex } from "@chakra-ui/react";
 
 function Emplois() {
   return (
-    <div className="main">Emplois</div>
+    <Box>Emplois</Box>
   )
 }
 
