@@ -48,7 +48,7 @@ export const HomeHeader = () => {
                   {name:'Actualités', link:"/actualites", icons: <NewspaperIcon/> },
                   {name:'Agenda', link:"/agenda", icons: <CalendarIcon/> },
                   {name:'Opportunités de financement', link:"/opportunites", icons: <LawIcon/> },
-                  {name:'Actualités', link:"/emplois", icons: <WorkIcon/> }].map((item) => (
+                  {name:'Emplois', link:"/emplois", icons: <WorkIcon/> }].map((item) => (
 
                     <Link  key={item.name} as={ReachLink} to={item.link}>
                         <Flex flexDir="row">

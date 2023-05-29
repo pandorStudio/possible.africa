@@ -1,5 +1,5 @@
 import { Outlet, Link as ReachLink } from "react-router-dom";
-// import Logo from "../assets/logopossibleafrica.png"
+import Logo from "../assets/LogoPossible.svg"
 import {MenuIcon} from "../assets/icons"
 
 import {
@@ -8,11 +8,11 @@ import {
   ButtonGroup,
   Container,
   Flex,
-  HStack,
   IconButton,
   useBreakpointValue,
   Heading,
   Spacer,
+  Image,
 } from '@chakra-ui/react'
 
 
@@ -39,7 +39,7 @@ export const Header = () => {
           maxW="container.xl"
         >
           <Flex spacing="10">
-            <Box>Logo</Box>
+            <Box><Image src={Logo} boxSize={40}/></Box>
           <Spacer/>
             {isDesktop ? (
               <Flex justify="space-between">

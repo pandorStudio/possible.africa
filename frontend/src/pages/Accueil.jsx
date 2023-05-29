@@ -1,14 +1,8 @@
-import { CalendarIcon, LawIcon, NewspaperIcon, PodcastIcon, WorkIcon } from "../assets/icons";
 // import "./Home.css";
 import { Link as ReachLink } from "react-router-dom";
 import Interviews from "./Interviews";
-import { Box, Container, Flex } from "@chakra-ui/react";
-import { Link } from '@chakra-ui/react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
-import Actualites from "./Actualites";
-import Agenda from "./Agenda";
-import Opportunites from "./Opportunites";
-import { Divider } from '@chakra-ui/react'
+import { Container } from "@chakra-ui/react";
+
 import { HomeHeader } from "../components/HomeHeader";
 
 // import PodcastsIcon from "@mui/icons-material/Podcasts";
