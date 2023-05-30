@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {Header} from "./components/Header";
 import Accueil from "./pages/Accueil";
 import Entrepreneurs from "./pages/Entrepreneurs";
-import TimeForAfrica from "./pages/TimeForafrica";
+import TimeForAfrica from "./pages/TimeForAfrica";
 import Actualites from "./pages/Actualites";
 import Interviews from "./pages/Interviews";
 import Agenda from "./pages/Agenda";
