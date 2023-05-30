@@ -110,7 +110,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
       });
     }
 
-    if (values.image) {
+    if (values.image && values.image.length) {
       const base64 = await file2Base64(values.image[0]);
       const url = await imageUploadHandler(base64);
       values.image = url;
@@ -146,7 +146,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
           <Select {...userSelectProps} />
         </Form.Item>
         <Form.Item
-            label="Organiisations"
+            label="Organisations"
             name={["organisations"]}
             getValueProps={(value: any[]) => {
               return {

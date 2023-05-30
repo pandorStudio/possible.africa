@@ -25,9 +25,9 @@ export const authProvider: AuthBindings = {
       localStorage.setItem(TOKEN_KEY, token);
       // if ((username || email) && password) {
       //   localStorage.setItem(TOKEN_KEY, username);
-      axiosInstance.defaults.headers.common = {
+      /*axiosInstance.defaults.headers.common = {
         Authorization: `Bearer ${token}`,
-      };
+      };*/
       return {
         success: true,
         redirectTo: "/",
@@ -42,7 +42,7 @@ export const authProvider: AuthBindings = {
       },
     };
   },
-  register: async ({ email, password, confirmPassword }) => {
+  register: async ({ email, firstname, lastname, password, confirmPassword }) => {
     const {
       data: { status, token },
     } = await axiosInstance.post(
@@ -51,6 +51,8 @@ export const authProvider: AuthBindings = {
         password,
         confirmPassword,
         email,
+        firstname,
+        lastname
       },
       {
         headers: {
@@ -67,9 +69,9 @@ export const authProvider: AuthBindings = {
       status
     ) {
       localStorage.setItem(TOKEN_KEY, token);
-      axiosInstance.defaults.headers.common = {
+      /*axiosInstance.defaults.headers.common = {
         Authorization: `Bearer ${token}`,
-      };
+      };*/
       return {
         success: true,
         redirectTo: "/",

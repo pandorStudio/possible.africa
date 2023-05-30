@@ -23,7 +23,7 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const API_URL_BASE = process.env.API_URL_BASE ? process.env.API_URL_BASE : "/";
-const URL_CONNECT_DEV = process.env.URL_CONNECT_DEV;
+const URL_CONNECT_DEV = process.env.URL_CONNECT;
 const userRoutes = require("./endpoints/users/userRoutes");
 const organisationTypeRoutes = require("./endpoints/organisationTypes/organisationTypeRoutes");
 const organisationRoutes = require("./endpoints/organisations/organisationRoutes");
@@ -38,6 +38,8 @@ const postRoutes = require("./endpoints/posts/postRouter");
 const uploadRoutes = require("./endpoints/uploads/uploadRoutes");
 
 // Middleware
+//
+const {protect} = require("./endpoints/auth/authController.js");
 app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -46,6 +48,10 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.static("public"));
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(express.json());
+
+//protections
+app.use(protect)
+
 app.use(API_URL_BASE + "users", userRoutes);
 app.use(API_URL_BASE + "organisation_types", organisationTypeRoutes);
 app.use(API_URL_BASE + "organisations", organisationRoutes);
