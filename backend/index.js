@@ -21,7 +21,7 @@ require("dotenv").config();
 
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4534;
 const API_URL_BASE = process.env.API_URL_BASE ? process.env.API_URL_BASE : "/";
 const URL_CONNECT_DEV = process.env.URL_CONNECT_DEV;
 const userRoutes = require("./endpoints/users/userRoutes");
