@@ -9,6 +9,7 @@ import Agenda from "./pages/Agenda";
 import Opportunites from "./pages/Opportunites";
 import Emplois from "./pages/Emplois";
 import { HomeHeader } from "./components/HomeHeader";
+import Organisations from "./pages/Organisations";
 
 
 
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/entrepreneurs" element={<Entrepreneurs />} />
                 <Route path='/timeforafrica' element={<TimeForAfrica />} />
                 <Route path="/" element={<HomeHeader />}>
+                    <Route path='/organisations' element={<Organisations />} />
                     <Route path='/actualites' element={<Actualites />} />
                     <Route path='/interviews' element={<Interviews />} />
                     <Route path='/agenda' element={<Agenda />} />

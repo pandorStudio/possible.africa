@@ -4,6 +4,7 @@ import Interviews from "./Interviews";
 import { Container } from "@chakra-ui/react";
 
 import { HomeHeader } from "../components/HomeHeader";
+import Organisations from "./Organisations";
 
 // import PodcastsIcon from "@mui/icons-material/Podcasts";
 // import NewspaperIcon from "@mui/icons-material/Newspaper";
@@ -16,36 +17,8 @@ function Home() {
   return (
     <Container maxW="container.xl" p={0}> 
     <HomeHeader/>    
-       <Interviews/>
-  {/* <Tabs colorScheme='teal'>
-  <TabList>
-    <Tab><Flex alignItems='center' gap='1'><PodcastIcon />
-            <Link as={ReachLink} to="/">Podcast/Interview</Link></Flex></Tab>
-   <Tab><Flex alignItems='center' gap='1'> <NewspaperIcon />
-                <Link as={ReachLink} to="/actualites">Actualités</Link></Flex></Tab>
-   <Tab><Flex alignItems='center' gap='1'> <CalendarIcon />
-                <Link as={ReachLink} to="/agenda">Agenda</Link></Flex></Tab>
-   <Tab><Flex alignItems='center' gap='1'>   <LawIcon />
-                <Link as={ReachLink} to="/opportunites">Opportunités de financement</Link></Flex></Tab>
-   <Tab><Flex alignItems='center' gap='1'> <WorkIcon />
-                <Link as={ReachLink} to="/emplois">Emplois</Link></Flex></Tab>
-  </TabList>
-  <Divider />
-  <TabPanels>
-    <TabPanel>
-     <Interviews />
-    </TabPanel>
-    <TabPanel>
-      <Actualites/>
-    </TabPanel>
-    <TabPanel>
-      <Agenda/>
-    </TabPanel>
-    <TabPanel>
-      <Opportunites/>
-    </TabPanel>
-  </TabPanels>
-</Tabs> */}
+       <Organisations/>
+  
     </Container>
   );
 }

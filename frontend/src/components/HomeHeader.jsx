@@ -1,6 +1,6 @@
 import { Outlet, Link as ReachLink } from "react-router-dom";
 // import Logo from "../assets/logopossibleafrica.png"
-import {CalendarIcon, LawIcon, MenuIcon, NewspaperIcon, PodcastIcon, WorkIcon} from "../assets/icons"
+import {CalendarIcon, LawIcon, MenuIcon, NewspaperIcon, OrganisationsIcon, PodcastIcon, WorkIcon} from "../assets/icons"
 
 import {
   Box,
@@ -35,6 +35,7 @@ export const HomeHeader = () => {
             base: '4',
             lg: '5',
           }}
+          px={0}
           maxW="container.xl"
           
 
@@ -44,7 +45,8 @@ export const HomeHeader = () => {
             {isDesktop ? (
               <Flex justify="center" gap="5">
 
-                  {[{name:'Podcast/Interview', link:"/interviews", icons: <PodcastIcon/> },
+                  {[{name:'Organisations', link:"/organisations", icons: <OrganisationsIcon/> },
+                  {name:'Podcast/Interview', link:"/interviews", icons: <PodcastIcon/> },
                   {name:'Actualités', link:"/actualites", icons: <NewspaperIcon/> },
                   {name:'Agenda', link:"/agenda", icons: <CalendarIcon/> },
                   {name:'Opportunités de financement', link:"/opportunites", icons: <LawIcon/> },

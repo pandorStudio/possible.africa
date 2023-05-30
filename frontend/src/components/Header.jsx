@@ -1,5 +1,5 @@
 import { Outlet, Link as ReachLink } from "react-router-dom";
-import Logo from "../assets/LogoPossible.svg"
+import Logo from "../assets/LogoPossible.png"
 import {MenuIcon} from "../assets/icons"
 
 import {
@@ -37,9 +37,11 @@ export const Header = () => {
             lg: '6',
           }}
           maxW="container.xl"
+          alignItems="center"
+          justifyContent="center"
         >
           <Flex spacing="10">
-            <Box><Image src={Logo} boxSize={40}/></Box>
+            <Box size="md"><Image src={Logo} w={40}/></Box>
           <Spacer/>
             {isDesktop ? (
               <Flex justify="space-between">

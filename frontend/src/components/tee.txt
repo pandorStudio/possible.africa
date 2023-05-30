@@ -1,3 +1,0 @@
-          <Link as={ReachLink} to="/" className="active">Possible</Link>
-          <Link as={ReachLink} to="/entrepreneur">Entrepreneur</Link>
-          <Link as={ReachLink} to="/time-to-africa">Time to Africa</Link>
