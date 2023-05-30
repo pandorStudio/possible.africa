@@ -7,7 +7,7 @@ function Actualites() {
 
 
     <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="flex-start">
-              <Heading size="xl">Organisations</Heading>
+              <Heading size="xl">Actualites</Heading>
               <Text>Hello</Text>
               <Text>Hello</Text>
               <Text>Hello</Text>
