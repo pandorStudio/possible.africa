@@ -2,7 +2,7 @@ import {  Container, Heading, Text, VStack } from "@chakra-ui/react";
 import Image from '../assets/hunters-race-MYbhN8KaaEc-unsplash.jpg'
 import { useGetOrganisationsQuery, useAddOrganisationMutation, useUpdateOrganisationMutation, useDeleteOrganisationMutation } from "../features/api/apiSlice";
 import CardComponent from '../components/CardComponent';
-import { Box, Spinner, Flex } from '@chakra-ui/react'
+import { Box, Spinner, HStack } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/react'
 
 function Organisations() {
@@ -17,9 +17,12 @@ function Organisations() {
   let content;
 
   if (isLoading || isFetching) {
-    content = <Container maxW="container.lg" p={0} bg="gray.50">
+    content = <Container maxW="container.lg" p={0} >
       <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="center">
+      <HStack w="full" alignItems="flex-start">
 
+       <Heading size="xl">Organisations</Heading>
+      </HStack>
       <Spinner/>
       </VStack>
       </Container>;
@@ -36,7 +39,7 @@ function Organisations() {
     return <div>{error.status}</div>;
   }
 return (
-<Container maxW="container.lg" p={0} bg="gray.50">
+<Container maxW="container.lg" p={0} >
 
 
       <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="flex-start">

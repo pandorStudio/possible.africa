@@ -18,7 +18,6 @@ function Home() {
     <Container maxW="container.xl" p={0}> 
     <HomeHeader/>    
        <Organisations/>
-  
     </Container>
   );
 }

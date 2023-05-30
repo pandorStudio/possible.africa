@@ -2,7 +2,7 @@ import { Container, Heading, Text, VStack } from "@chakra-ui/react"
 
 function Opportunites() {
   return (
-    <Container maxW="container.lg" p={0} bg="gray.50">
+    <Container maxW="container.lg" p={0}>
 
 
     <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="flex-start">
