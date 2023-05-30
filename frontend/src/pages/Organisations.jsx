@@ -17,7 +17,12 @@ function Organisations() {
   let content;
 
   if (isLoading || isFetching) {
-    content = <Spinner/>;
+    content = <Container maxW="container.lg" p={0} bg="gray.50">
+      <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="center">
+
+      <Spinner/>
+      </VStack>
+      </Container>;
     return content
   } else if(isSuccess) {
      content = organisations.map(organisation => {
