@@ -2,13 +2,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {Header} from "./components/Header";
 import Accueil from "./pages/Accueil";
 import Entrepreneurs from "./pages/Entrepreneurs";
-import TimeForAfrica from "./pages/TimeForafrica";
+import TimeForAfrica from "./pages/TimeForAfrica";
 import Actualites from "./pages/Actualites";
 import Interviews from "./pages/Interviews";
 import Agenda from "./pages/Agenda";
 import Opportunites from "./pages/Opportunites";
 import Emplois from "./pages/Emplois";
 import { HomeHeader } from "./components/HomeHeader";
+import Organisations from "./pages/Organisations";
 
 
 
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/entrepreneurs" element={<Entrepreneurs />} />
                 <Route path='/timeforafrica' element={<TimeForAfrica />} />
                 <Route path="/" element={<HomeHeader />}>
+                    <Route path='/organisations' element={<Organisations />} />
                     <Route path='/actualites' element={<Actualites />} />
                     <Route path='/interviews' element={<Interviews />} />
                     <Route path='/agenda' element={<Agenda />} />
