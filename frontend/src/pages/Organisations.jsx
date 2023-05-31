@@ -4,6 +4,7 @@ import { useGetOrganisationsQuery, useAddOrganisationMutation, useUpdateOrganisa
 import CardComponent from '../components/CardComponent';
 import { Box, Spinner, HStack } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/react'
+import { useState } from "react";
 
 function Organisations() {
   const {
@@ -15,19 +16,23 @@ function Organisations() {
     error,
   } = useGetOrganisationsQuery();
   let content;
+const [isLoaded, setIsLoaded] = useState(false);
+
+setInterval(() => {
+  setIsLoaded(true)
+}, 2000);
 
   if (isLoading || isFetching) {
-    content = <Container maxW="container.lg" p={0} >
-      <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="center">
-     
-      <Spinner/>
-      </VStack>
-      </Container>;
-    return content
-  } else if(isSuccess) {
+
+    content = organisations.map(organisation => {
+      return (
+        <CardComponent key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded}/>
+      )
+    })  } else if(isSuccess) {
+
      content = organisations.map(organisation => {
       return (
-        <CardComponent key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={Image}/>
+        <CardComponent key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded}/>
       )
     })
   } else if (isError) {

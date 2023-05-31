@@ -42,7 +42,8 @@ function Actualites() {
       <Container maxW="container.lg" p={0}>
 
 
-<VStack w="full" h="full" py={5} px={10} spacing={5} alignItems="flex-start">              {/* <Heading size="xl">Actualités</Heading> */}
+<VStack w="full" h="full" py={5} px={10} spacing={5} alignItems="flex-start">
+    {/* <Heading size="xl">Actualités</Heading> */}
               {content}
           </VStack>
 
