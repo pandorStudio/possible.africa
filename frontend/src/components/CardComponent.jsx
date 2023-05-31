@@ -19,7 +19,6 @@ function CardComponent({title, description, imgUrl}) {
   <Stack>
     <CardBody>
       <Heading size='md'>{title}</Heading>
-
       <Text py='2'>
       {description}
       </Text>

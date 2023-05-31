@@ -6,8 +6,9 @@ const CustomUtils = require("../../utils/index.js");
 // @access Public
 
 exports.getAllPostCategories = async (req, res) => {
+  const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const postCategories = await PostCategorie.find();
+    const postCategories = await PostCategorie.find(queryObj);
     res.status(200).json(postCategories);
   } catch (error) {
     res.status(404).json({ message: error.message });

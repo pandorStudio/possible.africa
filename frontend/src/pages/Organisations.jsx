@@ -20,7 +20,6 @@ function Organisations() {
     content = <Container maxW="container.lg" p={0} >
       <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="center">
       <HStack w="full" alignItems="flex-start">
-
        <Heading size="xl">Organisations</Heading>
       </HStack>
       <Spinner/>
@@ -31,7 +30,6 @@ function Organisations() {
      content = organisations.map(organisation => {
       return (
         <CardComponent key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={Image}/>
-
       )
     })
   } else if (isError) {
@@ -44,14 +42,6 @@ return (
 
       <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="flex-start">
                 <Heading size="xl">Organisations</Heading>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-
                 {content}
             </VStack>
   

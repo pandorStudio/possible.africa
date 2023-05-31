@@ -3,6 +3,23 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const token = import.meta.env.VITE_BACKEND_TOKEN;
 const baseUrl = import.meta.env.VITE_API_URL_BASE;
 
+const baseQueryArgs = {limit: 10, page: 1, fields: []};
+function queryTransformer(query, resource) {
+  let baseQueryString = "/" + resource;
+    const { limit, page, fields= ['alo', 'ala'], eq, } = query;
+    console.log(eq);
+    baseQueryString += `?page=${page}&limit=${limit}`;
+    if (fields.length) {
+      baseQueryString += `&select=${fields.forEach((item) => item + ",")}`;
+    }
+    if (eq.length) {
+        eq.forEach((item) => {
+            baseQueryString += `&${item.field}=${item.value}`;
+        });
+    }
+  return baseQueryString;
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
@@ -14,8 +31,14 @@ export const apiSlice = createApi({
   },
   tagTypes: ["Organisations"],
   endpoints: (builder) => ({
+    getPostCategories: builder.query({
+        query: (queryArgs= baseQueryArgs) => queryTransformer(queryArgs,"post_categories"),
+    }),
+
     getPosts: builder.query({
-      query: () => "/posts",
+      query: (queryArgs= baseQueryArgs) => {
+      return queryTransformer(queryArgs, "posts");
+    },
       transformResponse: (res) => res.sort((a, b) => b.id - a.id),
       providesTags: ["Posts"],
     }),
@@ -73,6 +96,36 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Organisations"],
     }),
+
+    getJobs: builder.query({
+        query: () => "/jobs",
+        transformResponse: (res) => res.sort((a, b) => b.id - a.id),
+        providesTags: ["Jobs"],
+    }),
+    addJob: builder.mutation({
+        query: (post) => ({
+            url: "/jobs",
+            method: "POST",
+            body: post,
+        }),
+        invalidatesTags: ["Jobs"],
+    }),
+    updateJob: builder.mutation({
+        query: (post) => ({
+            url: `/jobs/${post.id}`,
+            method: "PATCH",
+            body: post,
+        }),
+        invalidatesTags: ["Jobs"],
+    }),
+    deleteJob: builder.mutation({
+        query: ({ id }) => ({
+            url: `/jobs/${id}`,
+            method: "DELETE",
+            body: id,
+        }),
+        invalidatesTags: ["Jobs"],
+    }),
   }),
 });
 
@@ -85,4 +138,9 @@ export const {
   useAddOrganisationMutation,
   useDeleteOrganisationMutation,
   useUpdateOrganisationMutation,
+  useGetPostCategoriesQuery,
+  useGetJobsQuery,
+  useAddJobMutation,
+  useDeleteJobMutation,
+  useUpdateJobMutation,
 } = apiSlice;

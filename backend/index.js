@@ -50,7 +50,7 @@ app.use(express.static("public"));
 // app.use(express.json());
 
 //protections
-app.use(protect)
+//app.use(protect)
 
 app.use(API_URL_BASE + "users", userRoutes);
 app.use(API_URL_BASE + "organisation_types", organisationTypeRoutes);
