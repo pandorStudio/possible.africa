@@ -42,7 +42,6 @@ return (
 
 
       <VStack w="full" h="full" py={5} px={10} spacing={5} alignItems="flex-start">
-                {/* <Heading size="xl">Organisations</Heading> */}
                 {content}
             </VStack>
   

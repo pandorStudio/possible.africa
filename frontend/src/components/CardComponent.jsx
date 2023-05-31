@@ -1,4 +1,4 @@
-import { Card, CardBody, Heading, Stack, Image, Text, Skeleton, SkeletonText } from '@chakra-ui/react'
+import { Card, CardBody, Heading, Stack, Image, Text, Skeleton, SkeletonText, Box } from '@chakra-ui/react'
 
 
 // eslint-disable-next-line react/prop-types
@@ -9,35 +9,38 @@ function CardComponent({title, description, imgUrl, isLoaded}) {
       <Card
         direction={{ base: 'column', sm: 'row' }}
         overflow='hidden'
-        maxW="4xl"
-        minW="4xl"
+        maxW={{ base: '3xl', sm: '100%' }}
+        minW={{ base: '2xl', sm: '70%' }}
+        height={{ base: '130px', sm: '70%' }}
         boxShadow="none"
         _hover={{ cursor: "pointer" }}
         borderRadius={0}
-
+        p={3}
+        alignItems="center"
       >
-    <Skeleton isLoaded={isLoaded} w={{ base: '100%', sm: '20%' }}  objectFit='cover'>
+    <Skeleton isLoaded={isLoaded} >
       
+      <Box  w={100} h="100px"> 
+
         <Image
-          objectFit='cover'
-         minW={{ base: '100%', sm: '20%' }}
-         maxW={{ base: '100%', sm: '100%' }}
+          fit ='cover'
+        w="100%"
+        h="100px"
           src={imgUrl}
           alt={imgUrl}
-          borderRadius={0}
+          borderRadius={8}
         />
+      </Box>
       </Skeleton> 
 
         <Stack>
           <CardBody>
-          <Skeleton isLoaded={isLoaded}>
-            <Heading fontSize='xl' color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading>
-           </Skeleton>
-           <SkeletonText mt='4' noOfLines={2} spacing='4' skeletonHeight='5' isLoaded={isLoaded}> 
+
+            <Heading paddingBottom={2} fontSize='xl' color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading>
+
             <Text noOfLines={[1,2]}>
               {description}
             </Text>
-            </SkeletonText>
           </CardBody>
 
         </Stack> 
