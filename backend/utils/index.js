@@ -54,7 +54,7 @@ class CustomUtils {
 
   static advancedQuery = (query) => {
     const queryObj = {...query};
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    const excludedFields = ['page', 'sort', 'limit', 'fields', "_end", "_start"];
     excludedFields.forEach(element => {
       delete queryObj[element];
     });
