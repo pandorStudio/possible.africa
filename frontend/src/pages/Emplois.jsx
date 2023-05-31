@@ -42,7 +42,7 @@ function Emplois() {
       <Container maxW="container.lg" p={0} >
 
 
-        <VStack w="full" h="full" py={5} px={10} spacing={5} alignItems="flex-start">              {/* <Heading size="xl">Emplois</Heading> */}
+        <VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">              {/* <Heading size="xl">Emplois</Heading> */}
               {content}
           </VStack>
 
