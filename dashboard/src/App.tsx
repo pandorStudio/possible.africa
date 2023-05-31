@@ -84,6 +84,10 @@ export const API_URL =
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
 
+function Logo() {
+  return <img src="./assets/logos/logo.png" alt="n" />;
+}
+
 function App() {
   const { t, i18n } = useTranslation();
 
@@ -339,7 +343,7 @@ function App() {
                 }
               >
                 <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/register" element={<RegisterPage title={<img  />} />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
               </Route>
             </Routes>

@@ -19,10 +19,7 @@ function Organisations() {
   if (isLoading || isFetching) {
     content = <Container maxW="container.lg" p={0} >
       <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="center">
-      <HStack w="full" alignItems="flex-start">
-
-       <Heading size="xl">Organisations</Heading>
-      </HStack>
+     
       <Spinner/>
       </VStack>
       </Container>;
@@ -31,7 +28,6 @@ function Organisations() {
      content = organisations.map(organisation => {
       return (
         <CardComponent key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={Image}/>
-
       )
     })
   } else if (isError) {
@@ -42,16 +38,8 @@ return (
 <Container maxW="container.lg" p={0} >
 
 
-      <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="flex-start">
-                <Heading size="xl">Organisations</Heading>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-                <Text>Hello</Text>
-
+      <VStack w="full" h="full" py={5} px={10} spacing={5} alignItems="flex-start">
+                {/* <Heading size="xl">Organisations</Heading> */}
                 {content}
             </VStack>
   

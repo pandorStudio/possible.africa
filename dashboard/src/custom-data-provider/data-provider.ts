@@ -7,6 +7,7 @@ import {
 import { AxiosInstance } from "axios";
 // import axios, { AxiosRequestConfig } from "axios";
 import { stringify } from "query-string";
+import {TOKEN_KEY} from "../authProvider";
 
 // Error handling ...
 // export const axiosInstance = axios.create();
@@ -74,7 +75,7 @@ const generateFilters = (filters?: CrudFilters) => {
   return queryFilters;
 };
 
-const token = localStorage.getItem("refine-auth");
+const token = localStorage.getItem(TOKEN_KEY);
 
 export const dataProvider = (
   apiUrl: string,

@@ -26,7 +26,7 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Contributeur</Title>
       <TextField value={record?.contributeur?.username} />
       <Title level={5}>Contact</Title>
-      <BooleanField value={record?.owner} />
+      <TextField value={record?.owner} />
       <Title level={5}>Description</Title>
       <TextField value={record?.description} />
       <Title level={5}>Email</Title>
@@ -35,8 +35,12 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       <TextField value={record?.telephone} />
       <Title level={5}>Site Web</Title>
       <TextField value={record?.site_web} />
-      <Title level={5}>Url Linkedin</Title>
-      <TextField value={record?.linkedin_url} />
+        <Title level={5}>Url Linkedin</Title>
+        <TextField value={record?.linkedin_url} />
+        <Title level={5}>Url Facebook</Title>
+        <TextField value={record?.facebook_url} />
+        <Title level={5}>Url Twitter</Title>
+        <TextField value={record?.twitter_url} />
       <Title level={5}>Adresse</Title>
       <TextField value={record?.adresse} />
     </Show>

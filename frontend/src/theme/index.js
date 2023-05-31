@@ -9,6 +9,8 @@ import borders from './foundations/borders'
 
 // Component style overrides
 import Button from './components/button'
+import Link from './components/link'
+
 
 const overrides = {
   styles,
@@ -16,6 +18,7 @@ const overrides = {
   // Other foundational style overrides go here
   components: {
     Button,
+    Link
     // Other components go here
   },
 }

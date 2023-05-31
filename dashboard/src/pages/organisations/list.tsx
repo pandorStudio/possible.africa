@@ -4,7 +4,7 @@ import {
   BaseRecord,
   useExport,
   useImport,
-  useCreate,
+  useCreate, useApiUrl,
 } from "@refinedev/core";
 import {
   useTable,
@@ -32,6 +32,8 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   const { tableProps } = useTable({
     syncWithLocation: true,
   });
+  const apiUrl = useApiUrl();
+
   async function handleImport(e: any) {
     const file = e.target.files[0];
     let headers: any[] = [];
@@ -44,8 +46,6 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           } else {
             const ob: any = {
               name: el[0],
-              type: "645534cee152aea2d0ad2296",
-              contributeur: "645535e833d097b57f68af31",
               description: el[1],
               owner: el[2],
               email: el[3],
@@ -57,7 +57,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               adresse: el[9],
             };
             body.push({ ...ob });
-            //await axios.post("http://localhost:5000/organisations", el);
+            await axios.post(apiUrl + "/organisations", el);
             setImportLoading(true);
             await axiosInstance
               .post(
@@ -112,7 +112,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
       }}
     >
       <Table {...tableProps} rowKey="id">
-        <Table.Column dataIndex="name" title="Nom" />
+        <Table.Column dataIndex="name" title="Nom de l'organisation" />
         <Table.Column dataIndex={["type", "name"]} title="Type" />
         <Table.Column
           dataIndex={["contributeur", "username"]}

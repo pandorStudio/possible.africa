@@ -51,6 +51,15 @@ class CustomUtils {
     }_${generatedNumber}`;
     return username;
   };
+
+  static advancedQuery = (query) => {
+    const queryObj = {...query};
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach(element => {
+      delete queryObj[element];
+    });
+    return queryObj;
+  }
 }
 
 module.exports = CustomUtils;

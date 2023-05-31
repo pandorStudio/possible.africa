@@ -159,29 +159,69 @@ export const RegisterPage: React.FC<RegisterProps> = ({
     >
       {renderProviders()}
       <Form<RegisterFormTypes>
-        layout="vertical"
+        layout="horizontal"
         form={form}
         onFinish={(values) => register(values)}
         requiredMark={false}
         {...formProps}
       >
         <Form.Item
-          name="email"
-          label={translate("pages.register.email", "Email")}
-          rules={[
-            { required: true },
-            {
-              type: "email",
-              message: translate(
-                "pages.register.errors.validEmail",
-                "Invalid email address"
-              ),
-            },
-          ]}
+            name="email"
+            label={translate("pages.register.email", "Email")}
+            rules={[
+              { required: true },
+              {
+                type: "email",
+                message: translate(
+                    "pages.register.errors.validEmail",
+                    "Invalid email address"
+                ),
+              },
+            ]}
         >
           <Input
-            size="large"
-            placeholder={translate("pages.register.fields.email", "Email")}
+              size="large"
+              placeholder={translate("pages.register.fields.email", "Email")}
+          />
+        </Form.Item>
+        <Form.Item
+            name="lastname"
+            label={translate("pages.register.lastname", "Lastname")}
+            rules={[
+              { required: true },
+              {
+                type: "text",
+                message: translate(
+                    "pages.register.errors.validLastname",
+                    "Mauvais Nom de famille"
+                ),
+              },
+            ]}
+        >
+          <Input
+              size="large"
+              placeholder={translate("pages.register.fields.lastname", "Lastname")}
+          />
+        </Form.Item>
+        <Form.Item
+            name="firstname"
+            label={translate("pages.register.firstname", "Firstname")}
+            rules={[
+              { required: true },
+              {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                type: "text",
+                message: translate(
+                    "pages.register.errors.validFirstname",
+                    "Mauvaises entrée pour le.s prénom.s"
+                ),
+              },
+            ]}
+        >
+          <Input
+              size="large"
+              placeholder={translate("pages.register.fields.firstname", "Firstname")}
           />
         </Form.Item>
         <Form.Item
@@ -195,7 +235,7 @@ export const RegisterPage: React.FC<RegisterProps> = ({
           name="confirmPassword"
           label={translate(
             "pages.register.fields.confirmPassword",
-            "Confirme Password"
+            "Confirmer Password"
           )}
           rules={[
             {

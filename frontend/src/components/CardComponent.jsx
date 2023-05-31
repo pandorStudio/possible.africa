@@ -7,21 +7,22 @@ function CardComponent({title, description, imgUrl}) {
 <Card
   direction={{ base: 'column', sm: 'row' }}
   overflow='hidden'
-  variant='outline'
+  w="2xl"
+  boxShadow="none"
+  _hover={{ cursor: "pointer" }}
 >
   <Image
     objectFit='cover'
-    maxW={{ base: '100%', sm: '200px' }}
+    w={{ base: '100%', sm: '25%' }}
     src={imgUrl}
     alt={imgUrl}
   />
 
   <Stack>
     <CardBody>
-      <Heading size='md'>{title}</Heading>
-
-      <Text py='2'>
-      {description}
+      <Heading size='md' paddingBottom={2} color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading>
+      <Text noOfLines={[1,2]}>
+        {description}
       </Text>
     </CardBody>
 

@@ -4,7 +4,6 @@ import {MenuIcon} from "../assets/icons"
 
 import {
   Box,
-  Link,
   ButtonGroup,
   Container,
   Flex,
@@ -14,6 +13,7 @@ import {
   Spacer,
   Image,
 } from '@chakra-ui/react'
+import CustomLink from "./CustomLink";
 
 
 export const Header = () => {
@@ -41,16 +41,16 @@ export const Header = () => {
           justifyContent="center"
         >
           <Flex spacing="10">
-            <Box size="md"><Image src={Logo} w={40}/></Box>
+            <Box size="md"><Image src={Logo} maxW={40}/></Box>
           <Spacer/>
             {isDesktop ? (
               <Flex justify="space-between">
                 <ButtonGroup variant="link" spacing="8">
                   {[{name:'Possible', link:"/" }, {name:'Entrepreneurs', link:"/entrepreneurs" },{name:'Time For Africa', link:"/timeforafrica" }].map((item) => (
 
-                    <Link  key={item.name} as={ReachLink} to={item.link}><Heading size="md">
+                    <CustomLink  key={item.name} as={ReachLink} to={item.link}><Heading size="md">
                       {item.name}
-                      </Heading></Link>
+                      </Heading></CustomLink>
                   ))}
                 </ButtonGroup>
                

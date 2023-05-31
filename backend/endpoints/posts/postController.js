@@ -6,8 +6,9 @@ const CustomUtils = require("../../utils/index.js");
 // @access Public
 
 exports.getAllPosts = async (req, res) => {
+  const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const posts = await Post.find();
+    const posts = await Post.find(queryObj);
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json({ message: error.message });

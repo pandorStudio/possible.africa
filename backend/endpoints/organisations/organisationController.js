@@ -35,9 +35,10 @@ exports.getOrganisationById = async (req, res) => {
 // @route POST /api/v1/organisations
 // @access Public
 exports.createOrganisation = async (req, res) => {
-  console.log(req.body);
+  const CustomBody = {...req.body};
   try {
-    const organisation = await Organisation.create(req.body);
+    if(req.user) CustomBody.contributeur = req.user._id;
+    const organisation = await Organisation.create(CustomBody);
     res.status(201).json(organisation);
   } catch (error) {
     res.status(500).json({ message: error.message });

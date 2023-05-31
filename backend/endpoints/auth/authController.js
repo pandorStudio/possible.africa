@@ -47,7 +47,7 @@ exports.signin = async (req, res, next) => {
 
     // Test if user exists && password is correct
     const user = await User.findOne({ email }).select("+password");
-    console.log(user);
+    //console.log(user);
 
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ message: CustomUtils.consts.UNAUTHORIZED });
@@ -75,26 +75,27 @@ exports.protect = async (req, res, next) => {
     }
 
     if (!token) {
-      return res.status(401).json({
+      /*return res.status(401).json({
         message: CustomUtils.consts.NOT_LOGGED_IN,
-      });
+      });*/
+      return next();
     }
 
     // 2) Verification token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
+    //console.log(decoded);
 
     // 3) Check if user still exists
     const currentUser = await User.findById(decoded.id);
     if (!currentUser) {
-      return res.status(401).json({
+      /*return res.status(401).json({
         message: CustomUtils.consts.UNAUTHORIZED,
-      });
+      });*/
+      return next();
     }
 
     // GRANT ACCESS TO PROTECTED ROUTE
     req.user = currentUser;
-    console.log(req);
     next();
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -103,7 +104,7 @@ exports.protect = async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    console.log(req.user);
+    //console.log(req.user);
     // roles ['admin', 'lead-guide']. role='user'
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({

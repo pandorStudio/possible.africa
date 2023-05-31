@@ -12,7 +12,9 @@ import {
   IconButton,
   useBreakpointValue,
   Divider,
+  Text,
 } from '@chakra-ui/react'
+import CustomLink from "./CustomLink";
 
 
 export const HomeHeader = () => {
@@ -52,12 +54,12 @@ export const HomeHeader = () => {
                   {name:'Opportunités de financement', link:"/opportunites", icons: <LawIcon/> },
                   {name:'Emplois', link:"/emplois", icons: <WorkIcon/> }].map((item) => (
 
-                    <Link  key={item.name} as={ReachLink} to={item.link}>
-                        <Flex flexDir="row">
+                    <CustomLink  key={item.name} as={ReachLink} to={item.link}>
+                        <Flex flexDir="row" gap={1}>
                             {item.icons}
-                            {item.name}
+                            <Text fontWeight="600">{item.name}</Text>
                         </Flex>
-                        </Link>
+                        </CustomLink>
                   ))}
 
 
