@@ -4,7 +4,11 @@ const organisationSchema = mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
 
-    avatar: {
+    logo: {
+      type: String,
+      default: "https://i.pravatar.cc/300",
+    },
+    couverture: {
       type: String,
       default: "https://i.pravatar.cc/300",
     },
