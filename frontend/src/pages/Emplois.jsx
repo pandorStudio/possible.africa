@@ -3,6 +3,7 @@ import {useGetJobsQuery} from "../features/api/apiSlice.js";
 import CardComponent from "../components/CardComponent.jsx";
 import parse from "html-react-parser";
 import Image from "../assets/hunters-race-MYbhN8KaaEc-unsplash.jpg";
+import { useState } from "react";
 
 function Emplois() {
 
@@ -15,21 +16,23 @@ function Emplois() {
         error,
     } = useGetJobsQuery();
     let content;
+    let isLoaded = true;
 
+//     const [isLoaded, setIsLoaded] = useState(false);
+
+// setInterval(() => {
+//   setIsLoaded(true)
+// }, 1000);
     if (isLoading || isFetching) {
-        content = <Container maxW="container.lg" p={0} >
-            <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="center">
-                <HStack w="full" alignItems="flex-start">
-                    {/* <Heading size="xl">Emplois</Heading> */}
-                </HStack>
-                <Spinner/>
-            </VStack>
-        </Container>;
-        return content
+        content = jobs.map(job => {
+            return (
+                <CardComponent key={job._id} title={job.title} description={job.description} imgUrl={Image} isLoaded={!isLoaded}/>
+            )
+        })
     } else if(isSuccess) {
         content = jobs.map(job => {
             return (
-                <CardComponent key={job._id} title={job.title} description={job.description} imgUrl={Image}/>
+                <CardComponent key={job._id} title={job.title} description={job.description} imgUrl={Image} isLoaded={isLoaded}/>
             )
         })
     } else if (isError) {

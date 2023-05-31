@@ -15,10 +15,12 @@ import Organisations from "./Organisations";
 
 function Home() {
   return (
-    <Container maxW="container.xl" p={0}> 
-    <HomeHeader/>    
-       <Organisations/>
+    <>
+    <Container maxW="full" p={0}> 
+        <HomeHeader/>    
+        <Organisations/>  
     </Container>
+    </>
   );
 }
 

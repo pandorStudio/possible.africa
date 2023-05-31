@@ -3,6 +3,7 @@ import {useGetPostCategoriesQuery, useGetPostsQuery} from "../features/api/apiSl
 import CardComponent from "../components/CardComponent.jsx";
 import parse from "html-react-parser";
 import Image from "../assets/hunters-race-MYbhN8KaaEc-unsplash.jpg";
+import { useState } from "react";
 
 
 function Interviews() {
@@ -19,21 +20,24 @@ function Interviews() {
     } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: [{field: "categorie", value: `${interviewCategories[0]?._id}`}]});
     let content;
 
-    if (isLoading || isFetching) {
+    let isLoaded = true;
 
-        content = <Container maxW="container.lg" p={0} >
-            <VStack w="full" h="full" py={10} px={10} spacing={10} alignItems="center">
-                <HStack w="full" alignItems="flex-start">
-                    {/* <Heading size="xl">Interviews</Heading> */}
-                </HStack>
-                <Spinner/>
-            </VStack>
-        </Container>;
-        return content
+//     const [isLoaded, setIsLoaded] = useState(false);
+
+// setInterval(() => {
+//   setIsLoaded(true)
+// }, 1000);
+
+    if (isLoading || isFetching) {
+        content = interviews.map(interview => {
+            return (
+                <CardComponent key={interview._id} title={interview.title} description={parse(interview.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={interview.image} isLoaded={!isLoaded}/>
+            )
+        })
     } else if(isSuccess) {
         content = interviews.map(interview => {
             return (
-                <CardComponent key={interview._id} title={interview.title} description={parse(interview.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={interview.image}/>
+                <CardComponent key={interview._id} title={interview.title} description={parse(interview.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={interview.image} isLoaded={isLoaded}/>
             )
         })
     } else if (isError) {

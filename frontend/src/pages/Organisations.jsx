@@ -16,19 +16,17 @@ function Organisations() {
     error,
   } = useGetOrganisationsQuery();
   let content;
-const [isLoaded, setIsLoaded] = useState(false);
+let isLoaded = true;
 
-setInterval(() => {
-  setIsLoaded(true)
-}, 2000);
 
   if (isLoading || isFetching) {
 
     content = organisations.map(organisation => {
       return (
-        <CardComponent key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded}/>
+        <CardComponent key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={!isLoaded}/>
       )
-    })  } else if(isSuccess) {
+    }) 
+   } else if(isSuccess) {
 
      content = organisations.map(organisation => {
       return (

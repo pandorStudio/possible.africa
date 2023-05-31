@@ -2,6 +2,7 @@ import {Container, Heading, HStack, Spinner, Text, VStack} from "@chakra-ui/reac
 import {useGetPostCategoriesQuery, useGetPostsQuery} from "../features/api/apiSlice.js";
 import CardComponent from "../components/CardComponent.jsx";
 import parse from "html-react-parser";
+import { useState } from "react";
 
 function Opportunites() {
 
@@ -18,21 +19,24 @@ function Opportunites() {
     } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: [{field: "categorie", value: `${interviewCategories[0]?._id}`}]});
     let content;
 
-    if (isLoading || isFetching) {
+    // const [isLoaded, setIsLoaded] = useState(false);
 
-        content = <Container maxW="container.lg" p={0} >
-            <VStack w="full" h="full" py={10} px={20} spacing={10} alignItems="center">
-                <HStack w="full" alignItems="flex-start">
-                    {/* <Heading size="xl">Opportunités de financement </Heading> */}
-                </HStack>
-                <Spinner/>
-            </VStack>
-        </Container>;
-        return content
+// setInterval(() => {
+//   setIsLoaded(true)
+// }, 1000);
+let isLoaded = true;
+
+
+    if (isLoading || isFetching) {
+        content = opportunities.map(opportunity => {
+            return (
+                <CardComponent key={opportunity._id} title={opportunity.title} description={parse(opportunity.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity.image} isLoaded={!isLoaded}/>
+            )
+        })
     } else if(isSuccess) {
         content = opportunities.map(opportunity => {
             return (
-                <CardComponent key={opportunity._id} title={opportunity.title} description={parse(opportunity.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity.image}/>
+                <CardComponent key={opportunity._id} title={opportunity.title} description={parse(opportunity.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity.image} isLoaded={isLoaded}/>
             )
         })
     } else if (isError) {
