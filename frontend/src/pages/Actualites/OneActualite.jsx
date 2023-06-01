@@ -15,6 +15,15 @@ import {useGetPostCategoriesQuery, useGetPostsQuery} from "../../features/api/ap
 import CardComponent from "../../components/CardComponent.jsx";
 import parse from "html-react-parser";
 import { useState } from "react";
+import FacebookCustomIcon from "../../components/icons/FacebookCustomIcon.jsx";
+import BookmarkSolidCustomIcon from "../../components/icons/BookmarkSolidCustomIcon.jsx";
+import BookmarkRegularCustomIcon from "../../components/icons/BookmarkRegularCustomIcon.jsx";
+import LinkedinCustomIcon from "../../components/icons/LinkedinCustomIcon.jsx";
+import LinkSolidCustomIcon from "../../components/icons/LinkSolidCustomIcon.jsx";
+import PlusSolidCustomIcon from "../../components/icons/PlusSolidCustomIcon.jsx";
+import TwitterCustomIcon from "../../components/icons/TwitterCustomIcon.jsx";
+import ArrowLeftSolidCustomIcon from "../../components/icons/ArrowLeftSolidCustomIcon.jsx";
+import OneElementPage from "../../components/OneElementPage.jsx";
 
 function OneActualite() {
     const {
@@ -28,6 +37,13 @@ function OneActualite() {
         isSuccess,
         error,
     } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: [{field: "categorie", value: `${interviewCategories[0]?._id}`}]});
+    const iconSx =
+        {
+            ':hover': {
+                cursor: 'pointer'
+            }
+        };
+
     let content;
     // const [isLoaded, setIsLoaded] = useState(false);
 
@@ -55,41 +71,7 @@ function OneActualite() {
     }
 
     return (
-        <Container maxW="container.lg" p={0}>
-            <Grid templateColumns="repeat(6, 1fr)" gap={20}>
-                <GridItem colSpan={4} p={0}>
-                    <Flex>
-                        <HStack w="full" h="full" py={5} px={10} spacing={5} alignItems="flex-start">
-                            <Box>
-                                <Image src="https://via.placeholder.com/65x65" borderRadius="100%" alt="image" />
-                            </Box>
-                            <Box w="full" bg="red.300">
-                                <Flex direction="column" justify="space-around">
-                                    <Heading size="sm">Jeremy Alexander</Heading>
-                                    <Flex justify="flex-start">
-                                        <Box fontSize={15} mr={4}>12 Avr</Box>
-                                        <Box fontSize={15}>5 min de lecture</Box>
-                                    </Flex>
-                                </Flex>
-                            </Box>
-                        </HStack>
-                    </Flex>
-                </GridItem>
-                <GridItem colSpan={2} p={5} borderLeft="1px solid white-gray" h="100vh">
-                    <Heading size="sm">Plus sur possible</Heading>
-                    <VStack spacing={5} mt={5}>
-                        <Box w="full" h="100px">
-                            <Flex direction="column" justify="space-around">
-                                <HStack spacing={5}>
-                                    <Image src="https://via.placeholder.com/30x30" borderRadius="100%" alt="image" />
-                                    <Text fontSize={15} color="gray.500" fontWeight="bold">Yann Marie</Text>
-                                </HStack>
-                            </Flex>
-                        </Box>
-                    </VStack>
-                </GridItem>
-            </Grid>
-        </Container>
+        <OneElementPage iconSx={iconSx}/>
     );
 }
 
