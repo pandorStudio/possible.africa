@@ -7,7 +7,7 @@ import {
 import { AxiosInstance } from "axios";
 // import axios, { AxiosRequestConfig } from "axios";
 import { stringify } from "query-string";
-import {TOKEN_KEY} from "../authProvider";
+import { TOKEN_KEY } from "../authProvider";
 
 // Error handling ...
 // export const axiosInstance = axios.create();
@@ -107,6 +107,7 @@ export const dataProvider = (
     const queryFilters = generateFilters(filters);
     axiosInstance.defaults.headers.common = {
       Authorization: `Bearer ${token}`,
+      "Access-Control-Allow-Origin": "*",
     };
 
     const { data, headers } = await axiosInstance.get(

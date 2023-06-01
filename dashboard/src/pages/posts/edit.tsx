@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { IResourceComponentsProps } from "@refinedev/core";
+import React, { useEffect, useState } from "react";
+import { IResourceComponentsProps, file2Base64, useApiUrl } from "@refinedev/core";
 import { Edit, useForm, getValueFromEvent, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, Upload } from "antd";
 import ReactQuill from "react-quill";
@@ -8,6 +8,12 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult } = useForm();
 
   const postsData = queryResult?.data?.data;
+
+  const API_URL = useApiUrl();
+
+  // useEffect(() => { 
+  //   console.log(postsData);
+  // }, [postsData]);
 
   const [editorContent, setEditorContent] = useState(postsData?.content);
 
@@ -56,13 +62,13 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-            label="Auteur"
-            name={["user", "_id"]}
-            rules={[
-              {
-                required: true,
-              },
-            ]}
+          label="Auteur"
+          name={["user", "_id"]}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
         >
           <Select {...userSelectProps} />
         </Form.Item>
@@ -74,18 +80,21 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
               value: value?.map((item) => {
                 return item._id;
               }),
-          };
+            };
           }}
-
           getValueFromEvent={(...args: any) => {
             const toBeReteurned = args[1].map((item: any) => {
-              return {_id: item.value, name: item.label};
-            })
+              return { _id: item.value, name: item.label };
+            });
             return toBeReteurned;
           }}
-      >
-        <Select mode="multiple" key={organisationsSelectProps.value?.toString()} {...organisationsSelectProps} />
-      </Form.Item>
+        >
+          <Select
+            mode="multiple"
+            key={organisationsSelectProps.value?.toString()}
+            {...organisationsSelectProps}
+          />
+        </Form.Item>
         <Form.Item
           label="Titre"
           name={["title"]}
@@ -148,20 +157,27 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Couverture">
           <Form.Item
             name="image"
-            getValueProps={(value) => ({
-              fileList: [{ url: value, name: value, uid: value }],
-            })}
-            getValueFromEvent={getValueFromEvent}
+            valuePropName="fileList"
+            getValueProps={(value: any[]) => {
+              return {
+                fileList: [{ url: value, name: value }],
+              };
+            }}
+            getValueFromEvent={(...args: any) => {
+              console.log(args);
+             }}
             noStyle
-            rules={[
-              {
-                required: true,
-              },
-            ]}
           >
             <Upload.Dragger
+              name="file"
+              action={`${API_URL}/upload/images`}
+              beforeUpload={(...args: any) => {
+                const file = args[0];
+                return {image: file}
+               }}
+              // Define the body of the request
               listType="picture"
-              beforeUpload={() => handleImgSubmit(event)}
+              maxCount={1}
             >
               <p className="ant-upload-text">Drag & drop a file in this area</p>
             </Upload.Dragger>

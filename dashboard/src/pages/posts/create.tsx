@@ -228,7 +228,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item> */}
-        <Form.Item label="Image">
+        <Form.Item label="Couverture">
           <Form.Item
             name="image"
             valuePropName="fileList"
