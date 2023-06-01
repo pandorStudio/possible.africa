@@ -46,13 +46,9 @@ let isLoaded = true;
 
   return (
       <Container maxW="container.lg" p={0}>
-
-
-<VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">              {/* <Heading size="xl">Agendas</Heading> */}
+            <VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">              {/* <Heading size="xl">Agendas</Heading> */}
               {content}
-          </VStack>
-
-
+            </VStack>
       </Container>
   )
 }

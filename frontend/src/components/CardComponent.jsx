@@ -1,11 +1,11 @@
 import { Card, CardBody, Heading, Stack, Image, Text, Skeleton, SkeletonText, Box } from '@chakra-ui/react'
+import {Link} from "react-router-dom";
 
 
 // eslint-disable-next-line react/prop-types
-function CardComponent({title, description, imgUrl, isLoaded}) {
+function CardComponent({title, description, imgUrl, isLoaded, link}) {
 
   return (
-   
       <Card
         direction={{ base: 'column', sm: 'row' }}
         overflow='hidden'
@@ -19,8 +19,8 @@ function CardComponent({title, description, imgUrl, isLoaded}) {
         alignItems="center"
       >
     <Skeleton isLoaded={isLoaded} >
-      
-      <Box  w={100} h="100px"> 
+
+      <Box  w={100} h="100px">
 
         <Image
           fit ='cover'
@@ -31,21 +31,22 @@ function CardComponent({title, description, imgUrl, isLoaded}) {
           borderRadius={8}
         />
       </Box>
-      </Skeleton> 
+      </Skeleton>
 
         <Stack>
           <CardBody>
 
-            <Heading paddingBottom={2} fontSize='xl' color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading>
+            {link ? (
+                <Link to={link}><Heading paddingBottom={2} fontSize='xl' color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading></Link>
+            ) : (<Heading paddingBottom={2} fontSize='xl' color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading>)}
 
             <Text noOfLines={[1,2]}>
               {description}
             </Text>
           </CardBody>
 
-        </Stack> 
-      </Card>
-  )
+        </Stack>
+      </Card>)
 }
 
 export default CardComponent;

@@ -3,16 +3,14 @@ import {Header} from "./components/Header";
 import Accueil from "./pages/Accueil";
 import Entrepreneurs from "./pages/Entrepreneurs";
 import TimeForAfrica from "./pages/TimeForAfrica";
-import Actualites from "./pages/Actualites";
+import Actualites from "./pages/Actualites/Actualites.jsx";
 import Interviews from "./pages/Interviews";
 import Agenda from "./pages/Agenda";
 import Opportunites from "./pages/Opportunites";
 import Emplois from "./pages/Emplois";
 import { HomeHeader } from "./components/HomeHeader";
 import Organisations from "./pages/Organisations";
-
-
-
+import OneActualite from "./pages/Actualites/OneActualite.jsx";
 
 function App() {
   return (
@@ -25,7 +23,10 @@ function App() {
                 <Route path='/timeforafrica' element={<TimeForAfrica />} />
                 <Route path="/" element={<HomeHeader />}>
                     <Route path='/organisations' element={<Organisations />} />
-                    <Route path='/actualites' element={<Actualites />} />
+                    <Route path='/actualites' >
+                        <Route index path='/actualites' element={<Actualites />} />
+                        <Route path='/actualites/:slug' element={<OneActualite />} />
+                    </Route>
                     <Route path='/interviews' element={<Interviews />} />
                     <Route path='/agenda' element={<Agenda />} />
                     <Route path='/opportunites' element={<Opportunites />} />

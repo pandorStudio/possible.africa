@@ -1,7 +1,8 @@
 import {Container, Heading, HStack, Spinner, Text, VStack} from "@chakra-ui/react"
-import {useGetPostCategoriesQuery, useGetPostsQuery} from "../features/api/apiSlice.js";
-import CardComponent from "../components/CardComponent.jsx";
+import {useGetPostCategoriesQuery, useGetPostsQuery} from "../../features/api/apiSlice.js";
+import CardComponent from "../../components/CardComponent.jsx";
 import parse from "html-react-parser";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 function Actualites() {
@@ -28,13 +29,18 @@ function Actualites() {
     if (isLoading || isFetching) {
         content = allNews.map(news => {
             return (
-                <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={!isLoaded}/>
+                <a key={news.id} href={"/actualites/:" + news.slug}>
+                <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={!isLoaded} link={`/actualites/${news.slug}`}/>
+                </a>
             )
         })
     } else if(isSuccess) {
         content = allNews.map(news => {
             return (
+
+                <a key={news.id} href={"/actualites/:" + news.slug}>
                 <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={isLoaded}/>
+                </a>
             )
         })
     } else if (isError) {
