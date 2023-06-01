@@ -67,7 +67,7 @@ function OneActualite() {
                                 <Flex direction="column" justify="space-around">
                                     <Heading size="sm">Jeremy Alexander</Heading>
                                     <Flex justify="flex-start">
-                                        <Box fontSize={15} mr={4}>12 Avr</Box>
+                                        <Box fontSize={15} mr={4}>12 Mai</Box>
                                         <Box fontSize={15}>5 min de lecture</Box>
                                     </Flex>
                                 </Flex>
