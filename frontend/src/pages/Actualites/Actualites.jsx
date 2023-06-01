@@ -29,13 +29,13 @@ function Actualites() {
     if (isLoading || isFetching) {
         content = allNews.map(news => {
             return (
-                <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={!isLoaded} link={"/actualites/:" + news.slug}/>
+                <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={!isLoaded} link={"/actualites/" + news.slug}/>
             )
         })
     } else if(isSuccess) {
         content = allNews.map(news => {
             return (
-                <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={isLoaded} link={"/actualites/:" + news.slug}/>
+                <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={isLoaded} link={"/actualites/" + news.slug}/>
             )
         })
     } else if (isError) {
