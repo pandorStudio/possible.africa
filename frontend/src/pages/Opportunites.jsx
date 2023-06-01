@@ -30,13 +30,13 @@ let isLoaded = true;
     if (isLoading || isFetching) {
         content = opportunities.map(opportunity => {
             return (
-                <CardComponent key={opportunity._id} title={opportunity.title} description={parse(opportunity.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity.image} isLoaded={!isLoaded}/>
+                <CardComponent key={opportunity._id} title={opportunity.title} description={parse(opportunity.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity.image} isLoaded={!isLoaded} link={"/opportunites/:" + opportunity.slug}/>
             )
         })
     } else if(isSuccess) {
         content = opportunities.map(opportunity => {
             return (
-                <CardComponent key={opportunity._id} title={opportunity.title} description={parse(opportunity.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity.image} isLoaded={isLoaded}/>
+                <CardComponent key={opportunity._id} title={opportunity.title} description={parse(opportunity.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity.image} isLoaded={isLoaded} link={"/opportunites/:" + opportunity.slug}/>
             )
         })
     } else if (isError) {
