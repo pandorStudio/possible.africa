@@ -31,26 +31,10 @@ export const JobCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Description"
-          name={["description"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Organisation"
-          name={["organisation", "_id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Organisation" name={["organisation", "_id"]}>
           <Select
             {...organisationSelectProps}
             defaultValue={{ value: "", label: "Sélectionner" }}
@@ -58,15 +42,7 @@ export const JobCreate: React.FC<IResourceComponentsProps> = () => {
             <option value="">Selectionner</option>{" "}
           </Select>
         </Form.Item>
-        <Form.Item
-          label="Type"
-          name={["type"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Type" name={["type"]}>
           <Select defaultValue="">
             <Option value="">Sélectionner</Option>
             <Option value="CDI">CDI</Option>
@@ -76,25 +52,12 @@ export const JobCreate: React.FC<IResourceComponentsProps> = () => {
             <Option value="Freelance">Freelance</Option>
           </Select>
         </Form.Item>
-        <Form.Item
-          label="Salaire"
-          name={["salary"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Salaire" name={["salary"]}>
           <Input type="number" />
         </Form.Item>
         <Form.Item
           label="Date de début"
           name={["beginning_date"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
           getValueProps={(value) => ({
             value: value ? dayjs(value) : undefined,
           })}
@@ -104,37 +67,16 @@ export const JobCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item
           label="Date de fin"
           name={["ending_date"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
           getValueProps={(value) => ({
             value: value ? dayjs(value) : undefined,
           })}
         >
           <DatePicker />
         </Form.Item>
-        <Form.Item
-          label="Emplacement"
-          name={["location"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Emplacement" name={["location"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Compétences"
-          name={["skills"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Compétences" name={["skills"]}>
           <Input />
         </Form.Item>
       </Form>

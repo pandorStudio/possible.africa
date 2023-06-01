@@ -17,69 +17,24 @@ export const BlogPostEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
-        <Form.Item
-          label="Id"
-          name={["id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Id" name={["id"]}>
           <Input readOnly disabled />
         </Form.Item>
-        <Form.Item
-          label="Title"
-          name={["title"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Title" name={["title"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Content"
-          name="content"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Content" name="content">
           <Input.TextArea rows={5} />
         </Form.Item>
-        <Form.Item
-          label="Category"
-          name={["category", "id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Category" name={["category", "id"]}>
           <Select {...categorySelectProps} />
         </Form.Item>
-        <Form.Item
-          label="Status"
-          name={["status"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Status" name={["status"]}>
           <Input />
         </Form.Item>
         <Form.Item
           label="Created At"
           name={["createdAt"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
           getValueProps={(value) => ({
             value: value ? dayjs(value) : undefined,
           })}

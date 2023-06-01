@@ -14,24 +14,17 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item
           label="Prénom.s"
           name={["firstname"]}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="N. Famille"
           name={["lastname"]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="N. Utilisateur"
-          name={["username"]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Email"
-          name={["email"]}
           rules={[
             {
               required: true,
@@ -40,28 +33,18 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Mot de passe"
-          name={["password"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="N. Utilisateur" name={["username"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Email" name={["email"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Mot de passe" name={["password"]}>
           <Input.Password />
         </Form.Item>
 
         {/* Input for confirmPassword it must be the same as password input */}
-        <Form.Item
-          label="Confirmer le mot de passe"
-          name={["confirmPassword"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Confirmer le mot de passe" name={["confirmPassword"]}>
           <Input.Password />
         </Form.Item>
         <Form.Item label="Description" name={["description"]}>
@@ -74,15 +57,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
             <Option value="user">Utilisateur</Option>
           </Select>
         </Form.Item>
-        <Form.Item
-          label="Genre"
-          name={["gender"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Genre" name={["gender"]}>
           <Select defaultValue="f" style={{ width: 120 }}>
             <Option value="f">Féminin</Option>
             <Option value="m">Masculin</Option>

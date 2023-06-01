@@ -39,63 +39,23 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Type"
-          name={["type", "_id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Type" name={["type", "_id"]}>
           <Select {...organisationTypeSelectProps} />
         </Form.Item>
-        <Form.Item
-          label="Contributeur"
-          name={["contributeur", "_id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Contributeur" name={["contributeur", "_id"]}>
           <Select {...contributorSelectProps} />
         </Form.Item>
 
-        <Form.Item
-          label="Contact"
-          name={["owner"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Contact" name={["owner"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Email"
-          name={["email"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Email" name={["email"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Telephone"
-          name={["telephone"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Telephone" name={["telephone"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Site Web" name={["site_web"]}>

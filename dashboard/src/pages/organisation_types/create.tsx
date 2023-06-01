@@ -22,15 +22,7 @@ export const OrganisationTypeCreate: React.FC<
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Slug"
-          name={["slug"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Slug" name={["slug"]}>
           <Input />
         </Form.Item>
       </Form>

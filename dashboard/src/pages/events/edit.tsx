@@ -33,15 +33,7 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
-        <Form.Item
-          label="Organisation"
-          name={"organisation"}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Organisation" name={"organisation"}>
           <Select {...organisationSelectProps} />
         </Form.Item>
         <Form.Item
@@ -58,11 +50,6 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item
           label="Date de début"
           name={["beginningDate"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
           getValueProps={(value) => ({
             value: value ? dayjs(value) : undefined,
           })}
@@ -72,126 +59,44 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item
           label="Date de fin"
           name={["endingDate"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
           getValueProps={(value) => ({
             value: value ? dayjs(value) : undefined,
           })}
         >
           <DatePicker />
         </Form.Item>
-        <Form.Item
-          label="Type d'événement"
-          name={"event_type"}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Type d'événement" name={"event_type"}>
           <Select {...eventTypeSelectProps} />
         </Form.Item>
-        <Form.Item
-          label="Format"
-          name={["format"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Format" name={["format"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Pays cible"
-          name={["target_countriy"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Pays cible" name={["target_countriy"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Secteur d'activité"
-          name={["activity_area"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Secteur d'activité" name={["activity_area"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Description"
-          name={["description"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Lien d'inscription"
-          name={["registration_link"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Lien d'inscription" name={["registration_link"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Emplacement"
-          name={["location"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Emplacement" name={["location"]}>
           <Input />
         </Form.Item>
         <Form.Item
           label="Est récurrent"
           valuePropName="checked"
           name={["is_recurrent"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
         >
           <Checkbox>Is Recurrent</Checkbox>
         </Form.Item>
-        <Form.Item
-          label="Frequence"
-          name={["frequence"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Frequence" name={["frequence"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Contributeur"
-          name={"user"}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Contributeur" name={"user"}>
           <Select {...userSelectProps} />
         </Form.Item>
       </Form>

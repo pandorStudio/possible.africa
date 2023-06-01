@@ -44,47 +44,18 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Select {...organisationSelectProps} />
         </Form.Item>
-        <Form.Item
-          label="Contributeur"
-          name={"user"}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Contributeur" name={"user"}>
           <Select {...userSelectProps} />
         </Form.Item>
-        <Form.Item
-          label="Type d'opportunité"
-          name={"opportunity_type"}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Type d'opportunité" name={"opportunity_type"}>
           <Select {...opportunityTypeSelectProps} />
         </Form.Item>
-        <Form.Item
-          label="Titre"
-          name={["title"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Titre" name={["title"]}>
           <Input />
         </Form.Item>
         <Form.Item
           label="Date de début"
           name={["beginning_date"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
           getValueProps={(value) => ({
             value: value ? dayjs(value) : undefined,
           })}
@@ -94,126 +65,44 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item
           label="Date de fin"
           name={["ending_date"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
           getValueProps={(value) => ({
             value: value ? dayjs(value) : undefined,
           })}
         >
           <DatePicker />
         </Form.Item>
-        <Form.Item
-          label="Acteur Cible"
-          name={["target_people"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Acteur Cible" name={["target_people"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Pays Cible"
-          name={["target_country"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Pays Cible" name={["target_country"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Secteur d'activité"
-          name={["activity_area"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Secteur d'activité" name={["activity_area"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Description"
-          name={["description"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Eligibilité"
-          name={["eligibility"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Eligibilité" name={["eligibility"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Processus"
-          name={["processus"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Processus" name={["processus"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Bénéfices"
-          name={["beneficies"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Bénéfices" name={["beneficies"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Lien d'inscription"
-          name={["registration_link"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Lien d'inscription" name={["registration_link"]}>
           <Input />
         </Form.Item>
         <Form.Item
           label="Est récurrent"
           valuePropName="checked"
           name={["isRecurrent"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
         >
           <Checkbox>Est récurent</Checkbox>
         </Form.Item>
-        <Form.Item
-          label="Fréquemce"
-          name={["frequency"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Fréquemce" name={["frequency"]}>
           <Input />
         </Form.Item>
       </Form>

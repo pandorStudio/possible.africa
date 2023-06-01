@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const organisationSchema = mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
-
     logo: {
       type: String,
       default: "https://i.pravatar.cc/300",

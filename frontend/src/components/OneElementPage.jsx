@@ -6,9 +6,12 @@ import LinkedinCustomIcon from "./icons/LinkedinCustomIcon.jsx";
 import LinkSolidCustomIcon from "./icons/LinkSolidCustomIcon.jsx";
 import BookmarkRegularCustomIcon from "./icons/BookmarkRegularCustomIcon.jsx";
 
-function OneElementPage({iconSx, backUrl}) {
+function OneElementPage({iconSx, backUrl, news}) {
 
-
+  const date = new Date(news?.createdAt);
+  const jour = date.getDate();
+  const mois = date.toLocaleString('default', { month: 'long' });
+  
   return (
       <Container maxW="container.lg" p={0}>
         <Grid templateColumns="repeat(6, 1fr)" gap={20}>
@@ -16,14 +19,14 @@ function OneElementPage({iconSx, backUrl}) {
             <Flex ml={10}><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl} mr="1"/></Flex>
             <Flex>
               <HStack w="full" h="full" py={5} px={10} spacing={5} alignItems="flex-start">
-                <Box>
-                  <Image src="https://via.placeholder.com/100x100" borderRadius="100%" alt="image" />
+                <Box width={100} height={100} bg="red.600" overflow="hidden">
+                  <Image src={news?.user?.avatar} maxH="100px" boxSize="100px" objectFit="cover" borderRadius="full" alt="image" />
                 </Box>
                 <Box w="full">
                   <Flex direction="column" justify="space-around">
-                    <Heading size="sm">Jeremy Alexander</Heading>
+                  <Heading size="sm">{news?.user?.firstname} {news?.user?.lastname}</Heading>
                     <Flex justify="flex-start" color="gray.500">
-                      <Box fontSize={15} mr={4}>12 Avr</Box>
+                      <Box fontSize={15} mr={4}>{jour} {mois}</Box>
                       <Box fontSize={15}>5 min de lecture</Box>
                     </Flex>
                   </Flex>

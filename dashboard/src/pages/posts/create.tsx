@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { IResourceComponentsProps, file2Base64, useApiUrl } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  file2Base64,
+  useApiUrl,
+} from "@refinedev/core";
 import { Create, useForm, getValueFromEvent, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, Upload } from "antd";
 // import BasicEditor from "../../components/Editors/basic";
@@ -16,6 +20,26 @@ const API_URL =
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
 
+export async function imageUploadHandler(image: any) {
+  // build form data
+  const bf = await fetch(image);
+  const blob = await bf.blob();
+  const file = new File([blob], "image." + blob.type.split("/")[1], {
+    type: blob.type,
+  });
+  const data = new FormData();
+  data.append("image", file);
+
+  // send post request
+  const response = await axiosInstance.post(`${API_URL}/upload/images`, data);
+
+  // return the image url
+  const imageUrl = response.data.url;
+  // const imageUrl = `${API_URL}/uploads/images/${filename}`;
+
+  return imageUrl;
+}
+
 export const PostCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
   const [editorContent, setEditorContent] = useState("");
@@ -24,26 +48,6 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
   useEffect(() => {
     //console.log(editorContent);
   }, [editorContent]);
-
-  async function imageUploadHandler(image: any) {
-    // build form data
-    const bf = await fetch(image);
-    const blob = await bf.blob();
-    const file = new File([blob], "image." + blob.type.split("/")[1], {
-      type: blob.type,
-    });
-    const data = new FormData();
-    data.append("image", file);
-
-    // send post request
-    const response = await axiosInstance.post(`${API_URL}/upload/images`, data);
-
-    // return the image url
-    const imageUrl = response.data.url;
-    // const imageUrl = `${API_URL}/uploads/images/${filename}`;
-
-    return imageUrl;
-  }
 
   const modules = {
     toolbar: {
@@ -77,7 +81,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
   const { selectProps: organisationsSelectProps } = useSelect({
     resource: "organisations",
     optionValue: "_id",
-    optionLabel: "name"
+    optionLabel: "name",
   });
 
   async function onSubmitCapture(values: any) {
@@ -134,31 +138,23 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
       // intercept onSubmit to add the editor content to the form data
     >
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
-        <Form.Item
-            label="Auteur"
-            name={["user"]}
-            rules={[
-              {
-                required: true,
-              },
-            ]}
-        >
+        <Form.Item label="Auteur" name={["user"]}>
           <Select {...userSelectProps} />
         </Form.Item>
         <Form.Item
-            label="Organisations"
-            name={["organisations"]}
-            getValueProps={(value: any[]) => {
-              return {
-                value: value?.map((item) => item),
+          label="Organisations"
+          name={["organisations"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
             };
-            }}
-            getValueFromEvent={(...args: any) => {
-              const toBeReturned = args[1].map((item: any) => {
-                return item.value;
-              })
-              return toBeReturned;
-            }}
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
         >
           <Select mode="multiple" {...organisationsSelectProps} />
         </Form.Item>
@@ -179,11 +175,6 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item
           label="Contenu"
           name={["content"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
           className="advancedEditor"
           style={{
             height: "600px",
@@ -206,25 +197,13 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             border: "1px solid #d9d9d9",
           }} /> */}
         </Form.Item>
-        <Form.Item
-          label="Slug"
-          name={["slug"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Slug" name={["slug"]}>
           <Input />
         </Form.Item>
         {/* <Form.Item
           label="Contenu"
           name={["content"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
+           
         >
           <Input />
         </Form.Item> */}
@@ -246,15 +225,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             </Upload.Dragger>
           </Form.Item>
         </Form.Item>
-        <Form.Item
-          label="Categorie"
-          name={["categorie"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Categorie" name={["categorie"]}>
           <Select {...categorieSelectProps} />
         </Form.Item>
       </Form>

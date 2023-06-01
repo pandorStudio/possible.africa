@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { IResourceComponentsProps, file2Base64, useApiUrl } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  file2Base64,
+  useApiUrl,
+} from "@refinedev/core";
 import { Edit, useForm, getValueFromEvent, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, Upload } from "antd";
 import ReactQuill from "react-quill";
@@ -11,7 +15,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
 
   const API_URL = useApiUrl();
 
-  // useEffect(() => { 
+  // useEffect(() => {
   //   console.log(postsData);
   // }, [postsData]);
 
@@ -61,15 +65,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
-        <Form.Item
-          label="Auteur"
-          name={["user", "_id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Auteur" name={["user", "_id"]}>
           <Select {...userSelectProps} />
         </Form.Item>
         <Form.Item
@@ -106,36 +102,19 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Slug"
-          name={["slug"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Slug" name={["slug"]}>
           <Input />
         </Form.Item>
         {/* <Form.Item
           label="Contenu"
           name={["content"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
+           
         >
           <Input />
         </Form.Item> */}
         <Form.Item
           label="Contenu"
           name={["content"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
           className="advancedEditor"
           style={{
             height: "600px",
@@ -165,16 +144,16 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
             }}
             getValueFromEvent={(...args: any) => {
               console.log(args);
-             }}
+            }}
             noStyle
           >
             <Upload.Dragger
               name="file"
               action={`${API_URL}/upload/images`}
-              beforeUpload={(...args: any) => {
-                const file = args[0];
-                return {image: file}
-               }}
+              // beforeUpload={(...args: any) => {
+              //   const file = args[0];
+              //   return { image: file };
+              // }}
               // Define the body of the request
               listType="picture"
               maxCount={1}
@@ -183,15 +162,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
             </Upload.Dragger>
           </Form.Item>
         </Form.Item>
-        <Form.Item
-          label="Categorie"
-          name={["categorie", "_id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Categorie" name={["categorie", "_id"]}>
           <Select {...categorieSelectProps} />
         </Form.Item>
       </Form>

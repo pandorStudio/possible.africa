@@ -43,37 +43,13 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Type"
-          name={["type", "_id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Type" name={["type", "_id"]}>
           <Select {...typeSelectProps} />
         </Form.Item>
-        <Form.Item
-          label="Contributeur"
-          name={["contributeur", "_id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Contributeur" name={["contributeur", "_id"]}>
           <Select {...contributorSelectProps} />
         </Form.Item>
-        <Form.Item
-          label="Contact"
-          name={["owner"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Contact" name={["owner"]}>
           <Select>
             <Select.Option value={true}>Oui</Select.Option>
             <Select.Option value={false}>Non</Select.Option>
@@ -83,26 +59,10 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Email"
-          name={["email"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Email" name={["email"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Telephone"
-          name={["telephone"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Telephone" name={["telephone"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Site Web" name={["site_web"]}>
