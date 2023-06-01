@@ -50,7 +50,7 @@ const jobSchema = new mongoose.Schema(
 jobSchema.pre(/^find/, function (next) {
   this.populate({
     path: "organisation",
-    select: "name type contributeur",
+    select: "name type contributeur logo",
   });
   next();
 });

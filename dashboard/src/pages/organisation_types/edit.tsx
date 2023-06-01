@@ -22,26 +22,10 @@ export const OrganisationTypeEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Slug"
-          name={["slug"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Slug" name={["slug"]}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Id"
-          name={["id"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
+        <Form.Item label="Id" name={["id"]}>
           <Input readOnly disabled />
         </Form.Item>
       </Form>

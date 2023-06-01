@@ -56,7 +56,7 @@ const eventSchema = mongoose.Schema(
 eventSchema.pre("find", function (next) {
   this.populate({
     path: "organisation",
-    select: "name type",
+    select: "name type logo",
   });
   next();
 });
@@ -65,7 +65,7 @@ eventSchema.pre("find", function (next) {
 eventSchema.pre("find", function (next) {
   this.populate({
     path: "user",
-    select: "username firstname lastname email phone role",
+    select: "username firstname lastname email phone role avatar",
   });
   next();
 });
