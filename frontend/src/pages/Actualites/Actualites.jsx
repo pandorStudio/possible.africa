@@ -54,6 +54,7 @@ function Actualites() {
 
 <VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">
     {/* <Heading size="xl">Actualités</Heading> */}
+    <Heading>Toutes les actualites</Heading>
               {content}
           </VStack>
 

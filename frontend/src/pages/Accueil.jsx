@@ -1,6 +1,4 @@
-// import "./Home.css";
-import { Link as ReachLink } from "react-router-dom";
-import Interviews from "./Interviews";
+
 import { Container } from "@chakra-ui/react";
 
 import { HomeHeader } from "../components/HomeHeader";
