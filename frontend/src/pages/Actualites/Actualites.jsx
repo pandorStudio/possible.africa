@@ -29,18 +29,13 @@ function Actualites() {
     if (isLoading || isFetching) {
         content = allNews.map(news => {
             return (
-                <a key={news.id} href={"/actualites/:" + news.slug}>
-                <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={!isLoaded} link={`/actualites/${news.slug}`}/>
-                </a>
+                <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={!isLoaded} link={"/actualites/:" + news.slug}/>
             )
         })
     } else if(isSuccess) {
         content = allNews.map(news => {
             return (
-
-                <a key={news.id} href={"/actualites/:" + news.slug}>
-                <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={isLoaded}/>
-                </a>
+                <CardComponent key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={isLoaded} link={"/actualites/:" + news.slug}/>
             )
         })
     } else if (isError) {
@@ -54,7 +49,7 @@ function Actualites() {
 
 <VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">
     {/* <Heading size="xl">Actualités</Heading> */}
-    <Heading>Toutes les actualites</Heading>
+    {/* <Heading>Toutes les actualites</Heading> */}
               {content}
           </VStack>
 

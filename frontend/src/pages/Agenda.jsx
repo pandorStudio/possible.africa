@@ -30,13 +30,13 @@ let isLoaded = true;
     if (isLoading || isFetching) {
         content = diaries.map(diary => {
             return (
-                <CardComponent key={diary._id} title={diary.title} description={parse(diary.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={diary.image} isLoaded={!isLoaded}/>
+                <CardComponent key={diary._id} title={diary.title} description={parse(diary.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={diary.image} isLoaded={!isLoaded} link={"/agenda/:" + diary.slug}/>
             )
         })
     } else if(isSuccess) {
         content = diaries.map(diary => {
             return (
-                <CardComponent key={diary._id} title={diary.title} description={parse(diary.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={diary.image} isLoaded={isLoaded}/>
+                <CardComponent key={diary._id} title={diary.title} description={parse(diary.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={diary.image} isLoaded={isLoaded} link={"/agenda/:" + diary.slug}/>
             )
         })
     } else if (isError) {
