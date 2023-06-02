@@ -6,8 +6,7 @@ export const AppIcon: React.FC<{ page?: string }> = ({ page }) => {
   return (
     <Row
       style={{
-        position: "absolute",
-        top: "10px",
+        margin: "10px",
       }}
     >
       <Col>

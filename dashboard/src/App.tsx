@@ -76,6 +76,8 @@ import { PostCategoryShow } from "./pages/post_categories/show";
 import { PostCategoryCreate } from "./pages/post_categories/create";
 import {GroupOutlined, UserOutlined} from "@ant-design/icons";
 import CustomIconJob from "./components/CustomComponents/Icons/CustomIconJob";
+import { ThemedTitleV2 } from "./components/themedLayout/title";
+import { ThemedSiderV2 } from "./components/themedLayout/sider";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -147,14 +149,14 @@ function App() {
                 meta: {
                   canDelete: true,
                   label: "Emplois",
-                  icon: <CustomIconJob />
+                  icon: <CustomIconJob />,
                 },
               },
               {
                 name: "Opportunité",
-                meta:{
+                meta: {
                   label: "Opportunités",
-                }
+                },
               },
               {
                 name: "opportunity_types",
@@ -182,9 +184,9 @@ function App() {
               },
               {
                 name: "Evenement",
-                meta:{
+                meta: {
                   label: "Section Evènements",
-                }
+                },
               },
               {
                 name: "event_types",
@@ -214,7 +216,7 @@ function App() {
                 name: "Section Posts",
                 meta: {
                   label: "Section Posts",
-                }
+                },
               },
               {
                 name: "post_categories",
@@ -263,7 +265,13 @@ function App() {
               <Route
                 element={
                   <Authenticated fallback={<CatchAllNavigate to="/login" />}>
-                    <ThemedLayoutV2 Header={() => <Header isSticky={true} />}>
+                    <ThemedLayoutV2
+                      Sider={() => (
+                        <ThemedSiderV2 Title={() => <ThemedTitleV2 collapsed />} />
+                      )}
+                      Title={() => <ThemedTitleV2 collapsed />}
+                      Header={() => <Header isSticky={true} />}
+                    >
                       <Outlet />
                     </ThemedLayoutV2>
                   </Authenticated>
@@ -343,7 +351,10 @@ function App() {
                 }
               >
                 <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<RegisterPage title={<img  />} />} />
+                <Route
+                  path="/register"
+                  element={<RegisterPage title={<img />} />}
+                />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
               </Route>
             </Routes>

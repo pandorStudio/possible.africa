@@ -6,6 +6,7 @@ import {
   EditButton,
   ShowButton,
   EmailField,
+  ImageField,
 } from "@refinedev/antd";
 import { Table, Space } from "antd";
 import Link from "antd/es/typography/Link";
@@ -19,6 +20,14 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
     <List>
       <Table {...tableProps} rowKey="_id">
         <Table.Column dataIndex="username" title="N. Utilisateur" />
+
+        <Table.Column
+          dataIndex="avatar"
+          title="Photo de profil"
+          render={(value: any) => {
+            return <ImageField style={{ maxWidth: "100px" }} value={value} />;
+          }}
+        />
         <Table.Column
           dataIndex={["email"]}
           title="Email"

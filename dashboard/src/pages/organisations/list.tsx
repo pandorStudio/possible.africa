@@ -18,6 +18,7 @@ import {
   CreateButton,
   DeleteButton,
   RefreshButton,
+  ImageField,
 } from "@refinedev/antd";
 import { Table, Space, Button, Input } from "antd";
 import { IOrganisation, IPost, IPostFile } from "../../interfaces";
@@ -112,7 +113,21 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
       }}
     >
       <Table {...tableProps} rowKey="id">
-        <Table.Column dataIndex="name" title="Nom de l'organisation" />
+        <Table.Column
+          width="10%"
+          dataIndex="name"
+          title="Nom de l'organisation"
+        />
+        <Table.Column
+          width="10%"
+          dataIndex="logo"
+          title="Logo de l'organisation"
+          render={(value: any) => {
+            return (
+              <ImageField style={{ maxWidth: "100px" }} value={value} />
+            );
+          }}
+        />
         <Table.Column dataIndex={["type", "name"]} title="Type" />
         <Table.Column
           dataIndex={["contributeur", "username"]}
