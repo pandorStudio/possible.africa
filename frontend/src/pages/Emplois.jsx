@@ -23,11 +23,7 @@ function Emplois() {
 //   setIsLoaded(true)
 // }, 1000);
     if (isLoading || isFetching) {
-        content = jobs.map(job => {
-            return (
-                <CardComponent postType="Emplois" key={job._id} title={job.title} description={job.description} imgUrl={job?.organisation?.logo} isLoaded={!isLoaded} link={"/emplois/" + job.title.toLowerCase().replaceAll(" ","-")}/>
-            )
-        })
+        return <VStack><Spinner/></VStack>
     } else if(isSuccess) {
         content = jobs.map(job => {
             return (

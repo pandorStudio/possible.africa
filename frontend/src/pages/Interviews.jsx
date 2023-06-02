@@ -29,11 +29,7 @@ function Interviews() {
 // }, 1000);
 
     if (isLoading || isFetching) {
-        content = interviews.map(interview => {
-            return (
-                <CardComponent postType="Interview" key={interview._id} title={interview.title} description={parse(interview.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={interview.image} isLoaded={!isLoaded} link={"/interviews/" + interview.slug}/>
-            )
-        })
+        return <VStack><Spinner/></VStack>
     } else if(isSuccess) {
         content = interviews.map(interview => {
             return (

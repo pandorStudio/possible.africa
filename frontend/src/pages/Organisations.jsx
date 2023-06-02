@@ -21,11 +21,7 @@ let isLoaded = true;
 
   if (isLoading || isFetching) {
 
-    content = organisations.map(organisation => {
-      return (
-        <CardComponent postType="Organisation" key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={!isLoaded} link={"/organisations/" + organisation.name.toLowerCase().replaceAll(" ","-")}/>
-      )
-    }) 
+   return <VStack><Spinner/></VStack>
    } else if(isSuccess) {
 
      content = organisations.map(organisation => {

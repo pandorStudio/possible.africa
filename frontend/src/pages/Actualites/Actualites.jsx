@@ -1,4 +1,4 @@
-import {Container, VStack} from "@chakra-ui/react"
+import {Container, Spinner, VStack} from "@chakra-ui/react"
 import {useGetPostCategoriesQuery, useGetPostsQuery} from "../../features/api/apiSlice.js";
 import CardComponent from "../../components/CardComponent.jsx";
 import parse from "html-react-parser";
@@ -25,11 +25,7 @@ function Actualites() {
     let isLoaded = true;
 
     if (isLoading || isFetching) {
-        content = allNews.map(news => {
-            return (
-                <CardComponent postType="Actualités" key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={!isLoaded} link={"/actualites/" + news.slug}/>
-            )
-        })
+        return <VStack><Spinner/></VStack>
     } else if(isSuccess) {
         content = allNews.map(news => {
             return (

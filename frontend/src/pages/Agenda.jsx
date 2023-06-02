@@ -24,11 +24,7 @@ function Agenda() {
 let isLoaded = true;
 
     if (isLoading || isFetching) {
-        content = events.map(event => {
-            return (
-                <CardComponent postType="Agenda" key={event._id} title={event.title} description={parse(event.description.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={event?.organisation?.logo} isLoaded={!isLoaded} link={"/agenda/" + event.title.toLowerCase().replaceAll(" ","-")}/>
-            )
-        })
+        return <VStack><Spinner/></VStack>
     } else if(isSuccess) {
         content = events.map(event => {
             return (
