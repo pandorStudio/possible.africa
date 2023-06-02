@@ -72,6 +72,11 @@ export const apiSlice = createApi({
       transformResponse: (res) => res.sort((a, b) => b.id - a.id),
       providesTags: ["Organisations"],
     }),
+
+    getOrganisation: builder.query({
+      query: organisationId => `/organisations/${organisationId}`
+    }),
+
     addOrganisation: builder.mutation({
       query: (post) => ({
         url: "/organisations",
@@ -194,6 +199,7 @@ export const {
   useAddPostMutation,
   useDeletePostMutation,
   useUpdatePostMutation,
+  useGetOrganisationQuery,
   useGetOrganisationsQuery,
   useAddOrganisationMutation,
   useDeleteOrganisationMutation,

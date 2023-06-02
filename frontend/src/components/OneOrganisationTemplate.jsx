@@ -39,13 +39,13 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
 
   return (
     <Container maxW="container.lg" p={0}>
-    <Flex h="100vh" py={0}>
+    <Flex py={0}>
         <VStack w="75%" h="full" p={10} spacing={10} alignItems="flex-start">
         {/* <Flex><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl}/></Flex> */}
        <Flex direction="column" gap={3}>
        <Badge display="inline" maxW={20} textAlign="center" colorScheme="red" p={2} borderRadius={50} marginBottom={3}>{organisations?.type?.name}</Badge>
        <Box minW="100%" overflow="hidden">
-            <Image src={organisations?.couvertur} minW="100%" fit="cover" alt="image" fallbackSrc='/placeholder_org_couverture.jpeg' borderStyle="solid" borderWidth="1px" borderColor="gray.100" />
+            <Image src={organisations?.couverture} minW="100%" fit="cover" alt="image" fallbackSrc='/placeholder_org_couverture.jpeg' borderStyle="solid" borderWidth="1px" borderColor="gray.100" />
         </Box>
         <Heading fontSize="4xl">{organisations?.name}</Heading>
         
@@ -57,7 +57,7 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
                 <HStack alignItems="center">
               
                   <Box width="80px" overflow="hidden" borderRadius="full">
-                    <Image src={organisations?.logo} w="100%" fit="cover" borderRadius="full" alt="image" fallbackSrc='/placeholder_org.jpeg' />
+                    <Image src={organisations?.contributeur?.avatar} w="100%" fit="cover" borderRadius="full" alt="image" fallbackSrc='/placeholder_org.jpeg' />
                   </Box>
                 <Box w="full">
                   <Flex direction="column" justify="space-around"  gap={1}>

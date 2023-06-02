@@ -42,7 +42,7 @@ export const HomeHeader = () => {
           
             
             {isDesktop ? (
-              <Flex justify="center" gap="5">
+              <Flex justify="center" gap="8">
 
                   {[{name:'Organisations', link:"/organisations", icons: <OrganisationsIcon/> },
                   {name:'Podcast/Interview', link:"/interviews", icons: <PodcastIcon/> },
