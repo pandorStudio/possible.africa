@@ -25,7 +25,7 @@ let isLoaded = true;
 
      content = organisations.map(organisation => {
       return (
-        <CardComponent postType="Organisation" key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded} link={"/organisations/" + organisation.id}/>
+        <CardComponent postType="Organisation" key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded} link={"/organisations/" + organisation.id} type={organisation?.type?.name}/>
       )
     })
   } else if (isError) {
