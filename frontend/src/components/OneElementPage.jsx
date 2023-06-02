@@ -1,4 +1,4 @@
-import {Badge, Box, Container, Flex, Grid, GridItem, Heading, HStack, Image, Link, Text, VStack} from "@chakra-ui/react"
+import {Badge, Box, Container, Flex, Grid, GridItem, Heading, HStack, Image, Link, Text, Tooltip, VStack} from "@chakra-ui/react"
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
 import TwitterCustomIcon from "./icons/TwitterCustomIcon.jsx";
 import FacebookCustomIcon from "./icons/FacebookCustomIcon.jsx";
@@ -6,6 +6,7 @@ import LinkedinCustomIcon from "./icons/LinkedinCustomIcon.jsx";
 import LinkSolidCustomIcon from "./icons/LinkSolidCustomIcon.jsx";
 import BookmarkRegularCustomIcon from "./icons/BookmarkRegularCustomIcon.jsx";
 import parse from "html-react-parser";
+import { useState } from "react";
 
 
 function OneElementPage({iconSx, backUrl, news}) {
@@ -24,8 +25,26 @@ function OneElementPage({iconSx, backUrl, news}) {
     return readingTimeMinutes;
   }
   const content = news?.content && parse(news?.content.replace(/\\n/g, "<br />"))
+  const [showTooltip, setShowTooltip] = useState(false);
 
-  
+
+  const handleCopyLink = () => {
+    const postUrl = window.location.href;
+    navigator.clipboard.writeText(postUrl)
+      .then(() => {
+        console.log('Link copied to clipboard!');
+        setShowTooltip(true);
+        setTimeout(() => {
+          setShowTooltip(false);
+        }, 2000);
+
+      })
+      .catch((error) => {
+        console.error('Failed to copy link to clipboard:', error);
+      });
+  };
+
+
   return (
     <Container maxW="container.lg" p={0}>
     <Flex h="100vh" py={0}>
@@ -56,9 +75,10 @@ function OneElementPage({iconSx, backUrl, news}) {
                   <TwitterCustomIcon sx={iconSx}/>
                   <FacebookCustomIcon sx={iconSx}/>
                   <LinkedinCustomIcon sx={iconSx}/>
-                  <LinkSolidCustomIcon sx={iconSx}/>
+                    <LinkSolidCustomIcon sx={iconSx} onClick={handleCopyLink}/>
+                    {showTooltip && <Box placement='top' bg="gray.800" borderRadius={4} color="white" px={2} fontSize="sm" zIndices="tooltip" hasArrow>Copié</Box>}
                   {/*<BookmarkSolidCustomIcon sx={iconSx}/>*/}
-                  <BookmarkRegularCustomIcon sx={iconSx}/>
+                  {/* <BookmarkRegularCustomIcon sx={iconSx}/> */}
                   {/*<PlusSolidCustomIcon sx={iconSx}/>*/}
                 </HStack>
               </HStack>
