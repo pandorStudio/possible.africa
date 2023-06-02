@@ -3,8 +3,7 @@ import Image from '../assets/hunters-race-MYbhN8KaaEc-unsplash.jpg'
 import { useGetOrganisationsQuery, useAddOrganisationMutation, useUpdateOrganisationMutation, useDeleteOrganisationMutation } from "../features/api/apiSlice";
 import CardComponent from '../components/CardComponent';
 import { Box, Spinner, HStack } from '@chakra-ui/react'
-import { Button } from '@chakra-ui/react'
-import { useState } from "react";
+
 
 function Organisations() {
   const {
@@ -26,7 +25,7 @@ let isLoaded = true;
 
      content = organisations.map(organisation => {
       return (
-        <CardComponent postType="Organisation" key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded} link={"/organisations/" + organisation.name.toLowerCase().replaceAll(" ","-")}/>
+        <CardComponent postType="Organisation" key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded} link={"/organisations/" + organisation.id}/>
       )
     })
   } else if (isError) {
