@@ -21,7 +21,7 @@ const eventSchema = mongoose.Schema(
       type: String,
       enum: ["online", "hybrid", "physical"],
     },
-    target_countriy: {
+    target_country: {
       type: String,
     },
     activity_area: {
