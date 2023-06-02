@@ -16,13 +16,14 @@ import OneAgenda from "./pages/OneAgenda.jsx";
 import OneOpportunity from "./pages/OneOpportunity.jsx";
 import OneEmplois from "./pages/OneEmplois.jsx";
 import OneActualite from './pages/Actualites/OneActualite';
+import { Footer } from "./components/Footer";
 
 function App() {
   return (
     <>
       <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Header />}>
+            <Route path="/" element={[<Header />, <Footer/>]}>
                 <Route index element={<Accueil />} />
                 <Route path="/entrepreneurs" element={<Entrepreneurs />} />
                 <Route path='/timeforafrica' element={<TimeForAfrica />} />
