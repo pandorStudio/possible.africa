@@ -6,6 +6,7 @@ import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import CorporateFareOutlinedIcon from '@mui/icons-material/CorporateFareOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
 
 export function PodcastIcon() {
@@ -55,4 +56,10 @@ export function SearchIcon() {
                                 <SearchOutlinedIcon/>            
                                                        
                             )}
+
+export function MapIcon() {
+          return (
+                <LocationOnOutlinedIcon/>            
+                                                               
+    )}
                 

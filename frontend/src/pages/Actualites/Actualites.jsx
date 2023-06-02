@@ -29,7 +29,7 @@ function Actualites() {
     } else if(isSuccess) {
         content = allNews.map(news => {
             return (
-                <CardComponent postType="Actualités" key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={isLoaded} link={"/actualites/" + news.slug}/>
+                <CardComponent postType="Actualités" key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={isLoaded} link={"/actualites/" + news.slug} pays="Pays"/>
             )
         })
     } else if (isError) {
