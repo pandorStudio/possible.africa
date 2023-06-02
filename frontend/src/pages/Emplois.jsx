@@ -25,13 +25,13 @@ function Emplois() {
     if (isLoading || isFetching) {
         content = jobs.map(job => {
             return (
-                <CardComponent key={job._id} title={job.title} description={job.description} imgUrl={job?.organisation?.logo} isLoaded={!isLoaded} link={"/emplois/:" + jobs.slug}/>
+                <CardComponent postType="Emplois" key={job._id} title={job.title} description={job.description} imgUrl={job?.organisation?.logo} isLoaded={!isLoaded} link={"/emplois/:" + jobs.slug}/>
             )
         })
     } else if(isSuccess) {
         content = jobs.map(job => {
             return (
-                <CardComponent key={job._id} title={job.title} description={job.description} imgUrl={job?.organisation?.logo} isLoaded={isLoaded} link={"/emplois/:" + jobs.slug}/>
+                <CardComponent postType="Emplois" key={job._id} title={job.title} description={job.description} imgUrl={job?.organisation?.logo} isLoaded={isLoaded} link={"/emplois/:" + jobs.slug}/>
             )
         })
     } else if (isError) {
