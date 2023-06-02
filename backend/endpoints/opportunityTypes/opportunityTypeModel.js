@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const opportunityTypeSchema = mongoose.Schema(
   {
-    name: { type: String, required: true, unique: true },
-    slug: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    slug: { type: String },
   },
   {
     timestamps: true,

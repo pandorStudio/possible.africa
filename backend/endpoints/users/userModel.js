@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "https://i.pravatar.cc/300",
+      default: "",
     },
     password: {
       type: String,

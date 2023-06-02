@@ -26,7 +26,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
     <List>
       <Table {...tableProps} rowKey="_id">
         <Table.Column dataIndex={["user", "username"]} title="Auteur" />
-          <Table.Column dataIndex="organisations" title="Organisations" render={(value: any[]) =>
+          <Table.Column width="30%" dataIndex="organisations" title="Organisations" render={(value: any[]) =>
               organisationsIsLoading ? (
                   <>Loading ...</>
               ) : (

@@ -11,8 +11,8 @@ const eventSchema = mongoose.Schema(
       ref: "User",
     },
     title: { type: String, required: true },
-    beginningDate: { type: Date, required: true },
-    endingDate: { type: Date, required: true },
+    beginningDate: { type: Date },
+    endingDate: { type: Date },
     event_type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "EventType",
@@ -39,12 +39,12 @@ const eventSchema = mongoose.Schema(
         "other",
       ],
     },
-    description: { type: String, required: true },
-    registration_link: { type: String, required: true },
+    description: { type: String },
+    registration_link: { type: String },
     location: {
       type: String,
     },
-    is_recurrent: { type: Boolean, required: true, default: false },
+    is_recurrent: { type: Boolean, default: false },
     frequence: String,
   },
   {

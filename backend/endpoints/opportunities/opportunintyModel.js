@@ -10,9 +10,9 @@ const opportunitySchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    title: { type: String, required: true },
-    beginning_date: { type: Date, required: true },
-    ending_date: { type: Date, required: true },
+    title: { type: String },
+    beginning_date: { type: Date },
+    ending_date: { type: Date },
     opportunity_type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "OpportunityType",
