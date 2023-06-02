@@ -5,19 +5,21 @@ const organisationSchema = mongoose.Schema(
     name: { type: String, required: true, unique: true },
     logo: {
       type: String,
-      default: "https://i.pravatar.cc/300",
+      default: "",
     },
     couverture: {
       type: String,
-      default: "https://i.pravatar.cc/300",
+      default: "",
     },
     type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "OrganisationType",
+      default: ""
     },
     contributeur: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      default: ""
     },
     owner: {
       type: String,
@@ -44,7 +46,7 @@ const organisationSchema = mongoose.Schema(
 }, "Contributeur must be a contributor");*/
 
 // Run validators on update
-organisationSchema.pre("findOneAndUpdate", async function (next) {
+/*organisationSchema.pre("findOneAndUpdate", async function (next) {
   const docToUpdate = await this.model.findOne(this.getQuery());
   if (docToUpdate.contributeur !== this.getUpdate().contributeur) {
     const user = await mongoose
@@ -55,7 +57,7 @@ organisationSchema.pre("findOneAndUpdate", async function (next) {
     }
   }
   next();
-});
+});*/
 
 // populate response with organisationType
 organisationSchema.pre(/^find/, function (next) {
@@ -65,7 +67,7 @@ organisationSchema.pre(/^find/, function (next) {
   });
   this.populate({
     path: "contributeur",
-    select: "username firstname lastname email phone role",
+    select: "username firstname lastname email phone role avatar",
   });
   next();
 });
