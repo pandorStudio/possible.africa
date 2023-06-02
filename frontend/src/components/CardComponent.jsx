@@ -1,4 +1,4 @@
-import { Card, CardBody, Heading, Stack, Image, Text, Skeleton, SkeletonText, Box } from '@chakra-ui/react'
+import { Card, CardBody, Heading, Stack, Image, Text, Skeleton, SkeletonText, Box, Flex } from '@chakra-ui/react'
 import {Link} from "react-router-dom";
 import { CalendarIcon, LawIcon, NewspaperIcon, OrganisationsIcon, PodcastIcon, WorkIcon } from '../assets/icons';
 
@@ -46,7 +46,11 @@ const card = (<Card
      {postType === "Actualités" && <NewspaperIcon/>} 
      {postType === "Agenda" && <CalendarIcon/>} 
      {postType === "Opportunités" && <LawIcon/>} 
-     {postType === "Emplois" && <WorkIcon/>} 
+     {postType === "Emplois" && <><Flex gap={5} marginTop={1.5}>
+      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><OrganisationsIcon /> <Text fontSize="sm">Pandore & Co</Text></Flex>
+      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><WorkIcon/> <Text fontSize="sm">CDI</Text></Flex>
+      </Flex> 
+     </>} 
 
 
 
