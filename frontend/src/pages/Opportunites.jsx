@@ -25,11 +25,7 @@ let isLoaded = true;
 
 
     if (isLoading || isFetching) {
-        content = opportunities.map(opportunity => {
-            return (
-                <CardComponent postType="Opportunités" key={opportunity._id} title={opportunity.title} description={parse(opportunity.description.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity?.organisation?.logo} isLoaded={!isLoaded} link={"/opportunites/" + opportunity.title.toLowerCase().replaceAll(" ","-")}/>
-            )
-        })
+        return <VStack><Spinner/></VStack>
     } else if(isSuccess) {
         content = opportunities.map(opportunity => {
             return (

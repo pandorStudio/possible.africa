@@ -57,7 +57,7 @@ export const Header = () => {
           </Flex>
             {isDesktop ? (
               <Flex justifyContent="space-between" alignItems="center">
-                <ButtonGroup variant="link" spacing="8">
+                <ButtonGroup variant="link" spacing="5">
                   {[{name:'Possible', link:"/" }, {name:'Entrepreneurs', link:"/entrepreneurs" },{name:'Time For Africa', link:"/timeforafrica" }].map((item) => (
 
                     <CustomLink  key={item.name} as={ReachLink} to={item.link}><Heading size="md">
