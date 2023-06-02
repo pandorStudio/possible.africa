@@ -27,7 +27,7 @@ function Emplois() {
     } else if(isSuccess) {
         content = jobs.map(job => {
             return (
-                <CardComponent postType="Emplois" key={job._id} title={job.title} description={job.description} imgUrl={job?.organisation?.logo} isLoaded={isLoaded} link={"/emplois/" + job.title.toLowerCase().replaceAll(" ","-")}/>
+                <CardComponent postType="Emplois" key={job._id} title={job.title} description={job.description} imgUrl={job?.organisation?.logo} isLoaded={isLoaded} link={"/emplois/" + job.title.toLowerCase().replaceAll(" ","-")} company={job?.organisation?.name} type={job?.type} location={job?.location}/>
             )
         })
     } else if (isError) {
