@@ -31,7 +31,7 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
           dataIndex="description"
           title="Description"
           render={(value) => {
-            return value.length > 100 ? value.slice(0, 100) + "..." : value;
+            return value.length > 60 ? value.slice(0, 60) + "..." : value;
           }}
         />
         <Table.Column dataIndex="type" title="Type" />
