@@ -1,22 +1,18 @@
 import {Container, Heading, HStack, Spinner, Text, VStack} from "@chakra-ui/react"
-import {useGetPostCategoriesQuery, useGetPostsQuery} from "../features/api/apiSlice.js";
+import {useGetEventsQuery} from "../features/api/apiSlice.js";
 import CardComponent from "../components/CardComponent.jsx";
 import parse from "html-react-parser";
 import { useState } from "react";
 
 function Agenda() {
-
     const {
-        data: interviewCategories = [],
-    } = useGetPostCategoriesQuery({limit: 10, page: 1, fields: [], eq: [{field: "slug", value: "/agenda"}]});
-    const {
-        data: diaries = [],
+        data: events = [],
         isLoading,
         isFetching,
         isError,
         isSuccess,
         error,
-    } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: [{field: "categorie", value: `${interviewCategories[0]?._id}`}]});
+    } = useGetEventsQuery();
     let content;
 
 //     const [isLoaded, setIsLoaded] = useState(false);
@@ -28,15 +24,15 @@ function Agenda() {
 let isLoaded = true;
 
     if (isLoading || isFetching) {
-        content = diaries.map(diary => {
+        content = events.map(event => {
             return (
-                <CardComponent postType="Agenda" key={diary._id} title={diary.title} description={parse(diary.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={diary.image} isLoaded={!isLoaded} link={"/agenda/:" + diary.slug}/>
+                <CardComponent postType="Agenda" key={event._id} title={event.title} description={parse(event.description.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={event?.organisation?.logo} isLoaded={!isLoaded} link={"/agenda/" + event.title.toLowerCase().replaceAll(" ","-")}/>
             )
         })
     } else if(isSuccess) {
-        content = diaries.map(diary => {
+        content = events.map(event => {
             return (
-                <CardComponent postType="Agenda" key={diary._id} title={diary.title} description={parse(diary.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={diary.image} isLoaded={isLoaded} link={"/agenda/:" + diary.slug}/>
+                <CardComponent postType="Agenda" key={event._id} title={event.title} description={parse(event.description.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={event?.organisation?.logo} isLoaded={isLoaded} link={"/agenda/" + event.title.toLowerCase().replaceAll(" ","-")}/>
             )
         })
     } else if (isError) {

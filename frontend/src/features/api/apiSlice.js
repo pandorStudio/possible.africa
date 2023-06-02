@@ -126,6 +126,66 @@ export const apiSlice = createApi({
         }),
         invalidatesTags: ["Jobs"],
     }),
+
+    getEvents: builder.query({
+      query: () => "/events",
+      transformResponse: (res) => res.sort((a, b) => b.id - a.id),
+      providesTags: ["Agenda"],
+    }),
+    addEvent: builder.mutation({
+      query: (post) => ({
+        url: "/events",
+        method: "POST",
+        body: post,
+      }),
+      invalidatesTags: ["Agenda"],
+    }),
+    updateEvent: builder.mutation({
+      query: (post) => ({
+        url: `/events/${post.id}`,
+        method: "PATCH",
+        body: post,
+      }),
+      invalidatesTags: ["Agenda"],
+    }),
+    deleteEvent: builder.mutation({
+      query: ({ id }) => ({
+        url: `/events/${id}`,
+        method: "DELETE",
+        body: id,
+      }),
+      invalidatesTags: ["Agenda"],
+    }),
+
+    getOpportunities: builder.query({
+      query: () => "/opportunities",
+      transformResponse: (res) => res.sort((a, b) => b.id - a.id),
+      providesTags: ["Opportunités"],
+    }),
+    addOpportunity: builder.mutation({
+      query: (post) => ({
+        url: "/opportunities",
+        method: "POST",
+        body: post,
+      }),
+      invalidatesTags: ["Opportunités"],
+    }),
+    updateOpportunity: builder.mutation({
+      query: (post) => ({
+        url: `/opportunities/${post.id}`,
+        method: "PATCH",
+        body: post,
+      }),
+      invalidatesTags: ["Opportunités"],
+    }),
+    deleteOpportunity: builder.mutation({
+      query: ({ id }) => ({
+        url: `/opportunities/${id}`,
+        method: "DELETE",
+        body: id,
+      }),
+      invalidatesTags: ["Opportunités"],
+    }),
   }),
 });
 
@@ -143,4 +203,12 @@ export const {
   useAddJobMutation,
   useDeleteJobMutation,
   useUpdateJobMutation,
+  useGetEventsQuery,
+  useAddEventMutation,
+  useDeleteEventMutation,
+  useUpdateEventMutation,
+  useGetOpportunitiesQuery,
+  useAddOpportunityMutation,
+  useDeleteOpportunityMutation,
+  useUpdateOpportunityMutation
 } = apiSlice;
