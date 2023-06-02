@@ -50,10 +50,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
           <Select {...contributorSelectProps} />
         </Form.Item>
         <Form.Item label="Contact" name={["owner"]}>
-          <Select>
-            <Select.Option value={true}>Oui</Select.Option>
-            <Select.Option value={false}>Non</Select.Option>
-          </Select>
+          <Input />
         </Form.Item>
 
         <Form.Item label="Description" name={["description"]}>

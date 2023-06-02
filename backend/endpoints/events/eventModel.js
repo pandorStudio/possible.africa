@@ -11,7 +11,7 @@ const eventSchema = mongoose.Schema(
       ref: "User",
     },
     title: { type: String, required: true },
-    beginningDate: { type: Date },
+    beginingDate: { type: Date },
     endingDate: { type: Date },
     event_type: {
       type: mongoose.Schema.Types.ObjectId,
@@ -21,7 +21,7 @@ const eventSchema = mongoose.Schema(
       type: String,
       enum: ["online", "hybrid", "physical"],
     },
-    target_countriy: {
+    target_country: {
       type: String,
     },
     activity_area: {
