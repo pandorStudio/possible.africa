@@ -123,9 +123,15 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           dataIndex="logo"
           title="Logo de l'organisation"
           render={(value: any) => {
-            return (
-              <ImageField style={{ maxWidth: "100px" }} value={value} />
-            );
+            return <ImageField style={{ maxWidth: "100px" }} value={value} />;
+          }}
+        />
+        <Table.Column
+          width="10%"
+          dataIndex="couverture"
+          title="Couverture de l'organisation"
+          render={(value: any) => {
+            return <ImageField style={{ maxWidth: "100px" }} value={value} />;
           }}
         />
         <Table.Column dataIndex={["type", "name"]} title="Type" />
@@ -134,7 +140,13 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           title="Contributeur"
         />
         <Table.Column dataIndex={"owner"} title="Contact" />
-        <Table.Column dataIndex="description" title="Description" />
+        <Table.Column
+          dataIndex="description"
+          title="Description"
+          render={(value) => {
+            return value.length > 60 ? value.slice(0, 60) + "..." : value;
+          }}
+        />
         <Table.Column
           dataIndex={["email"]}
           title="Email"
