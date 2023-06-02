@@ -28,6 +28,7 @@ const card = (<Card
           src={imgUrl}
           alt={imgUrl}
           borderRadius={8}
+          fallbackSrc='/placeholder_org.jpeg'
       />
     </Box>
   </Skeleton>

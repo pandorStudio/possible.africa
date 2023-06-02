@@ -4,27 +4,19 @@ import TwitterCustomIcon from "./icons/TwitterCustomIcon.jsx";
 import FacebookCustomIcon from "./icons/FacebookCustomIcon.jsx";
 import LinkedinCustomIcon from "./icons/LinkedinCustomIcon.jsx";
 import LinkSolidCustomIcon from "./icons/LinkSolidCustomIcon.jsx";
-import BookmarkRegularCustomIcon from "./icons/BookmarkRegularCustomIcon.jsx";
 import parse from "html-react-parser";
 import { useState } from "react";
 
 
-function OneElementPage({iconSx, backUrl, news}) {
+function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
 
-  const date = new Date(news?.createdAt);
+  const date = new Date(organisations?.createdAt);
   const jour = date.getDate();
   const mois = date.toLocaleString('default', { month: 'long' });
-  const content = news?.content && parse(news?.content.replace(/\\n/g, "<br />"))
 
-  function estimateReadingTime() {
-    const wordsPerMinute = 200; // Change this value according to your preference
-  
-    const wordCount = news?.content.trim().split(/\s+/).length;
-    const readingTimeMinutes = Math.ceil(wordCount / wordsPerMinute);
-  
-    return readingTimeMinutes;
-  }
 
+
+  const content = organisations?.description && parse(organisations?.description.replace(/\\n/g, "<br />"))
   const [showTooltip, setShowTooltip] = useState(false);
 
 
@@ -46,27 +38,33 @@ function OneElementPage({iconSx, backUrl, news}) {
 
 
   return (
-    <Container maxW="container.lg" p={0} >
-    <Flex py={0}>
+    <Container maxW="container.lg" p={0}>
+    <Flex h="100vh" py={0}>
         <VStack w="75%" h="full" p={10} spacing={10} alignItems="flex-start">
         {/* <Flex><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl}/></Flex> */}
-       <Box>
-       <Badge colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{news?.categorie?.name}</Badge>
-        <Heading fontSize="4xl">{news?.title}</Heading>
-       </Box>
+       <Flex direction="column" gap={3}>
+       <Badge display="inline" maxW={20} textAlign="center" colorScheme="red" p={2} borderRadius={50} marginBottom={3}>{organisations?.type?.name}</Badge>
+       <Box minW="100%" overflow="hidden">
+            <Image src={organisations?.couvertur} minW="100%" fit="cover" alt="image" fallbackSrc='/placeholder_org_couverture.jpeg' borderStyle="solid" borderWidth="1px" borderColor="gray.100" />
+        </Box>
+        <Heading fontSize="4xl">{organisations?.name}</Heading>
+        
+       </Flex>
 
         <Flex w="full">
               <HStack w="full" h="full" spacing={2} alignItems="flex-start" justifyContent="space-between">
+                
                 <HStack alignItems="center">
+              
                   <Box width="80px" overflow="hidden" borderRadius="full">
-                    <Image src={news?.user?.avatar} w="100%" fit="cover" borderRadius="full" alt="image" fallbackSrc='/placeholder.png'/>
+                    <Image src={organisations?.logo} w="100%" fit="cover" borderRadius="full" alt="image" fallbackSrc='/placeholder_org.jpeg' />
                   </Box>
                 <Box w="full">
                   <Flex direction="column" justify="space-around"  gap={1}>
-                  <Heading size="sm">{news?.user?.firstname} {news?.user?.lastname}</Heading>
+                  <Heading size="sm">{organisations?.contributeur?.firstname} {organisations?.contributeur?.lastname}</Heading>
                     <Flex justify="flex-start" color="gray.500">
                       <Box fontSize="sm" mr={4}>{jour} {mois}</Box>
-                      <Box fontSize="sm">{estimateReadingTime()} mins de lecture</Box>
+                     
                     </Flex>
                   </Flex>
                 </Box>
@@ -76,7 +74,7 @@ function OneElementPage({iconSx, backUrl, news}) {
                   <FacebookCustomIcon sx={iconSx}/>
                   <LinkedinCustomIcon sx={iconSx}/>
                     <LinkSolidCustomIcon sx={iconSx} onClick={handleCopyLink}/>
-                    {showTooltip && <Box placement='top' bg="gray.800" borderRadius={4} color="white" px={2} fontSize="sm" zIndices="tooltip" hasArrow>Copié</Box>}
+                    {showTooltip && <Box placement='top' bg="gray.800" borderRadius={4} color="white" px={2} fontSize="sm" zIndices="tooltip">Copié</Box>}
                   {/*<BookmarkSolidCustomIcon sx={iconSx}/>*/}
                   {/* <BookmarkRegularCustomIcon sx={iconSx}/> */}
                   {/*<PlusSolidCustomIcon sx={iconSx}/>*/}
@@ -90,7 +88,7 @@ function OneElementPage({iconSx, backUrl, news}) {
             {content}
             </Box>
         </VStack>
-        <VStack w="25%" h="full" p={10} spacing={10} alignItems="flex-start">
+        <VStack w="25%" h="full" p={10} spacing={10} alignItems="flex-start" bg="white">
 
 </VStack>
     </Flex>
@@ -99,4 +97,4 @@ function OneElementPage({iconSx, backUrl, news}) {
   )
 }
 
-export default OneElementPage;
+export default OneOrganisationTemplate;
