@@ -23,14 +23,14 @@ let isLoaded = true;
 
     content = organisations.map(organisation => {
       return (
-        <CardComponent key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={!isLoaded} link={"/organisations/:" + organisation.slug}/>
+        <CardComponent postType="Organisation" key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={!isLoaded} link={"/organisations/:" + organisation.slug}/>
       )
     }) 
    } else if(isSuccess) {
 
      content = organisations.map(organisation => {
       return (
-        <CardComponent key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded} link={"/organisations/:" + organisation.slug}/>
+        <CardComponent postType="Organisation" key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded} link={"/organisations/:" + organisation.slug}/>
       )
     })
   } else if (isError) {

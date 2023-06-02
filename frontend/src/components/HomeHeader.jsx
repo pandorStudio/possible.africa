@@ -54,7 +54,7 @@ export const HomeHeader = () => {
                     <CustomLink  key={item.name} as={ReachLink} to={item.link}>
                         <Flex flexDir="row" gap={1}>
                             {item.icons}
-                            <Text fontWeight="600">{item.name}</Text>
+                            <Text fontWeight="400" fontSize="md">{item.name}</Text>
                         </Flex>
                         </CustomLink>
                   ))}

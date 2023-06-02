@@ -1,19 +1,20 @@
 import { Card, CardBody, Heading, Stack, Image, Text, Skeleton, SkeletonText, Box } from '@chakra-ui/react'
 import {Link} from "react-router-dom";
+import { CalendarIcon, LawIcon, NewspaperIcon, OrganisationsIcon, PodcastIcon, WorkIcon } from '../assets/icons';
 
 
 // eslint-disable-next-line react/prop-types
-function CardComponent({title, description, imgUrl, isLoaded, link}) {
+function CardComponent({title, description, imgUrl, isLoaded, link, postType}) {
 const card = (<Card
     direction={{ base: 'column', sm: 'row' }}
     overflow='hidden'
-    maxW={{ base: '3xl', sm: '100%' }}
-    minW={{ base: '2xl', sm: '70%' }}
-    height={{ base: '130px', sm: '70%' }}
+    w={{base: "100%", sm: "2xl"}}
+    maxW={{ base: '100%', sm: '2xl' }}
+    height={{ base: '130px', sm: '130px' }}
     boxShadow="none"
     _hover={{ cursor: "pointer" }}
     borderRadius={0}
-    p={3}
+
     alignItems="center"
 >
   <Skeleton isLoaded={isLoaded} >
@@ -32,13 +33,25 @@ const card = (<Card
   </Skeleton>
 
   <Stack>
+    
     <CardBody>
 
-      <Heading paddingBottom={2} fontSize='xl' color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading>
+      <Heading paddingBottom={2} size='md' color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading>
 
       <Text noOfLines={[1,2]}>
         {description}
       </Text>
+     {postType === "Organisation" && <OrganisationsIcon/>} 
+     {postType === "Interview" && <PodcastIcon/>} 
+     {postType === "Actualités" && <NewspaperIcon/>} 
+     {postType === "Agenda" && <CalendarIcon/>} 
+     {postType === "Opportunités" && <LawIcon/>} 
+     {postType === "Emplois" && <WorkIcon/>} 
+
+
+
+
+
     </CardBody>
 
   </Stack>
