@@ -1,11 +1,10 @@
 import {Badge, Box, Container, Flex, Grid, GridItem, Heading, HStack, Image, Link, Text, Tooltip, VStack} from "@chakra-ui/react"
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
-import TwitterCustomIcon from "./icons/TwitterCustomIcon.jsx";
-import FacebookCustomIcon from "./icons/FacebookCustomIcon.jsx";
-import LinkedinCustomIcon from "./icons/LinkedinCustomIcon.jsx";
-import LinkSolidCustomIcon from "./icons/LinkSolidCustomIcon.jsx";
+
 import parse from "html-react-parser";
 import { useState } from "react";
+import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
+import Socialshare from "./Socialshare.jsx";
 
 
 function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
@@ -17,78 +16,78 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
 
 
   const content = organisations?.description && parse(organisations?.description.replace(/\\n/g, "<br />"))
-  const [showTooltip, setShowTooltip] = useState(false);
 
-
-  const handleCopyLink = () => {
-    const postUrl = window.location.href;
-    navigator.clipboard.writeText(postUrl)
-      .then(() => {
-        console.log('Link copied to clipboard!');
-        setShowTooltip(true);
-        setTimeout(() => {
-          setShowTooltip(false);
-        }, 2000);
-
-      })
-      .catch((error) => {
-        console.error('Failed to copy link to clipboard:', error);
-      });
-  };
 
 
   return (
     <Container maxW="container.lg" p={0}>
-    <Flex py={0}>
-        <VStack w="75%" h="full" p={10} spacing={10} alignItems="flex-start">
+                        <Flex ml={10}><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl} mr="1"/></Flex>
+
+    <Flex py={0} direction={{ base: 'column', md: "row" }}>
+        <VStack w={{ base: '100%', md: "75%" }} h="full" p={10} spacing={10} alignItems="flex-start">
         {/* <Flex><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl}/></Flex> */}
        <Flex direction="column" gap={3}>
-       <Badge display="inline" maxW={20} textAlign="center" colorScheme="red" p={2} borderRadius={50} marginBottom={3}>{organisations?.type?.name}</Badge>
-       <Box minW="100%" overflow="hidden">
-            <Image src={organisations?.couverture} minW="100%" fit="cover" alt="image" fallbackSrc='/placeholder_org_couverture.jpeg' borderStyle="solid" borderWidth="1px" borderColor="gray.100" />
-        </Box>
-        <Heading fontSize="4xl">{organisations?.name}</Heading>
-        
-       </Flex>
+     
+<Flex alignItems="center" gap={5}>
 
-        <Flex w="full">
-              <HStack w="full" h="full" spacing={2} alignItems="flex-start" justifyContent="space-between">
+        <Box  minW={150} h="150px">
+
+<Image
+    fit ='cover'
+    w="100%"
+    h="150px"
+    src={organisations?.logo}
+    alt={organisations?.logo}
+    borderRadius={8}
+    fallbackSrc='/placeholder_org.jpeg'
+    borderStyle="solid" borderColor="gray.100" borderWidth={1}
+/>
+</Box>
+<Flex direction="column" gap={2}>
+        <Heading fontSize="4xl">{organisations?.name}</Heading>
+        <Flex>
+        <Badge display="inline" textAlign="center" colorScheme="red" p={2} borderRadius={50} marginBottom={3}>{organisations?.type?.name}</Badge>      
+
+        </Flex>
+        <Link href={organisations?.site_web} isExternal alignItems="center" fontWeight={600} fontSize={14}>
+  <Flex gap={1} alignItems="center">
+  <LaunchOutlinedIcon/>
+  Site internet 
+    </Flex>
+</Link>
+
+     </Flex>
+    </Flex>
+  </Flex>
+            <Box as="main">
+         
+            {content}
+            </Box>
+
+            <Flex w="full" marginTop={20} borderStyle="solid" borderColor="gray.100" borderTopWidth={1} paddingTop={5}>
+       
+            <HStack w="full" h="full" spacing={2} alignItems="flex-start" justifyContent="space-between">
                 
-                <HStack alignItems="center">
+                <HStack alignItems="center" gap={2}>
               
                   <Box width="80px" overflow="hidden" borderRadius="full">
                     <Image src={organisations?.contributeur?.avatar} w="100%" fit="cover" borderRadius="full" alt="image" fallbackSrc='/placeholder_org.jpeg' />
                   </Box>
                 <Box w="full">
-                  <Flex direction="column" justify="space-around"  gap={1}>
-                  <Heading size="sm">{organisations?.contributeur?.firstname} {organisations?.contributeur?.lastname}</Heading>
-                    <Flex justify="flex-start" color="gray.500">
-                      <Box fontSize="sm" mr={4}>{jour} {mois}</Box>
-                     
-                    </Flex>
+                  <Flex direction="column" justify="space-around"  gap={2} alignItems="flex-start">
+                    <Heading size="sm">{organisations?.contributeur?.firstname} {organisations?.contributeur?.lastname}</Heading>
+                    <Badge display="inline" maxW={120} textAlign="center" fontSize={11} colorScheme="gray" p={2} borderRadius={50} >Contributeur</Badge>
+
                   </Flex>
                 </Box>
                 </HStack>
-                <HStack alignItems="center" h="100%">
-                  <TwitterCustomIcon sx={iconSx}/>
-                  <FacebookCustomIcon sx={iconSx}/>
-                  <LinkedinCustomIcon sx={iconSx}/>
-                    <LinkSolidCustomIcon sx={iconSx} onClick={handleCopyLink}/>
-                    {showTooltip && <Box placement='top' bg="gray.800" borderRadius={4} color="white" px={2} fontSize="sm" zIndices="tooltip">Copié</Box>}
-                  {/*<BookmarkSolidCustomIcon sx={iconSx}/>*/}
-                  {/* <BookmarkRegularCustomIcon sx={iconSx}/> */}
-                  {/*<PlusSolidCustomIcon sx={iconSx}/>*/}
-                </HStack>
+                <Socialshare titre={organisations?.name}/>
               </HStack>
-
-            </Flex>
-
-            <Box as="main">
-         
-            {content}
-            </Box>
+              </Flex>
         </VStack>
-        <VStack w="25%" h="full" p={10} spacing={10} alignItems="flex-start" bg="white">
+        <VStack w={{ base: '100%', md: "25%" }} h="full" p={10} spacing={10} alignItems="flex-start" bg="white">
+
+          
 
 </VStack>
     </Flex>

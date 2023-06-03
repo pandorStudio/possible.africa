@@ -32,7 +32,7 @@ let isLoaded = true;
     } else if(isSuccess) {
         content = events.map(event => {
             return (
-                <CardComponent postType="Agenda" key={event._id} title={event.title} description={parse(event.description.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={event?.organisation?.logo} isLoaded={isLoaded} link={"/agenda/" + event.title.toLowerCase().replaceAll(" ","-")} pays={event.target_country || "Togo"}/>
+                <CardComponent postType="Agenda" key={event._id} title={event.title} description={parse(event.description.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={event?.organisation?.logo} isLoaded={isLoaded} link={"/agenda/" + event.id} pays={event.target_country || "Togo"}/>
             )
         })
     } else if (isError) {

@@ -1,15 +1,12 @@
 import {Badge, Box, Container, Flex, Grid, GridItem, Heading, HStack, Image, Link, Text, Tooltip, VStack} from "@chakra-ui/react"
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
-import TwitterCustomIcon from "./icons/TwitterCustomIcon.jsx";
-import FacebookCustomIcon from "./icons/FacebookCustomIcon.jsx";
-import LinkedinCustomIcon from "./icons/LinkedinCustomIcon.jsx";
-import LinkSolidCustomIcon from "./icons/LinkSolidCustomIcon.jsx";
-import BookmarkRegularCustomIcon from "./icons/BookmarkRegularCustomIcon.jsx";
+
 import parse from "html-react-parser";
 import { useState } from "react";
+import Socialshare from "./Socialshare.jsx";
 
 
-function OneElementPage({iconSx, backUrl, news}) {
+function OnePostPage({iconSx, backUrl, news}) {
 
   const date = new Date(news?.createdAt);
   const jour = date.getDate();
@@ -24,34 +21,20 @@ function OneElementPage({iconSx, backUrl, news}) {
   
     return readingTimeMinutes;
   }
-
-  const [showTooltip, setShowTooltip] = useState(false);
-
-
-  const handleCopyLink = () => {
-    const postUrl = window.location.href;
-    navigator.clipboard.writeText(postUrl)
-      .then(() => {
-        console.log('Link copied to clipboard!');
-        setShowTooltip(true);
-        setTimeout(() => {
-          setShowTooltip(false);
-        }, 2000);
-
-      })
-      .catch((error) => {
-        console.error('Failed to copy link to clipboard:', error);
-      });
-  };
-
+ 
 
   return (
     <Container maxW="container.lg" p={0} >
-    <Flex py={0}>
-        <VStack w="75%" h="full" p={10} spacing={10} alignItems="flex-start">
+         <Flex ml={10}><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl} mr="1"/></Flex>
+
+    <Flex py={0} direction={{ base: 'column', md: "row" }}>
+        <VStack w={{ base: '100%', md: "75%" }} h="full" p={10} spacing={10} alignItems="flex-start">
         {/* <Flex><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl}/></Flex> */}
        <Box>
-       <Badge colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{news?.categorie?.name}</Badge>
+        <Flex>
+        <Badge colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{news?.categorie?.name}</Badge>
+
+        </Flex>
         <Heading fontSize="4xl">{news?.title}</Heading>
        </Box>
 
@@ -69,18 +52,10 @@ function OneElementPage({iconSx, backUrl, news}) {
                       <Box fontSize="sm">{estimateReadingTime()} mins de lecture</Box>
                     </Flex>
                   </Flex>
+                  
                 </Box>
                 </HStack>
-                <HStack alignItems="center" h="100%">
-                  <TwitterCustomIcon sx={iconSx}/>
-                  <FacebookCustomIcon sx={iconSx}/>
-                  <LinkedinCustomIcon sx={iconSx}/>
-                    <LinkSolidCustomIcon sx={iconSx} onClick={handleCopyLink}/>
-                    {showTooltip && <Box placement='top' bg="gray.800" borderRadius={4} color="white" px={2} fontSize="sm" zIndices="tooltip" hasArrow>Copié</Box>}
-                  {/*<BookmarkSolidCustomIcon sx={iconSx}/>*/}
-                  {/* <BookmarkRegularCustomIcon sx={iconSx}/> */}
-                  {/*<PlusSolidCustomIcon sx={iconSx}/>*/}
-                </HStack>
+                <Socialshare/>
               </HStack>
 
             </Flex>
@@ -90,7 +65,7 @@ function OneElementPage({iconSx, backUrl, news}) {
             {content}
             </Box>
         </VStack>
-        <VStack w="25%" h="full" p={10} spacing={10} alignItems="flex-start">
+        <VStack w={{ base: '100%', md: "25%" }} h="full" p={10} spacing={10} alignItems="flex-start">
 
 </VStack>
     </Flex>
@@ -99,4 +74,4 @@ function OneElementPage({iconSx, backUrl, news}) {
   )
 }
 
-export default OneElementPage;
+export default OnePostPage;

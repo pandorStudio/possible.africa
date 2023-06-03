@@ -131,6 +131,9 @@ export const apiSlice = createApi({
         }),
         invalidatesTags: ["Jobs"],
     }),
+    getJob: builder.query({
+      query: jobId => `/jobs/${jobId}`
+    }),
 
     getEvents: builder.query({
       query: () => "/events",
@@ -160,6 +163,9 @@ export const apiSlice = createApi({
         body: id,
       }),
       invalidatesTags: ["Agenda"],
+    }),
+    getEvent: builder.query({
+      query: eventId => `/events/${eventId}`
     }),
 
     getOpportunities: builder.query({
@@ -191,6 +197,9 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Opportunités"],
     }),
+    getOpportunity: builder.query({
+      query: opportunityId => `/opportunities/${opportunityId}`
+    }),
   }),
 });
 
@@ -206,14 +215,17 @@ export const {
   useUpdateOrganisationMutation,
   useGetPostCategoriesQuery,
   useGetJobsQuery,
+  useGetJobQuery,
   useAddJobMutation,
   useDeleteJobMutation,
   useUpdateJobMutation,
   useGetEventsQuery,
+  useGetEventQuery,
   useAddEventMutation,
   useDeleteEventMutation,
   useUpdateEventMutation,
   useGetOpportunitiesQuery,
+  useGetOpportunityQuery,
   useAddOpportunityMutation,
   useDeleteOpportunityMutation,
   useUpdateOpportunityMutation

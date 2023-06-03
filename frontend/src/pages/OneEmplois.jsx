@@ -1,6 +1,13 @@
-import OneElementPage from "../components/OneElementPage.jsx";
+import { useParams } from "react-router-dom";
+import OneEmploiTemplate from "../components/OneEmploiTemplate.jsx";
+import { useGetJobQuery } from "../features/api/apiSlice.js";
 
 function OneEmplois() {
+
+    const { slug } = useParams();
+    const {
+      data: jobs = [],
+    } = useGetJobQuery(slug);
     const iconSx =
         {
             ':hover': {
@@ -9,7 +16,7 @@ function OneEmplois() {
         };
 
     return (
-        <OneElementPage iconSx={iconSx} backUrl="/emplois"/>
+        <OneEmploiTemplate iconSx={iconSx} backUrl="/emplois" jobs={jobs}/>
     );
 }
 
