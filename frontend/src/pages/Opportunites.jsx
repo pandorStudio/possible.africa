@@ -29,7 +29,7 @@ let isLoaded = true;
     } else if(isSuccess) {
         content = opportunities.map(opportunity => {
             return (
-                <CardComponent postType="Opportunités" key={opportunity._id} title={opportunity.title} description={parse(opportunity.description.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity?.organisation?.logo} isLoaded={isLoaded} link={"/opportunites/" + opportunity.title.toLowerCase().replaceAll(" ","-")} type={opportunity?.opportunity_type?.name}/>
+                <CardComponent postType="Opportunités" key={opportunity._id} title={opportunity.title} description={parse(opportunity.description.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity?.organisation?.logo} isLoaded={isLoaded} link={"/opportunites/" + opportunity.id} type={opportunity?.opportunity_type?.name}/>
             )
         })
     } else if (isError) {
@@ -41,7 +41,7 @@ let isLoaded = true;
       <Container maxW="container.lg" p={0}>
 
 
-<VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">              {/* <Heading size="xl">Opportunités de financement</Heading> */}
+<VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">
               {content}
           </VStack>
 

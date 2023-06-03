@@ -1,6 +1,13 @@
-import OneElementPage from "../components/OneElementPage.jsx";
+import { useParams } from "react-router-dom";
+import { useGetEventQuery } from "../features/api/apiSlice.js";
+import OneAgendaTemplate from "../components/OneAgendaTemplate.jsx";
 
 function OneAgenda() {
+
+    const { slug } = useParams();
+    const {
+      data: events = [],
+    } = useGetEventQuery(slug);
     const iconSx =
         {
             ':hover': {
@@ -9,7 +16,7 @@ function OneAgenda() {
         };
 
     return (
-        <OneElementPage iconSx={iconSx} backUrl="/agenda"/>
+        <OneAgendaTemplate iconSx={iconSx} backUrl="/agenda" events={events}/>
     );
 }
 

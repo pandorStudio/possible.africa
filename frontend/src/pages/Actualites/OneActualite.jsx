@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
-import OneElementPage from "./../../components/OneElementPage";
+import OneElementPage from "../../components/OnePostPage";
 import { useEffect } from "react";
 import { useGetPostsQuery } from "../../features/api/apiSlice";
+import OnePostPage from "../../components/OnePostPage";
 
 function OneActualite() {
   const { slug } = useParams();
@@ -25,7 +26,7 @@ function OneActualite() {
     },
   };
   return (
-    <OneElementPage
+    <OnePostPage
       iconSx={iconSx}
       backUrl="/actualites"
       news={posts[0]}
