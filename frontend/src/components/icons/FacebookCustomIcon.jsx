@@ -2,7 +2,7 @@ import {Box} from "@chakra-ui/react";
 
 function FacebookCustomIcon(props) {
   return (
-      <Box {...props}>
+      <Box {...props} as="a">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="#c3c3c3"

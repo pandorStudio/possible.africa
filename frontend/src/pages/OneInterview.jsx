@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import OneElementPage from "../components/OneElementPage.jsx";
 import { useGetPostsQuery } from "../features/api/apiSlice.js";
+import OnePostPage from "../components/OnePostPage.jsx";
 
 function OneInterview() {
 
@@ -26,7 +26,7 @@ function OneInterview() {
     //   setIsLoaded(true)
     // }, 1000);
     return (
-        <OneElementPage iconSx={iconSx} backUrl="/interviews" news={posts[0]}/>
+        <OnePostPage iconSx={iconSx} backUrl="/interviews" news={posts[0]}/>
     );
 }
 

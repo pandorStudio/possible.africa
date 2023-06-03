@@ -48,7 +48,7 @@ export const Footer = () => {
           justifyContent="center"
         >
           <Flex gap="10"  justifyContent="space-between">
-            <Box w="10%" h="70px"><Image src={Logo} fit ='contain'
+            <Box w="10%" h="70px" as="a" href="/"><Image src={Logo} fit ='contain'
           w="100%"
           h="100%"/></Box>
           <Flex w="40%" alignItems="center">

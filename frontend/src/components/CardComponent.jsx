@@ -19,7 +19,7 @@ const card = (<Card
 >
   <Skeleton isLoaded={isLoaded} >
 
-    <Box  w={100} h="100px">
+    <Box  w={100} h="100px" >
 
       <Image
           fit ='cover'
@@ -29,6 +29,7 @@ const card = (<Card
           alt={imgUrl}
           borderRadius={8}
           fallbackSrc='/placeholder_org.jpeg'
+          borderStyle="solid" borderColor="gray.100" borderWidth={1}
       />
     </Box>
   </Skeleton>

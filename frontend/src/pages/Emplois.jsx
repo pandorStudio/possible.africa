@@ -27,7 +27,7 @@ function Emplois() {
     } else if(isSuccess) {
         content = jobs.map(job => {
             return (
-                <CardComponent postType="Emplois" key={job._id} title={job.title} description={job.description} imgUrl={job?.organisation?.logo} isLoaded={isLoaded} link={"/emplois/" + job.title.toLowerCase().replaceAll(" ","-")} company={job?.organisation?.name} type={job?.type} location={job?.location}/>
+                <CardComponent postType="Emplois" key={job._id} title={job.title} description={job.description} imgUrl={job?.organisation?.logo} isLoaded={isLoaded} link={"/emplois/" + job.id} company={job?.organisation?.name} type={job?.type} location={job?.location}/>
             )
         })
     } else if (isError) {
@@ -38,7 +38,7 @@ function Emplois() {
       <Container maxW="container.lg" p={0} >
 
 
-        <VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">              {/* <Heading size="xl">Emplois</Heading> */}
+        <VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">         
               {content}
           </VStack>
 
