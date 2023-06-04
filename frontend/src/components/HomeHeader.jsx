@@ -35,7 +35,7 @@ export const HomeHeader = () => {
             lg: '5',
           }}
           px={0}
-          maxW="container.xl"
+          maxW={{ base: '100%', md: "container.xl" }}
           
 
         >
@@ -63,11 +63,25 @@ export const HomeHeader = () => {
               </Flex>
             
             ) : (
-              <IconButton
-                variant="ghost"
-                icon={<MenuIcon fontSize="1.25rem" />}
-                aria-label="Open Menu"
-              />
+              <Flex justify="flex-start" gap="8" overflow="scroll" className="scrollContainer" px={8}>
+
+                  {[{name:'Organisations', link:"/organisations"},
+                  {name:'Podcast/Interview', link:"/interviews"},
+                  {name:'Actualités', link:"/actualites" },
+                  {name:'Agenda', link:"/agenda" },
+                  {name:'Opportunités', link:"/opportunites" },
+                  {name:'Emplois', link:"/emplois" }].map((item) => (
+
+                    <CustomLink  key={item.name} as={ReachLink} to={item.link}>
+                        <Flex flexDir="row" gap={1}>
+                            {item.icons}
+                            <Text fontWeight="400" fontSize="md">{item.name}</Text>
+                        </Flex>
+                        </CustomLink>
+                  ))}
+
+
+              </Flex>
             )}
         </Container>
         <Divider/>
