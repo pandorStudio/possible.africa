@@ -18,7 +18,7 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <List>
-      <Table {...tableProps} rowKey="id">
+      <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
         <Table.Column dataIndex="title" title="Titre" />
         <Table.Column dataIndex={["user", "username"]} title="Contributeur" />
         <Table.Column
@@ -38,10 +38,34 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column dataIndex="target_people" title="Cible" />
         <Table.Column dataIndex="target_country" title="pays" />
         <Table.Column dataIndex="activity_area" title="Secteur D'Activité" />
-        <Table.Column dataIndex="description" title="Description" />
-        <Table.Column dataIndex="eligibility" title="Éligibilité" />
-        <Table.Column dataIndex="processus" title="Processus" />
-        <Table.Column dataIndex="beneficies" title="Bénéfices" />
+        <Table.Column
+          dataIndex="description"
+          title="Description"
+          render={(values: any) =>
+            values.length > 100 ? values.substring(0, 100) + "..." : values
+          }
+        />
+        <Table.Column
+          dataIndex="eligibility"
+          title="Éligibilité"
+          render={(values: any) =>
+            values.length > 100 ? values.substring(0, 100) + "..." : values
+          }
+        />
+        <Table.Column
+          dataIndex="processus"
+          title="Processus"
+          render={(values: any) =>
+            values.length > 100 ? values.substring(0, 100) + "..." : values
+          }
+        />
+        <Table.Column
+          dataIndex="beneficies"
+          title="Bénéfices"
+          render={(values: any) =>
+            values.length > 100 ? values.substring(0, 100) + "..." : values
+          }
+        />
         <Table.Column
           dataIndex="registration_link"
           title="Lien d'inscription"
@@ -53,13 +77,14 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
         />
         <Table.Column dataIndex="frequency" title="Fréquence" />
         <Table.Column
+          fixed="right"
           title="Actions"
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>
               <EditButton hideText size="small" recordItemId={record.id} />
               <ShowButton hideText size="small" recordItemId={record.id} />
-              <DeleteButton size="small" recordItemId={record.id} />
+              <DeleteButton hideText size="small" recordItemId={record.id} />
             </Space>
           )}
         />

@@ -112,7 +112,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
         ),
       }}
     >
-      <Table {...tableProps} rowKey="id">
+      <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
         <Table.Column
           width="10%"
           dataIndex="name"
@@ -210,6 +210,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           )}
         />
         <Table.Column
+          fixed="right"
           title="Actions"
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
