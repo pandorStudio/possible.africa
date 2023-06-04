@@ -14,12 +14,10 @@ const organisationSchema = mongoose.Schema(
     type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "OrganisationType",
-      default: ""
     },
     contributeur: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      default: ""
     },
     owner: {
       type: String,
