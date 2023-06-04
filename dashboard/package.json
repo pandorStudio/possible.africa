@@ -8,6 +8,7 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@lexical/react": "^0.10.0",
+    "@pankod/refine": "^2.7.8",
     "@refinedev/antd": "^5.18.2",
     "@refinedev/cli": "^2.5.5",
     "@refinedev/core": "^4.16.0",
