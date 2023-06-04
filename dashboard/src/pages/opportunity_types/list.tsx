@@ -20,6 +20,7 @@ export const OpportunityTypeList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column dataIndex="name" title="Nom" />
         <Table.Column dataIndex="slug" title="Slug" />
         <Table.Column
+          fixed="right"
           title="Actions"
           dataIndex="actions"
           render={(_, record: BaseRecord) => (

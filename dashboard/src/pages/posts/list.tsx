@@ -24,24 +24,31 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <List>
-      <Table {...tableProps} rowKey="_id">
+      <Table {...tableProps} rowKey="_id" scroll={{ x: 1800, y: "auto" }}>
         <Table.Column dataIndex={["user", "username"]} title="Auteur" />
-          <Table.Column width="30%" dataIndex="organisations" title="Organisations" render={(value: any[]) =>
-              organisationsIsLoading ? (
-                  <>Loading ...</>
-              ) : (
-                  <>
-                      {value?.map((item, index) => (
-                          <TagField key={index} value={
-                              organisationsData?.data?.find(
-                                  (resourcesItems) => resourcesItems._id === item?._id
-                              )?.name
-                          }
-                          />
-                      ))}
-                  </>
-              )
-          } />
+        <Table.Column
+          width="30%"
+          dataIndex="organisations"
+          title="Organisations"
+          render={(value: any[]) =>
+            organisationsIsLoading ? (
+              <>Loading ...</>
+            ) : (
+              <>
+                {value?.map((item, index) => (
+                  <TagField
+                    key={index}
+                    value={
+                      organisationsData?.data?.find(
+                        (resourcesItems) => resourcesItems._id === item?._id
+                      )?.name
+                    }
+                  />
+                ))}
+              </>
+            )
+          }
+        />
         <Table.Column dataIndex="title" title="Titre" />
         <Table.Column dataIndex="slug" title="Slug" />
         <Table.Column
@@ -53,13 +60,14 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
         />
         <Table.Column dataIndex={["categorie", "name"]} title="Categorie" />
         <Table.Column
+          fixed="right"
           title="Actions"
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>
               <EditButton hideText size="small" recordItemId={record.id} />
               <ShowButton hideText size="small" recordItemId={record.id} />
-              <DeleteButton hideText size="small" recordItemId={record.id} /> 
+              <DeleteButton hideText size="small" recordItemId={record.id} />
             </Space>
           )}
         />

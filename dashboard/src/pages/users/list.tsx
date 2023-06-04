@@ -7,6 +7,7 @@ import {
   ShowButton,
   EmailField,
   ImageField,
+  DeleteButton,
 } from "@refinedev/antd";
 import { Table, Space } from "antd";
 import Link from "antd/es/typography/Link";
@@ -18,14 +19,14 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <List>
-      <Table {...tableProps} rowKey="_id">
+      <Table {...tableProps} rowKey="_id" scroll={{ x: 2500, y: "auto" }}>
         <Table.Column dataIndex="username" title="N. Utilisateur" />
 
         <Table.Column
           dataIndex="avatar"
           title="Photo de profil"
           render={(value: any) => {
-            return <ImageField style={{ maxWidth: "100px" }} value={value} />;
+            return <ImageField style={{ maxWidth: "200px" }} value={value} />;
           }}
         />
         <Table.Column
@@ -96,12 +97,14 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           )}
         />
         <Table.Column
+          fixed="right"
           title="Actions"
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>
               <EditButton hideText size="small" recordItemId={record.id} />
               <ShowButton hideText size="small" recordItemId={record.id} />
+              <DeleteButton hideText size="small" recordItemId={record.id} />
             </Space>
           )}
         />

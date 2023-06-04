@@ -18,7 +18,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <List>
-      <Table {...tableProps} rowKey="id">
+      <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
         <Table.Column dataIndex="title" title="Titre" />
         <Table.Column
           dataIndex={["beginningDate"]}
@@ -41,7 +41,13 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column dataIndex="format" title="Format" />
         <Table.Column dataIndex="target_countriy" title="Pays Cible" />
         <Table.Column dataIndex="activity_area" title="Secteur d'activité" />
-        <Table.Column dataIndex="description" title="Description" />
+        <Table.Column
+          dataIndex="description"
+          title="Description"
+          render={(values: any) =>
+            values.length > 100 ? values.substring(0, 100) + "..." : values
+          }
+        />
         <Table.Column
           dataIndex="registration_link"
           title="Lien d'inscription"
@@ -55,13 +61,14 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column dataIndex="frequence" title="Frequence" />
         <Table.Column dataIndex={["user", "username"]} title="Contributeur" />
         <Table.Column
+          fixed="right"
           title="Actions"
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
             <Space>
               <EditButton hideText size="small" recordItemId={record.id} />
               <ShowButton hideText size="small" recordItemId={record.id} />
-              <DeleteButton size="small" recordItemId={record.id} />
+              <DeleteButton hideText size="small" recordItemId={record.id} />
             </Space>
           )}
         />

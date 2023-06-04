@@ -17,33 +17,35 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <List>
-      <Table {...tableProps} style={{
-        width: "1800px !important",
-        overflowX: "scroll",
-      }} rowKey="id">
+      <Table
+        {...tableProps}
+        style={{
+          width: "1800px !important",
+          overflowX: "scroll",
+        }}
+        scroll={{ x: 1800, y: "auto" }}
+        rowKey="id"
+      >
         <Table.Column
           dataIndex={["organisation", "name"]}
           title="Organisation"
         />
         <Table.Column dataIndex="title" title="Titre" />
         <Table.Column
-          width="30%"
           dataIndex="description"
           title="Description"
           render={(value) => {
-            return value.length > 60 ? value.slice(0, 60) + "..." : value;
+            return value.length > 100 ? value.slice(0, 100) + "..." : value;
           }}
         />
         <Table.Column dataIndex="type" title="Type" />
         <Table.Column dataIndex="salary" title="Salaire" />
         <Table.Column
-          width="20%"
           dataIndex={["beginning_date"]}
           title="Date de début"
           render={(value: any) => <DateField value={value} />}
         />
         <Table.Column
-          width="20%"
           dataIndex={["ending_date"]}
           title="Date de fin"
           render={(value: any) => <DateField value={value} />}
@@ -51,6 +53,7 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column dataIndex="location" title="Emplacement" />
         <Table.Column dataIndex="skills" title="Compétences" />
         <Table.Column
+          fixed="right"
           title="Actions"
           dataIndex="actions"
           render={(_, record: BaseRecord) => (
