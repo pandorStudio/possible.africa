@@ -46,7 +46,7 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
 <Flex direction="column" gap={2}>
         <Heading fontSize="4xl">{organisations?.name}</Heading>
         <Flex>
-        <Badge display="inline" textAlign="center" colorScheme="red" p={2} borderRadius={50} marginBottom={3}>{organisations?.type?.name}</Badge>      
+        <Badge display="inline" textAlign="center" colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{organisations?.type?.name}</Badge>      
 
         </Flex>
         <Link href={organisations?.site_web} isExternal alignItems="center" fontWeight={600} fontSize={14}>

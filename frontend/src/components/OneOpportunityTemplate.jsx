@@ -40,7 +40,7 @@ function OneOpportunityTemplate({iconSx, backUrl, opportunities}) {
 <Flex direction="column" gap={2}>
         <Heading fontSize="4xl">{opportunities?.title}</Heading>
         <Flex>
-        <Badge display="inline" textAlign="center" colorScheme="red" p={2} borderRadius={50} marginBottom={3}>{opportunities?.target_country}</Badge>      
+        <Badge display="inline" textAlign="center" colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{opportunities?.target_country}</Badge>      
 
         </Flex>
        

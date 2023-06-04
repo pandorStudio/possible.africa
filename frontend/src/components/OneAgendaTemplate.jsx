@@ -48,7 +48,7 @@ function OneAgendaTemplate({iconSx, backUrl, events}) {
         <Flex direction="column">
           <Flex>
 
-        <Badge display="inline" textAlign="center" colorScheme="red" p={2} borderRadius={50} marginBottom={3}>{events?.frequence}</Badge>      
+        <Badge display="inline" textAlign="center" colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{events?.frequence}</Badge>      
           </Flex>
           
 <Flex gap={6}>

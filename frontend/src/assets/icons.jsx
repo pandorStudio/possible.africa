@@ -7,6 +7,8 @@ import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import CorporateFareOutlinedIcon from '@mui/icons-material/CorporateFareOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import OutlinedFlagIcon from '@mui/icons-material/OutlinedFlag';
+import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 
 
 export function PodcastIcon() {
@@ -63,3 +65,17 @@ export function MapIcon() {
                                                                
     )}
                 
+
+
+export function CountryIcon() {
+    return (
+          <OutlinedFlagIcon/>            
+                                                         
+)}
+     
+
+export function TypeIcon() {
+    return (
+          <FactCheckOutlinedIcon/>            
+                                                         
+)}

@@ -102,6 +102,10 @@ export const apiSlice = createApi({
       invalidatesTags: ["Organisations"],
     }),
 
+    searchOrganisations: builder.query({
+      query: (keyword) =>  ({ url: "/organisations", params: { keyword } }),
+    }),
+
     getJobs: builder.query({
         query: () => "/jobs",
         transformResponse: (res) => res.sort((a, b) => b.id - a.id),
@@ -209,6 +213,7 @@ export const {
   useDeletePostMutation,
   useUpdatePostMutation,
   useGetOrganisationQuery,
+  useSearchOrganisationsQuery,
   useGetOrganisationsQuery,
   useAddOrganisationMutation,
   useDeleteOrganisationMutation,

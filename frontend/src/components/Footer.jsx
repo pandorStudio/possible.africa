@@ -32,30 +32,34 @@ export const Footer = () => {
             <Image src="/Au-service-de.jpeg" minW="100%" fit="cover" alt="image" fallbackSrc='/placeholder_org_couverture.jpeg' />
         </Flex>
     </Container>
-    <Box
-      as="section"
-     
-    >
+    
 
-      <Box as="footer" bg="bg-surface" borderStyle="solid" borderColor="gray.100" borderTopWidth={1}>
-        <Container
+    <Container
           py={{
-            base: '2',
-            lg: '3',
+            base: '4',
+            lg: '6',
           }}
           maxW="container.xl"
-          alignItems="center"
-          justifyContent="center"
+         
         >
-          <Flex gap="10"  justifyContent="space-between">
-            <Box w="10%" h="70px" as="a" href="/"><Image src={Logo} fit ='contain'
+
+
+          <Flex gap="10"  direction={{ base: 'column', md: "row" }} as="footer" bg="bg-surface" borderStyle="solid" borderColor="gray.100" borderTopWidth={1} 
+  py={{
+    base: '2',
+    lg: '3',
+  }}
+  minW="full"
+  alignItems="center"
+  justifyContent={{ base: 'center', md: "space-between" }}>
+            <Box w={{ base: '30%', md: "10%" }} h="70px" as="a" href="/">
+              <Image src={Logo} fit ='contain'
           w="100%"
-          h="100%"/></Box>
-          <Flex w="40%" alignItems="center">
-          
-          </Flex>
-            {isDesktop ? (
-              <Flex justifyContent="space-between" alignItems="center">
+          h="100%"/>
+          </Box>
+       
+            
+              <Flex justifyContent={{ base: 'center', md: "flex-end" }} alignItems="center" w={{ base: '100%', md: "50%" }}>
                 <ButtonGroup variant="link" spacing="5">
                   {[{name:'Contributions', link:"/" }, {name:'A propos', link:"/" },{name:'Mentions Légales', link:"/" }].map((item) => (
 
@@ -66,17 +70,10 @@ export const Footer = () => {
                 </ButtonGroup>
                
               </Flex>
-            ) : (
-              <IconButton
-                variant="ghost"
-                icon={<MenuIcon fontSize="1.25rem" />}
-                aria-label="Open Menu"
-              />
-            )}
+          
           </Flex>
         </Container>
-      </Box>
-      </Box>
+
     </>  
   )
 }

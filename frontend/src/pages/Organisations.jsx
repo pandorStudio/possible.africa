@@ -1,7 +1,8 @@
-import {  Container, Heading, Text, VStack } from "@chakra-ui/react";
+import {  Container, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import Image from '../assets/hunters-race-MYbhN8KaaEc-unsplash.jpg'
 import { useGetOrganisationsQuery, useAddOrganisationMutation, useUpdateOrganisationMutation, useDeleteOrganisationMutation } from "../features/api/apiSlice";
 import CardComponent from '../components/CardComponent';
+import FilterComponent from '../components/FilterComponent';
 import { Box, Spinner, HStack } from '@chakra-ui/react'
 
 
@@ -25,7 +26,7 @@ let isLoaded = true;
 
      content = organisations.map(organisation => {
       return (
-        <CardComponent postType="Organisation" key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded} link={"/organisations/" + organisation.id} type={organisation?.type?.name}/>
+        <CardComponent postType="Organisation" key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded} link={"/organisations/" + organisation.id} type={organisation?.type?.name} pays="Pays"/>
       )
     })
   } else if (isError) {
@@ -35,8 +36,12 @@ let isLoaded = true;
 return (
 <Container maxW="container.lg" p={0} >
 
-
       <VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">
+        {/* <Flex marginBottom={5} w="full" overflowX="scroll" p={5} className="scrollContainer">
+
+{/* <FilterComponent/> */}
+        {/* </Flex> */}
+
                 {content}
             </VStack>
   
