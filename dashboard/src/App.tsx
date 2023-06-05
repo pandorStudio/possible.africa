@@ -39,7 +39,6 @@ import { UserShow } from "./pages/users/show";
 import { UserEdit } from "./pages/users/edit";
 import { UserCreate } from "./pages/users/create";
 import { OrganisationTypeList } from "./pages/organisation_types/list";
-import { AntdInferencer } from "@refinedev/inferencer/antd";
 import { OrganisationList } from "./pages/organisations/list";
 import { OrganisationShow } from "./pages/organisations/show";
 import { OrganisationEdit } from "./pages/organisations/edit";
@@ -85,6 +84,7 @@ export const API_URL =
   ENV === "developement"
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
+import { AntdInferencer } from '@refinedev/inferencer/antd';
 
 function Logo() {
   return <img src="./assets/logos/logo.png" alt="n" />;
@@ -155,7 +155,7 @@ function App() {
               {
                 name: "Opportunité",
                 meta: {
-                  label: "Opportunités",
+                  label: "Section Opportunités",
                 },
               },
               {
