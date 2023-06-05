@@ -17,6 +17,7 @@ const card = (<Card
     borderRadius={0}
     alignItems={{ base: 'flex-start', md: 'center'}}
     justifyContent={{ base: 'flex-start', md: 'flex-start'}}
+    zIndex={-1}
 >
   <Skeleton isLoaded={isLoaded} >
 

@@ -23,6 +23,7 @@ function Searchbar({hideMeBellow}) {
 
  
   const [searchResults, setSearchResults] = useState([]);
+  const [isFocused, setIsFocused] = useState(false)
 
   function showResults(query) {
     // Perform search and set the results in the state
@@ -84,13 +85,14 @@ function Searchbar({hideMeBellow}) {
         setQuery(divText)
         navigate(`search?q=${divText}`)
       console.log(divText)
+
     };
   
 
   return (
     <>
  
-    <InputGroup as="div" hideBelow={hideMeBellow} w="full" className='search' display="flex" gap={10} >
+    <InputGroup as="div" hideBelow={hideMeBellow} w="full" className='search' display="flex" gap={10}>
       <InputLeftElement pointerEvents='none'>
         <SearchIcon color='gray.300' />
       </InputLeftElement>
@@ -104,18 +106,22 @@ function Searchbar({hideMeBellow}) {
 
 
   {(
-        <Box className='search-results-container' p={2} zIndex="tooltip">
+        <Box className='search-results-container' p={2} zIndex={100} overflow="scroll" minH="50vh">
           <Flex  borderStyle="solid" borderColor="gray.100" borderBottomWidth={1} >
 
           <Heading fontSize={16} py={5} px={2}>Resultats</Heading>
 
           </Flex>
-          {searchResults.map((result, index) => (
-            <div key={index} className="search-result" onClick={handleClick} >
-              <b>
-              {highlightMatch(result.name)}
-                </b>
-            </div>
+          {query && searchResults.map((result, index) => (
+           <>
+            <Text noOfLines={[1,2]} key={index} className="search-result" onClick={handleClick} >
+            {highlightMatch(result.name)}
+      </Text>
+            <Text noOfLines={[1,5]} key={index} className="search-result" onClick={handleClick} >
+            {highlightMatch(result.description)}
+      </Text>
+           
+           </> 
           ))}
           {/* {searchResults.map((result, index) => (
 
