@@ -3,6 +3,7 @@ import {useGetOpportunitiesQuery} from "../features/api/apiSlice.js";
 import CardComponent from "../components/CardComponent.jsx";
 import parse from "html-react-parser";
 import { useState } from "react";
+import CustomContainer from "../utils/CustomContainer.jsx";
 
 function Opportunites() {
 
@@ -38,15 +39,8 @@ let isLoaded = true;
     }
 
   return (
-      <Container maxW="container.lg" p={0}>
+    <CustomContainer content={content}/>
 
-
-<VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">
-              {content}
-          </VStack>
-
-
-      </Container>
   )
 }
 
