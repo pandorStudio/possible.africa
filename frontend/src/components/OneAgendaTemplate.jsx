@@ -21,7 +21,7 @@ function OneAgendaTemplate({iconSx, backUrl, events}) {
 
   return (
     <Container maxW="container.lg" p={0}>
-        <Flex ml={10}><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl} mr="1"/></Flex>
+        <Flex ml={10}><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl} mr="1" mt={5}/></Flex>
 
     <Flex py={0} direction={{ base: 'column', md: "row" }}>
         <VStack w={{ base: '100%', md: "75%" }} h="full" p={10} spacing={10} alignItems="flex-start">

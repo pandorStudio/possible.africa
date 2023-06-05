@@ -27,6 +27,7 @@ export const HomeHeader = () => {
         base: '1',
         md: '5',
       }}
+      borderStyle="solid" borderColor="gray.100" borderBottomWidth={1} 
     >
       <Box as="nav" bg="bg-surface">
         <Container
@@ -63,7 +64,7 @@ export const HomeHeader = () => {
               </Flex>
             
             ) : (
-              <Flex justify="flex-start" gap="8" overflow="scroll" className="scrollContainer" px={8}>
+              <Flex justify="flex-start" gap="8" overflow="scroll" className="scrollContainer" px={8} >
 
                   {[{name:'Organisations', link:"/organisations"},
                   {name:'Podcast/Interview', link:"/interviews"},
@@ -84,7 +85,7 @@ export const HomeHeader = () => {
               </Flex>
             )}
         </Container>
-        <Divider/>
+       
       </Box>
       
       </Box>

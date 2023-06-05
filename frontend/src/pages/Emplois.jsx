@@ -2,6 +2,7 @@ import {Container, Heading, HStack, Spinner, Text, VStack} from "@chakra-ui/reac
 import {useGetJobsQuery} from "../features/api/apiSlice.js";
 import CardComponent from "../components/CardComponent.jsx";
 import Image from "../assets/hunters-race-MYbhN8KaaEc-unsplash.jpg";
+import CustomContainer from "../utils/CustomContainer.jsx";
 
 
 function Emplois() {
@@ -35,15 +36,8 @@ function Emplois() {
         return <div>{error.status}</div>;
     }
   return (
-      <Container maxW="container.lg" p={0} >
+    <CustomContainer content={content}/>
 
-
-        <VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">         
-              {content}
-          </VStack>
-
-
-      </Container>
   )
 }
 

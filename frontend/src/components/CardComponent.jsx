@@ -8,19 +8,19 @@ function CardComponent({title, description, imgUrl, isLoaded, link, postType, ty
 const card = (<Card
     direction={{ base: 'column', md: 'row' }}
     overflow='hidden'
-    w={{base: "100%", md: "2xl"}}
-    maxW={{ base: '100%', md: '2xl' }}
+    minW={{base: "sm", md: "2xl"}}
+    w={{base: "sm", md: "2xl"}}
+    maxW={{ base: 'sm', md: '2xl' }}
     height={{ base: '', md: '130px' }}
     boxShadow="none"
     _hover={{ cursor: "pointer" }}
     borderRadius={0}
-
-    alignItems="center"
-    justifyContent={{ base: 'center', md: 'flex-start'}}
+    alignItems={{ base: 'flex-start', md: 'center'}}
+    justifyContent={{ base: 'flex-start', md: 'flex-start'}}
 >
   <Skeleton isLoaded={isLoaded} >
 
-    <Box  w={100} h="100px" >
+    <Box  w={100} h="100px" hideBelow="md" >
 
       <Image
           fit ='cover'
@@ -31,13 +31,14 @@ const card = (<Card
           borderRadius={8}
           fallbackSrc='/placeholder_org.jpeg'
           borderStyle="solid" borderColor="gray.100" borderWidth={1}
+          
       />
     </Box>
   </Skeleton>
 
   <Stack>
     
-    <CardBody>
+    <CardBody p={{ base: '0', md: '15px' }}>
 
       <Heading paddingBottom={2} fontSize='lg' color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading>
 
@@ -45,24 +46,24 @@ const card = (<Card
         {description}
       </Text>
      {postType === "Organisation" &&  (<>
-      <Flex gap={5} marginTop={1.5}>
+      <Flex gap={5} marginTop={1.5} marginLeft={-1}>
      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="sm">{pays}</Text></Flex>
       <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="sm">{type}</Text></Flex>
       </Flex>
       </>)} 
      {postType === "Interview" && (<>
-      <Flex gap={5} marginTop={1.5}>
+      <Flex gap={5} marginTop={1.5} marginLeft={-1}>
      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="sm">{pays}</Text></Flex>
       </Flex>
      
      </>)} 
      {postType === "Actualités" && (<>
-      <Flex gap={5} marginTop={1.5}>
+      <Flex gap={5} marginTop={1.5} marginLeft={-1}>
      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="sm">{pays}</Text></Flex>
       </Flex>
      </>)} 
      {postType === "Agenda" && (<>
-      <Flex gap={5} marginTop={1.5}>
+      <Flex gap={5} marginTop={1.5} marginLeft={-1}>
      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CalendarIcon /><Text>{dateDebut}</Text> - <Text>{dateFin}</Text></Flex>
       <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon/> <Text fontSize="sm">{pays}</Text></Flex>
       <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="sm">{type}</Text></Flex>
@@ -70,13 +71,13 @@ const card = (<Card
       </Flex>
   </>)} 
      {postType === "Opportunités" && (<>
-      <Flex gap={5} marginTop={1.5}>
+      <Flex gap={5} marginTop={1.5} marginLeft={-1}>
      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="sm">{pays}</Text></Flex>
      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="sm">{type}</Text></Flex>
 
       </Flex>
      </>)} 
-     {postType === "Emplois" && <><Flex gap={5} marginTop={1.5}>
+     {postType === "Emplois" && <><Flex gap={5} marginTop={1.5} marginLeft={-1}>
       <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><OrganisationsIcon /> <Text fontSize="sm">{company}</Text></Flex>
       <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><WorkIcon/> <Text fontSize="sm">{type}</Text></Flex>
       <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><MapIcon/> <Text fontSize="sm">{location}</Text></Flex>

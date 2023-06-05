@@ -1,12 +1,17 @@
 import {  Container, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import Image from '../assets/hunters-race-MYbhN8KaaEc-unsplash.jpg'
-import { useGetOrganisationsQuery, useAddOrganisationMutation, useUpdateOrganisationMutation, useDeleteOrganisationMutation } from "../features/api/apiSlice";
+import { useGetOrganisationsQuery, useAddOrganisationMutation, useUpdateOrganisationMutation, useDeleteOrganisationMutation, useSearchOrganisationsQuery } from "../features/api/apiSlice";
 import CardComponent from '../components/CardComponent';
 import { Box, Spinner, HStack } from '@chakra-ui/react'
 import CustomContainer from "../utils/CustomContainer";
+import { useSearchParams } from "react-router-dom";
 
 
-function Organisations() {
+function SearchOrganisation() {
+
+  const [searchParams,setSearchParams ] = useSearchParams()
+  const searchTerm = searchParams.get('q') || '';
+
   const {
     data: organisations = [],
     isLoading,
@@ -14,7 +19,7 @@ function Organisations() {
     isError,
     isSuccess,
     error,
-  } = useGetOrganisationsQuery();
+  } = useSearchOrganisationsQuery(searchTerm);
   let content;
 let isLoaded = true;
 
@@ -23,10 +28,13 @@ let isLoaded = true;
 
    return <VStack><Spinner/></VStack>
    } else if(isSuccess) {
-
-     content = organisations.map(organisation => {
+    
+  content = organisations.map(organisation => {
       return (
+        <>
+       
         <CardComponent postType="Organisation" key={organisation._id} title={organisation.name} description={organisation.description} imgUrl={organisation.logo} isLoaded={isLoaded} link={"/organisations/" + organisation.id} type={organisation?.type?.name} pays="Pays"/>
+        </>
       )
     })
   } else if (isError) {
@@ -34,9 +42,10 @@ let isLoaded = true;
     return <div>{error.status}</div>;
   }
 return (
-<CustomContainer content={content}/>
+
+<CustomContainer content={content} title={`Resultat des recherches de : ${searchTerm}`}/>
 
 )
 }
 
-export default Organisations
+export default SearchOrganisation
