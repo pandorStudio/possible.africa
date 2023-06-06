@@ -35,6 +35,8 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
         )}
       <Title level={5}>Title</Title>
       <TextField value={record?.title} />
+      <Title level={5}>Country</Title>
+      <TextField value={record?.country} />
       <Title level={5}>Slug</Title>
       <TextField value={record?.slug} />
       <Title level={5}>Content</Title>

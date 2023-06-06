@@ -52,15 +52,16 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           } else {
             const ob: any = {
               name: el[0],
-              description: el[1],
-              owner: el[2],
-              email: el[3],
-              telephone: el[4],
-              site_web: el[5],
-              linkedin_url: el[6],
-              facebook_url: el[7],
-              twitter_url: el[8],
-              adresse: el[9],
+              country: el[1],
+              description: el[2],
+              owner: el[3],
+              email: el[4],
+              telephone: el[5],
+              site_web: el[6],
+              linkedin_url: el[7],
+              facebook_url: el[8],
+              twitter_url: el[9],
+              adresse: el[10],
             };
             body.push({ ...ob });
             // await axios.post(apiUrl + "/organisations", el);
@@ -152,6 +153,11 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             width="10%"
             dataIndex="name"
             title="Nom de l'organisation"
+          />
+          <Table.Column
+            width="10%"
+            dataIndex="country"
+            title="Pays de l'organisation"
           />
           <Table.Column
             width="10%"

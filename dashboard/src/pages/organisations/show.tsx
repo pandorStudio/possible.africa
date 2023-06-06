@@ -21,6 +21,8 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
     <Show isLoading={isLoading}>
       <Title level={5}>Nom</Title>
       <TextField value={record?.name} />
+      <Title level={5}>Pays</Title>
+      <TextField value={record?.country} />
       <Title level={5}>Type</Title>
       <TextField value={record?.type?.name} />
       <Title level={5}>Contributeur</Title>

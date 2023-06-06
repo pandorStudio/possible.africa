@@ -46,6 +46,7 @@ const opportunitySchema = mongoose.Schema(
       ],
     },
     description: { type: String },
+    slug: { type: String, default: "" },
     eligibility: { type: String },
     processus: { type: String },
     beneficies: { type: String },

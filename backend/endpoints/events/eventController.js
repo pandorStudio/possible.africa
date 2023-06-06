@@ -31,8 +31,11 @@ exports.getEventById = async (req, res, next) => {
 // @route POST /api/v1/events
 // @access Public
 exports.createEvent = async (req, res, next) => {
+  const CustomBody = { ...req.body };
+  const slug = CustomUtils.slugify(CustomBody.title) + "-" + CustomUtils.getRandomNbr();
   try {
-    const event = await Event.create(req.body);
+    CustomBody.slug = slug;
+    const event = await Event.create(CustomBody);
     res.status(201).json(event);
   } catch (error) {
     res.status(400).json({ message: error.message });

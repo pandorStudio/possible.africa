@@ -59,8 +59,13 @@ exports.createPost = async (req, res) => {
 
   // console.log(imgPaths);
   // res.status(201).json({});
+  const CustomBody = { ...req.body };
+  
+  const name = CustomBody.name;
+  const slug = CustomUtils.slugify(name) + "-" + CustomUtils.getRandomNbr();
   try {
-    const post = await Post.create(req.body);
+    CustomBody.slug = slug;
+    const post = await Post.create(CustomBody);
     res.status(201).json(post);
   } catch (error) {
     res.status(500).json({ message: error.message });
