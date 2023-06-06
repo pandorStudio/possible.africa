@@ -120,55 +120,73 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
           ),
         }}
       >
-      <Table
-        {...tableProps}
-        style={{
-          width: "1800px !important",
-          overflowX: "scroll",
-        }}
-        scroll={{ x: 1800, y: "auto" }}
-        rowKey="id"
-      >
-        <Table.Column
-          dataIndex={["organisation", "name"]}
-          title="Organisation"
-        />
-        <Table.Column dataIndex="title" title="Titre" />
-        <Table.Column
-          dataIndex="description"
-          title="Description"
-          render={(value) => {
-            return value.length > 100 ? value.slice(0, 100) + "..." : value;
+        <Table
+          {...tableProps}
+          style={{
+            width: "1800px !important",
+            overflowX: "scroll",
           }}
-        />
-        <Table.Column dataIndex="type" title="Type" />
-        <Table.Column dataIndex="salary" title="Salaire" />
-        <Table.Column
-          dataIndex={["beginning_date"]}
-          title="Date de début"
-          render={(value: any) => <DateField value={value} />}
-        />
-        <Table.Column
-          dataIndex={["ending_date"]}
-          title="Date de fin"
-          render={(value: any) => <DateField value={value} />}
-        />
-        <Table.Column dataIndex="location" title="Emplacement" />
-        <Table.Column dataIndex="skills" title="Compétences" />
-        <Table.Column
-          fixed="right"
-          title="Actions"
-          dataIndex="actions"
-          render={(_, record: BaseRecord) => (
-            <Space>
-              <EditButton hideText size="small" recordItemId={record.id} />
-              <ShowButton hideText size="small" recordItemId={record.id} />
-              <DeleteButton hideText size="small" recordItemId={record.id} />
-            </Space>
-          )}
-        />
-      </Table>
+          scroll={{ x: 1800, y: "auto" }}
+          rowKey="id"
+        >
+          <Table.Column
+            dataIndex={["organisation", "name"]}
+            title="Organisation"
+          />
+          <Table.Column dataIndex="title" title="Titre" />
+          <Table.Column
+            dataIndex="description"
+            title="Description"
+            render={(value: any) => {
+              if (value && value.length > 100) {
+                return value.substring(0, 100) + "...";
+              } else if (value) {
+                return value;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column dataIndex="type" title="Type" />
+          <Table.Column dataIndex="salary" title="Salaire" />
+          <Table.Column
+            dataIndex={["beginning_date"]}
+            title="Date de début"
+            render={(value: any) => {
+              if(value){
+                return <DateField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            dataIndex={["ending_date"]}
+            title="Date de fin"
+            render={(value: any) => {
+              if(value){
+                return <DateField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column dataIndex="location" title="Emplacement" />
+          <Table.Column dataIndex="skills" title="Compétences" />
+          <Table.Column
+            fixed="right"
+            title="Actions"
+            dataIndex="actions"
+            render={(_, record: BaseRecord) => (
+              <Space>
+                <EditButton hideText size="small" recordItemId={record.id} />
+                <ShowButton hideText size="small" recordItemId={record.id} />
+                <DeleteButton hideText size="small" recordItemId={record.id} />
+              </Space>
+            )}
+          />
+        </Table>
       </List>
-      </>
+    </>
   );
 };

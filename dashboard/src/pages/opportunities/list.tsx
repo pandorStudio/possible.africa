@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IResourceComponentsProps, BaseRecord, useInvalidate, useApiUrl } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  BaseRecord,
+  useInvalidate,
+  useApiUrl,
+} from "@refinedev/core";
 import {
   useTable,
   List,
@@ -135,12 +140,24 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             dataIndex={["beginning_date"]}
             title="Date de début"
-            render={(value: any) => <DateField value={value} />}
+            render={(value: any) => {
+              if (value) {
+                return <DateField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex={["ending_date"]}
             title="Date de fin"
-            render={(value: any) => <DateField value={value} />}
+            render={(value: any) => {
+              if (value) {
+                return <DateField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column dataIndex="target_people" title="Cible" />
           <Table.Column dataIndex="target_country" title="pays" />
@@ -148,30 +165,54 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             dataIndex="description"
             title="Description"
-            render={(values: any) =>
-              values.length > 100 ? values.substring(0, 100) + "..." : values
-            }
+            render={(value: any) => {
+              if (value && value.length > 100) {
+                return value.substring(0, 100) + "...";
+              } else if (value) {
+                return value;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="eligibility"
             title="Éligibilité"
-            render={(values: any) =>
-              values.length > 100 ? values.substring(0, 100) + "..." : values
-            }
+            render={(value: any) => {
+              if (value && value.length > 100) {
+                return value.substring(0, 100) + "...";
+              } else if (value) {
+                return value;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="processus"
             title="Processus"
-            render={(values: any) =>
-              values.length > 100 ? values.substring(0, 100) + "..." : values
-            }
+            render={(value: any) => {
+              if (value && value.length > 100) {
+                return value.substring(0, 100) + "...";
+              } else if (value) {
+                return value;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="beneficies"
             title="Bénéfices"
-            render={(values: any) =>
-              values.length > 100 ? values.substring(0, 100) + "..." : values
-            }
+            render={(value: any) => {
+              if (value && value.length > 100) {
+                return value.substring(0, 100) + "...";
+              } else if (value) {
+                return value;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="registration_link"
@@ -180,7 +221,13 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             dataIndex={["isRecurrent"]}
             title="Est Récurrent"
-            render={(value: any) => <BooleanField value={value} />}
+            render={(value: any) => {
+              if (value) {
+                return <BooleanField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column dataIndex="frequency" title="Fréquence" />
           <Table.Column

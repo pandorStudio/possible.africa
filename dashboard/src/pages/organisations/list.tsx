@@ -164,7 +164,13 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             dataIndex="logo"
             title="Logo de l'organisation"
             render={(value: any) => {
-              return <ImageField style={{ maxWidth: "100px" }} value={value} />;
+              if (value) {
+                return (
+                  <ImageField style={{ maxWidth: "100px" }} value={value} />
+                );
+              } else {
+                return "-";
+              }
             }}
           />
           <Table.Column
@@ -172,7 +178,13 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             dataIndex="couverture"
             title="Couverture de l'organisation"
             render={(value: any) => {
-              return <ImageField style={{ maxWidth: "100px" }} value={value} />;
+              if (value) {
+                return (
+                  <ImageField style={{ maxWidth: "100px" }} value={value} />
+                );
+              } else {
+                return "-";
+              }
             }}
           />
           <Table.Column dataIndex={["type", "name"]} title="Type" />
@@ -184,71 +196,119 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             dataIndex="description"
             title="Description"
-            render={(value) => {
-              return value.length > 60 ? value.slice(0, 60) + "..." : value;
+            render={(value: any) => {
+              if (value && value.length > 60) {
+                return value.substring(0, 60) + "...";
+              } else if (value) {
+                return value;
+              } else {
+                return "-";
+              }
             }}
           />
           <Table.Column
             dataIndex={["email"]}
             title="Email"
-            render={(value: any) => <EmailField value={value} />}
+            render={(value: any) => {
+              if (value) {
+                return <EmailField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="telephone"
             title="Telephone"
-            render={(value: any) => (
-              <Link href={value} target="_blank">
-                {value}
-              </Link>
-            )}
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="site_web"
             title="Site Web"
-            render={(value: any) => (
-              <Link href={value} target="_blank">
-                {value}
-              </Link>
-            )}
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="linkedin_url"
             title="Url Linkedin "
-            render={(value: any) => (
-              <Link href={value} target="_blank">
-                {value}
-              </Link>
-            )}
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="facebook_url"
             title="Url Facebook"
-            render={(value: any) => (
-              <Link href={value} target="_blank">
-                {value}
-              </Link>
-            )}
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="twitter_url"
             title="Url Twitter"
-            render={(value: any) => (
-              <Link href={value} target="_blank">
-                {value}
-              </Link>
-            )}
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="adresse"
             title="Adresse"
-            render={(value: any) => (
-              <Link
-                href={"https://www.google.com/search?q=" + value}
-                target="_blank"
-              >
-                {value}
-              </Link>
-            )}
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link
+                    href={"https://www.google.com/search?q=" + value}
+                    target="_blank"
+                  >
+                    {value}
+                  </Link>
+                );
+              } else {  
+                return "-";
+              }
+            }}
           />
           <Table.Column
             fixed="right"

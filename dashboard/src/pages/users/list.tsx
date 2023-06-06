@@ -26,13 +26,23 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           dataIndex="avatar"
           title="Photo de profil"
           render={(value: any) => {
-            return <ImageField style={{ maxWidth: "200px" }} value={value} />;
+            if (value) {
+              return <ImageField value={value} />;
+            } else {
+              return "-";
+            }
           }}
         />
         <Table.Column
           dataIndex={["email"]}
           title="Email"
-          render={(value: any) => <EmailField value={value} />}
+          render={(value: any) => {
+            if (value) {
+              return <EmailField value={value} />;
+            } else {
+              return "-";
+            }
+          }}
         />
         <Table.Column dataIndex="firstname" title="Prénom.s" />
         <Table.Column dataIndex="lastname" title="N. Famille" />
@@ -40,61 +50,93 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column
           dataIndex="role"
           title="Role"
-          render={(value: any) =>
-            value === "admin"
-              ? "Administrateur"
-              : value === "user"
-              ? "Utilisateur"
-              : "Contributeur"
-          }
+          render={(value: any) => {
+            if (value) {
+              value === "admin"
+                ? "Administrateur"
+                : value === "user"
+                ? "Utilisateur"
+                : "Contributeur";
+            } else {
+              return "-";
+            }
+          }}
         />
         <Table.Column
           dataIndex="gender"
           title="Genre"
-          render={(value: any) =>
-            value === "m" ? "Masculin" : value === "f" ? "Féminin" : "Autre"
-          }
+          render={(value: any) => {
+            if (value) {
+              value === "m" ? "Masculin" : value === "f" ? "Féminin" : "Autre";
+            } else {
+              return "-";
+            }
+          }}
         />
         <Table.Column dataIndex="phone" title="Tèl." />
 
         <Table.Column
           dataIndex="adresse"
           title="Adresse"
-          render={(value: any) => (
-            <Link
-              href={"https://www.google.com/search?q=" + value}
-              target="_blank"
-            >
-              {value}
-            </Link>
-          )}
+          render={(value: any) => {
+            if (value) {
+              return (
+                <Link
+                  href={"https://www.google.com/search?q=" + value}
+                  target="_blank"
+                >
+                  {value}
+                </Link>
+              );
+            } else {
+              return "-";
+            }
+          }}
         />
         <Table.Column
           dataIndex="facebook_profile"
           title="Profile Fb."
-          render={(value: any) => (
-            <Link href={value} target="_blank">
-              {value}
-            </Link>
-          )}
+          render={(value: any) => {
+            if (value) {
+              return (
+                <Link href={value} target="_blank">
+                  {value}
+                </Link>
+              );
+            } else {
+              return "-";
+            }
+          }}
         />
         <Table.Column
           dataIndex="twitter_profile"
           title="Profile Tw."
-          render={(value: any) => (
-            <Link href={value} target="_blank">
-              {value}
-            </Link>
-          )}
+          render={(value: any) => {
+            if (value) {
+              return (
+                <Link href={value} target="_blank">
+                  {value}
+                </Link>
+              );
+            } else {
+              return "-";
+            }
+          }}
         />
         <Table.Column
           dataIndex="linkedin_profile"
           title="Profile Li."
-          render={(value: any) => (
-            <Link href={value} target="_blank">
-              {value}
-            </Link>
-          )}
+          render={(value: any) => {
+            if (value) {
+              return (
+                <Link href={value} target="_blank">
+                  {value}
+                </Link>
+              );
+            } else {
+              return "-";
+            }
+          }}
         />
         <Table.Column
           fixed="right"
