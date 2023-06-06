@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
 
 export const EventCreate: React.FC<IResourceComponentsProps> = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm();
+  const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
 
   const { selectProps: organisationSelectProps } = useSelect({
     resource: "organisations",
@@ -26,9 +26,22 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "username",
   });
 
+  async function onSubmitCapture(values: any) {
+    if (!values?.organisation?._id) {
+      values.organisation = null;
+    }
+    if (!values?.user?._id) {
+      values.user = null;
+    }
+    if (!values?.event_type?._id) {
+      values.event_type = null;
+    }
+    onFinish(values);
+  }
+
   return (
     <Create saveButtonProps={saveButtonProps}>
-      <Form {...formProps} layout="vertical">
+      <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
         <Form.Item label="Organisation" name={["organisation", "_id"]}>
           <Select {...organisationSelectProps} />
         </Form.Item>

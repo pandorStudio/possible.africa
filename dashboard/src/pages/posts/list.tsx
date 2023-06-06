@@ -49,7 +49,8 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
           } else {
             const ob: any = {
               title: el[0],
-              slug: el[1],
+              country: el[1],
+              slug: el[2],
             };
             body.push({ ...ob });
             // await axios.post(apiUrl + "/organisations", el);
@@ -135,33 +136,42 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             width="30%"
             dataIndex="organisations"
             title="Organisations"
-            render={(value: any[]) =>
-              organisationsIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField
-                      key={index}
-                      value={
-                        organisationsData?.data?.find(
-                          (resourcesItems) => resourcesItems._id === item?._id
-                        )?.name
-                      }
-                    />
-                  ))}
-                </>
-              )
-            }
+            render={(value: any[]) => {
+              if (value) {
+                organisationsIsLoading ? (
+                  <>Loading ...</>
+                ) : (
+                  <>
+                    {value?.map((item, index) => (
+                      <TagField
+                        key={index}
+                        value={
+                          organisationsData?.data?.find(
+                            (resourcesItems) => resourcesItems._id === item?._id
+                          )?.name
+                        }
+                      />
+                    ))}
+                  </>
+                );
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column dataIndex="title" title="Titre" />
+          <Table.Column dataIndex="country" title="Pays" />
           <Table.Column dataIndex="slug" title="Slug" />
           <Table.Column
             dataIndex={["image"]}
             title="Couverture"
-            render={(value: any) => (
-              <ImageField style={{ maxWidth: "100px" }} value={value} />
-            )}
+            render={(value: any) => {
+              if (value) {
+                return <ImageField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column dataIndex={["categorie", "name"]} title="Categorie" />
           <Table.Column

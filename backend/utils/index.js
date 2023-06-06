@@ -60,6 +60,14 @@ class CustomUtils {
     });
     return queryObj;
   }
+
+  static slugify = (from = "") => {
+    return from.split(" ").join("-");
+  }
+
+  static getRandomNbr(max = 9999999) {
+    return Math.round((Math.random() * max));
+  }
 }
 
 module.exports = CustomUtils;

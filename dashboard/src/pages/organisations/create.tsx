@@ -125,6 +125,12 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
+        <Form.Item
+          label="Pays"
+          name={["country"]}
+        >
+          <Input />
+        </Form.Item>
         <Form.Item label="Logo">
           <Form.Item
             name="logo"

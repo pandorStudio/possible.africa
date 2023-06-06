@@ -35,9 +35,13 @@ exports.getOrganisationById = async (req, res) => {
 // @route POST /api/v1/organisations
 // @access Public
 exports.createOrganisation = async (req, res) => {
-  const CustomBody = {...req.body};
+  const CustomBody = { ...req.body };
+  const name = CustomBody.name;
+  const slug =
+    CustomUtils.slugify(name) + "-" + CustomUtils.getRandomNbr();
   try {
-    if(req.user) CustomBody.contributeur = req.user._id;
+    if (req.user) CustomBody.contributeur = req.user._id;
+    CustomBody.slug = slug;
     const organisation = await Organisation.create(CustomBody);
     res.status(201).json(organisation);
   } catch (error) {

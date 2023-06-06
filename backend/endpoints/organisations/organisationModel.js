@@ -19,6 +19,14 @@ const organisationSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    country: {
+      type: String,
+      default: "",
+    },
+    slug: {
+      type: String,
+      default: "",
+    },
     owner: {
       type: String,
       default: "Inconnu",
@@ -37,25 +45,20 @@ const organisationSchema = mongoose.Schema(
   }
 );
 
-// Constraind contributeur to be a contributor
-/*organisationSchema.path("contributeur").validate(async (value) => {
-  const user = await mongoose.model("User").findById(value);
-  return user.role === "contributor";
-}, "Contributeur must be a contributor");*/
-
-// Run validators on update
-/*organisationSchema.pre("findOneAndUpdate", async function (next) {
-  const docToUpdate = await this.model.findOne(this.getQuery());
-  if (docToUpdate.contributeur !== this.getUpdate().contributeur) {
-    const user = await mongoose
-      .model("User")
-      .findById(this.getUpdate().contributeur);
-    if (user.role !== "contributor") {
-      next(new Error("Contributeur must be a contributor"));
-    }
-  }
-  next();
-});*/
+organisationSchema.index({
+  name: 'text',
+  country: 'text',
+  slug: 'text',
+  owner: 'text',
+  description: 'text',
+  email: 'text',
+  telephone: 'text',
+  site_web: 'text',
+  linkedin_url: 'text',
+  facebook_url: 'text',
+  twitter_url: 'text',
+  adresse: 'text',
+});
 
 // populate response with organisationType
 organisationSchema.pre(/^find/, function (next) {

@@ -6,17 +6,21 @@ const postSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-      organisations: {
-        type: [mongoose.Schema.Types.ObjectId],
-          ref: "Organisation",
-      },
+    organisations: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Organisation",
+    },
     categorie: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "PostCategorie",
     },
+    country: {
+      type: String,
+      default: "",
+    },
     title: { type: String, required: true, unique: true },
     slug: { type: String, required: true, unique: true },
-    content: { type: String  },
+    content: { type: String },
     image: { type: String, default: "" },
   },
   {
