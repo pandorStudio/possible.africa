@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IResourceComponentsProps, BaseRecord, useApiUrl, useInvalidate } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  BaseRecord,
+  useApiUrl,
+  useInvalidate,
+} from "@refinedev/core";
 import {
   useTable,
   List,
@@ -128,12 +133,24 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             dataIndex={["beginningDate"]}
             title="Date de début"
-            render={(value: any) => <DateField value={value} />}
+            render={(value: any) => {
+              if (value) {
+                return <DateField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex={["endingDate"]}
             title="Date de fin"
-            render={(value: any) => <DateField value={value} />}
+            render={(value: any) => {
+              if (value) {
+                return <DateField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex={["organisation", "name"]}
@@ -149,9 +166,15 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             dataIndex="description"
             title="Description"
-            render={(values: any) =>
-              values.length > 100 ? values.substring(0, 100) + "..." : values
-            }
+            render={(value: any) => {
+              if (value && value.length > 100) {
+                return value.substring(0, 100) + "...";
+              } else if (value) {
+                return value;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column
             dataIndex="registration_link"
@@ -161,7 +184,13 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             dataIndex={["is_recurrent"]}
             title="Est Récurrent"
-            render={(value: any) => <BooleanField value={value} />}
+            render={(value: any) => {
+              if (value) {
+                return <BooleanField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
           />
           <Table.Column dataIndex="frequence" title="Frequence" />
           <Table.Column dataIndex={["user", "username"]} title="Contributeur" />

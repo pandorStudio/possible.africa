@@ -7,7 +7,7 @@ import Select from "antd/lib/select";
 import { Option } from "antd/es/mentions";
 
 export const JobCreate: React.FC<IResourceComponentsProps> = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm();
+  const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
 
   const { selectProps: organisationSelectProps } = useSelect({
     resource: "organisations",
@@ -15,11 +15,16 @@ export const JobCreate: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "name",
   });
 
-  console.log(organisationSelectProps);
+  async function onSubmitCapture(values: any) {
+    if (!values?.organisation?._id) {
+      values.organisation = null;
+    }
+    onFinish(values);
+  }
 
   return (
     <Create saveButtonProps={saveButtonProps}>
-      <Form {...formProps} layout="vertical">
+      <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
         <Form.Item
           label="Titre"
           name={["title"]}
@@ -39,7 +44,7 @@ export const JobCreate: React.FC<IResourceComponentsProps> = () => {
             {...organisationSelectProps}
             defaultValue={{ value: "", label: "Sélectionner" }}
           >
-            <option value="">Selectionner</option>{" "}
+            <option value="">Selectionner</option>
           </Select>
         </Form.Item>
         <Form.Item label="Type" name={["type"]}>
