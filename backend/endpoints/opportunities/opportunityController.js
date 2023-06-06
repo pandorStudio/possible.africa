@@ -34,9 +34,13 @@ exports.getOpportunityById = async (req, res) => {
 // @route POST /api/v1/opportunities
 // @access Public
 exports.createOpportunity = async (req, res) => {
+    const CustomBody = { ...req.body };
+  const slug =
+    CustomUtils.slugify(CustomBody.title) + "-" + CustomUtils.getRandomNbr();
   try {
+    CustomBody.slug = slug;
     // create new opportunity
-    const opportunity = await Opportunity.create(req.body);
+    const opportunity = await Opportunity.create(CustomBody);
     res.status(201).json(opportunity);
   } catch (error) {
     res.status(400).json({ message: error.message });

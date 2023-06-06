@@ -49,7 +49,8 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
           } else {
             const ob: any = {
               title: el[0],
-              slug: el[1],
+              country: el[1],
+              slug: el[2],
             };
             body.push({ ...ob });
             // await axios.post(apiUrl + "/organisations", el);
@@ -155,6 +156,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             }
           />
           <Table.Column dataIndex="title" title="Titre" />
+          <Table.Column dataIndex="country" title="Pays" />
           <Table.Column dataIndex="slug" title="Slug" />
           <Table.Column
             dataIndex={["image"]}

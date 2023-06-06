@@ -43,6 +43,12 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
+        <Form.Item
+          label="Pays"
+          name={["country"]}
+        >
+          <Input />
+        </Form.Item>
         <Form.Item label="Type" name={["type", "_id"]}>
           <Select {...typeSelectProps} />
         </Form.Item>

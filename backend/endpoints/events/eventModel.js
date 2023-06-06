@@ -40,6 +40,10 @@ const eventSchema = mongoose.Schema(
       ],
     },
     description: { type: String },
+    slug: {
+      type: String,
+      default: "",
+    },
     registration_link: { type: String },
     location: {
       type: String,

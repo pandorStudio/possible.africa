@@ -127,26 +127,23 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
       // intercept onSubmit to add the editor content to the form data
     >
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
-        <Form.Item
-            label="Auteur"
-            name={["user"]}
-        >
+        <Form.Item label="Auteur" name={["user"]}>
           <Select {...userSelectProps} />
         </Form.Item>
         <Form.Item
-            label="Organisations"
-            name={["organisations"]}
-            getValueProps={(value: any[]) => {
-              return {
-                value: value?.map((item) => item),
+          label="Organisations"
+          name={["organisations"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
             };
-            }}
-            getValueFromEvent={(...args: any) => {
-              const toBeReturned = args[1].map((item: any) => {
-                return item.value;
-              })
-              return toBeReturned;
-            }}
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
         >
           <Select mode="multiple" {...organisationsSelectProps} />
         </Form.Item>
@@ -158,6 +155,12 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
               required: true,
             },
           ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Pays"
+          name={["country"]}
         >
           <Input />
         </Form.Item>
@@ -222,10 +225,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             </Upload.Dragger>
           </Form.Item>
         </Form.Item>
-        <Form.Item
-          label="Categorie"
-          name={["categorie"]}
-        >
+        <Form.Item label="Categorie" name={["categorie"]}>
           <Select {...categorieSelectProps} />
         </Form.Item>
       </Form>

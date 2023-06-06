@@ -27,8 +27,12 @@ exports.getJobById = async (req, res, next) => {
 
 // CREATE JOB
 exports.createJob = async (req, res, next) => {
+  const CustomBody = { ...req.body };
+  const slug =
+    CustomUtils.slugify(CustomBody.title) + "-" + CustomUtils.getRandomNbr();
   try {
-    const newJob = await Job.create(req.body);
+    CustomBody.slug = slug;
+    const newJob = await Job.create(CustomBody);
     res.status(201).json(newJob);
   } catch (error) {
     res.status(500).json({ message: error.message });
