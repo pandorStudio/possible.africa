@@ -2,11 +2,13 @@ import {Container, Spinner, VStack} from "@chakra-ui/react"
 import {useGetPostCategoriesQuery, useGetPostsQuery} from "../../features/api/apiSlice.js";
 import CardComponent from "../../components/CardComponent.jsx";
 import parse from "html-react-parser";
+import CustomContainer from "../../utils/CustomContainer.jsx";
 
 function Actualites() {
     const {
         data: interviewCategories = [],
     } = useGetPostCategoriesQuery({limit: 10, page: 1, fields: [], eq: [{field: "slug", value: "/actualites"}]});
+    
     const {
         data: allNews = [],
         isLoading,
@@ -38,17 +40,8 @@ function Actualites() {
     }
 
   return (
-      <Container maxW="container.lg" p={0}>
+    <CustomContainer content={content}/>
 
-
-<VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">
-    {/* <Heading size="xl">Actualités</Heading> */}
-    {/* <Heading>Toutes les actualites</Heading> */}
-              {content}
-          </VStack>
-
-
-      </Container>
   )
 }
 

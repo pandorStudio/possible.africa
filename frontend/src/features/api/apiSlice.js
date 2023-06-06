@@ -103,7 +103,7 @@ export const apiSlice = createApi({
     }),
 
     searchOrganisations: builder.query({
-      query: (keyword) =>  ({ url: "/organisations", params: { keyword } }),
+      query: (query) =>  `search?q=${query}`,
     }),
 
     getJobs: builder.query({

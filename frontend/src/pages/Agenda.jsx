@@ -3,6 +3,7 @@ import {useGetEventsQuery} from "../features/api/apiSlice.js";
 import CardComponent from "../components/CardComponent.jsx";
 import parse from "html-react-parser";
 import { useState } from "react";
+import CustomContainer from "../utils/CustomContainer.jsx";
 
 function Agenda() {
     const {
@@ -41,11 +42,8 @@ let isLoaded = true;
     }
 
   return (
-      <Container maxW="container.lg" p={0}>
-            <VStack w="full" h="full" py={5} px={10} spacing={0} alignItems="flex-start">              {/* <Heading size="xl">Agendas</Heading> */}
-              {content}
-            </VStack>
-      </Container>
+    <CustomContainer content={content}/>
+
   )
 }
 
