@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { IResourceComponentsProps, file2Base64, useApiUrl } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  file2Base64,
+  useApiUrl,
+} from "@refinedev/core";
 import { Create, useForm, getValueFromEvent, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, Upload } from "antd";
 // import BasicEditor from "../../components/Editors/basic";
@@ -16,6 +20,43 @@ const API_URL =
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
 
+export async function imageUploadHandler(image: any) {
+  // build form data
+  const bf = await fetch(image);
+  const blob = await bf.blob();
+  const file = new File([blob], "image." + blob.type.split("/")[1], {
+    type: blob.type,
+  });
+  const data = new FormData();
+  data.append("image", file);
+
+  // send post request
+  const response = await axiosInstance.post(`${API_URL}/upload/images`, data);
+
+  // return the image url
+  const imageUrl = response.data.url;
+  // const imageUrl = `${API_URL}/uploads/images/${filename}`;
+
+  return imageUrl;
+}
+
+export const reactQuillModules = {
+  toolbar: {
+    container: [
+      [{ font: [] }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+      ["link", "image", "video", "formula"],
+      ["clean"],
+    ],
+  },
+};
+
 export const PostCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
   const [editorContent, setEditorContent] = useState("");
@@ -24,43 +65,6 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
   useEffect(() => {
     //console.log(editorContent);
   }, [editorContent]);
-
-  async function imageUploadHandler(image: any) {
-    // build form data
-    const bf = await fetch(image);
-    const blob = await bf.blob();
-    const file = new File([blob], "image." + blob.type.split("/")[1], {
-      type: blob.type,
-    });
-    const data = new FormData();
-    data.append("image", file);
-
-    // send post request
-    const response = await axiosInstance.post(`${API_URL}/upload/images`, data);
-
-    // return the image url
-    const imageUrl = response.data.url;
-    // const imageUrl = `${API_URL}/uploads/images/${filename}`;
-
-    return imageUrl;
-  }
-
-  const modules = {
-    toolbar: {
-      container: [
-        [{ font: [] }],
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
-        ["bold", "italic", "underline", "strike"],
-        [{ color: [] }, { background: [] }],
-        [{ script: "sub" }, { script: "super" }],
-        ["blockquote", "code-block"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
-        ["link", "image", "video", "formula"],
-        ["clean"],
-      ],
-    },
-  };
 
   const { selectProps: userSelectProps } = useSelect({
     resource: "users",
@@ -77,7 +81,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
   const { selectProps: organisationsSelectProps } = useSelect({
     resource: "organisations",
     optionValue: "_id",
-    optionLabel: "name"
+    optionLabel: "name",
   });
 
   async function onSubmitCapture(values: any) {
@@ -158,10 +162,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Pays"
-          name={["country"]}
-        >
+        <Form.Item label="Pays" name={["country"]}>
           <Input />
         </Form.Item>
         <Form.Item
@@ -178,7 +179,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <ReactQuill
             style={{ height: "500px", width: "100%" }}
-            modules={modules}
+            modules={reactQuillModules}
             value={editorContent}
             onChange={setEditorContent}
             theme="snow"

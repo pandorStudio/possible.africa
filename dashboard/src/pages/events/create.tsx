@@ -1,12 +1,15 @@
-import React from "react";
-import { IResourceComponentsProps } from "@refinedev/core";
+import React, { useState } from "react";
+import { IResourceComponentsProps, file2Base64 } from "@refinedev/core";
 import { Create, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, DatePicker, Checkbox } from "antd";
 import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
+import { imageUploadHandler, reactQuillModules } from "../posts/create";
+import ReactQuill from "react-quill";
 
 export const EventCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
+  const [editorContent, setEditorContent] = useState("");
 
   const { selectProps: organisationSelectProps } = useSelect({
     resource: "organisations",
@@ -27,6 +30,39 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
   });
 
   async function onSubmitCapture(values: any) {
+    let imgTags = editorContent.match(/<img[^>]+src="([^">]+)"/g);
+    if (imgTags && imgTags.length > 0) {
+      let imgs = imgTags.map((imgTag) => {
+        const img = {
+          base64: "",
+          url: "",
+        };
+        img.base64 = imgTag
+          .match(/src="([^">]+)"/g)[0]
+          .replace('src="', "")
+          .replace('"', "");
+
+        return img;
+      });
+      let content = editorContent;
+      const result = imgs.map(async (img) => {
+        img.url = await imageUploadHandler(img.base64);
+        // console.log(img.url);
+        content = content.replace(`${img.base64}`, `${img.url}`);
+        return content;
+      });
+
+      values.content = await Promise.all(result).then((values: string[]) => {
+        //return the last element of values array
+        content = values[values.length - 1];
+        return content;
+      });
+    }
+    if (values.logo && values.logo.length) {
+      const base64 = await file2Base64(values.logo[0]);
+      const url = await imageUploadHandler(base64);
+      values.logo = url;
+    }
     if (!values?.organisation?._id) {
       values.organisation = null;
     }
@@ -103,8 +139,25 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
             <Option value="other">Autres</Option>
           </Select>
         </Form.Item>
-        <Form.Item label="Description" name={["description"]}>
-          <Input />
+        <Form.Item
+          label="Description"
+          name={["description"]}
+          style={{
+            height: "600px",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            width: "100%",
+          }}
+        >
+          <ReactQuill
+            style={{ height: "500px", width: "100%" }}
+            modules={reactQuillModules}
+            value={editorContent}
+            onChange={setEditorContent}
+            theme="snow"
+            placeholder="Placez votre contenu ici..."
+          />
         </Form.Item>
         <Form.Item label="Registration Link" name={["registration_link"]}>
           <Input />

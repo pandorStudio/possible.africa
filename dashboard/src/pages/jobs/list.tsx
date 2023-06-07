@@ -134,7 +134,7 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
             title="Organisation"
           />
           <Table.Column dataIndex="title" title="Titre" />
-          <Table.Column
+          {/* <Table.Column
             dataIndex="description"
             title="Description"
             render={(value: any) => {
@@ -146,7 +146,7 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
                 return "-";
               }
             }}
-          />
+          /> */}
           <Table.Column dataIndex="type" title="Type" />
           <Table.Column dataIndex="salary" title="Salaire" />
           <Table.Column

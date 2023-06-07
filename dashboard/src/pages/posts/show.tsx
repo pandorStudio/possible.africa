@@ -41,7 +41,6 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
       <TextField value={record?.slug} />
       <Title level={5}>Content</Title>
       <span>
-        {" "}
         {record?.content && parse(record?.content.replace(/\\n/g, "<br />"))}
       </span>
       <Title level={5}>Image</Title>

@@ -8,6 +8,7 @@ import {
   DateField,
 } from "@refinedev/antd";
 import { Typography } from "antd";
+import parse from "html-react-parser";
 
 const { Title } = Typography;
 
@@ -24,7 +25,10 @@ export const JobShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Organisation</Title>
       <TextField value={record?.organisation?.name} />
       <Title level={5}>Description</Title>
-      <TextField value={record?.description} />
+      <span>
+        {record?.description &&
+          parse(record?.description.replace(/\\n/g, "<br />"))}
+      </span>
       <Title level={5}>Type</Title>
       <TextField value={record?.type} />
       <Title level={5}>Salaire</Title>

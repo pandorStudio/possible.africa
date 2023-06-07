@@ -163,7 +163,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column dataIndex="format" title="Format" />
           <Table.Column dataIndex="target_countriy" title="Pays Cible" />
           <Table.Column dataIndex="activity_area" title="Secteur d'activité" />
-          <Table.Column
+          {/* <Table.Column
             dataIndex="description"
             title="Description"
             render={(value: any) => {
@@ -175,7 +175,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                 return "-";
               }
             }}
-          />
+          /> */}
           <Table.Column
             dataIndex="registration_link"
             title="Lien d'inscription"

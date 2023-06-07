@@ -162,7 +162,7 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column dataIndex="target_people" title="Cible" />
           <Table.Column dataIndex="target_country" title="pays" />
           <Table.Column dataIndex="activity_area" title="Secteur D'Activité" />
-          <Table.Column
+          {/* <Table.Column
             dataIndex="description"
             title="Description"
             render={(value: any) => {
@@ -174,7 +174,7 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
                 return "-";
               }
             }}
-          />
+          /> */}
           <Table.Column
             dataIndex="eligibility"
             title="Éligibilité"
