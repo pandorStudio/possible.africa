@@ -193,7 +193,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             title="Contributeur"
           />
           <Table.Column dataIndex={"owner"} title="Contact" />
-          <Table.Column
+          {/* <Table.Column
             dataIndex="description"
             title="Description"
             render={(value: any) => {
@@ -205,7 +205,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 return "-";
               }
             }}
-          />
+          /> */}
           <Table.Column
             dataIndex={["email"]}
             title="Email"

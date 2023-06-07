@@ -1,56 +1,20 @@
 import React, { useState } from "react";
-import { IResourceComponentsProps, file2Base64, useApiUrl } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  file2Base64,
+  useApiUrl,
+} from "@refinedev/core";
 import { Create, getValueFromEvent, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, Upload } from "antd";
 import { axiosInstance } from "../../authProvider";
 import ReactQuill from "react-quill";
+import { imageUploadHandler, reactQuillModules } from "../posts/create";
 
 export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
   const [editorContent, setEditorContent] = useState("");
   const apiUrl = useApiUrl();
 
-    async function imageUploadHandler(image: any) {
-      // build form data
-      const bf = await fetch(image);
-      const blob = await bf.blob();
-      const file = new File([blob], "image." + blob.type.split("/")[1], {
-        type: blob.type,
-      });
-      const data = new FormData();
-      data.append("image", file);
-
-      // send post request
-      const response = await axiosInstance.post(
-        `${apiUrl}/upload/images`,
-        data
-      );
-
-      // return the image url
-      const imageUrl = response.data.url;
-      // const imageUrl = `${API_URL}/uploads/images/${filename}`;
-
-      return imageUrl;
-  }
-  
-    const modules = {
-      toolbar: {
-        container: [
-          [{ font: [] }],
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          ["bold", "italic", "underline", "strike"],
-          [{ color: [] }, { background: [] }],
-          [{ script: "sub" }, { script: "super" }],
-          ["blockquote", "code-block"],
-          [{ list: "ordered" }, { list: "bullet" }],
-          [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
-          ["link", "image", "video", "formula"],
-          ["clean"],
-        ],
-      },
-  };
-  
-  
   async function onSubmitCapture(values: any) {
     let imgTags = editorContent.match(/<img[^>]+src="([^">]+)"/g);
     if (imgTags && imgTags.length > 0) {
@@ -101,14 +65,14 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     resource: "users?role=contributor",
     optionValue: "_id",
     optionLabel: "username",
-    defaultValue: ""
+    defaultValue: "",
   });
 
   const { selectProps: organisationTypeSelectProps } = useSelect({
     resource: "organisation_types",
     optionValue: "_id",
     optionLabel: "name",
-    defaultValue: ""
+    defaultValue: "",
   });
 
   return (
@@ -125,10 +89,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Pays"
-          name={["country"]}
-        >
+        <Form.Item label="Pays" name={["country"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Logo">
@@ -172,7 +133,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <ReactQuill
             style={{ height: "500px", width: "100%" }}
-            modules={modules}
+            modules={reactQuillModules}
             value={editorContent}
             onChange={setEditorContent}
             theme="snow"

@@ -54,7 +54,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     resource: "organisations",
     optionValue: "_id",
     optionLabel: "name",
-    defaultValue: postsData?._id,
+    defaultValue: postsData?.organisations?._id,
   });
 
   function handleImgSubmit(event: any) {

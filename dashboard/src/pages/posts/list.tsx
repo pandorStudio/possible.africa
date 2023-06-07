@@ -133,31 +133,26 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
         <Table {...tableProps} rowKey="_id" scroll={{ x: 1800, y: "auto" }}>
           <Table.Column dataIndex={["user", "username"]} title="Auteur" />
           <Table.Column
-            width="30%"
             dataIndex="organisations"
             title="Organisations"
-            render={(value: any[]) => {
-              if (value) {
-                organisationsIsLoading ? (
-                  <>Loading ...</>
-                ) : (
-                  <>
-                    {value?.map((item, index) => (
-                      <TagField
-                        key={index}
-                        value={
-                          organisationsData?.data?.find(
-                            (resourcesItems) => resourcesItems._id === item?._id
-                          )?.name
-                        }
-                      />
-                    ))}
-                  </>
-                );
-              } else {
-                return "-";
-              }
-            }}
+            render={(value: any[]) =>
+              organisationsIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField
+                      key={index}
+                      value={
+                        organisationsData?.data?.find(
+                          (resourcesItems) => resourcesItems._id === item?._id
+                        )?.name
+                      }
+                    />
+                  ))}
+                </>
+              )
+            }
           />
           <Table.Column dataIndex="title" title="Titre" />
           <Table.Column dataIndex="country" title="Pays" />

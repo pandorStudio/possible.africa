@@ -8,6 +8,7 @@ import {
   BooleanField,
 } from "@refinedev/antd";
 import { Typography } from "antd";
+import parse from "html-react-parser";
 
 const { Title } = Typography;
 
@@ -30,19 +31,22 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Contact</Title>
       <TextField value={record?.owner} />
       <Title level={5}>Description</Title>
-      <TextField value={record?.description} />
+      <span>
+        {record?.description &&
+          parse(record?.description.replace(/\\n/g, "<br />"))}
+      </span>
       <Title level={5}>Email</Title>
       <EmailField value={record?.email} />
       <Title level={5}>Telephone</Title>
       <TextField value={record?.telephone} />
       <Title level={5}>Site Web</Title>
       <TextField value={record?.site_web} />
-        <Title level={5}>Url Linkedin</Title>
-        <TextField value={record?.linkedin_url} />
-        <Title level={5}>Url Facebook</Title>
-        <TextField value={record?.facebook_url} />
-        <Title level={5}>Url Twitter</Title>
-        <TextField value={record?.twitter_url} />
+      <Title level={5}>Url Linkedin</Title>
+      <TextField value={record?.linkedin_url} />
+      <Title level={5}>Url Facebook</Title>
+      <TextField value={record?.facebook_url} />
+      <Title level={5}>Url Twitter</Title>
+      <TextField value={record?.twitter_url} />
       <Title level={5}>Adresse</Title>
       <TextField value={record?.adresse} />
     </Show>
