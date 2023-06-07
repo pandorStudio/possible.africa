@@ -102,7 +102,7 @@ export const apiSlice = createApi({
       invalidatesTags: ["Organisations"],
     }),
 
-    searchOrganisations: builder.query({
+    searchAll: builder.query({
       query: (query) =>  `search?q=${query}`,
     }),
 
@@ -213,7 +213,7 @@ export const {
   useDeletePostMutation,
   useUpdatePostMutation,
   useGetOrganisationQuery,
-  useSearchOrganisationsQuery,
+  useSearchAllQuery,
   useGetOrganisationsQuery,
   useAddOrganisationMutation,
   useDeleteOrganisationMutation,

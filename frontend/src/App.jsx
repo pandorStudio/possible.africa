@@ -15,7 +15,7 @@ import OneInterview from "./pages/OneInterview.jsx";
 import OneAgenda from "./pages/OneAgenda.jsx";
 import OneOpportunity from "./pages/OneOpportunity.jsx";
 import OneEmplois from "./pages/OneEmplois.jsx";
-import SearchOrganisation from "./pages/SearchOrganisation.jsx";
+import Search from "./pages/Search.jsx";
 import OneActualite from './pages/Actualites/OneActualite';
 import { Footer } from "./components/Footer";
 
@@ -54,7 +54,7 @@ function App() {
                         <Route path='/emplois/:slug' element={<OneEmplois />} />
                     </Route>
                     <Route path='/search' >
-                        <Route index path='/search'  element={<SearchOrganisation />} />
+                        <Route index path='/search'  element={<Search />} />
                     </Route>
                 </Route>
             </Route>
