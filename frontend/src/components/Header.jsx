@@ -76,7 +76,7 @@ export const Header = () => {
               
             </Flex>
             {isDesktop ? (
-              <Flex justifyContent="space-between" alignItems="center" zIndex={-1}>
+              <Flex justifyContent="space-between" alignItems="center">
                 <ButtonGroup variant="link" spacing="5">
                   {[{name:'Possible', link:"/" }, {name:'Entrepreneurs', link:"/entrepreneurs" },{name:'Time For Africa', link:"/timeforafrica" }].map((item) => (
 
@@ -98,7 +98,6 @@ export const Header = () => {
                 aria-label="Open Menu"
                 onClick={onOpen}
                 order={2}
-                zIndex={-1}
               />
                  <Drawer placement={placement} onClose={onClose} isOpen={isOpen}>
               <DrawerOverlay />

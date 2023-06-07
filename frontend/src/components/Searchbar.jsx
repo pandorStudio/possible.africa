@@ -1,64 +1,120 @@
-import { Box, Flex, Heading, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react'
-import { SearchIcon } from '../assets/icons'
-import { useNavigate, useParams } from 'react-router-dom';
+import { Box, Flex, Heading, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react';
+import { SearchIcon } from '../assets/icons';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { useGetOrganisationsQuery } from '../features/api/apiSlice';
-import { Divider } from '@chakra-ui/react'
+import { useGetEventsQuery, useGetJobsQuery, useGetOpportunitiesQuery, useGetOrganisationsQuery, useGetPostCategoriesQuery, useGetPostsQuery } from '../features/api/apiSlice';
 
-
-function Searchbar({hideMeBellow}) {
-
+function Searchbar({ hideMeBellow }) {
   const urlParams = new URLSearchParams(window.location.search);
   const queryParamValue = urlParams.get('q');
-  const [query, setQuery] = useState('');
-  let navigate = useNavigate();
-  const [suggestions, setSuggestions] = useState([]);
 
-  
-
-  const {
-    data,
-    isLoading,
-    isFetching,
-    isError,
-    isSuccess,
-    error,
-  } = useGetOrganisationsQuery();
-  let content;
-
- 
-  const [searchResults, setSearchResults] = useState([]);
-  const [isFocused, setIsFocused] = useState(false)
-  const searchContainerRef = useRef(null);
+  const navigate = useNavigate();
   const inputRef = useRef(null);
   const suggestionPaneRef = useRef(null);
   const searchElementRef = useRef(null);
-  const [showSuggestions, setShowSuggestions] = useState(false); // New state variable
+
+  const [query, setQuery] = useState(queryParamValue);
+  const [suggestions, setSuggestions] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+
+  const {
+    data: newsCategories = [],
+} = useGetPostCategoriesQuery({limit: 10, page: 1, fields: [], eq: [{field: "slug", value: "/actualites"}]});
+
+const {
+  data: interviewCategories = [],
+} = useGetPostCategoriesQuery({limit: 10, page: 1, fields: [], eq: [{field: "slug", value: "/podcast"}]});
+  
+
+  const { data: organisations } = useGetOrganisationsQuery();
+  const { data: jobs } = useGetJobsQuery();
+  const { data: opportunities } = useGetOpportunitiesQuery();
+  const { data: events } = useGetEventsQuery();
+  const { data: news_posts } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: [{field: "categorie", value: `${newsCategories[0]?._id}`}]});
+  const { data: interview_posts } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: [{field: "categorie", value: `${interviewCategories[0]?._id}`}]});
+
+
+  useEffect(() => {
+    const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    setSuggestions(searchHistory);
+  }, []);
+  
+
+  const jobTitles = jobs?.map((job) => job.title) || [];
+  const opportunityTitles = opportunities?.map((opportunity) => opportunity.title) || [];
+  const eventsTitles = events?.map((event) => event.title) || [];
+  const newsTitles = news_posts?.map((post) => post?.title) || [];
+  const interviewTitles = interview_posts?.map((post) => post?.title) || [];
 
 
 
 
-
-  function showResults(query) {
-    // Perform search and set the results in the state
-    const results = performSearch(query);
-    setSearchResults(results);
-  }
-
-  function performSearch(query) {
-    // Simulate search by returning sample results
-    let Results = [];
-    if (suggestions) {
-      Results = suggestions;
+  const searchContainerRef = useRef(null);
+  
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (
+        suggestionPaneRef.current &&
+        suggestionPaneRef.current.contains(event.target)
+      ) {
+        // Clicked inside the suggestion pane, don't hide it
+        return;
+      }
+  
+      if (
+        searchContainerRef.current &&
+        searchContainerRef.current.contains(event.target)
+      ) {
+        // Clicked inside the search container, show suggestions
+        setShowSuggestions(true);
+      } else {
+        // Clicked outside the search container, hide suggestions
+        setShowSuggestions(false);
+      }
+    };
+  
+    document.addEventListener('click', handleClick);
+  
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
+  
+  const performSearch = (query) => {
+    let results = [];
+    if (organisations) {
+      results = organisations.filter((org) =>
+        org?.name.toLowerCase().includes(query.toLowerCase())
+      );
     }
-    // Filter results based on query
-    const filteredResults = Results.filter(result =>
-      result.toLowerCase().includes(query.toLowerCase())
-    );
+    return results;
+  };
 
-    return filteredResults;
-  }
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setQuery(value);
 
+    if (value) {
+      const results = performSearch(value);
+      setSearchResults(results);
+      setShowSuggestions(true);
+    } else {
+      setSearchResults([]);
+      setShowSuggestions(false);
+    }
+  };
+
+
+
+  const handleSearchResultClick = (suggestion) => {
+    const formattedQuery = suggestion.replace(/ /g, '+');
+    navigate(`search?q=${formattedQuery.replace('#', "%23" )}`);
+    setQuery(suggestion);
+    addSearchToLocalstorage(suggestion);
+    setShowSuggestions(false);
+  };
 
   const highlightMatch = (resultName) => {
     const index = resultName.toLowerCase().indexOf(query.toLowerCase());
@@ -67,7 +123,7 @@ function Searchbar({hideMeBellow}) {
       const match = resultName.substring(index, index + query.length);
       const after = resultName.substring(index + query.length);
       return (
-        <>
+        <>  
           {before}
           <span className="highlight">{match}</span>
           {after}
@@ -77,147 +133,92 @@ function Searchbar({hideMeBellow}) {
     return resultName;
   };
 
-   function handleInputChange(event) {
-      setQuery(event.target.value);
-
-      if (event.target.value) {
-        const results = performSearch(event.target.value);
-        setSearchResults(results);
-        setShowSuggestions(true);
-      } else {
-        setSearchResults([]);
-        setShowSuggestions(false);
-
-      }
+  const addSearchToLocalstorage = (query) => {
+    if (query.trim() !== '') {
+      const updatedSuggestions = [query, ...suggestions.filter((s) => s !== query)].slice(0, 5);
+      setSuggestions(updatedSuggestions);
+      localStorage.setItem('searchHistory', JSON.stringify(updatedSuggestions));
     }
-
-    const onKeyUp = (e) => {
-      if (e.key === "Enter" || e.keyCode === 13) {
-        event.preventDefault();
-        navigate(`search?q=${query}`)
-        addSearchToLocalstorage()
-        setShowSuggestions(false);
-        inputRef.current.blur();
+  };
 
 
-      }
-    };
+  const combinedSuggestions = new Set();
 
-    const handleClick = (event) => {
-      const divText = event.target.textContent;
-      if(inputRef.current.value === divText) {
-
-        setQuery(divText)
-        navigate(`search?q=${divText}`)
-        addSearchToLocalstorage()
-        setShowSuggestions(false);
-      } 
-    };
-
-    const handleInputFocus = () => {
-      setShowSuggestions(true);
-    };
-  
-    const handleInputBlur = () => {
-      // setShowSuggestions(false);
-      setTimeout(() => {
-      setShowSuggestions(true);
-    }, 200);
-    };
-  
-
-    const handleClickOutside = (event) => {
-      if (searchContainerRef.current &&
-        !searchContainerRef.current.contains(event.target) &&
-        suggestionPaneRef.current &&
-        !suggestionPaneRef.current.contains(event.target) && searchElementRef.current &&
-        !searchElementRef.current.contains(event.target)) {
-        // Clicked outside of the search container, hide it
-        setShowSuggestions(false);
-
-      }
-    };
-
-  
-    useEffect(() => {
-      const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
-      setSuggestions(searchHistory);
-    }, []);
-
- const addSearchToLocalstorage = () => {
-  if (query.trim() !== '') {
-    const updatedSuggestions = [query, ...suggestions.filter((s) => s !== query)];
-    setSuggestions(updatedSuggestions.slice(0, 9)); // Limit the number of suggestions to show
-    localStorage.setItem('searchHistory', JSON.stringify(updatedSuggestions));
+  if (query === '') {
+    suggestions.forEach((suggestion) => combinedSuggestions.add(suggestion.toLowerCase()));
+  } else {
+    suggestions
+      .filter((suggestion) => suggestion.toLowerCase().includes(query.toLowerCase()))
+      .forEach((suggestion) => combinedSuggestions.add(suggestion.toLowerCase()));
   }
- }
+  
+  if (query && !suggestions.includes(query)) {
+    performSearch(query).forEach((result) => combinedSuggestions.add(result.name.toLowerCase()));
+  }
 
-    useEffect(() => {
-      document.addEventListener('click', handleClickOutside);
-      return () => {
-        document.removeEventListener('click', handleClickOutside);
-      };
-    }, []);
 
+  jobTitles.forEach((title) => combinedSuggestions.add(title.toLowerCase()));
+  opportunityTitles.forEach((title) => combinedSuggestions.add(title.toLowerCase()));
+  eventsTitles.forEach((title) => combinedSuggestions.add(title.toLowerCase()));
+  newsTitles.forEach((title) => combinedSuggestions.add(title.toLowerCase()));
+  interviewTitles.forEach((title) => combinedSuggestions.add(title.toLowerCase()));
+
+
+  
   return (
-    <>
- 
-    <InputGroup as="div" hideBelow={hideMeBellow} w="full" className='search' display="flex" gap={10} ref={searchContainerRef}>
-      <InputLeftElement pointerEvents='none'>
-        <SearchIcon color='gray.300' />
+    <InputGroup as="div" hideBelow={hideMeBellow} w="full" className="search" display="flex" gap={10} ref={searchContainerRef}>
+      <InputLeftElement pointerEvents="none">
+        <SearchIcon color="gray.300" />
       </InputLeftElement>
-      <Input borderRadius={16} className='input' type='text'  placeholder="L'univers des possibles de l'#AfricaTech"
-     value={query}
-     onChange={handleInputChange}
-     onKeyUp={onKeyUp}
-     outline="none"
-     ref={inputRef}
-     onFocus={handleInputFocus}
-    //  onBlur={handleInputBlur}
-     _focus={{borderBottomLeftRadius:"0", borderBottomRightRadius:"0", outline:"none", borderStyle:"none", borderColor:"gray.100", borderWidth:"0"}}
-     />
+      <Input
+        borderRadius={16}
+        className="input"
+        type="text"
+        placeholder="L'univers des possibles de l'#AfricaTech"
+        value={query}
+        onChange={handleInputChange}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') {
 
+            e.preventDefault();
+            const formattedQuery = query.replace(/ /g, '+');
+            navigate(`search?q=${formattedQuery}`);
+            addSearchToLocalstorage(query);
+            setShowSuggestions(false);
+            inputRef.current.blur();
+          }
+        }}
+        outline="none"
+        ref={inputRef}
+        onFocus={() => setShowSuggestions(true)}
+        _focus={{
+          borderBottomLeftRadius: '0',
+          borderBottomRightRadius: '0',
+          outline: 'none',
+          borderStyle: 'none',
+          borderColor: 'gray.100',
+          borderWidth: '0',
+        }}
+      />
 
-    
-  { showSuggestions && suggestions.length > 0 && (
-    <Box className='search-results-container' p={2} zIndex={100} overflow="scroll" minH="50vh" ref={suggestionPaneRef}>
-          <Flex  borderStyle="solid" borderColor="gray.100" borderBottomWidth={1} >
-
-          <Heading fontSize={14} py={5} px={2}>Recherches recentes</Heading>
-
-          </Flex>
-          
-        <>
-        {  (
-          <>
-          {suggestions.map((suggestion) => (
-            <Text noOfLines={[1,2]} key={suggestion} className="search-result" onClick={handleClick} ref={searchElementRef}>
-            {(suggestion)}
-      </Text>
+      {(showSuggestions || query === '') && (
+        <Box className="search-results-container" p={2} zIndex={100} overflow="scroll" minH="50vh" ref={suggestionPaneRef}>
+          {Array.from(combinedSuggestions).filter((suggestion) => (typeof suggestion === 'string' ? suggestion : suggestion.name).toLowerCase().includes(query.toLowerCase()))
+  .map((suggestion)  => (
+            <Text
+              noOfLines={[1, 2]}
+              key={suggestion}
+              className="search-result"
+              onClick={() => handleSearchResultClick(suggestion)}
+              ref={searchElementRef}
+            >
+            { highlightMatch(typeof suggestion === 'string' ? suggestion : suggestion.name)}
+            </Text>
           ))}
-          </>
-        )}
-          
-        </>
-      
-
-          {/* {query && searchResults.map((result, index) => (
-           <>
-            <Text noOfLines={[1,2]} key={index} className="search-result" onClick={handleClick} >
-            {highlightMatch(result.name)}
-      </Text>
-        
-    
-           
-           </> 
-          ))} */}
-      
         </Box>
       )}
-  </InputGroup>
-
-     </>
-  )
+    </InputGroup>
+  );
 }
 
-export default Searchbar
+export default Searchbar;
