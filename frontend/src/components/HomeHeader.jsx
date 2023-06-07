@@ -43,14 +43,17 @@ export const HomeHeader = () => {
           
             
             {isDesktop ? (
-              <Flex justify="center" gap="8">
+              <Flex justify="center" gap="14">
 
-                  {[{name:'Organisations', link:"/organisations", icons: <OrganisationsIcon/> },
-                  {name:'Podcast/Interview', link:"/interviews", icons: <PodcastIcon/> },
-                  {name:'Actualités', link:"/actualites", icons: <NewspaperIcon/> },
-                  {name:'Agenda', link:"/agenda", icons: <CalendarIcon/> },
-                  {name:'Opportunités de financement', link:"/opportunites", icons: <LawIcon/> },
-                  {name:'Emplois', link:"/emplois", icons: <WorkIcon/> }].map((item) => (
+                  {
+                  [
+                    {name:'Actualités', link:"/actualites", icons: <NewspaperIcon/> },
+                    {name:'Podcast/Interview', link:"/interviews", icons: <PodcastIcon/> },
+                    {name:'Agenda', link:"/agenda", icons: <CalendarIcon/> },
+                    {name:'Financement', link:"/opportunites", icons: <LawIcon/> },
+                    {name:'Emplois', link:"/emplois", icons: <WorkIcon/> },
+                    {name:'Organisations', link:"/organisations", icons: <OrganisationsIcon/> }
+                ].map((item) => (
 
                     <CustomLink  key={item.name} as={ReachLink} to={item.link}>
                         <Flex flexDir="row" gap={1}>
@@ -66,12 +69,15 @@ export const HomeHeader = () => {
             ) : (
               <Flex justify="flex-start" gap="8" overflow="scroll" className="scrollContainer" px={8} >
 
-                  {[{name:'Organisations', link:"/organisations"},
-                  {name:'Podcast/Interview', link:"/interviews"},
-                  {name:'Actualités', link:"/actualites" },
-                  {name:'Agenda', link:"/agenda" },
-                  {name:'Opportunités', link:"/opportunites" },
-                  {name:'Emplois', link:"/emplois" }].map((item) => (
+                  {[
+                    {name:'Actualités', link:"/actualites" },
+                    {name:'Podcast/Interview', link:"/interviews"},
+                    {name:'Agenda', link:"/agenda" },
+                    {name:'Financement', link:"/opportunites"},
+                    {name:'Emplois', link:"/emplois" },
+                    {name:'Organisations', link:"/organisations" }
+                
+                ].map((item) => (
 
                     <CustomLink  key={item.name} as={ReachLink} to={item.link}>
                         <Flex flexDir="row" gap={1}>
