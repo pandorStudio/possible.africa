@@ -38,33 +38,45 @@ export const Header = () => {
   const [placement, setPlacement] = useState('right')
   return (
     <>
-    <Box
+    <Container
       as="section"
       pb={{
         base: '1',
         md: '5',
       }}
       
+
+      py={{
+        base: '4',
+        lg: '6',
+      }}
+      maxW="container.xl"      
     >
       <Box as="nav" bg="bg-surface">
-        <Container
-          py={{
-            base: '4',
-            lg: '6',
+        
+          <Flex gap="8" 
+          
+          justifyContent={{ base: 'center', md: "space-between" }} 
+          alignItems={{ base: 'center', md: "space-between" }}
+          direction={{
+            base: 'column',
+            md: 'row',
           }}
-          maxW="container.xl"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Flex gap="10"  justifyContent={{ base: 'center', md: "space-between" }} alignItems={{ base: 'center', md: "space-between" }}>
-            <Box w={{ base: '20%', md: "10%" }} h="70px" as="a" href="/"><Image src={Logo} fit ='contain'
+          >
+          
+            <Box w={{ base: '50%', md: "10%" }} h="70px" as="a" href="/"><Image src={Logo} fit ='contain'
           w="100%"
           h="100%"/></Box>
-          <Flex w="45%" alignItems="center">
-              <Searchbar hideMeBellow="md"/>
-          </Flex>
+
+            <Flex w={{ base: '100%', md: "45%" }}  alignItems="center" >
+
+          
+                   <Searchbar zIndex={100}/>
+        
+              
+            </Flex>
             {isDesktop ? (
-              <Flex justifyContent="space-between" alignItems="center">
+              <Flex justifyContent="space-between" alignItems="center" zIndex={-1}>
                 <ButtonGroup variant="link" spacing="5">
                   {[{name:'Possible', link:"/" }, {name:'Entrepreneurs', link:"/entrepreneurs" },{name:'Time For Africa', link:"/timeforafrica" }].map((item) => (
 
@@ -85,6 +97,8 @@ export const Header = () => {
                 icon={<MenuIcon fontSize="1.25rem" />}
                 aria-label="Open Menu"
                 onClick={onOpen}
+                order={2}
+                zIndex={-1}
               />
                  <Drawer placement={placement} onClose={onClose} isOpen={isOpen}>
               <DrawerOverlay />
@@ -111,12 +125,9 @@ export const Header = () => {
             )}
           </Flex>
 
-          <Flex w="100%" alignItems="center" px={5} py={5} hideFrom="md"> 
-          <Searchbar/>
-          </Flex>
-        </Container>
+         
       </Box>
-      </Box>
+      </Container>
       <Outlet/>
     </>  
   )
