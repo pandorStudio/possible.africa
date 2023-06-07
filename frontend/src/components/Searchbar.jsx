@@ -8,12 +8,21 @@ function Searchbar({ hideMeBellow }) {
   const urlParams = new URLSearchParams(window.location.search);
   const queryParamValue = urlParams.get('q');
 
+  const encodeQuery = (query) => {
+    const encodedQuery = encodeURIComponent(query).replace(/%20/g, "+");
+    return encodedQuery.replace(/#/g, "%23");  };
+
+  const decodeQuery = (encodedQuery) => {
+   const decodedQuery = decodeURIComponent(encodedQuery.replace(/\+/g, "%20"));
+    return decodedQuery.replace(/%23/g, "#");  };
+
+
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const suggestionPaneRef = useRef(null);
   const searchElementRef = useRef(null);
 
-  const [query, setQuery] = useState(queryParamValue);
+  const [query, setQuery] = useState((queryParamValue) || '');
   const [suggestions, setSuggestions] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -27,6 +36,7 @@ const {
   data: interviewCategories = [],
 } = useGetPostCategoriesQuery({limit: 10, page: 1, fields: [], eq: [{field: "slug", value: "/podcast"}]});
   
+
 
   const { data: organisations } = useGetOrganisationsQuery();
   const { data: jobs } = useGetJobsQuery();
@@ -47,6 +57,7 @@ const {
   const eventsTitles = events?.map((event) => event.title) || [];
   const newsTitles = news_posts?.map((post) => post?.title) || [];
   const interviewTitles = interview_posts?.map((post) => post?.title) || [];
+
 
 
 
@@ -109,12 +120,12 @@ const {
 
 
   const handleSearchResultClick = (suggestion) => {
-    const formattedQuery = suggestion.replace(/ /g, '+');
-    navigate(`search?q=${formattedQuery.replace('#', "%23" )}`);
+    navigate(`search?q=${(encodeQuery(suggestion))}`);
     setQuery(suggestion);
     addSearchToLocalstorage(suggestion);
     setShowSuggestions(false);
   };
+
 
   const highlightMatch = (resultName) => {
     const index = resultName.toLowerCase().indexOf(query.toLowerCase());
@@ -153,7 +164,7 @@ const {
   }
   
   if (query && !suggestions.includes(query)) {
-    performSearch(query).forEach((result) => combinedSuggestions.add(result.name.toLowerCase()));
+    performSearch(decodeQuery(query)).forEach((result) => combinedSuggestions.add(result.name.toLowerCase()));
   }
 
 
@@ -203,7 +214,7 @@ const {
 
       {(showSuggestions || query === '') && (
         <Box className="search-results-container" p={2} zIndex={100} overflow="scroll" minH="50vh" ref={suggestionPaneRef}>
-          {Array.from(combinedSuggestions).filter((suggestion) => (typeof suggestion === 'string' ? suggestion : suggestion.name).toLowerCase().includes(query.toLowerCase()))
+          {Array.from(combinedSuggestions).filter((suggestion) => (typeof suggestion === 'string' ? suggestion : suggestion.name).toLowerCase().includes(decodeQuery(query).toLowerCase()))
   .map((suggestion)  => (
             <Text
               noOfLines={[1, 2]}
