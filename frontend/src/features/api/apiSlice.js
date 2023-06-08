@@ -7,7 +7,6 @@ const baseQueryArgs = {limit: 10, page: 1, fields: []};
 function queryTransformer(query, resource) {
   let baseQueryString = "/" + resource;
     const { limit, page, fields= ['alo', 'ala'], eq, } = query;
-    console.log(eq);
     baseQueryString += `?page=${page}&limit=${limit}`;
     if (fields.length) {
       baseQueryString += `&select=${fields.forEach((item) => item + ",")}`;

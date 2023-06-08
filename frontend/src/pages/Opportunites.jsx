@@ -1,9 +1,8 @@
-import {Container, Heading, HStack, Spinner, Text, VStack} from "@chakra-ui/react"
-import {useGetOpportunitiesQuery} from "../features/api/apiSlice.js";
+import { Spinner, VStack } from "@chakra-ui/react";
 import CardComponent from "../components/CardComponent.jsx";
-import parse from "html-react-parser";
-import { useState } from "react";
+import { useGetOpportunitiesQuery } from "../features/api/apiSlice.js";
 import CustomContainer from "../utils/CustomContainer.jsx";
+import { ParseSlice } from "../utils/htmlParser.jsx";
 
 function Opportunites() {
 
@@ -30,7 +29,7 @@ let isLoaded = true;
     } else if(isSuccess) {
         content = opportunities.map(opportunity => {
             return (
-                <CardComponent postType="Opportunités" key={opportunity._id} title={opportunity.title} description={parse(opportunity.description.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={opportunity?.organisation?.logo} isLoaded={isLoaded} link={"/opportunites/" + opportunity.id} type={opportunity?.opportunity_type?.name} pays={opportunity?.target_country}/>
+                <CardComponent postType="Opportunités" key={opportunity._id} title={opportunity.title} description={ParseSlice(opportunity.description)} imgUrl={opportunity?.organisation?.logo} isLoaded={isLoaded} link={"/opportunites/" + opportunity.id} type={opportunity?.opportunity_type?.name} pays={opportunity?.target_country}/>
             )
         })
     } else if (isError) {

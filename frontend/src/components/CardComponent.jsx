@@ -1,6 +1,6 @@
-import { Card, CardBody, Heading, Stack, Image, Text, Skeleton, SkeletonText, Box, Flex, Badge } from '@chakra-ui/react'
-import {Link} from "react-router-dom";
-import { CalendarIcon, CountryIcon, LawIcon, MapIcon, NewspaperIcon, OrganisationsIcon, PodcastIcon, TypeIcon, WorkIcon } from '../assets/icons';
+import { Box, Card, CardBody, Flex, Heading, Image, Skeleton, Stack, Text } from '@chakra-ui/react';
+import { Link } from "react-router-dom";
+import { CalendarIcon, CountryIcon, MapIcon, OrganisationsIcon, TypeIcon, WorkIcon } from '../assets/icons';
 
 
 // eslint-disable-next-line react/prop-types

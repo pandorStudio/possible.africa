@@ -1,25 +1,18 @@
-import {Badge, Box, Container, Flex, Grid, GridItem, Heading, HStack, Image, Link, Text, Tooltip, VStack} from "@chakra-ui/react"
-import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
-import TwitterCustomIcon from "./icons/TwitterCustomIcon.jsx";
-import FacebookCustomIcon from "./icons/FacebookCustomIcon.jsx";
-import LinkedinCustomIcon from "./icons/LinkedinCustomIcon.jsx";
-import LinkSolidCustomIcon from "./icons/LinkSolidCustomIcon.jsx";
-import parse from "html-react-parser";
-import { useState } from "react";
-import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
-import Socialshare from "./Socialshare.jsx";
+/* eslint-disable react/prop-types */
+
+
+import { Box, Container, Flex, Heading, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { MapIcon, OrganisationsIcon, WorkIcon } from "../assets/icons.jsx";
+import { Parse } from "../utils/htmlParser.jsx";
+import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
+import Socialshare from "./Socialshare.jsx";
 
 
 function OneEmploiTemplate({iconSx, backUrl, jobs}) {
 
-  const date = new Date(jobs?.createdAt);
-  const jour = date.getDate();
-  const mois = date.toLocaleString('default', { month: 'long' });
 
 
-
-  const content = jobs?.description && parse(jobs?.description.replace(/\\n/g, "<br />"))
+  const content = jobs?.description && Parse(jobs?.description)
 
 
 

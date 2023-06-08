@@ -2,7 +2,7 @@ import {Box} from "@chakra-ui/react";
 
 function LinkedinCustomIcon(props) {
   return (
-      <Box {...props} as="a">
+      <Box {...props} >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="#c3c3c3"

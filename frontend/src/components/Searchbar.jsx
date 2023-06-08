@@ -1,7 +1,11 @@
-import { Box, Flex, Heading, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react';
-import { SearchIcon } from '../assets/icons';
-import { useNavigate } from 'react-router-dom';
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+
+import { Box, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react';
+import parse from "html-react-parser";
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SearchIcon } from '../assets/icons';
 import { useGetEventsQuery, useGetJobsQuery, useGetOpportunitiesQuery, useGetOrganisationsQuery, useGetPostCategoriesQuery, useGetPostsQuery } from '../features/api/apiSlice';
 
 function Searchbar({ hideMeBellow }) {
@@ -97,7 +101,7 @@ const {
     let results = [];
     if (organisations) {
       results = organisations.filter((org) =>
-        org?.name.toLowerCase().includes(query.toLowerCase())
+        org?.name.toLowerCase().includes((query).toLowerCase())
       );
     }
     return results;
@@ -120,8 +124,8 @@ const {
 
 
   const handleSearchResultClick = (suggestion) => {
-    navigate(`search?q=${(encodeQuery(suggestion))}`);
     setQuery(suggestion);
+    navigate(`search?q=${(encodeURIComponent(suggestion).replace(/%20/g, "+"))}`);
     addSearchToLocalstorage(suggestion);
     setShowSuggestions(false);
   };
@@ -214,16 +218,15 @@ const {
 
       {(showSuggestions || query === '') && (
         <Box className="search-results-container" p={2} zIndex={100} overflow="scroll" minH="50vh" ref={suggestionPaneRef}>
-          {Array.from(combinedSuggestions).filter((suggestion) => (typeof suggestion === 'string' ? suggestion : suggestion.name).toLowerCase().includes(decodeQuery(query).toLowerCase()))
+          {Array.from(combinedSuggestions).filter((suggestion) => (typeof suggestion === 'string' ? suggestion : suggestion.name).toLowerCase().includes((query).toLowerCase()))
   .map((suggestion)  => (
             <Text
-              noOfLines={[1, 2]}
               key={suggestion}
               className="search-result"
               onClick={() => handleSearchResultClick(suggestion)}
               ref={searchElementRef}
             >
-            { highlightMatch(typeof suggestion === 'string' ? suggestion : suggestion.name)}
+            { highlightMatch(typeof suggestion === 'string' ? parse(suggestion.replace(/\\n/g, "<br />").slice(0, 80)+"...") : parse(suggestion.name.replace(/\\n/g, "<br />").slice(0, 80)+"..."))}
             </Text>
           ))}
         </Box>

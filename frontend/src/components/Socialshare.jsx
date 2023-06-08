@@ -1,11 +1,15 @@
 import { Box, HStack } from '@chakra-ui/react'
-import React, { useState } from 'react'
-import TwitterCustomIcon from './icons/TwitterCustomIcon'
 import FacebookCustomIcon from './icons/FacebookCustomIcon'
-import LinkedinCustomIcon from './icons/LinkedinCustomIcon'
 import LinkSolidCustomIcon from './icons/LinkSolidCustomIcon'
+import LinkedinCustomIcon from './icons/LinkedinCustomIcon'
+import TwitterCustomIcon from './icons/TwitterCustomIcon'
+import { useState } from 'react'
+import { LinkedinShareButton, TwitterShareButton, FacebookShareButton, WhatsappShareButton, EmailShareButton } from 'react-share';
+import WhatsappCustomIcon from './icons/WhatsappCustomIcon'
+import MailCustomIcon from './icons/MailCustomIcon'
 
-function Socialshare(titre) {
+
+function Socialshare(title, content) {
 
     const [showTooltip, setShowTooltip] = useState(false);
 
@@ -14,9 +18,10 @@ function Socialshare(titre) {
           cursor: "pointer",
         },
       };
+      const postUrl = window.location.href;
+
 
     const handleCopyLink = () => {
-      const postUrl = window.location.href;
       navigator.clipboard.writeText(postUrl)
         .then(() => {
           console.log('Link copied to clipboard!');
@@ -33,9 +38,43 @@ function Socialshare(titre) {
   return (
 
     <HStack alignItems="center" h="100%">
-                  <TwitterCustomIcon sx={iconSx} href={`https://twitter.com/intent/tweet?text=Découvrez les actualités en clickant sur le lien ${encodeURIComponent(window.location.href)}`}/>
+                  <TwitterShareButton 
+            url={postUrl}
+            title="Titre"
+        >
+                  <TwitterCustomIcon sx={iconSx} />
+        </TwitterShareButton>
+        <FacebookShareButton 
+            url={postUrl}
+            quote="Contenu "
+            hashtag='#possibledotafrica'
+        >
                   <FacebookCustomIcon sx={iconSx}/>
-                  <LinkedinCustomIcon sx={iconSx} href={`https://www.linkedin.com/shareArticle/?mini=true&url=${encodeURIComponent(window.location.href)}`}/>
+        </FacebookShareButton>
+       <LinkedinShareButton 
+            url={postUrl}
+            title="Titre "
+            summary="summary"
+        >
+                  <LinkedinCustomIcon sx={iconSx}/>
+        </LinkedinShareButton>
+
+        <WhatsappShareButton 
+            url={postUrl}
+            title="Titre "
+            separator='-'
+        >
+                  <WhatsappCustomIcon sx={iconSx}/>
+        </WhatsappShareButton>
+
+        <EmailShareButton 
+            url={postUrl}
+            subject="Titre"
+            body="Contenu "
+            separator='-'
+        >
+            <MailCustomIcon sx={iconSx}/>
+        </EmailShareButton>
                     <LinkSolidCustomIcon sx={iconSx} onClick={handleCopyLink}/>
                     {showTooltip && <Box placement='top' bg="gray.800" borderRadius={4} color="white" px={2} fontSize="sm" zIndices="tooltip">Copié</Box>}
                 </HStack>

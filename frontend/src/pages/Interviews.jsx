@@ -1,10 +1,8 @@
-import {Container, Heading, HStack, Spinner, Text, VStack} from "@chakra-ui/react"
-import {useGetPostCategoriesQuery, useGetPostsQuery} from "../features/api/apiSlice.js";
+import { Spinner, VStack } from "@chakra-ui/react";
 import CardComponent from "../components/CardComponent.jsx";
-import parse from "html-react-parser";
-import Image from "../assets/hunters-race-MYbhN8KaaEc-unsplash.jpg";
-import { useState } from "react";
+import { useGetPostCategoriesQuery, useGetPostsQuery } from "../features/api/apiSlice.js";
 import CustomContainer from "../utils/CustomContainer.jsx";
+import { ParseSlice } from "../utils/htmlParser.jsx";
 
 
 function Interviews() {
@@ -34,7 +32,7 @@ function Interviews() {
     } else if(isSuccess) {
         content = interviews.map(interview => {
             return (
-                <CardComponent postType="Interview" key={interview._id} title={interview.title} description={parse(interview.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={interview.image} isLoaded={isLoaded} link={"/interviews/" + interview.slug} pays="Pays"/>
+                <CardComponent postType="Interview" key={interview._id} title={interview.title} description={ParseSlice(interview.content)} imgUrl={interview.image} isLoaded={isLoaded} link={"/interviews/" + interview.slug} pays="Pays"/>
             )
         })
     } else if (isError) {
