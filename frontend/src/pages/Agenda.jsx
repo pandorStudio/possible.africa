@@ -1,9 +1,8 @@
-import {Container, Heading, HStack, Spinner, Text, VStack} from "@chakra-ui/react"
-import {useGetEventsQuery} from "../features/api/apiSlice.js";
+import { Spinner, VStack } from "@chakra-ui/react";
 import CardComponent from "../components/CardComponent.jsx";
-import parse from "html-react-parser";
-import { useState } from "react";
+import { useGetEventsQuery } from "../features/api/apiSlice.js";
 import CustomContainer from "../utils/CustomContainer.jsx";
+import { ParseSlice } from "../utils/htmlParser.jsx";
 
 function Agenda() {
     const {
@@ -33,7 +32,7 @@ let isLoaded = true;
     } else if(isSuccess) {
         content = events.map(event => {
             return (
-                <CardComponent postType="Agenda" key={event._id} title={event.title} description={parse(event.description.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={event?.organisation?.logo} isLoaded={isLoaded} link={"/agenda/" + event.id} pays={event.target_country || "Togo"} type={event?.event_type?.name}/>
+                <CardComponent postType="Agenda" key={event._id} title={event.title} description={ParseSlice(event.description)} imgUrl={event?.organisation?.logo} isLoaded={isLoaded} link={"/agenda/" + event.id} pays={event.target_country || "Togo"} type={event?.event_type?.name}/>
             )
         })
     } else if (isError) {

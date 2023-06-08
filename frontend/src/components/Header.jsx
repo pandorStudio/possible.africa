@@ -1,30 +1,28 @@
+/* eslint-disable no-unused-vars */
+
 import { Outlet, Link as ReachLink } from "react-router-dom";
-import Logo from "../assets/LogoPossible.png"
-import {MenuIcon, SearchIcon} from "../assets/icons"
+import Logo from "../assets/LogoPossible.png";
+import { MenuIcon } from "../assets/icons";
 
 import {
   Box,
   ButtonGroup,
   Container,
-  Flex,
-  IconButton,
-  useBreakpointValue,
-  Heading,
-  Spacer,
-  Image,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  useDisclosure,
   Drawer,
-  DrawerOverlay,
+  DrawerBody,
   DrawerContent,
   DrawerHeader,
-  DrawerBody,
+  DrawerOverlay,
+  Flex,
+  Heading,
+  IconButton,
+  Image,
   Stack,
-} from '@chakra-ui/react'
-import CustomLink from "./CustomLink";
+  useBreakpointValue,
+  useDisclosure
+} from '@chakra-ui/react';
 import { useState } from "react";
+import CustomLink from "./CustomLink";
 import Searchbar from "./Searchbar";
 
 
@@ -98,6 +96,7 @@ export const Header = () => {
                 aria-label="Open Menu"
                 onClick={onOpen}
                 order={2}
+
               />
                  <Drawer placement={placement} onClose={onClose} isOpen={isOpen}>
               <DrawerOverlay />

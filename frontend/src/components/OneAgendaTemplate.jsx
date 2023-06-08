@@ -1,11 +1,11 @@
+/* eslint-disable react/prop-types */
 import {Badge, Box, Container, Flex, Heading, HStack, Image, Text, VStack} from "@chakra-ui/react"
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
-import parse from "html-react-parser";
 import Socialshare from "./Socialshare.jsx";
 import { MapIcon } from "../assets/icons.jsx";
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import { Link } from "react-router-dom";
-import MapComponent from "./MapComponent.jsx";
+import {Parse} from "../utils/htmlParser.jsx";
 
 
 
@@ -15,7 +15,7 @@ function OneAgendaTemplate({iconSx, backUrl, events}) {
 
 
 
-  const content = events?.description && parse(events?.description.replace(/\\n/g, "<br />"))
+  const content = events?.description && Parse(events?.description)
 
 
 

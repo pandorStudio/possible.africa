@@ -2,7 +2,7 @@
 import { Container } from "@chakra-ui/react";
 
 import { HomeHeader } from "../components/HomeHeader";
-import Organisations from "./Organisations";
+import Actualites from "./Actualites/Actualites";
 
 // import PodcastsIcon from "@mui/icons-material/Podcasts";
 // import NewspaperIcon from "@mui/icons-material/Newspaper";
@@ -16,7 +16,7 @@ function Home() {
     <>
     <Container maxW="full" p={0}> 
         <HomeHeader/>    
-        <Organisations/>  
+        <Actualites/>  
     </Container>
     </>
   );

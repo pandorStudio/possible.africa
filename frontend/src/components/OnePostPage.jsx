@@ -1,8 +1,10 @@
-import {Badge, Box, Container, Flex, Grid, GridItem, Heading, HStack, Image, Link, Text, Tooltip, VStack} from "@chakra-ui/react"
+/* eslint-disable react/prop-types */
+
+
+import { Badge, Box, Container, Flex, Heading, HStack, Image, VStack } from "@chakra-ui/react";
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
 
-import parse from "html-react-parser";
-import { useState } from "react";
+import {  ParseIframe } from "../utils/htmlParser.jsx";
 import Socialshare from "./Socialshare.jsx";
 
 
@@ -11,7 +13,7 @@ function OnePostPage({iconSx, backUrl, news}) {
   const date = new Date(news?.createdAt);
   const jour = date.getDate();
   const mois = date.toLocaleString('default', { month: 'long' });
-  const content = news?.content && parse(news?.content.replace(/\\n/g, "<br />"))
+  const content = news?.content && ParseIframe(news?.content)
 
   function estimateReadingTime() {
     const wordsPerMinute = 200; // Change this value according to your preference
@@ -66,6 +68,7 @@ function OnePostPage({iconSx, backUrl, news}) {
             </Box>
         </VStack>
         <VStack w={{ base: '100%', md: "25%" }} h="full" p={10} spacing={10} alignItems="flex-start">
+
 
 </VStack>
     </Flex>

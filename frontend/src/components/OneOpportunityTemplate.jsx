@@ -1,6 +1,8 @@
-import {Badge, Box, Container, Flex, Heading, HStack, Image, VStack} from "@chakra-ui/react"
+/* eslint-disable react/prop-types */
+
+import { Badge, Box, Container, Flex, Heading, HStack, Image, VStack } from "@chakra-ui/react";
+import { Parse } from "../utils/htmlParser.jsx";
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
-import parse from "html-react-parser";
 import Socialshare from "./Socialshare.jsx";
 
 
@@ -10,7 +12,7 @@ function OneOpportunityTemplate({iconSx, backUrl, opportunities}) {
 
 
 
-  const content = opportunities?.description && parse(opportunities?.description.replace(/\\n/g, "<br />"))
+  const content = opportunities?.description && Parse(opportunities?.description)
 
 
 

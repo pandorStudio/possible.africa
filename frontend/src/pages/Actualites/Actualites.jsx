@@ -1,8 +1,8 @@
-import {Container, Spinner, VStack} from "@chakra-ui/react"
-import {useGetPostCategoriesQuery, useGetPostsQuery} from "../../features/api/apiSlice.js";
+import { Spinner, VStack } from "@chakra-ui/react";
 import CardComponent from "../../components/CardComponent.jsx";
-import parse from "html-react-parser";
+import { useGetPostCategoriesQuery, useGetPostsQuery } from "../../features/api/apiSlice.js";
 import CustomContainer from "../../utils/CustomContainer.jsx";
+import { ParseSlice } from "../../utils/htmlParser.jsx";
 
 function Actualites() {
     const {
@@ -31,7 +31,7 @@ function Actualites() {
     } else if(isSuccess) {
         content = allNews.map(news => {
             return (
-                <CardComponent postType="Actualités" key={news._id} title={news.title} description={parse(news.content.replace(/\\n/g, "<br />").slice(0, 50)+"...")} imgUrl={news.image} isLoaded={isLoaded} link={"/actualites/" + news.slug} pays="Pays"/>
+                <CardComponent postType="Actualités" key={news._id} title={news.title} description={ParseSlice(news.content)} imgUrl={news.image} isLoaded={isLoaded} link={"/actualites/" + news.slug} pays="Pays"/>
             )
         })
     } else if (isError) {

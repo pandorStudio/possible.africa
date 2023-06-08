@@ -1,15 +1,15 @@
-import { Box, Flex, Heading, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react'
-import { SearchIcon } from '../assets/icons'
-import { useNavigate, useParams } from 'react-router-dom';
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+
+import { Box, Flex, Heading, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SearchIcon } from '../assets/icons';
 import { useGetOrganisationsQuery } from '../features/api/apiSlice';
-import { Divider } from '@chakra-ui/react'
 
 
 function Searchbar({hideMeBellow}) {
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const queryParamValue = urlParams.get('q');
   const [query, setQuery] = useState('');
   let navigate = useNavigate();
   const [suggestions, setSuggestions] = useState([]);
@@ -18,13 +18,8 @@ function Searchbar({hideMeBellow}) {
 
   const {
     data,
-    isLoading,
-    isFetching,
-    isError,
-    isSuccess,
-    error,
+    
   } = useGetOrganisationsQuery();
-  let content;
 
  
   const [searchResults, setSearchResults] = useState([]);

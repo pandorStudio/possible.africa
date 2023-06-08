@@ -1,30 +1,30 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {Header} from "./components/Header";
-import Accueil from "./pages/Accueil";
-import Entrepreneurs from "./pages/Entrepreneurs";
-import TimeForAfrica from "./pages/TimeForAfrica";
-import Actualites from "./pages/Actualites/Actualites.jsx";
-import Interviews from "./pages/Interviews";
-import Agenda from "./pages/Agenda";
-import Opportunites from "./pages/Opportunites";
-import Emplois from "./pages/Emplois";
-import { HomeHeader } from "./components/HomeHeader";
-import Organisations from "./pages/Organisations";
-import OneOrganisation from "./pages/OneOrganisation.jsx";
-import OneInterview from "./pages/OneInterview.jsx";
-import OneAgenda from "./pages/OneAgenda.jsx";
-import OneOpportunity from "./pages/OneOpportunity.jsx";
-import OneEmplois from "./pages/OneEmplois.jsx";
-import Search from "./pages/Search.jsx";
-import OneActualite from './pages/Actualites/OneActualite';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import { HomeHeader } from "./components/HomeHeader";
+import Accueil from "./pages/Accueil";
+import Actualites from "./pages/Actualites/Actualites.jsx";
+import OneActualite from './pages/Actualites/OneActualite';
+import Agenda from "./pages/Agenda";
+import Emplois from "./pages/Emplois";
+import Entrepreneurs from "./pages/Entrepreneurs";
+import Interviews from "./pages/Interviews";
+import OneAgenda from "./pages/OneAgenda.jsx";
+import OneEmplois from "./pages/OneEmplois.jsx";
+import OneInterview from "./pages/OneInterview.jsx";
+import OneOpportunity from "./pages/OneOpportunity.jsx";
+import OneOrganisation from "./pages/OneOrganisation.jsx";
+import Opportunites from "./pages/Opportunites";
+import Organisations from "./pages/Organisations";
+import Search from "./pages/Search.jsx";
+import TimeForAfrica from "./pages/TimeForAfrica";
 
 function App() {
   return (
     <>
       <BrowserRouter>
           <Routes>
-            <Route path="/" element={[<Header />, <Footer/>]}>
+            <Route path="/" element={[<Header key="1"/>, <Footer key="2"/>]}>
                 <Route index element={<Accueil />} />
                 <Route path="/entrepreneurs" element={<Entrepreneurs />} />
                 <Route path='/timeforafrica' element={<TimeForAfrica />} />

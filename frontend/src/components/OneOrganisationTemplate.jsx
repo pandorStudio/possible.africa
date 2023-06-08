@@ -1,21 +1,19 @@
-import {Badge, Box, Container, Flex, Grid, GridItem, Heading, HStack, Image, Link, Text, Tooltip, VStack} from "@chakra-ui/react"
+/* eslint-disable react/prop-types */
+
+import { Badge, Box, Container, Flex, Heading, HStack, Image, Link, VStack } from "@chakra-ui/react";
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
 
-import parse from "html-react-parser";
-import { useState } from "react";
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
+import { ParseIframe } from "../utils/htmlParser.jsx";
 import Socialshare from "./Socialshare.jsx";
 
 
 function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
 
-  const date = new Date(organisations?.createdAt);
-  const jour = date.getDate();
-  const mois = date.toLocaleString('default', { month: 'long' });
 
 
 
-  const content = organisations?.description && parse(organisations?.description.replace(/\\n/g, "<br />"))
+  const content = organisations?.description && ParseIframe(organisations?.description)
 
 
 

@@ -1,10 +1,10 @@
-import { Card, CardBody, Heading, Stack, Image, Text, Skeleton, SkeletonText, Box, Flex, Badge, Tag } from '@chakra-ui/react'
-import {Link} from "react-router-dom";
-import { CalendarIcon, CountryIcon, LawIcon, MapIcon, NewspaperIcon, OrganisationsIcon, PodcastIcon, TypeIcon, WorkIcon } from '../assets/icons';
+/* eslint-disable react/prop-types */
+
+import { Box, Card, CardBody, Heading, Image, Skeleton, Stack, Tag, Text } from '@chakra-ui/react';
+import { Link } from "react-router-dom";
 
 
-// eslint-disable-next-line react/prop-types
-function SearchCardComponent({title, description, imgUrl, isLoaded, link, postType, type, pays, dateDebut, dateFin, company,location}) {
+function SearchCardComponent({title, description, imgUrl, isLoaded, link, postType}) {
 const card = (<Card
     direction={{ base: 'column', md: 'row' }}
     overflow='hidden'
