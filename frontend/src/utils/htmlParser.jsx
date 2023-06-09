@@ -14,34 +14,18 @@ export function ParseSlice(content){
 }
 
 
-export function ParseIframe(content) {
-    return parse(content.replace(/\\n/g, "<br />"), {
-        replace: (domNode) => {
+ const parseOptions = {
+  replace: (domNode) => {
+    if (domNode.data && domNode.data.includes("iframe")) {
+      console.log(domNode.data);
+      // create a new iframe element with the string
+      return(parse(domNode.data));
+     }
+  },
 
-        
-          if (domNode.type === "tag" && domNode.name === "iframe") {
-            // Handle iframe parsing here
-            const { src, width, height } = domNode.attribs;
-            return (
-              <iframe
-                src={src}
-                width={width}
-                height={height}
-                allowFullScreen
-              />
-            );
-          }
-          // Use default parsing for other elements
-          return domToReact(domNode, {
-            replace: (node) => {
-              if (node.type === "text" && node.data === "\\n") {
-                // Replace "\\n" with line break
-                return <br />;
-              }
-              // Use default parsing for other text nodes
-              return domToReact(node);
-            }
-          });
-        }
-      });
-  }
+};
+
+
+export const ParseIframe = (content) => {
+  return parse(content.replace(/\\n/g, "<br />"), parseOptions)
+}
