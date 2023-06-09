@@ -9,6 +9,7 @@ import {
 } from "@refinedev/antd";
 import { Typography } from "antd";
 import parse from "html-react-parser";
+import { htmlParseOptions } from "../posts/show";
 
 const { Title } = Typography;
 
@@ -33,7 +34,10 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Description</Title>
       <span>
         {record?.description &&
-          parse(record?.description.replace(/\\n/g, "<br />"))}
+          parse(
+            record?.description.replace(/\\n/g, "<br />"),
+            htmlParseOptions
+          )}
       </span>
       <Title level={5}>Email</Title>
       <EmailField value={record?.email} />
