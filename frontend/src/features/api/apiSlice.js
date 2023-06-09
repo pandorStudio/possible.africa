@@ -102,7 +102,10 @@ export const apiSlice = createApi({
     }),
 
     searchAll: builder.query({
-      query: (query) =>  `search?q=${query}`,
+      query: (query, pageNumber) =>  `search?q=${query}&page=${pageNumber}`,
+      merge: (currentCache, newItems) => {
+        currentCache.push(...newItems)
+      },
     }),
 
     getJobs: builder.query({
