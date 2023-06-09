@@ -8,6 +8,8 @@ import {
   BooleanField,
 } from "@refinedev/antd";
 import { Typography } from "antd";
+import parse from "html-react-parser";
+import { htmlParseOptions } from "../posts/show";
 
 const { Title } = Typography;
 
@@ -71,7 +73,13 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Secteur d'activité</Title>
       <TextField value={record?.activity_area} />
       <Title level={5}>Description</Title>
-      <TextField value={record?.description} />
+      <span>
+        {record?.description &&
+          parse(
+            record?.description.replace(/\\n/g, "<br />"),
+            htmlParseOptions
+          )}
+      </span>
       <Title level={5}>Éligibilité</Title>
       <TextField value={record?.eligibility} />
       <Title level={5}>Processus</Title>
