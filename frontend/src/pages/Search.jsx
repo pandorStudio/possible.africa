@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
-import { Spinner, VStack } from "@chakra-ui/react";
+import { Button, Spinner, VStack } from "@chakra-ui/react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SearchCardComponent from '../components/SearchCardComponent';
 import { useSearchAllQuery } from "../features/api/apiSlice";
@@ -9,10 +10,13 @@ import { ParseSlice } from "../utils/htmlParser";
 
 
 
+
 function Search() {
 
   const [searchParams,setSearchParams ] = useSearchParams()
   const searchTerm = searchParams.get('q') || '';
+  const [page, setPage] = useState(1);
+  const limit = 10;
 
   const {
     data: results,
@@ -21,7 +25,30 @@ function Search() {
     isError,
     isSuccess,
     error,
-  } = useSearchAllQuery(searchTerm);
+    isLoadingNextPage,
+    hasNextPage,
+    fetchNextPage
+  } = useSearchAllQuery({
+    q: searchTerm,
+    page: page,
+    limit: limit,});
+
+  // const {
+  //   data: { results },
+  //   isLoading,
+  //   isFetching,
+  //   isError,
+  //   isSuccess,
+  //   error,
+  //   isLoadingNextPage,
+  //   hasNextPage,
+  //   fetchNextPage
+  // } = usePaginated(todosApi.endpoints.getTodos, {
+  //   getNextPageParam: (lastPage, allPages) => lastPage.length,
+  //   merge: (prevData, newData) => ({
+  //     todos: [...prevData.todos, ...newData.todos]
+  //   })
+  // });
   let content;
   let resultLength;
   let duration;
@@ -31,13 +58,15 @@ let isLoaded = true;
 
   if (isLoading || isFetching) {
 
-   return <VStack><Spinner/></VStack>
+   return <VStack minH="50vh" alignItems="center" justifyContent="center"><Spinner/></VStack>
    } else if(isSuccess) {
   
     resultLength = results[0].resultLength
 
     duration = results[0].duration
 
+    // resultLength = results.pages.Map(page => page.result).length;
+    // duration = results.pages[0].duration;
 
   content = results.map(result => {
       return (
@@ -73,6 +102,14 @@ let isLoaded = true;
 return (
 <>
 <CustomContainer content={content} title={`Environ ${resultLength} resultats trouvés (${duration} secondes)`}/>
+ {/* Render the "Load More" button */}
+ {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <Button>
+          {'Load More'}
+        </Button>
+      )}
 </>
 
 )

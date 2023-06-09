@@ -26,21 +26,13 @@ export const Footer = () => {
   })
   return (
     <>
-
-    <Container  maxW="container.lg" my={20} >
-    <Flex maxW="100%" alignItems="center">
-            <Image src="/Au-service-de.jpeg" minW="100%" fit="cover" alt="image" fallbackSrc='/placeholder_org_couverture.jpeg' />
-        </Flex>
-    </Container>
-    
-
     <Container
           py={{
             base: '4',
             lg: '6',
           }}
           maxW="container.xl"
-         
+          mt={20}
         >
 
 
