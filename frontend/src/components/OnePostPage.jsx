@@ -63,7 +63,6 @@ function OnePostPage({iconSx, backUrl, news}) {
             </Flex>
 
             <Box as="main">
-         
             {content}
             </Box>
         </VStack>
@@ -72,7 +71,6 @@ function OnePostPage({iconSx, backUrl, news}) {
 
 </VStack>
     </Flex>
-
 </Container>
   )
 }

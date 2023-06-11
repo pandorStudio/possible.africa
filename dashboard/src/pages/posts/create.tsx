@@ -85,7 +85,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
   });
 
   async function onSubmitCapture(values: any) {
-    let imgTags = editorContent.match(/<img[^>]+src="([^">]+)"/g);
+    let imgTags = editorContent?.match(/<img[^>]+src="([^">]+)"/g);
     if (imgTags && imgTags.length > 0) {
       let imgs = imgTags.map((imgTag) => {
         const img = {
@@ -120,7 +120,24 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
       values.image = url;
     }
 
-    console.log(values);
+      if (!values?.user?._id) {
+        values.user = null;
+      }
+      if (!values?.organisations?._id) {
+        values.organisations = null;
+      }
+      if (!values?.country?._id) {
+        values.country = null;
+      }
+      if (!values?.categorie?._id) {
+        values.categorie = null;
+      }
+      if (!values?.content?._id) {
+        values.content = null;
+      }
+      if (!values?.image?._id) {
+        values.image = null;
+      }
 
     onFinish(values);
   }
