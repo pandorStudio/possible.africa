@@ -7,9 +7,10 @@ import {
 import { Edit, useForm, getValueFromEvent, useSelect } from "@refinedev/antd";
 import { Form, Input, Select, Upload } from "antd";
 import ReactQuill from "react-quill";
+import { imageUploadHandler } from "./create";
 
 export const PostEdit: React.FC<IResourceComponentsProps> = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm();
+  const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
 
   const postsData = queryResult?.data?.data;
 
@@ -57,6 +58,66 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     defaultValue: postsData?.organisations?._id,
   });
 
+    async function onSubmitCapture(values: any) {
+      let imgTags = editorContent?.match(/<img[^>]+src="([^">]+)"/g);
+      if (imgTags && imgTags.length > 0) {
+        let imgs = imgTags.map((imgTag) => {
+          const img = {
+            base64: "",
+            url: "",
+          };
+          img.base64 = imgTag
+            .match(/src="([^">]+)"/g)[0]
+            .replace('src="', "")
+            .replace('"', "");
+
+          return img;
+        });
+        let content = editorContent;
+        const result = imgs.map(async (img) => {
+          img.url = await imageUploadHandler(img.base64);
+          // console.log(img.url);
+          content = content.replace(`${img.base64}`, `${img.url}`);
+          return content;
+        });
+        values.content = await Promise.all(result).then(
+          (values: string[]) => {
+            //return the last element of values array
+            content = values[values.length - 1];
+            return content;
+          }
+        );
+      }
+
+      if (values.image && values.image.length) {
+        const base64 = await file2Base64(values.image[0]);
+        const url = await imageUploadHandler(base64);
+        values.image = url;
+      }
+
+      if (!values?.user?._id) {
+        values.user = null;
+      }
+      if (!values?.organisations?._id) {
+        values.organisations = null;
+      }
+      if (!values?.country?._id) {
+        values.country = null;
+      }
+      if (!values?.categorie?._id) {
+        values.categorie = null;
+      }
+      if (!editorContent) {
+        values.content = null;
+      }
+      if (!values?.image?._id) {
+        values.image = null;
+      }
+      console.log(values);
+
+      onFinish(values);
+    }
+
   function handleImgSubmit(event: any) {
     console.log(event);
     event.preventDefault();
@@ -64,7 +125,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
-      <Form {...formProps} layout="vertical">
+      <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
         <Form.Item label="Auteur" name={["user", "_id"]}>
           <Select {...userSelectProps} />
         </Form.Item>

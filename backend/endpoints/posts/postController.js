@@ -6,9 +6,15 @@ const CustomUtils = require("../../utils/index.js");
 // @access Public
 
 exports.getAllPosts = async (req, res) => {
+  const {limit = 10, page, sort, fields} = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const posts = await Post.find(queryObj);
+    // const posts = await Post.find(queryObj)
+    //   .limit(limit * 1)
+    //   .skip((page - 1) * limit)
+    //   .sort(sort)
+    //   .select(fields);
+    const posts = await Post.find(queryObj).limit(limit * 1).sort(sort).select(fields);
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -61,8 +67,9 @@ exports.createPost = async (req, res) => {
   // res.status(201).json({});
   const CustomBody = { ...req.body };
   
-  const name = CustomBody.name;
-  const slug = CustomUtils.slugify(name) + "-" + CustomUtils.getRandomNbr();
+  const title = CustomBody.title;
+  const slug = CustomUtils.slugify(title) + "-" + CustomUtils.getRandomNbr();
+
   try {
     CustomBody.slug = slug;
     const post = await Post.create(CustomBody);
