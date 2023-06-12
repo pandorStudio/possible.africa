@@ -54,19 +54,19 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               name: el[0],
               country: el[1],
               description: el[2],
-              owner: el[3],
-              email: el[4],
-              telephone: el[5],
-              site_web: el[6],
-              linkedin_url: el[7],
-              facebook_url: el[8],
-              twitter_url: el[9],
-              adresse: el[10],
+              site_web: el[3],
+              linkedin_url: el[4],
+              facebook_url: el[5],
+              twitter_url: el[6],
+              // linkedin_url: el[7],
+              // facebook_url: el[8],
+              // twitter_url: el[9],
+              // adresse: el[10],
             };
             body.push({ ...ob });
             // await axios.post(apiUrl + "/organisations", el);
             setImportLoading(true);
-            await axiosInstance
+            axiosInstance
               .post(
                 apiUrl + "/organisations",
                 {
@@ -90,10 +90,23 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
       },
     });
     console.log(body);
-    let results = body.forEach(async (el) => {
-      console.log(el);
-      //await axios.put("http://localhost:5000", el);
+    const results = body.map(async (ob) => {
+      return axiosInstance
+        .post(
+          apiUrl + "/organisations",
+          {
+            ...ob,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
     });
+
+    await Promise.all(results);
+    setImportLoading(false);
 
     console.log(results);
   }
@@ -305,7 +318,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                     {value}
                   </Link>
                 );
-              } else {  
+              } else {
                 return "-";
               }
             }}
