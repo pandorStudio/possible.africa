@@ -6,11 +6,14 @@ const {
   updateOrganisation,
   deleteOrganisation,
 } = require("./organisationController");
-
-router.route("/").get(getAllOrganisations).post(createOrganisation);
+const { UploadImage } = require("../uploads/uploadsController.js");
 
 router
+  .route("/")
+  .get(getAllOrganisations)
+  .post(UploadImage.single("logo"), createOrganisation);
 
+router
   .route("/:id")
   .get(getOrganisationById)
   .put(updateOrganisation)

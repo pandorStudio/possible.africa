@@ -42,6 +42,7 @@ exports.createOrganisation = async (req, res) => {
   try {
     if (req.user) CustomBody.contributeur = req.user._id;
     CustomBody.slug = slug;
+    if (req.file) CustomBody.logo = req.file.filename;
     const organisation = await Organisation.create(CustomBody);
     res.status(201).json(organisation);
   } catch (error) {
