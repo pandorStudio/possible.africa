@@ -7,6 +7,7 @@ import {
 import CustomContainer from "../../utils/CustomContainer.jsx";
 import { ParseSlice } from "../../utils/htmlParser.jsx";
 import { useState, useEffect } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 function Actualites() {
   const [page, setPage] = useState(1);
@@ -34,23 +35,23 @@ function Actualites() {
   });
   let content;
 
-  useEffect(() => {
-    function handleScroll() {
-      if (
-        window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-        !infiniteScrollIsFetching
-      ) {
-        setPage((prevPage) => prevPage + 1);
-        setinfiniteScrollIsFetching(true);
-      }
-    }
+  // useEffect(() => {
+  //   function handleScroll() {
+  //     if (
+  //       window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+  //       !infiniteScrollIsFetching
+  //     ) {
+  //       setPage((prevPage) => prevPage + 1);
+  //       setinfiniteScrollIsFetching(true);
+  //     }
+  //   }
 
-    window.addEventListener("scroll", handleScroll);
+  //   window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [infiniteScrollIsFetching]);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [infiniteScrollIsFetching]);
 
   let isLoaded = true;
 
@@ -60,33 +61,48 @@ function Actualites() {
         <Spinner />
       </VStack>
     );
-  } else if (isSuccess) {
-    content = allNews.map((news, index) => {
-      const instanceCard = (
-        <CardComponent
-          postType="Actualités"
-          key={news._id}
-          title={news.title}
-          description={ParseSlice(news.content)}
-          imgUrl={news.image}
-          isLoaded={isLoaded}
-          link={"/actualites/" + news.slug}
-          pays="Pays"
-        />
-      );
+  }
+  if (isSuccess) {
+    content = (
+      <InfiniteScroll
+        dataLength={allNews.length}
+        next={() => setPage((prevPage) => prevPage + 1)}
+        hasMore={true}
+        loader={
+          <VStack>
+            <Spinner />
+          </VStack>
+        }
+      >
+        {allNews.map((news, index) => {
+          const instanceCard = (
+            <CardComponent
+              postType="Actualités"
+              key={news._id}
+              title={news.title}
+              description={ParseSlice(news.content)}
+              imgUrl={news.image}
+              isLoaded={isLoaded}
+              link={"/actualites/" + news.slug}
+              pays="Pays"
+            />
+          );
 
-        return (
-          <>
-            {instanceCard}
-            {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
-              <HStack>
-                <Spinner />
-              </HStack>
-            )}
-          </>
-        );
-    });
-  } else if (isError) {
+          return (
+            <>
+              {instanceCard}
+              {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
+                <HStack>
+                  <Spinner />
+                </HStack>
+              )}
+            </>
+          );
+        })}
+      </InfiniteScroll>
+    );
+  }
+  if (isError) {
     console.log({ error });
     return <div>{error.status}</div>;
   }
