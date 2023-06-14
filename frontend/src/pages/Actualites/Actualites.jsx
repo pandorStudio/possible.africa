@@ -62,16 +62,21 @@ function Actualites() {
       </VStack>
     );
   }
-  if (isSuccess) {
+  if (allNews.length) {
     content = (
       <InfiniteScroll
         dataLength={allNews.length}
         next={() => setPage((prevPage) => prevPage + 1)}
         hasMore={true}
         loader={
-          <VStack>
-            <Spinner />
-          </VStack>
+          <div
+            styles={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Spinner as="div" mx="45%" mt={10} />
+          </div>
         }
       >
         {allNews.map((news, index) => {

@@ -1,4 +1,4 @@
-import { Spinner, VStack } from "@chakra-ui/react";
+import { Flex, Spinner, VStack } from "@chakra-ui/react";
 import CardComponent from "../components/CardComponent";
 import { useGetOrganisationsQuery } from "../features/api/apiSlice";
 import CustomContainer from "../utils/CustomContainer";
@@ -51,16 +51,19 @@ function Organisations() {
       </VStack>
     );
   }
-  if (isSuccess) {
+  if (organisations.length) {
     content = (
       <InfiniteScroll
         dataLength={organisations.length}
         next={() => setPage((prevPage) => prevPage + 1)}
         hasMore={true}
         loader={
-          <VStack>
-            <Spinner />
-          </VStack>
+          <div styles={{
+            display: "flex",
+            justifyContent: "center",
+          }}>
+            <Spinner as="div" mx="45%" mt={10} />
+          </div>
         }
       >
         {organisations.map((organisation, index) => {
