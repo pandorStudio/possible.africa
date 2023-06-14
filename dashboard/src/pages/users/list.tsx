@@ -1,5 +1,9 @@
-import React from "react";
-import { IResourceComponentsProps, BaseRecord } from "@refinedev/core";
+import React, { useEffect, useState } from "react";
+import {
+  IResourceComponentsProps,
+  BaseRecord,
+  useApiUrl,
+} from "@refinedev/core";
 import {
   useTable,
   List,
@@ -8,26 +12,130 @@ import {
   EmailField,
   ImageField,
   DeleteButton,
+  CreateButton,
 } from "@refinedev/antd";
-import { Table, Space } from "antd";
+import {
+  Table,
+  Space,
+  Avatar,
+  Checkbox,
+  Button,
+  Alert,
+  Modal,
+  message,
+} from "antd";
 import Link from "antd/es/typography/Link";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { axiosInstance } from "../../authProvider";
+import { useInvalidate } from "@refinedev/core";
 
 export const UserList: React.FC<IResourceComponentsProps> = () => {
   const { tableProps } = useTable({
     syncWithLocation: true,
   });
+  const [checkedArray, setCheckedArray] = useState([]);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [modal, contextHolder] = Modal.useModal();
+  const invalidate = useInvalidate();
+
+  const apiUrl = useApiUrl();
+
+  useEffect(() => {
+  }, [checkedArray, deleteLoading]);
+
+  function handleCheckBox(e: any, id: any) {
+    const checked = e.target.checked;
+    if (checked) {
+      setCheckedArray((s) => {
+        return [...s, id];
+      });
+    } else {
+      const checkedArrayCopy = [...checkedArray];
+      checkedArrayCopy.filter((el, index) => {
+        if (el === id) {
+          checkedArrayCopy.splice(index, 1);
+        }
+      });
+      setCheckedArray(checkedArrayCopy);
+    }
+  }
+
+  const confirmDelete = () => {
+    modal.confirm({
+      title: "Confirm",
+      icon: <ExclamationCircleOutlined />,
+      content: "Êtes vous sur de vouloir supprimer les élements sélèctionnés ?",
+      okText: "Supprimer",
+      cancelText: "Annuler",
+      async onOk(...args) {
+        if (checkedArray.length) {
+          const results = checkedArray.map(async (ob) => {
+            return axiosInstance.delete(apiUrl + `/users/${ob}`, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          });
+
+          await Promise.all(results);
+          console.log(results);
+          invalidate({
+            resource: "users",
+            invalidates: ["list"],
+          });
+          setCheckedArray([]);
+        }
+      },
+    });
+  };
 
   return (
-    <List>
+    <List
+      headerProps={{
+        extra: (
+          <Space>
+            {checkedArray.length ? (
+              <Button
+                onClick={confirmDelete}
+                style={{ backgroundColor: "#ff4d4f", color: "white" }}
+              >
+                {`${checkedArray.length}`} Effacer Selection
+              </Button>
+            ) : null}
+            <CreateButton />
+          </Space>
+        ),
+      }}
+    >
+      {contextHolder}
       <Table {...tableProps} rowKey="_id" scroll={{ x: 2500, y: "auto" }}>
-        <Table.Column dataIndex="username" title="N. Utilisateur" />
+        <Table.Column
+          fixed="left"
+          width={68}
+          dataIndex=""
+          title="#"
+          render={(_, record: BaseRecord) => {
+            return (
+              <Checkbox
+                key={record.id}
+                onChange={() => handleCheckBox(event, record.id)}
+              />
+            );
+          }}
+        />
+        <Table.Column
+          fixed="left"
+          dataIndex="username"
+          title="N. Utilisateur"
+        />
 
         <Table.Column
+          width={68}
           dataIndex="avatar"
-          title="Photo de profil"
+          title="Profil"
           render={(value: any) => {
             if (value) {
-              return <ImageField value={value} />;
+              return <Avatar src={value} />;
             } else {
               return "-";
             }
@@ -38,7 +146,17 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           title="Email"
           render={(value: any) => {
             if (value) {
-              return <EmailField value={value} />;
+              return (
+                <EmailField
+                  style={{
+                    wordBreak: "keep-all",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                  }}
+                  value={value}
+                />
+              );
             } else {
               return "-";
             }
@@ -151,6 +269,17 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           )}
         />
       </Table>
+
+      <Space>
+        {checkedArray.length ? (
+          <Button
+            onClick={confirmDelete}
+            style={{ backgroundColor: "#ff4d4f", color: "white" }}
+          >
+            {`${checkedArray.length}`} Effacer Selection
+          </Button>
+        ) : null}
+      </Space>
     </List>
   );
 };
