@@ -43,9 +43,11 @@ exports.getUserById = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const bodyWR = { ...req.body };
-    delete bodyWR.role;
+    if (bodyWR.role) {
+      delete bodyWR.role;
+    }
     const newUser = await User.create(bodyWR);
-    await User.findByIdAndUpdate(newUser._id, { password: body.password });
+    await User.findByIdAndUpdate(newUser._id, { password: bodyWR.password });
 
     res.status(201).json(newUser);
   } catch (error) {

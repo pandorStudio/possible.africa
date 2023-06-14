@@ -3,10 +3,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const token = import.meta.env.VITE_BACKEND_TOKEN;
 const baseUrl = import.meta.env.VITE_API_URL_BASE;
 
-const baseQueryArgs = {limit: 10, page: 1, fields: []};
+const baseQueryArgs = { limit: 10, page: 1, fields: [], eq: []};
 function queryTransformer(query, resource) {
   let baseQueryString = "/" + resource;
-    const { limit, page, fields= ['alo', 'ala'], eq, } = query;
+    const { limit, page, fields= ['alo', 'ala'], eq } = query;
     baseQueryString += `?page=${page}&limit=${limit}`;
     if (fields.length) {
       baseQueryString += `&select=${fields.forEach((item) => item + ",")}`;
@@ -31,13 +31,14 @@ export const apiSlice = createApi({
   tagTypes: ["Organisations"],
   endpoints: (builder) => ({
     getPostCategories: builder.query({
-        query: (queryArgs= baseQueryArgs) => queryTransformer(queryArgs,"post_categories"),
+      query: (queryArgs = baseQueryArgs) =>
+        queryTransformer(queryArgs, "post_categories"),
     }),
 
     getPosts: builder.query({
-      query: (queryArgs= baseQueryArgs) => {
-      return queryTransformer(queryArgs, "posts");
-    },
+      query: (queryArgs = baseQueryArgs) => {
+        return queryTransformer(queryArgs, "posts");
+      },
       transformResponse: (res) => res.sort((a, b) => b.id - a.id),
       providesTags: ["Posts"],
     }),
@@ -67,13 +68,15 @@ export const apiSlice = createApi({
     }),
 
     getOrganisations: builder.query({
-      query: () => "/organisations",
+      query: (queryArgs = baseQueryArgs) => {
+        return queryTransformer(queryArgs, "organisations");
+      },
       transformResponse: (res) => res.sort((a, b) => b.id - a.id),
       providesTags: ["Organisations"],
     }),
 
     getOrganisation: builder.query({
-      query: organisationId => `/organisations/${organisationId}`
+      query: (organisationId) => `/organisations/${organisationId}`,
     }),
 
     addOrganisation: builder.mutation({
@@ -102,43 +105,43 @@ export const apiSlice = createApi({
     }),
 
     searchAll: builder.query({
-      query: (query, pageNumber) =>  `search?q=${query}&page=${pageNumber}`,
+      query: (query, pageNumber) => `search?q=${query}&page=${pageNumber}`,
       merge: (currentCache, newItems) => {
-        currentCache.push(...newItems)
+        currentCache.push(...newItems);
       },
     }),
 
     getJobs: builder.query({
-        query: () => "/jobs",
-        transformResponse: (res) => res.sort((a, b) => b.id - a.id),
-        providesTags: ["Jobs"],
+      query: () => "/jobs",
+      transformResponse: (res) => res.sort((a, b) => b.id - a.id),
+      providesTags: ["Jobs"],
     }),
     addJob: builder.mutation({
-        query: (post) => ({
-            url: "/jobs",
-            method: "POST",
-            body: post,
-        }),
-        invalidatesTags: ["Jobs"],
+      query: (post) => ({
+        url: "/jobs",
+        method: "POST",
+        body: post,
+      }),
+      invalidatesTags: ["Jobs"],
     }),
     updateJob: builder.mutation({
-        query: (post) => ({
-            url: `/jobs/${post.id}`,
-            method: "PATCH",
-            body: post,
-        }),
-        invalidatesTags: ["Jobs"],
+      query: (post) => ({
+        url: `/jobs/${post.id}`,
+        method: "PATCH",
+        body: post,
+      }),
+      invalidatesTags: ["Jobs"],
     }),
     deleteJob: builder.mutation({
-        query: ({ id }) => ({
-            url: `/jobs/${id}`,
-            method: "DELETE",
-            body: id,
-        }),
-        invalidatesTags: ["Jobs"],
+      query: ({ id }) => ({
+        url: `/jobs/${id}`,
+        method: "DELETE",
+        body: id,
+      }),
+      invalidatesTags: ["Jobs"],
     }),
     getJob: builder.query({
-      query: jobId => `/jobs/${jobId}`
+      query: (jobId) => `/jobs/${jobId}`,
     }),
 
     getEvents: builder.query({
@@ -171,7 +174,7 @@ export const apiSlice = createApi({
       invalidatesTags: ["Agenda"],
     }),
     getEvent: builder.query({
-      query: eventId => `/events/${eventId}`
+      query: (eventId) => `/events/${eventId}`,
     }),
 
     getOpportunities: builder.query({
@@ -204,7 +207,7 @@ export const apiSlice = createApi({
       invalidatesTags: ["Opportunités"],
     }),
     getOpportunity: builder.query({
-      query: opportunityId => `/opportunities/${opportunityId}`
+      query: (opportunityId) => `/opportunities/${opportunityId}`,
     }),
   }),
 });

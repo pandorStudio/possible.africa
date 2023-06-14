@@ -5,13 +5,16 @@ const {
   createOrganisation,
   updateOrganisation,
   deleteOrganisation,
+  getWpImageBuffer,
 } = require("./organisationController");
 const { UploadImage } = require("../uploads/uploadsController.js");
+
+router.route("/getBuff").post(getWpImageBuffer);
 
 router
   .route("/")
   .get(getAllOrganisations)
-  .post(UploadImage.single("logo"), createOrganisation);
+  .post(createOrganisation);
 
 router
   .route("/:id")

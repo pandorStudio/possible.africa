@@ -6,6 +6,7 @@ import {
   useImport,
   useCreate,
   useApiUrl,
+  file2Base64,
 } from "@refinedev/core";
 import {
   useTable,
@@ -21,7 +22,17 @@ import {
   RefreshButton,
   ImageField,
 } from "@refinedev/antd";
-import { Table, Space, Button, Input, Spin, Alert, message } from "antd";
+import {
+  Table,
+  Space,
+  Button,
+  Input,
+  Spin,
+  Alert,
+  message,
+  Modal,
+  Checkbox,
+} from "antd";
 import { IOrganisation, IPost, IPostFile } from "../../interfaces";
 import papa from "papaparse";
 import { dataProvider } from "../../custom-data-provider/data-provider";
@@ -30,6 +41,50 @@ import { axiosInstance } from "../../authProvider";
 import Link from "antd/es/typography/Link";
 import { useRefineContext } from "@pankod/refine";
 import { useInvalidate } from "@refinedev/core";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { imageUploadHandler } from "../posts/create";
+
+const ENV = import.meta.env.VITE_NODE_ENV;
+const API_URL =
+  ENV === "developement"
+    ? import.meta.env.VITE_BACKEND_DEV
+    : import.meta.env.VITE_BACKEND_PROD;
+
+async function downloadMedia(mediaUrl) {
+  try {
+    const response = await axios.get(mediaUrl, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      responseType: "arraybuffer",
+    });
+
+    const fileBuffer = Buffer.from(response.data, "binary");
+    return fileBuffer;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+async function imageBfUploadHandler(blob: any) {
+  // build form data
+  // const blob = await bf.blob();
+  const file = new File([blob], "image.jpg", {
+    type: blob.type,
+  });
+  const data = new FormData();
+  data.append("image", file);
+
+  // send post request
+  const response = await axiosInstance.post(`${API_URL}/upload/images`, data);
+
+  // return the image url
+  const imageUrl = response.data.url;
+  // const imageUrl = `${API_URL}/uploads/images/${filename}`;
+
+  return imageUrl;
+}
 
 export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
@@ -38,6 +93,9 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
     syncWithLocation: true,
   });
   const apiUrl = useApiUrl();
+  const [checkedArray, setCheckedArray] = useState([]);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [modal, modalContextHolder] = Modal.useModal();
   const invalidate = useInvalidate();
 
   async function handleImport(e: any) {
@@ -58,6 +116,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               linkedin_url: el[4],
               facebook_url: el[5],
               twitter_url: el[6],
+              logo: el[7],
               // linkedin_url: el[7],
               // facebook_url: el[8],
               // twitter_url: el[9],
@@ -91,18 +150,17 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
     });
     console.log(body);
     const results = body.map(async (ob) => {
-      return axiosInstance
-        .post(
-          apiUrl + "/organisations",
-          {
-            ...ob,
+      return axiosInstance.post(
+        apiUrl + "/organisations",
+        {
+          ...ob,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        }
+      );
     });
 
     await Promise.all(results);
@@ -134,7 +192,53 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
         fileImportInput.current!.value! = "";
       }
     };
-  }, [importLoading]);
+  }, [importLoading, checkedArray, deleteLoading]);
+
+  function handleCheckBox(e: any, id: any) {
+    const checked = e.target.checked;
+    if (checked) {
+      setCheckedArray((s) => {
+        return [...s, id];
+      });
+    } else {
+      const checkedArrayCopy = [...checkedArray];
+      checkedArrayCopy.filter((el, index) => {
+        if (el === id) {
+          checkedArrayCopy.splice(index, 1);
+        }
+      });
+      setCheckedArray(checkedArrayCopy);
+    }
+  }
+
+  const confirmDelete = () => {
+    modal.confirm({
+      title: "Confirm",
+      icon: <ExclamationCircleOutlined />,
+      content: "Êtes vous sur de vouloir supprimer les élements sélèctionnés ?",
+      okText: "Supprimer",
+      cancelText: "Annuler",
+      async onOk(...args) {
+        if (checkedArray.length) {
+          const results = checkedArray.map(async (ob) => {
+            return axiosInstance.delete(apiUrl + `/organisations/${ob}`, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          });
+
+          await Promise.all(results);
+          console.log(results);
+          invalidate({
+            resource: "organisations",
+            invalidates: ["list"],
+          });
+          setCheckedArray([]);
+        }
+      },
+    });
+  };
 
   return (
     <>
@@ -143,6 +247,14 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
         headerProps={{
           extra: (
             <Space>
+              {checkedArray.length ? (
+                <Button
+                  onClick={confirmDelete}
+                  style={{ backgroundColor: "#ff4d4f", color: "white" }}
+                >
+                  {`${checkedArray.length}`} Effacer Selection
+                </Button>
+              ) : null}
               <Input
                 type="file"
                 ref={fileImportInput}
@@ -154,14 +266,30 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           ),
         }}
       >
+        {modalContextHolder}
         {/* <Spin tip="Loading...">
           <Alert
             message="Import en cours..."
             description="Veuillez patienter pendant que nous importons les données."
-            type="warning"
+            type="warning"import { axiosInstance } from './../../authProvider';
+
           />
         </Spin> */}
         <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
+          <Table.Column
+            fixed="left"
+            width={68}
+            dataIndex=""
+            title="#"
+            render={(_, record: BaseRecord) => {
+              return (
+                <Checkbox
+                  key={record.id}
+                  onChange={() => handleCheckBox(event, record.id)}
+                />
+              );
+            }}
+          />
           <Table.Column
             width="10%"
             dataIndex="name"
@@ -336,6 +464,17 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             )}
           />
         </Table>
+
+        <Space>
+          {checkedArray.length ? (
+            <Button
+              onClick={confirmDelete}
+              style={{ backgroundColor: "#ff4d4f", color: "white" }}
+            >
+              {`${checkedArray.length}`} Effacer Selection
+            </Button>
+          ) : null}
+        </Space>
       </List>
     </>
   );

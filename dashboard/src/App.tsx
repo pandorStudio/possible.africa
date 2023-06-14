@@ -264,7 +264,7 @@ function App() {
             <Routes>
               <Route
                 element={
-                  <Authenticated fallback={<CatchAllNavigate to="/login" />}>
+                  // <Authenticated fallback={<CatchAllNavigate to="/login" />}>
                     <ThemedLayoutV2
                       Sider={() => (
                         <ThemedSiderV2 Title={() => <ThemedTitleV2 collapsed />} />
@@ -274,7 +274,7 @@ function App() {
                     >
                       <Outlet />
                     </ThemedLayoutV2>
-                  </Authenticated>
+                  // </Authenticated>
                 }
               >
                 <Route
