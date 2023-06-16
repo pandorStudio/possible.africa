@@ -94,9 +94,11 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   });
   const apiUrl = useApiUrl();
   const [checkedArray, setCheckedArray] = useState([]);
+  const [allCheckedOnPage, setAllCheckedOnPage] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [modal, modalContextHolder] = Modal.useModal();
   const invalidate = useInvalidate();
+  let checkboxRefs = useRef([]);
 
   async function handleImport(e: any) {
     const file = e.target.files[0];
@@ -192,7 +194,26 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
         fileImportInput.current!.value! = "";
       }
     };
-  }, [importLoading, checkedArray, deleteLoading]);
+  }, [importLoading, checkedArray, deleteLoading, allCheckedOnPage]);
+
+  function handleCheckBoxAll(e: any) {
+    const pageCheckboxes = checkboxRefs.current;
+    console.log(pageCheckboxes);
+    const checked = e.target.checked;
+    if (checked) {
+      tableProps?.dataSource?.map((el: any) => {
+        if (pageCheckboxes[el.id]) {
+          setCheckedArray((s) => { 
+            return [...s, el.id];
+          });
+        }
+      });
+      setAllCheckedOnPage(true);
+    } else {
+      setCheckedArray([]);
+      setAllCheckedOnPage(false);
+    }
+  }
 
   function handleCheckBox(e: any, id: any) {
     const checked = e.target.checked;
@@ -280,11 +301,14 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             fixed="left"
             width={68}
             dataIndex=""
-            title="#"
+            title={<Checkbox checked={allCheckedOnPage} onChange={handleCheckBoxAll} />}
             render={(_, record: BaseRecord) => {
               return (
                 <Checkbox
                   key={record.id}
+                  checked={checkedArray.includes(record.id)}
+                  ref={(input) => (checkboxRefs.current[record.id] = record.id)}
+                  className="ant-table-row-checkbox"
                   onChange={() => handleCheckBox(event, record.id)}
                 />
               );
