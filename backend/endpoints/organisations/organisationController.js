@@ -59,7 +59,7 @@ exports.getWpImageBuffer = async (req, res) => {
 // @route GET /api/v1/organisations
 // @access Public
 exports.getAllOrganisations = async (req, res) => {
-  const { limit = 10, page, sort, fields } = req.query;
+  const { limit , page, sort, fields } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
   try {
     const organisations = await Organisation.find(queryObj)
