@@ -6,7 +6,7 @@ const CustomUtils = require("../../utils/index.js");
 // @access Public
 
 exports.getAllPosts = async (req, res) => {
-  const {limit = 10, page, sort, fields} = req.query;
+  const {limit, page, sort, fields} = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
   try {
     // const posts = await Post.find(queryObj)

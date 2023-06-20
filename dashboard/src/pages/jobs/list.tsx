@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { IResourceComponentsProps, BaseRecord, useApiUrl, useInvalidate } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  BaseRecord,
+  useApiUrl,
+  useInvalidate,
+} from "@refinedev/core";
 import {
   useTable,
   List,
@@ -13,6 +18,7 @@ import {
 import { Table, Space, Input, message } from "antd";
 import papa from "papaparse";
 import { axiosInstance } from "../../authProvider";
+import Link from "antd/es/typography/Link";
 export const JobList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
   const fileImportInput = useRef(null);
@@ -153,7 +159,7 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
             dataIndex={["beginning_date"]}
             title="Date de début"
             render={(value: any) => {
-              if(value){
+              if (value) {
                 return <DateField value={value} />;
               } else {
                 return "-";
@@ -164,15 +170,38 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
             dataIndex={["ending_date"]}
             title="Date de fin"
             render={(value: any) => {
-              if(value){
+              if (value) {
                 return <DateField value={value} />;
               } else {
                 return "-";
               }
             }}
           />
-          <Table.Column dataIndex="location" title="Emplacement" />
-          <Table.Column dataIndex="skills" title="Compétences" />
+          <Table.Column
+            dataIndex="location"
+            title="Emplacement"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link
+                    // href={"https://www.google.com/search?q=" + value}
+                    href={"https://www.google.com/maps/search/" + value}
+                    target="_blank"
+                  >
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+            ellipsis={true}
+          />
+          <Table.Column
+            dataIndex="skills"
+            title="Compétences"
+            ellipsis={true}
+          />
           <Table.Column
             fixed="right"
             title="Actions"

@@ -1,19 +1,25 @@
 const Organisation = require("./organisationModel");
 const OrganisationType = require("../organisationTypes/organisationTypeModel");
+const download = require("image-downloader");
 const CustomUtils = require("../../utils/index.js");
 const axios = require("axios");
 const { Buffer } = require("buffer");
-const { UploadImage } = require("../uploads/uploadsController.js");
-const BUCKET_NAME = process.env.BUCKET_NAME;
+const fs = require("fs");
 
 async function downloadMedia(mediaUrl) {
   try {
-    const response = await axios.get(mediaUrl, {
-      responseType: "arraybuffer",
-    });
-
-    const fileBuffer = Buffer.from(response.data, "binary");
-    return fileBuffer;
+    const options = {
+      url: mediaUrl,
+      dest: "../../endpoints/organisations/img",
+      extractFilename: true,
+    };
+    const res = await download.image(options);
+    const imageData = fs.readFileSync(res.filename).toString("base64");
+    const dataUrl = `data:${`image/${res.filename
+      .split(".")
+      .pop()}`};base64,${imageData}`;
+    fs.unlinkSync(res.filename);
+    return dataUrl;
   } catch (error) {
     console.error(error);
     return null;
@@ -44,9 +50,8 @@ async function transformMediaUrl(mediaUrl) {
 }
 
 exports.getWpImageBuffer = async (req, res) => {
-  const buffer = await downloadMedia(req.body.url);
-  // const base64 = buffer.toString('base64')
-  return res.status(200).json(buffer);
+  const dataUrl = await downloadMedia(req.body.url);
+  return res.status(200).json({ dataUrl });
 };
 
 // const mediaUrl =
@@ -59,7 +64,7 @@ exports.getWpImageBuffer = async (req, res) => {
 // @route GET /api/v1/organisations
 // @access Public
 exports.getAllOrganisations = async (req, res) => {
-  const { limit , page, sort, fields } = req.query;
+  const { limit, page, sort, fields } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
   try {
     const organisations = await Organisation.find(queryObj)
