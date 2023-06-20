@@ -20,6 +20,37 @@ import {
 import { Table, Space, message, Input } from "antd";
 import papa from "papaparse";
 import { axiosInstance } from "../../authProvider";
+import { downloadMedia } from "../organisations/list";
+import { imageUploadHandler } from "./create";
+
+async function processContent(content: string) {
+  let imgTags = content.match(/<img[^>]+src="([^">]+)"/g);
+  if (imgTags && imgTags.length > 0) {
+    let imgs = imgTags.map((imgTag) => {
+      const imgUrl = imgTag
+        .match(/src="([^">]+)"/g)[0]
+        .replace('src="', "")
+        .replace('"', "");
+
+      return imgUrl;
+    });
+    let contentProcessed = "";
+    const result = imgs.map(async (img) => {
+      const imgBase64 = await downloadMedia(img);
+      const imgUrlS3 = await imageUploadHandler(imgBase64.data.dataUrl);
+      // console.log(img.url);
+      contentProcessed = content.replace(`${img}`, `${imgUrlS3}`);
+      return contentProcessed;
+    });
+
+    const finalContent = await Promise.all(result).then((values: string[]) => {
+      //return the last element of values array
+      contentProcessed = values[values.length - 1];
+      return contentProcessed;
+    });
+    return finalContent;
+  }
+}
 
 export const PostList: React.FC<IResourceComponentsProps> = () => {
   const { tableProps } = useTable({
@@ -41,20 +72,30 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
     const file = e.target.files[0];
     let headers: any[] = [];
     let body: any[] = [];
+    setImportLoading(true);
     papa.parse(file, {
       complete: async function (results) {
         results.data.map(async (el: any, i) => {
           if (i === 0) {
             headers.push(...el);
           } else {
+            const content = await processContent(el[3]);
+            const imageBase64 = await downloadMedia(el[9]);
+            const image = await imageUploadHandler(imageBase64.data.dataUrl);
+            console.log(image);
             const ob: any = {
-              title: el[0],
-              country: el[1],
+              title: el[1],
+              content: el[3],
+              categorie:
+                el[4] === "Portraits"
+                  ? "6474bac3de440360d8a0a917"
+                  : "6474bad3de440360d8a0a91b",
+              country: el[10],
               slug: el[2],
+              image: image ? image : "",
             };
             body.push({ ...ob });
             // await axios.post(apiUrl + "/organisations", el);
-            setImportLoading(true);
             await axiosInstance
               .post(
                 apiUrl + "/posts",
@@ -78,13 +119,6 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
         });
       },
     });
-    console.log(body);
-    let results = body.forEach(async (el) => {
-      console.log(el);
-      //await axios.put("http://localhost:5000", el);
-    });
-
-    console.log(results);
   }
 
   const [messageApi, contextHolder] = message.useMessage();
@@ -154,10 +188,11 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               )
             }
           />
-          <Table.Column dataIndex="title" title="Titre" />
+          <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
           <Table.Column dataIndex="country" title="Pays" />
-          <Table.Column dataIndex="slug" title="Slug" />
+          <Table.Column dataIndex="slug" title="Slug" ellipsis={true} />
           <Table.Column
+            width={120}
             dataIndex={["image"]}
             title="Couverture"
             render={(value: any) => {

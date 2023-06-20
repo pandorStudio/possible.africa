@@ -15,10 +15,14 @@ import {
   DeleteButton,
   CreateButton,
   ExportButton,
+  ImageField,
 } from "@refinedev/antd";
 import { Table, Space, Input, message } from "antd";
 import { axiosInstance } from "@refinedev/simple-rest";
 import papa from "papaparse";
+import { downloadMedia } from "../organisations/list";
+import { imageUploadHandler } from "../posts/create";
+import Link from "antd/es/typography/Link";
 
 export const EventList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
@@ -33,26 +37,28 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
     const file = e.target.files[0];
     let headers: any[] = [];
     let body: any[] = [];
+    setImportLoading(true);
     papa.parse(file, {
       complete: async function (results) {
         results.data.map(async (el: any, i) => {
           if (i === 0) {
             headers.push(...el);
           } else {
+            const blobImage = await downloadMedia(el[16]);
+            const imageUrl = await imageUploadHandler(blobImage.data.dataUrl);
             const ob: any = {
-              title: el[0],
-              beginning_date: el[1],
-              ending_date: el[2],
-              target_country: el[3],
-              description: el[4],
-              registration_link: el[5],
-              location: el[6],
-              isRecurrent: el[7],
-              frequency: el[8],
+              title: el[1],
+              beginning_date: el[11],
+              ending_date: el[12],
+              target_country: el[10],
+              description: el[8],
+              registration_link: el[15],
+              location: el[10],
+              cover: imageUrl ? imageUrl : "",
+              format: el[7],
             };
             body.push({ ...ob });
             // await axios.post(apiUrl + "/organisations", el);
-            setImportLoading(true);
             await axiosInstance
               .post(
                 apiUrl + "/events",
@@ -76,13 +82,6 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
         });
       },
     });
-    console.log(body);
-    let results = body.forEach(async (el) => {
-      console.log(el);
-      //await axios.put("http://localhost:5000", el);
-    });
-
-    console.log(results);
   }
 
   const [messageApi, contextHolder] = message.useMessage();
@@ -129,7 +128,21 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
         }}
       >
         <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
-          <Table.Column dataIndex="title" title="Titre" />
+          <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
+          <Table.Column
+            width={120}
+            dataIndex={["cover"]}
+            title="Couverture"
+            render={(value: any) => {
+              if (value && !(value.split(".").pop() === "html")) {
+                return (
+                  <ImageField style={{ maxWidth: "50px" }} value={value} />
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
           <Table.Column
             dataIndex={["beginningDate"]}
             title="Date de début"
@@ -177,10 +190,40 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             }}
           /> */}
           <Table.Column
+            ellipsis={true}
             dataIndex="registration_link"
             title="Lien d'inscription"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
           />
-          <Table.Column dataIndex="location" title="Emplacement" />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="location"
+            title="Emplacement"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link
+                    href={"https://www.google.com/maps/search/" + value}
+                    target="_blank"
+                  >
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
           <Table.Column
             dataIndex={["is_recurrent"]}
             title="Est Récurrent"

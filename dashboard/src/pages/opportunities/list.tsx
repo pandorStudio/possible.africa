@@ -19,6 +19,7 @@ import {
 import { Table, Space, Input, message } from "antd";
 import { axiosInstance } from "../../authProvider";
 import papa from "papaparse";
+import Link from "antd/es/typography/Link";
 
 export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
@@ -131,7 +132,7 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
         }}
       >
         <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
-          <Table.Column dataIndex="title" title="Titre" />
+          <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
           <Table.Column dataIndex={["user", "username"]} title="Contributeur" />
           <Table.Column
             dataIndex={["opportunity_type", "name"]}
@@ -176,6 +177,7 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
             }}
           /> */}
           <Table.Column
+            ellipsis={true}
             dataIndex="eligibility"
             title="Éligibilité"
             render={(value: any) => {
@@ -189,6 +191,7 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
           <Table.Column
+            ellipsis={true}
             dataIndex="processus"
             title="Processus"
             render={(value: any) => {
@@ -202,6 +205,7 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
           <Table.Column
+            ellipsis={true}
             dataIndex="beneficies"
             title="Bénéfices"
             render={(value: any) => {
@@ -215,7 +219,19 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
           <Table.Column
+            ellipsis={true}
             dataIndex="registration_link"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
             title="Lien d'inscription"
           />
           <Table.Column

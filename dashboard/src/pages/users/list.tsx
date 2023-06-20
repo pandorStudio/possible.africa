@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   IResourceComponentsProps,
   BaseRecord,
@@ -34,21 +34,53 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
     syncWithLocation: true,
   });
   const [checkedArray, setCheckedArray] = useState([]);
+  const [allCheckedOnPage, setAllCheckedOnPage] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [modal, contextHolder] = Modal.useModal();
+  const [pageCheckboxes, setPageCheckboxes] = useState([]);
+  const [visibleCheckAll, setVisibleCheckAll] = useState(false);
   const invalidate = useInvalidate();
+  let checkboxRefs = useRef([]);
 
   const apiUrl = useApiUrl();
 
   useEffect(() => {
-  }, [checkedArray, deleteLoading]);
+    if (checkedArray.length >= pageCheckboxes.length) {
+      setAllCheckedOnPage(true);
+    } else {
+      setAllCheckedOnPage(false);
+    }
+  }, [checkedArray, deleteLoading, allCheckedOnPage]);
+
+  function handleCheckBoxAll(e: any) {
+    //@ts-ignore
+    setPageCheckboxes(document.querySelectorAll(".ant-table-row-checkbox"));
+    console.log(pageCheckboxes);
+    const checked = e.target.checked;
+    if (checked) {
+      tableProps?.dataSource?.map((el: any) => {
+        if (checkboxRefs?.current[el.id]) {
+          setCheckedArray((s) => {
+            return [...s, el.id];
+          });
+        }
+      });
+      setAllCheckedOnPage(true);
+    } else {
+      setCheckedArray([]);
+      setAllCheckedOnPage(false);
+    }
+  }
 
   function handleCheckBox(e: any, id: any) {
+    //@ts-ignore
+    setPageCheckboxes(document.querySelectorAll(".ant-table-row-checkbox"));
     const checked = e.target.checked;
     if (checked) {
       setCheckedArray((s) => {
         return [...s, id];
       });
+      setVisibleCheckAll(true);
     } else {
       const checkedArrayCopy = [...checkedArray];
       checkedArrayCopy.filter((el, index) => {
@@ -113,11 +145,24 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           fixed="left"
           width={68}
           dataIndex=""
-          title="#"
+          title={
+            visibleCheckAll ? (
+              <Checkbox
+                checked={allCheckedOnPage}
+                defaultChecked={false}
+                onChange={handleCheckBoxAll}
+              />
+            ) : (
+              "#"
+            )
+          }
           render={(_, record: BaseRecord) => {
             return (
               <Checkbox
                 key={record.id}
+                checked={checkedArray.includes(record.id)}
+                ref={(input) => (checkboxRefs.current[record.id] = record.id)}
+                className="ant-table-row-checkbox"
                 onChange={() => handleCheckBox(event, record.id)}
               />
             );
@@ -142,21 +187,13 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           }}
         />
         <Table.Column
+          width="6%"
+          ellipsis={true}
           dataIndex={["email"]}
           title="Email"
           render={(value: any) => {
             if (value) {
-              return (
-                <EmailField
-                  style={{
-                    wordBreak: "keep-all",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                  }}
-                  value={value}
-                />
-              );
+              return <EmailField value={value} />;
             } else {
               return "-";
             }
@@ -194,6 +231,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
         <Table.Column dataIndex="phone" title="Tèl." />
 
         <Table.Column
+          ellipsis={true}
           dataIndex="adresse"
           title="Adresse"
           render={(value: any) => {
@@ -212,6 +250,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           }}
         />
         <Table.Column
+          ellipsis={true}
           dataIndex="facebook_profile"
           title="Profile Fb."
           render={(value: any) => {
@@ -227,6 +266,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           }}
         />
         <Table.Column
+          ellipsis={true}
           dataIndex="twitter_profile"
           title="Profile Tw."
           render={(value: any) => {
@@ -242,6 +282,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           }}
         />
         <Table.Column
+          ellipsis={true}
           dataIndex="linkedin_profile"
           title="Profile Li."
           render={(value: any) => {

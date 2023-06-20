@@ -12,7 +12,6 @@ import {
   useTable,
   List,
   EditButton,
-  ShowButton,
   TagField,
   EmailField,
   ImportButton,
@@ -33,7 +32,7 @@ import {
   Modal,
   Checkbox,
 } from "antd";
-import { IOrganisation, IPost, IPostFile } from "../../interfaces";
+import { IPost, IPostFile } from "../../interfaces";
 import papa from "papaparse";
 import { dataProvider } from "../../custom-data-provider/data-provider";
 import axios from "axios";
@@ -43,6 +42,20 @@ import { useRefineContext } from "@pankod/refine";
 import { useInvalidate } from "@refinedev/core";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { imageUploadHandler } from "../posts/create";
+import FileSaver from "file-saver";
+import { ShowButton } from "../../components/buttons/show";
+import { ClickListPageElement } from "../../custom-components/ClickListPageElement";
+
+interface IOrganisation {
+  name: string;
+  country: string;
+  description: string;
+  site_web: string;
+  linkedin_url: string;
+  facebook_url: string;
+  twitter_url: string;
+  logo: string;
+}
 
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
@@ -50,43 +63,28 @@ const API_URL =
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
 
-async function downloadMedia(mediaUrl) {
+export async function downloadMedia(mediaUrl) {
   try {
-    const response = await axios.get(mediaUrl, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      responseType: "arraybuffer",
-    });
-
-    const fileBuffer = Buffer.from(response.data, "binary");
-    return fileBuffer;
+    const response = await axiosInstance.post(
+      API_URL + "/organisations/getBuff",
+      { url: mediaUrl },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+    return response;
   } catch (error) {
     console.error(error);
     return null;
   }
 }
 
-async function imageBfUploadHandler(blob: any) {
-  // build form data
-  // const blob = await bf.blob();
-  const file = new File([blob], "image.jpg", {
-    type: blob.type,
-  });
-  const data = new FormData();
-  data.append("image", file);
-
-  // send post request
-  const response = await axiosInstance.post(`${API_URL}/upload/images`, data);
-
-  // return the image url
-  const imageUrl = response.data.url;
-  // const imageUrl = `${API_URL}/uploads/images/${filename}`;
-
-  return imageUrl;
-}
-
 export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
+  const { triggerExport } = useExport({
+    resource: "organisations",
+  });
   const [importLoading, setImportLoading] = useState(false);
   const fileImportInput = useRef(null);
   const { tableProps } = useTable({
@@ -97,6 +95,8 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   const [allCheckedOnPage, setAllCheckedOnPage] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [modal, modalContextHolder] = Modal.useModal();
+  const [pageCheckboxes, setPageCheckboxes] = useState([]);
+  const [visibleCheckAll, setVisibleCheckAll] = useState(false);
   const invalidate = useInvalidate();
   let checkboxRefs = useRef([]);
 
@@ -104,12 +104,15 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
     const file = e.target.files[0];
     let headers: any[] = [];
     let body: any[] = [];
+    setImportLoading(true);
     papa.parse(file, {
       complete: async function (results) {
         results.data.map(async (el: any, i) => {
           if (i === 0) {
             headers.push(...el);
           } else {
+            const blobImage = await downloadMedia(el[7]);
+            const imageUrl = await imageUploadHandler(blobImage.data.dataUrl);
             const ob: any = {
               name: el[0],
               country: el[1],
@@ -118,15 +121,10 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               linkedin_url: el[4],
               facebook_url: el[5],
               twitter_url: el[6],
-              logo: el[7],
-              // linkedin_url: el[7],
-              // facebook_url: el[8],
-              // twitter_url: el[9],
-              // adresse: el[10],
+              logo: imageUrl ? imageUrl : "",
+              type: el[8] === "Entreprise" ? "64511bd16054c5412224616b" : "", 
             };
             body.push({ ...ob });
-            // await axios.post(apiUrl + "/organisations", el);
-            setImportLoading(true);
             axiosInstance
               .post(
                 apiUrl + "/organisations",
@@ -150,25 +148,6 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
         });
       },
     });
-    console.log(body);
-    const results = body.map(async (ob) => {
-      return axiosInstance.post(
-        apiUrl + "/organisations",
-        {
-          ...ob,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    });
-
-    await Promise.all(results);
-    setImportLoading(false);
-
-    console.log(results);
   }
 
   const [messageApi, contextHolder] = message.useMessage();
@@ -178,7 +157,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
       messageApi.open({
         type: "loading",
         content: "Veuillez patienter pendant que nous importons les données.",
-        duration: 0,
+        duration: 10000000,
       });
     }
     if (!importLoading) {
@@ -187,6 +166,11 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
         resource: "organisations",
         invalidates: ["list"],
       });
+    }
+    if (checkedArray.length >= pageCheckboxes.length) {
+      setAllCheckedOnPage(true);
+    } else {
+      setAllCheckedOnPage(false);
     }
 
     return () => {
@@ -197,13 +181,13 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   }, [importLoading, checkedArray, deleteLoading, allCheckedOnPage]);
 
   function handleCheckBoxAll(e: any) {
-    const pageCheckboxes = checkboxRefs.current;
-    console.log(pageCheckboxes);
+    //@ts-ignore
+    // setPageCheckboxes(document.querySelectorAll(".ant-table-row-checkbox"));
     const checked = e.target.checked;
     if (checked) {
       tableProps?.dataSource?.map((el: any) => {
-        if (pageCheckboxes[el.id]) {
-          setCheckedArray((s) => { 
+        if (checkboxRefs?.current[el.id]) {
+          setCheckedArray((s) => {
             return [...s, el.id];
           });
         }
@@ -216,11 +200,14 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   }
 
   function handleCheckBox(e: any, id: any) {
+    //@ts-ignore
+    setPageCheckboxes(document.querySelectorAll(".ant-table-row-checkbox"));
     const checked = e.target.checked;
     if (checked) {
       setCheckedArray((s) => {
         return [...s, id];
       });
+      setVisibleCheckAll(true);
     } else {
       const checkedArrayCopy = [...checkedArray];
       checkedArrayCopy.filter((el, index) => {
@@ -281,7 +268,45 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 ref={fileImportInput}
                 onChange={handleImport}
               />
-              <ExportButton />
+              <Button
+                type="primary"
+                onClick={() => {
+                  // log datas
+                  if (tableProps?.dataSource) {
+                    const data = tableProps?.dataSource.map((el: any) => {
+                      return {
+                        name: el.name,
+                        country: el.country,
+                        description: el.description,
+                        site_web: el.site_web,
+                        linkedin_url: el.linkedin_url,
+                        facebook_url: el.facebook_url,
+                        twitter_url: el.twitter_url,
+                        logo: el.logo,
+                      };
+                    });
+                    if (data) {
+                      const csv = papa.unparse(data);
+                      const blob = new Blob([csv], { type: "text/csv" });
+                      const url = window.URL.createObjectURL(blob);
+                      const a = document.createElement("a");
+                      a.setAttribute("hidden", "");
+                      a.setAttribute("href", url);
+                      a.setAttribute(
+                        "download",
+                        `organisations-${new Date()}-${Math.round(
+                          Math.random() * 99999999
+                        )}.csv`
+                      );
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                    }
+                  }
+                }}
+              >
+                Exporter les données
+              </Button>
               <CreateButton />
             </Space>
           ),
@@ -293,52 +318,64 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             message="Import en cours..."
             description="Veuillez patienter pendant que nous importons les données."
             type="warning"import { axiosInstance } from './../../authProvider';
+import { type } from './../../components/pages/auth/index';
+import { ShowButton } from './../../components/buttons/show';
 
           />
         </Spin> */}
         <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
-          <Table.Column
-            fixed="left"
-            width={68}
-            dataIndex=""
-            title={<Checkbox checked={allCheckedOnPage} onChange={handleCheckBoxAll} />}
-            render={(_, record: BaseRecord) => {
-              return (
-                <Checkbox
-                  key={record.id}
-                  checked={checkedArray.includes(record.id)}
-                  ref={(input) => (checkboxRefs.current[record.id] = record.id)}
-                  className="ant-table-row-checkbox"
-                  onChange={() => handleCheckBox(event, record.id)}
-                />
-              );
-            }}
-          />
-          <Table.Column
-            width="10%"
-            dataIndex="name"
-            title="Nom de l'organisation"
-          />
-          <Table.Column
-            width="10%"
-            dataIndex="country"
-            title="Pays de l'organisation"
-          />
-          <Table.Column
-            width="10%"
-            dataIndex="logo"
-            title="Logo de l'organisation"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <ImageField style={{ maxWidth: "100px" }} value={value} />
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
+              <Table.Column
+                fixed="left"
+                width={68}
+                dataIndex=""
+                title={
+                  visibleCheckAll ? (
+                    <Checkbox
+                      checked={allCheckedOnPage}
+                      defaultChecked={false}
+                      onChange={handleCheckBoxAll}
+                    />
+                  ) : (
+                    "#"
+                  )
+                }
+                render={(_, record: BaseRecord) => {
+                  return (
+                    <Checkbox
+                      key={record.id}
+                      checked={checkedArray.includes(record.id)}
+                      ref={(input) =>
+                        (checkboxRefs.current[record.id] = record.id)
+                      }
+                      className="ant-table-row-checkbox"
+                      onChange={() => handleCheckBox(event, record.id)}
+                    />
+                  );
+                }}
+              />
+              <Table.Column
+                fixed="left"
+                width="3%"
+                dataIndex="logo"
+                title="Logo"
+                render={(value: any) => {
+                  if (value && !(value.split(".").pop() === "html")) {
+                    return (
+                      <ImageField style={{ maxWidth: "50px" }} value={value} />
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                fixed="left"
+                width="8%"
+                dataIndex="name"
+                title="Nom"
+              />
+              <Table.Column width="7%" dataIndex="country" title="Pays" />
+              {/* <Table.Column
             width="10%"
             dataIndex="couverture"
             title="Couverture de l'organisation"
@@ -351,14 +388,14 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 return "-";
               }
             }}
-          />
-          <Table.Column dataIndex={["type", "name"]} title="Type" />
-          <Table.Column
-            dataIndex={["contributeur", "username"]}
-            title="Contributeur"
-          />
-          <Table.Column dataIndex={"owner"} title="Contact" />
-          {/* <Table.Column
+          /> */}
+              <Table.Column dataIndex={["type", "name"]} title="Type" />
+              <Table.Column
+                dataIndex={["contributeur", "username"]}
+                title="Contributeur"
+              />
+              <Table.Column dataIndex={"owner"} title="Contact" />
+              {/* <Table.Column
             dataIndex="description"
             title="Description"
             render={(value: any) => {
@@ -371,122 +408,142 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               }
             }}
           /> */}
-          <Table.Column
-            dataIndex={["email"]}
-            title="Email"
-            render={(value: any) => {
-              if (value) {
-                return <EmailField value={value} />;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex="telephone"
-            title="Telephone"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex="site_web"
-            title="Site Web"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex="linkedin_url"
-            title="Url Linkedin "
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex="facebook_url"
-            title="Url Facebook"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex="twitter_url"
-            title="Url Twitter"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex="adresse"
-            title="Adresse"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link
-                    href={"https://www.google.com/search?q=" + value}
-                    target="_blank"
-                  >
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            fixed="right"
-            title="Actions"
-            dataIndex="actions"
-            render={(_, record: BaseRecord) => (
-              <Space>
-                <EditButton hideText size="small" recordItemId={record.id} />
-                <ShowButton hideText size="small" recordItemId={record.id} />
-                <DeleteButton hideText size="small" recordItemId={record.id} />
-              </Space>
-            )}
-          />
+              <Table.Column
+                ellipsis={true}
+                dataIndex={["email"]}
+                title="Email"
+                render={(value: any) => {
+                  if (value) {
+                    return <EmailField value={value} />;
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="telephone"
+                title="Telephone"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="site_web"
+                title="Site Web"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="linkedin_url"
+                title="Url Linkedin "
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="facebook_url"
+                title="Url Facebook"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="twitter_url"
+                title="Url Twitter"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="adresse"
+                title="Adresse"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link
+                        // href={"https://www.google.com/search?q=" + value}
+                        href={"https://www.google.com/maps/search/" + value}
+                        target="_blank"
+                      >
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                fixed="right"
+                title="Actions"
+                dataIndex="actions"
+                render={(_, record: BaseRecord) => (
+                  <Space>
+                    <EditButton
+                      hideText
+                      size="small"
+                      recordItemId={record.id}
+                    />
+                    <ShowButton
+                      hideText
+                      size="small"
+                      recordItemId={record.id}
+                    />
+                    <DeleteButton
+                      hideText
+                      size="small"
+                      recordItemId={record.id}
+                    />
+                  </Space>
+                )}
+              />
         </Table>
 
         <Space>

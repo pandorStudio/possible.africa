@@ -89,7 +89,7 @@ function Actualites() {
               imgUrl={news.image}
               isLoaded={isLoaded}
               link={"/actualites/" + news.slug}
-              pays="Pays"
+              pays={news.country || "Inconnu"}
             />
           );
 

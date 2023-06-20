@@ -11,6 +11,7 @@ const eventSchema = mongoose.Schema(
       ref: "User",
     },
     title: { type: String, required: true },
+    cover: { type: String, default: "" },
     beginingDate: { type: Date },
     endingDate: { type: Date },
     event_type: {
@@ -19,7 +20,7 @@ const eventSchema = mongoose.Schema(
     },
     format: {
       type: String,
-      enum: ["online", "hybrid", "physical"],
+      default: "",
     },
     target_country: {
       type: String,

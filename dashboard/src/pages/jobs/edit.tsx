@@ -22,7 +22,7 @@ export const JobEdit: React.FC<IResourceComponentsProps> = () => {
   });
 
   async function onSubmitCapture(values: any) {
-    let imgTags = editorContent.match(/<img[^>]+src="([^">]+)"/g);
+    let imgTags = editorContent?.match(/<img[^>]+src="([^">]+)"/g);
     if (imgTags && imgTags.length > 0) {
       let imgs = imgTags.map((imgTag) => {
         const img = {
