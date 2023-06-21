@@ -28,7 +28,7 @@ export const ThemedHeaderV2: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     justifyContent: "flex-end",
     alignItems: "center",
     padding: "0px 24px",
-    height: "64px",
+    height: "70px",
   };
 
   if (isSticky) {

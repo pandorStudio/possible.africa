@@ -17,11 +17,12 @@ import {
   ExportButton,
   CreateButton,
 } from "@refinedev/antd";
-import { Table, Space, message, Input } from "antd";
+import { Table, Space, message, Input, Modal, Button, Checkbox } from "antd";
 import papa from "papaparse";
 import { axiosInstance } from "../../authProvider";
 import { downloadMedia } from "../organisations/list";
 import { imageUploadHandler } from "./create";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 async function processContent(content: string) {
   let imgTags = content.match(/<img[^>]+src="([^">]+)"/g);
@@ -66,7 +67,14 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
   const fileImportInput = useRef(null);
   const apiUrl = useApiUrl();
+  const [checkedArray, setCheckedArray] = useState([]);
+  const [allCheckedOnPage, setAllCheckedOnPage] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [modal, modalContextHolder] = Modal.useModal();
+  const [pageCheckboxes, setPageCheckboxes] = useState([]);
+  const [visibleCheckAll, setVisibleCheckAll] = useState(false);
   const invalidate = useInvalidate();
+  let checkboxRefs = useRef([]);
 
   async function handleImport(e: any) {
     const file = e.target.files[0];
@@ -128,15 +136,20 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
       messageApi.open({
         type: "loading",
         content: "Veuillez patienter pendant que nous importons les données.",
-        duration: 0,
+        duration: 10000000,
       });
     }
     if (!importLoading) {
       messageApi.destroy();
       invalidate({
-        resource: "posts",
+        resource: "organisations",
         invalidates: ["list"],
       });
+    }
+    if (checkedArray.length >= pageCheckboxes.length) {
+      setAllCheckedOnPage(true);
+    } else {
+      setAllCheckedOnPage(false);
     }
 
     return () => {
@@ -144,27 +157,164 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
         fileImportInput.current!.value! = "";
       }
     };
-  }, [importLoading]);
+  }, [importLoading, checkedArray, deleteLoading, allCheckedOnPage]);
+
+  function handleCheckBoxAll(e: any) {
+    const checked = e.target.checked;
+    if (checked) {
+      tableProps?.dataSource?.map((el: any) => {
+        if (checkboxRefs?.current[el.id]) {
+          setCheckedArray((s) => {
+            return [...s, el.id];
+          });
+        }
+      });
+      setAllCheckedOnPage(true);
+    } else {
+      setCheckedArray([]);
+      setAllCheckedOnPage(false);
+    }
+  }
+
+  function handleCheckBox(e: any, id: any) {
+    //@ts-ignore
+    setPageCheckboxes(document.querySelectorAll(".ant-table-row-checkbox"));
+    const checked = e.target.checked;
+    if (checked) {
+      setCheckedArray((s) => {
+        return [...s, id];
+      });
+      setVisibleCheckAll(true);
+    } else {
+      const checkedArrayCopy = [...checkedArray];
+      checkedArrayCopy.filter((el, index) => {
+        if (el === id) {
+          checkedArrayCopy.splice(index, 1);
+        }
+      });
+      setCheckedArray(checkedArrayCopy);
+    }
+  }
+
+  const confirmDelete = () => {
+    modal.confirm({
+      title: "Confirm",
+      icon: <ExclamationCircleOutlined />,
+      content: "Êtes vous sur de vouloir supprimer les élements sélèctionnés ?",
+      okText: "Supprimer",
+      cancelText: "Annuler",
+      async onOk(...args) {
+        if (checkedArray.length) {
+          const results = checkedArray.map(async (ob) => {
+            return axiosInstance.delete(apiUrl + `/posts/${ob}`, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          });
+
+          await Promise.all(results);
+          console.log(results);
+          invalidate({
+            resource: "posts",
+            invalidates: ["list"],
+          });
+          setCheckedArray([]);
+        }
+      },
+    });
+  };
 
   return (
     <>
       {contextHolder}
+      {modalContextHolder}
       <List
         headerProps={{
           extra: (
             <Space>
+              {checkedArray.length ? (
+                <Button
+                  onClick={confirmDelete}
+                  style={{ backgroundColor: "#ff4d4f", color: "white" }}
+                >
+                  {`${checkedArray.length}`} Effacer Selection
+                </Button>
+              ) : null}
               <Input
                 type="file"
                 ref={fileImportInput}
                 onChange={handleImport}
               />
-              <ExportButton />
+              <Button
+                type="primary"
+                onClick={() => {
+                  // log datas
+                  if (tableProps?.dataSource) {
+                    const data = tableProps?.dataSource.map((el: any) => {
+                      return {
+                        title: el.title,
+                        content: el.content,
+                        country: el.country,
+                        slug: el.slug,
+                        image: el.image,
+                      };
+                    });
+                    if (data) {
+                      const csv = papa.unparse(data);
+                      const blob = new Blob([csv], { type: "text/csv" });
+                      const url = window.URL.createObjectURL(blob);
+                      const a = document.createElement("a");
+                      a.setAttribute("hidden", "");
+                      a.setAttribute("href", url);
+                      a.setAttribute(
+                        "download",
+                        `articles-${new Date()}-${Math.round(
+                          Math.random() * 99999999
+                        )}.csv`
+                      );
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                    }
+                  }
+                }}
+              >
+                Exporter les données
+              </Button>
               <CreateButton />
             </Space>
           ),
         }}
       >
         <Table {...tableProps} rowKey="_id" scroll={{ x: 1800, y: "auto" }}>
+          <Table.Column
+            fixed="left"
+            width={68}
+            dataIndex=""
+            title={
+              visibleCheckAll ? (
+                <Checkbox
+                  checked={allCheckedOnPage}
+                  defaultChecked={false}
+                  onChange={handleCheckBoxAll}
+                />
+              ) : (
+                "#"
+              )
+            }
+            render={(_, record: BaseRecord) => {
+              return (
+                <Checkbox
+                  key={record.id}
+                  checked={checkedArray.includes(record.id)}
+                  ref={(input) => (checkboxRefs.current[record.id] = record.id)}
+                  className="ant-table-row-checkbox"
+                  onChange={() => handleCheckBox(event, record.id)}
+                />
+              );
+            }}
+          />
           <Table.Column dataIndex={["user", "username"]} title="Auteur" />
           <Table.Column
             dataIndex="organisations"
@@ -217,6 +367,17 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             )}
           />
         </Table>
+
+        <Space>
+          {checkedArray.length ? (
+            <Button
+              onClick={confirmDelete}
+              style={{ backgroundColor: "#ff4d4f", color: "white" }}
+            >
+              {`${checkedArray.length}`} Effacer Selection
+            </Button>
+          ) : null}
+        </Space>
       </List>
     </>
   );

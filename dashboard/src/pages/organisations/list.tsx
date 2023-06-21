@@ -46,17 +46,6 @@ import FileSaver from "file-saver";
 import { ShowButton } from "../../components/buttons/show";
 import { ClickListPageElement } from "../../custom-components/ClickListPageElement";
 
-interface IOrganisation {
-  name: string;
-  country: string;
-  description: string;
-  site_web: string;
-  linkedin_url: string;
-  facebook_url: string;
-  twitter_url: string;
-  logo: string;
-}
-
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
   ENV === "developement"
@@ -82,9 +71,6 @@ export async function downloadMedia(mediaUrl) {
 }
 
 export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
-  const { triggerExport } = useExport({
-    resource: "organisations",
-  });
   const [importLoading, setImportLoading] = useState(false);
   const fileImportInput = useRef(null);
   const { tableProps } = useTable({
@@ -122,7 +108,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               facebook_url: el[5],
               twitter_url: el[6],
               logo: imageUrl ? imageUrl : "",
-              type: el[8] === "Entreprise" ? "64511bd16054c5412224616b" : "", 
+              type: el[8] === "Entreprise" ? "64511bd16054c5412224616b" : "",
             };
             body.push({ ...ob });
             axiosInstance
@@ -181,8 +167,6 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   }, [importLoading, checkedArray, deleteLoading, allCheckedOnPage]);
 
   function handleCheckBoxAll(e: any) {
-    //@ts-ignore
-    // setPageCheckboxes(document.querySelectorAll(".ant-table-row-checkbox"));
     const checked = e.target.checked;
     if (checked) {
       tableProps?.dataSource?.map((el: any) => {
@@ -251,6 +235,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   return (
     <>
       {contextHolder}
+      {modalContextHolder}
       <List
         headerProps={{
           extra: (
@@ -312,70 +297,52 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           ),
         }}
       >
-        {modalContextHolder}
-        {/* <Spin tip="Loading...">
-          <Alert
-            message="Import en cours..."
-            description="Veuillez patienter pendant que nous importons les données."
-            type="warning"import { axiosInstance } from './../../authProvider';
-import { type } from './../../components/pages/auth/index';
-import { ShowButton } from './../../components/buttons/show';
-
-          />
-        </Spin> */}
         <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
-              <Table.Column
-                fixed="left"
-                width={68}
-                dataIndex=""
-                title={
-                  visibleCheckAll ? (
-                    <Checkbox
-                      checked={allCheckedOnPage}
-                      defaultChecked={false}
-                      onChange={handleCheckBoxAll}
-                    />
-                  ) : (
-                    "#"
-                  )
-                }
-                render={(_, record: BaseRecord) => {
-                  return (
-                    <Checkbox
-                      key={record.id}
-                      checked={checkedArray.includes(record.id)}
-                      ref={(input) =>
-                        (checkboxRefs.current[record.id] = record.id)
-                      }
-                      className="ant-table-row-checkbox"
-                      onChange={() => handleCheckBox(event, record.id)}
-                    />
-                  );
-                }}
-              />
-              <Table.Column
-                fixed="left"
-                width="3%"
-                dataIndex="logo"
-                title="Logo"
-                render={(value: any) => {
-                  if (value && !(value.split(".").pop() === "html")) {
-                    return (
-                      <ImageField style={{ maxWidth: "50px" }} value={value} />
-                    );
-                  } else {
-                    return "-";
-                  }
-                }}
-              />
-              <Table.Column
-                fixed="left"
-                width="8%"
-                dataIndex="name"
-                title="Nom"
-              />
-              <Table.Column width="7%" dataIndex="country" title="Pays" />
-              {/* <Table.Column
+          <Table.Column
+            fixed="left"
+            width={68}
+            dataIndex=""
+            title={
+              visibleCheckAll ? (
+                <Checkbox
+                  checked={allCheckedOnPage}
+                  defaultChecked={false}
+                  onChange={handleCheckBoxAll}
+                />
+              ) : (
+                "#"
+              )
+            }
+            render={(_, record: BaseRecord) => {
+              return (
+                <Checkbox
+                  key={record.id}
+                  checked={checkedArray.includes(record.id)}
+                  ref={(input) => (checkboxRefs.current[record.id] = record.id)}
+                  className="ant-table-row-checkbox"
+                  onChange={() => handleCheckBox(event, record.id)}
+                />
+              );
+            }}
+          />
+          <Table.Column
+            fixed="left"
+            width="3%"
+            dataIndex="logo"
+            title="Logo"
+            render={(value: any) => {
+              if (value && !(value.split(".").pop() === "html")) {
+                return (
+                  <ImageField style={{ maxWidth: "50px" }} value={value} />
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column fixed="left" width="8%" dataIndex="name" title="Nom" />
+          <Table.Column width="7%" dataIndex="country" title="Pays" />
+          {/* <Table.Column
             width="10%"
             dataIndex="couverture"
             title="Couverture de l'organisation"
@@ -389,13 +356,13 @@ import { ShowButton } from './../../components/buttons/show';
               }
             }}
           /> */}
-              <Table.Column dataIndex={["type", "name"]} title="Type" />
-              <Table.Column
-                dataIndex={["contributeur", "username"]}
-                title="Contributeur"
-              />
-              <Table.Column dataIndex={"owner"} title="Contact" />
-              {/* <Table.Column
+          <Table.Column dataIndex={["type", "name"]} title="Type" />
+          <Table.Column
+            dataIndex={["contributeur", "username"]}
+            title="Contributeur"
+          />
+          <Table.Column dataIndex={"owner"} title="Contact" />
+          {/* <Table.Column
             dataIndex="description"
             title="Description"
             render={(value: any) => {
@@ -408,142 +375,130 @@ import { ShowButton } from './../../components/buttons/show';
               }
             }}
           /> */}
-              <Table.Column
-                ellipsis={true}
-                dataIndex={["email"]}
-                title="Email"
-                render={(value: any) => {
-                  if (value) {
-                    return <EmailField value={value} />;
-                  } else {
-                    return "-";
-                  }
-                }}
-              />
-              <Table.Column
-                ellipsis={true}
-                dataIndex="telephone"
-                title="Telephone"
-                render={(value: any) => {
-                  if (value) {
-                    return (
-                      <Link href={value} target="_blank">
-                        {value}
-                      </Link>
-                    );
-                  } else {
-                    return "-";
-                  }
-                }}
-              />
-              <Table.Column
-                ellipsis={true}
-                dataIndex="site_web"
-                title="Site Web"
-                render={(value: any) => {
-                  if (value) {
-                    return (
-                      <Link href={value} target="_blank">
-                        {value}
-                      </Link>
-                    );
-                  } else {
-                    return "-";
-                  }
-                }}
-              />
-              <Table.Column
-                ellipsis={true}
-                dataIndex="linkedin_url"
-                title="Url Linkedin "
-                render={(value: any) => {
-                  if (value) {
-                    return (
-                      <Link href={value} target="_blank">
-                        {value}
-                      </Link>
-                    );
-                  } else {
-                    return "-";
-                  }
-                }}
-              />
-              <Table.Column
-                ellipsis={true}
-                dataIndex="facebook_url"
-                title="Url Facebook"
-                render={(value: any) => {
-                  if (value) {
-                    return (
-                      <Link href={value} target="_blank">
-                        {value}
-                      </Link>
-                    );
-                  } else {
-                    return "-";
-                  }
-                }}
-              />
-              <Table.Column
-                ellipsis={true}
-                dataIndex="twitter_url"
-                title="Url Twitter"
-                render={(value: any) => {
-                  if (value) {
-                    return (
-                      <Link href={value} target="_blank">
-                        {value}
-                      </Link>
-                    );
-                  } else {
-                    return "-";
-                  }
-                }}
-              />
-              <Table.Column
-                ellipsis={true}
-                dataIndex="adresse"
-                title="Adresse"
-                render={(value: any) => {
-                  if (value) {
-                    return (
-                      <Link
-                        // href={"https://www.google.com/search?q=" + value}
-                        href={"https://www.google.com/maps/search/" + value}
-                        target="_blank"
-                      >
-                        {value}
-                      </Link>
-                    );
-                  } else {
-                    return "-";
-                  }
-                }}
-              />
-              <Table.Column
-                fixed="right"
-                title="Actions"
-                dataIndex="actions"
-                render={(_, record: BaseRecord) => (
-                  <Space>
-                    <EditButton
-                      hideText
-                      size="small"
-                      recordItemId={record.id}
-                    />
-                    <ShowButton
-                      hideText
-                      size="small"
-                      recordItemId={record.id}
-                    />
-                    <DeleteButton
-                      hideText
-                      size="small"
-                      recordItemId={record.id}
-                    />
-                  </Space>
-                )}
-              />
+          <Table.Column
+            ellipsis={true}
+            dataIndex={["email"]}
+            title="Email"
+            render={(value: any) => {
+              if (value) {
+                return <EmailField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="telephone"
+            title="Telephone"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="site_web"
+            title="Site Web"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="linkedin_url"
+            title="Url Linkedin "
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="facebook_url"
+            title="Url Facebook"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="twitter_url"
+            title="Url Twitter"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="adresse"
+            title="Adresse"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link
+                    // href={"https://www.google.com/search?q=" + value}
+                    href={"https://www.google.com/maps/search/" + value}
+                    target="_blank"
+                  >
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            fixed="right"
+            title="Actions"
+            dataIndex="actions"
+            render={(_, record: BaseRecord) => (
+              <Space>
+                <EditButton hideText size="small" recordItemId={record.id} />
+                <ShowButton hideText size="small" recordItemId={record.id} />
+                <DeleteButton hideText size="small" recordItemId={record.id} />
+              </Space>
+            )}
+          />
         </Table>
 
         <Space>
