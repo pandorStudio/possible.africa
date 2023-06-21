@@ -73,7 +73,11 @@ import { PostCategoryList } from "./pages/post_categories/list";
 import { PostCategoryEdit } from "./pages/post_categories/edit";
 import { PostCategoryShow } from "./pages/post_categories/show";
 import { PostCategoryCreate } from "./pages/post_categories/create";
-import {GroupOutlined, UserOutlined} from "@ant-design/icons";
+import {
+  FileTextOutlined,
+  GroupOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import CustomIconJob from "./components/CustomComponents/Icons/CustomIconJob";
 import { ThemedTitleV2 } from "./components/themedLayout/title";
 import { ThemedSiderV2 } from "./components/themedLayout/sider";
@@ -84,7 +88,11 @@ export const API_URL =
   ENV === "developement"
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
-import { AntdInferencer } from '@refinedev/inferencer/antd';
+import { AntdInferencer } from "@refinedev/inferencer/antd";
+import CustomIconArticle from "./components/CustomComponents/Icons/CustomIconArticle";
+import CustomIconOrganisation from "./components/CustomComponents/Icons/CustomIconOrganisation";
+import CustomIconEvent from "./components/CustomComponents/Icons/CustomIconEvent";
+import CustomIconOpportunity from "./components/CustomComponents/Icons/CustomIconOpportunity";
 
 function Logo() {
   return <img src="./assets/logos/logo.png" alt="n" />;
@@ -112,9 +120,9 @@ function App() {
             i18nProvider={i18nProvider}
             resources={[
               {
-                name: "Organisations",
+                name: "Organisation",
                 meta: {
-                  icon: null,
+                  icon: <CustomIconOrganisation />,
                 },
               },
               {
@@ -156,6 +164,7 @@ function App() {
                 name: "Opportunité",
                 meta: {
                   label: "Section Opportunités",
+                  icon: <CustomIconOpportunity />,
                 },
               },
               {
@@ -186,6 +195,7 @@ function App() {
                 name: "Evenement",
                 meta: {
                   label: "Section Evènements",
+                  icon: <CustomIconEvent />,
                 },
               },
               {
@@ -213,9 +223,10 @@ function App() {
                 },
               },
               {
-                name: "Section Posts",
+                name: "Articles",
                 meta: {
-                  label: "Section Posts",
+                  label: "Articles",
+                  icon: <CustomIconArticle />,
                 },
               },
               {
@@ -225,8 +236,8 @@ function App() {
                 create: "/post_categories/create",
                 edit: "/post_categories/edit/:id",
                 meta: {
-                  label: "Catégories de posts",
-                  parent: "Section Posts",
+                  label: "Catégories D'Articles",
+                  parent: "Articles",
                   canDelete: true,
                 },
               },
@@ -237,8 +248,8 @@ function App() {
                 create: "/posts/create",
                 edit: "/posts/edit/:id",
                 meta: {
-                  label: "Posts",
-                  parent: "Section Posts",
+                  label: "Tous les articles",
+                  parent: "Articles",
                   canDelete: true,
                 },
               },
@@ -265,15 +276,17 @@ function App() {
               <Route
                 element={
                   // <Authenticated fallback={<CatchAllNavigate to="/login" />}>
-                    <ThemedLayoutV2
-                      Sider={() => (
-                        <ThemedSiderV2 Title={() => <ThemedTitleV2 collapsed />} />
-                      )}
-                      Title={() => <ThemedTitleV2 collapsed />}
-                      Header={() => <Header isSticky={true} />}
-                    >
-                      <Outlet />
-                    </ThemedLayoutV2>
+                  <ThemedLayoutV2
+                    Sider={() => (
+                      <ThemedSiderV2
+                        Title={() => <ThemedTitleV2 collapsed />}
+                      />
+                    )}
+                    Title={() => <ThemedTitleV2 collapsed />}
+                    Header={() => <Header isSticky={true} />}
+                  >
+                    <Outlet />
+                  </ThemedLayoutV2>
                   // </Authenticated>
                 }
               >

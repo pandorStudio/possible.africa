@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../../assets/logos/logo.png";
+import logoWhite from "../../assets/logos/logo-white.png";
 import { Row, Col } from "antd";
+import { ColorModeContext } from "../../contexts/color-mode";
 
 export const AppIcon: React.FC<{ page?: string }> = ({ page }) => {
+  const { mode, setMode } = useContext(ColorModeContext);
   return (
     <Row
       style={{
@@ -13,7 +16,7 @@ export const AppIcon: React.FC<{ page?: string }> = ({ page }) => {
         {page ? (
           page === "login" ? (
             <img
-              src={logo}
+              src={mode === "dark" ? logoWhite : logo}
               alt=""
               width="70"
               height=""
@@ -25,10 +28,22 @@ export const AppIcon: React.FC<{ page?: string }> = ({ page }) => {
               loading="lazy"
             ></img>
           ) : (
-            <img src={logo} alt="" width="100" height="50" loading="lazy"></img>
+            <img
+              src={mode === "dark" ? logoWhite : logo}
+              alt=""
+              width="100"
+              height="50"
+              loading="lazy"
+            ></img>
           )
         ) : (
-          <img src={logo} alt="" width="100" height="50" loading="lazy"></img>
+          <img
+            src={mode === "dark" ? logoWhite : logo}
+            alt=""
+            width="100"
+            height="50"
+            loading="lazy"
+          ></img>
         )}
       </Col>
     </Row>

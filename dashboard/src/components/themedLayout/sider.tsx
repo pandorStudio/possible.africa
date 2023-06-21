@@ -318,7 +318,7 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
           display: "flex",
           justifyContent: drawerSiderVisible ? "center" : "flex-start",
           alignItems: "center",
-          height: "64px",
+          height: "70px",
           backgroundColor: token.colorBgElevated,
           fontSize: "14px",
         }}
