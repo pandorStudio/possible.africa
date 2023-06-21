@@ -132,7 +132,7 @@ function App() {
                 create: "/organisation_types/create",
                 edit: "/organisation_types/edit/:id",
                 meta: {
-                  label: "Types D'Organisations",
+                  label: "Types d'organisations",
                   parent: "Organisation",
                   canDelete: true,
                 },
@@ -174,7 +174,7 @@ function App() {
                 create: "/opportunity_types/create",
                 edit: "/opportunity_types/edit/:id",
                 meta: {
-                  label: "Types D'Opportunités",
+                  label: "Types d'opportunités",
                   parent: "Opportunité",
                   canDelete: true,
                 },
@@ -205,7 +205,7 @@ function App() {
                 create: "/event_types/create",
                 edit: "/event_types/edit/:id",
                 meta: {
-                  label: "Types D'évènements",
+                  label: "Types d'évènements",
                   parent: "Evenement",
                   canDelete: true,
                 },
@@ -236,7 +236,7 @@ function App() {
                 create: "/post_categories/create",
                 edit: "/post_categories/edit/:id",
                 meta: {
-                  label: "Catégories D'Articles",
+                  label: "Catégories d'articles",
                   parent: "Articles",
                   canDelete: true,
                 },
