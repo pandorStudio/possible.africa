@@ -6,10 +6,12 @@ import {
   TextField,
   EmailField,
   BooleanField,
+  DeleteButton,
 } from "@refinedev/antd";
-import { Typography } from "antd";
+import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
+import { AdminOrContributor } from "../../custom-components/AccessControl";
 
 const { Title } = Typography;
 
@@ -20,7 +22,15 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
   const record = data?.data;
 
   return (
-    <Show isLoading={isLoading}>
+    <Show isLoading={isLoading} headerProps={{
+        extra: (
+          <AdminOrContributor>
+            <Space>
+              <DeleteButton recordItemId={record?.id} />
+            </Space>
+          </AdminOrContributor>
+        ),
+      }}>
       <Title level={5}>Nom</Title>
       <TextField value={record?.name} />
       <Title level={5}>Pays</Title>

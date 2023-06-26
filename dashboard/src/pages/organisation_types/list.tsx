@@ -17,6 +17,7 @@ import { Table, Space, Modal, message, Button, Input, Checkbox } from "antd";
 import papa from "papaparse";
 import { axiosInstance } from "../../authProvider";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { AdminOrContributor } from "../../custom-components/AccessControl";
 
 export const OrganisationTypeList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
@@ -178,55 +179,57 @@ export const OrganisationTypeList: React.FC<IResourceComponentsProps> = () => {
       <List
         headerProps={{
           extra: (
-            <Space>
-              {checkedArray.length ? (
+            <AdminOrContributor>
+              <Space>
+                {checkedArray.length ? (
+                  <Button
+                    onClick={confirmDelete}
+                    style={{ backgroundColor: "#ff4d4f", color: "white" }}
+                  >
+                    {`${checkedArray.length}`} Effacer Selection
+                  </Button>
+                ) : null}
+                <Input
+                  type="file"
+                  ref={fileImportInput}
+                  onChange={handleImport}
+                />
                 <Button
-                  onClick={confirmDelete}
-                  style={{ backgroundColor: "#ff4d4f", color: "white" }}
-                >
-                  {`${checkedArray.length}`} Effacer Selection
-                </Button>
-              ) : null}
-              <Input
-                type="file"
-                ref={fileImportInput}
-                onChange={handleImport}
-              />
-              <Button
-                type="primary"
-                onClick={() => {
-                  // log datas
-                  if (tableProps?.dataSource) {
-                    const data = tableProps?.dataSource.map((el: any) => {
-                      return {
-                        name: el.name,
-                        slug: el.slug,
-                      };
-                    });
-                    if (data) {
-                      const csv = papa.unparse(data);
-                      const blob = new Blob([csv], { type: "text/csv" });
-                      const url = window.URL.createObjectURL(blob);
-                      const a = document.createElement("a");
-                      a.setAttribute("hidden", "");
-                      a.setAttribute("href", url);
-                      a.setAttribute(
-                        "download",
-                        `organisation_types-${new Date()}-${Math.round(
-                          Math.random() * 99999999
-                        )}.csv`
-                      );
-                      document.body.appendChild(a);
-                      a.click();
-                      document.body.removeChild(a);
+                  type="primary"
+                  onClick={() => {
+                    // log datas
+                    if (tableProps?.dataSource) {
+                      const data = tableProps?.dataSource.map((el: any) => {
+                        return {
+                          name: el.name,
+                          slug: el.slug,
+                        };
+                      });
+                      if (data) {
+                        const csv = papa.unparse(data);
+                        const blob = new Blob([csv], { type: "text/csv" });
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        a.setAttribute("hidden", "");
+                        a.setAttribute("href", url);
+                        a.setAttribute(
+                          "download",
+                          `organisation_types-${new Date()}-${Math.round(
+                            Math.random() * 99999999
+                          )}.csv`
+                        );
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                      }
                     }
-                  }
-                }}
-              >
-                Exporter les données
-              </Button>
-              <CreateButton />
-            </Space>
+                  }}
+                >
+                  Exporter les données
+                </Button>
+                <CreateButton />
+              </Space>
+            </AdminOrContributor>
           ),
         }}
       >
@@ -266,23 +269,33 @@ export const OrganisationTypeList: React.FC<IResourceComponentsProps> = () => {
             dataIndex="actions"
             render={(_, record: BaseRecord) => (
               <Space>
-                <EditButton hideText size="small" recordItemId={record.id} />
+                <AdminOrContributor>
+                  <EditButton hideText size="small" recordItemId={record.id} />
+                </AdminOrContributor>
                 <ShowButton hideText size="small" recordItemId={record.id} />
-                <DeleteButton hideText size="small" recordItemId={record.id} />
+                <AdminOrContributor>
+                  <DeleteButton
+                    hideText
+                    size="small"
+                    recordItemId={record.id}
+                  />
+                </AdminOrContributor>
               </Space>
             )}
           />
         </Table>
-        <Space>
-          {checkedArray.length ? (
-            <Button
-              onClick={confirmDelete}
-              style={{ backgroundColor: "#ff4d4f", color: "white" }}
-            >
-              {`${checkedArray.length}`} Effacer Selection
-            </Button>
-          ) : null}
-        </Space>
+        <AdminOrContributor>
+          <Space>
+            {checkedArray.length ? (
+              <Button
+                onClick={confirmDelete}
+                style={{ backgroundColor: "#ff4d4f", color: "white" }}
+              >
+                {`${checkedArray.length}`} Effacer Selection
+              </Button>
+            ) : null}
+          </Space>
+        </AdminOrContributor>
       </List>
     </>
   );

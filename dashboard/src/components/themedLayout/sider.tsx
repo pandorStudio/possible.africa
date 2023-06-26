@@ -26,6 +26,11 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu, Grid, Drawer, Button, theme } from "antd";
 import type { RefineThemedLayoutV2SiderProps } from "@refinedev/antd";
+import {
+  AdminOrContributor,
+  Connected,
+  User,
+} from "../../custom-components/AccessControl";
 
 const drawerButtonStyles: CSSProperties = {
   borderTopLeftRadius: 0,
@@ -88,22 +93,24 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
 
       if (children.length > 0) {
         return (
-          <CanAccess
-            key={item.key}
-            resource={name.toLowerCase()}
-            action="list"
-            params={{
-              resource: item,
-            }}
-          >
-            <SubMenu
+            <CanAccess
               key={item.key}
-              icon={icon ?? <UnorderedListOutlined />}
-              title={label}
+              resource={name.toLowerCase()}
+              action="list"
+              params={{
+                resource: item,
+              }}
             >
-              {renderTreeView(children, selectedKey)}
-            </SubMenu>
-          </CanAccess>
+              <SubMenu
+                key={item.key}
+                icon={icon ?? <UnorderedListOutlined />}
+                title={label}
+              >
+                <Connected key={item.key}>
+                  {renderTreeView(children, selectedKey)}
+                </Connected>
+              </SubMenu>
+            </CanAccess>
         );
       }
       const isSelected = key === selectedKey;
@@ -113,24 +120,24 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
       );
 
       return (
-        <CanAccess
-          key={item.key}
-          resource={name.toLowerCase()}
-          action="list"
-          params={{
-            resource: item,
-          }}
-        >
-          <Menu.Item
+          <CanAccess
             key={item.key}
-            icon={icon ?? (isRoute && <UnorderedListOutlined />)}
+            resource={name.toLowerCase()}
+            action="list"
+            params={{
+              resource: item,
+            }}
           >
-            <Link to={route ?? ""}>{label}</Link>
-            {!drawerSiderVisible && isSelected && (
-              <div className="ant-menu-tree-arrow" />
-            )}
-          </Menu.Item>
-        </CanAccess>
+            <Menu.Item
+              key={item.key}
+              icon={icon ?? (isRoute && <UnorderedListOutlined />)}
+            >
+              <Link to={route ?? ""}>{label}</Link>
+              {!drawerSiderVisible && isSelected && (
+                <div className="ant-menu-tree-arrow" />
+              )}
+            </Menu.Item>
+          </CanAccess>
       );
     });
   };

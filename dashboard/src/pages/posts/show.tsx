@@ -1,8 +1,9 @@
 import React from "react";
 import { IResourceComponentsProps, useMany, useShow } from "@refinedev/core";
-import { Show, TagField, TextField, ImageField } from "@refinedev/antd";
-import { Typography } from "antd";
+import { Show, TagField, TextField, ImageField, DeleteButton } from "@refinedev/antd";
+import { Space, Typography } from "antd";
 import parse, { HTMLReactParserOptions } from "html-react-parser";
+import { AdminOrContributor } from "../../custom-components/AccessControl";
 
 export const htmlParseOptions: HTMLReactParserOptions = {
   // @ts-ignore
@@ -33,7 +34,18 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
   );
 
   return (
-    <Show isLoading={isLoading}>
+    <Show
+      isLoading={isLoading}
+      headerProps={{
+        extra: (
+          <AdminOrContributor>
+            <Space>
+              <DeleteButton recordItemId={record?.id} />
+            </Space>
+          </AdminOrContributor>
+        ),
+      }}
+    >
       <Title level={5}>Auteur</Title>
       <TextField value={record?.user?.username} />
       <Title level={5}>Organisations</Title>

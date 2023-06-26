@@ -6,10 +6,12 @@ import {
   TextField,
   NumberField,
   DateField,
+  DeleteButton,
 } from "@refinedev/antd";
-import { Typography } from "antd";
+import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
+import { AdminOrContributor } from "../../custom-components/AccessControl";
 
 const { Title } = Typography;
 
@@ -20,7 +22,18 @@ export const JobShow: React.FC<IResourceComponentsProps> = () => {
   const record = data?.data;
 
   return (
-    <Show isLoading={isLoading}>
+    <Show
+      isLoading={isLoading}
+      headerProps={{
+        extra: (
+          <AdminOrContributor>
+            <Space>
+              <DeleteButton recordItemId={record?.id} />
+            </Space>
+          </AdminOrContributor>
+        ),
+      }}
+    >
       <Title level={5}>Titre</Title>
       <TextField value={record?.title} />
       <Title level={5}>Organisation</Title>
@@ -31,7 +44,6 @@ export const JobShow: React.FC<IResourceComponentsProps> = () => {
           parse(
             record?.description.replace(/\\n/g, "<br />"),
             htmlParseOptions
-          
           )}
       </span>
       <Title level={5}>Type</Title>
