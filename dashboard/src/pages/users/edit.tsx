@@ -1,6 +1,6 @@
 import React from "react";
 import { IResourceComponentsProps } from "@refinedev/core";
-import { Edit, useForm } from "@refinedev/antd";
+import { Edit, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, Select } from "antd";
 // import dayjs from "dayjs";
 
@@ -9,7 +9,14 @@ const { Option } = Select;
 export const UserEdit: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult } = useForm();
 
-  // const usersData = queryResult?.data?.data;
+  const usersData = queryResult?.data?.data;
+
+    const { selectProps: roleSelectProps } = useSelect({
+      resource: "user_roles",
+      optionValue: "_id",
+      optionLabel: "name",
+      defaultValue: usersData?.role?._id,
+    });
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
@@ -39,11 +46,12 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Role" name={["role"]}>
-          <Select defaultValue="user" style={{ width: 120 }}>
+          {/* <Select defaultValue="user" style={{ width: 120 }}>
             <Option value="admin">Administrateur</Option>
             <Option value="contributor">Contributeur</Option>
             <Option value="user">Utilisateur</Option>
-          </Select>
+          </Select> */}
+          <Select {...roleSelectProps} />
         </Form.Item>
         <Form.Item label="Genre" name={["gender"]}>
           <Select defaultValue="f" style={{ width: 120 }}>

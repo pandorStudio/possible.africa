@@ -18,7 +18,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     resource: "organisation_types",
     optionValue: "_id",
     optionLabel: "name",
-    defaultValue: organisationsData?.type?.name,
+    defaultValue: organisationsData?.type?._id,
   });
 
   const { selectProps: contributorSelectProps } = useSelect({
@@ -32,7 +32,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         value: "contributor",
       },
     ],
-    defaultValue: organisationsData?.contributeur?.username,
+    defaultValue: organisationsData?.contributeur?._id,
   });
 
   async function onSubmitCapture(values: any) {

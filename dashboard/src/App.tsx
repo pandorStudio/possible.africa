@@ -1,5 +1,11 @@
 import "./init";
-import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
+import {
+  Authenticated,
+  CanAccess,
+  GitHubBanner,
+  Refine,
+  useGetIdentity,
+} from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import {
@@ -93,6 +99,15 @@ import CustomIconArticle from "./components/CustomComponents/Icons/CustomIconArt
 import CustomIconOrganisation from "./components/CustomComponents/Icons/CustomIconOrganisation";
 import CustomIconEvent from "./components/CustomComponents/Icons/CustomIconEvent";
 import CustomIconOpportunity from "./components/CustomComponents/Icons/CustomIconOpportunity";
+import { UserRoleCreate } from "./pages/user roles/create";
+import { UserRoleEdit } from "./pages/user roles/edit";
+import { UserRoleList } from "./pages/user roles/list";
+import { UserRoleShow } from "./pages/user roles/show";
+import { newEnforcer } from "casbin";
+import { model, adapter } from "./accessControl";
+import { useEffect, useState } from "react";
+import jwt_decode from "jwt-decode";
+
 
 function Logo() {
   return <img src="./assets/logos/logo.png" alt="n" />;
@@ -113,7 +128,7 @@ function App() {
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
-            dataProvider={dataProvider(API_URL, axiosInstance)}
+            dataProvider={dataProvider(API_URL, axiosInstance)}            
             notificationProvider={notificationProvider}
             routerProvider={routerBindings}
             authProvider={authProvider}
@@ -254,16 +269,34 @@ function App() {
                 },
               },
               {
+                name: "Utilisateurs",
+                meta: {
+                  label: "Tous les utilisateurs",
+                  icon: <UserOutlined />,
+                  canDelete: true,
+                  token: localStorage.getItem("refine-auth"),
+                },
+              },
+              {
+                name: "user_roles",
+                list: "/user_roles",
+                show: "/user_roles/show/:id",
+                create: "/user_roles/create",
+                edit: "/user_roles/edit/:id",
+                meta: {
+                  label: "Roles utilisateurs",
+                  parent: "Utilisateurs",
+                },
+              },
+              {
                 name: "users",
                 list: "/users",
                 show: "/users/show/:id",
                 create: "/users/create",
                 edit: "/users/edit/:id",
                 meta: {
-                  label: "Utilisateur",
-                  icon: <UserOutlined />,
-                  canDelete: true,
-                  token: localStorage.getItem("refine-auth"),
+                  label: "Utilisateurs",
+                  parent: "Utilisateurs",
                 },
               },
             ]}
@@ -275,25 +308,28 @@ function App() {
             <Routes>
               <Route
                 element={
-                  // <Authenticated fallback={<CatchAllNavigate to="/login" />}>
-                  <ThemedLayoutV2
-                    Sider={() => (
-                      <ThemedSiderV2
-                        Title={() => <ThemedTitleV2 collapsed />}
-                      />
-                    )}
-                    Title={() => <ThemedTitleV2 collapsed />}
-                    Header={() => <Header isSticky={true} />}
-                  >
-                    <Outlet />
-                  </ThemedLayoutV2>
-                  // </Authenticated>
+                  <Authenticated fallback={<CatchAllNavigate to="/login" />}>
+                    <ThemedLayoutV2
+                      Sider={() => (
+                        <ThemedSiderV2
+                          Title={() => <ThemedTitleV2 collapsed />}
+                        />
+                      )}
+                      Title={() => <ThemedTitleV2 collapsed />}
+                      Header={() => <Header isSticky={true} />}
+                    >
+                      <CanAccess>
+                        <Outlet />
+                      </CanAccess>
+                    </ThemedLayoutV2>
+                  </Authenticated>
                 }
               >
                 <Route
                   index
                   element={<NavigateToResource resource="users" />}
                 />
+
                 <Route path="organisation_types">
                   <Route index element={<OrganisationTypeList />} />
                   <Route path="show/:id" element={<AntdInferencer />} />
@@ -348,6 +384,12 @@ function App() {
                   <Route path="show/:id" element={<PostShow />} />
                   <Route path="edit/:id" element={<PostEdit />} />
                   <Route path="create" element={<PostCreate />} />
+                </Route>
+                <Route path="user_roles">
+                  <Route index element={<UserRoleList />} />
+                  <Route path="show/:id" element={<UserRoleShow />} />
+                  <Route path="edit/:id" element={<UserRoleEdit />} />
+                  <Route path="create" element={<UserRoleCreate />} />
                 </Route>
                 <Route path="users">
                   <Route index element={<UserList />} />

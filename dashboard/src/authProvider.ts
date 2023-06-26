@@ -121,9 +121,11 @@ export const authProvider: AuthBindings = {
       );
       return {
         id: 1,
+        role: data.role.name,
+        roleSlug: data.role.slug,
         username: data.username,
-        lastname: "" || data.lastname,
-        firstname: "" || data.firstname,
+        lastname: data.lastname || "",
+        firstname: data.firstname || "",
         avatar: data.avatar,
       };
     }

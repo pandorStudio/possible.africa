@@ -22,6 +22,8 @@ const { useToken } = theme;
 type IUser = {
   id: number;
   name: string;
+  role: string;
+  roleSlug: string;
   username: string;
   lastname: string;
   firstname: string;
@@ -89,7 +91,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           checkedChildren="🌛"
           unCheckedChildren="🔆"
           onChange={() => setMode(mode === "light" ? "dark" : "light")}
-          defaultChecked={mode === "dark"}
+          defaultChecked={mode === "light"}
         />
         <Space style={{ marginLeft: "8px" }} size="middle">
           {user?.lastname && <Text strong>{user.lastname} {user.firstname}</Text>}
