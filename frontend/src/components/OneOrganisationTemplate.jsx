@@ -74,7 +74,7 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
                 <Box w="full">
                   <Flex direction="column" justify="space-around"  gap={2} alignItems="flex-start">
                     <Heading size="sm">{organisations?.contributeur?.firstname} {organisations?.contributeur?.lastname}</Heading>
-                    <Badge display="inline" maxW={120} textAlign="center" fontSize={11} colorScheme="gray" p={2} borderRadius={50} >Contributeur</Badge>
+                    {/* <Badge display="inline" maxW={120} textAlign="center" fontSize={11} colorScheme="gray" p={2} borderRadius={50} >Contributeur</Badge> */}
 
                   </Flex>
                 </Box>

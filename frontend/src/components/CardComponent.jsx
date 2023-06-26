@@ -6,22 +6,25 @@ import { CalendarIcon, CountryIcon, MapIcon, OrganisationsIcon, TypeIcon, WorkIc
 // eslint-disable-next-line react/prop-types
 function CardComponent({title, description, imgUrl, isLoaded, link, postType, type, pays, dateDebut, dateFin, company,location}) {
 const card = (<Card
-    direction={{ base: 'column', md: 'row' }}
+    direction={{ base: 'row', md: 'row' }}
+    gap={{ base: '5' }}
     overflow='hidden'
     minW={{base: "sm", md: "2xl"}}
     w={{base: "sm", md: "2xl"}}
     maxW={{ base: 'sm', md: '2xl' }}
-    height={{ base: '', md: '130px' }}
+    height={{ base: '130px', md: '130px' }}
     boxShadow="none"
     _hover={{ cursor: "pointer" }}
     borderRadius={0}
     alignItems={{ base: 'flex-start', md: 'center'}}
     justifyContent={{ base: 'flex-start', md: 'flex-start'}}
     zIndex={-1}
+   
+    
 >
   <Skeleton isLoaded={isLoaded} >
 
-    <Box  w={100} h="100px" hideBelow="md" >
+    <Box  w={100} h="100px">
 
       <Image
           fit ='cover'
@@ -41,9 +44,9 @@ const card = (<Card
     
     <CardBody p={{ base: '0', md: '15px' }}>
 
-      <Heading paddingBottom={2} fontSize='lg' color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading>
+      <Heading fontSize='lg' color='teal.500' _hover={{ textDecoration: "underline" }} noOfLines={[1,2]}>{title}</Heading>
 
-      <Text noOfLines={[1,2]}>
+      <Text noOfLines={[1]}>
         {description}
       </Text>
      {postType === "Organisation" &&  (<>
