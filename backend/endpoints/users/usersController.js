@@ -1,3 +1,4 @@
+const CustomUtils = require("../../utils/index.js");
 const User = require("./userModel");
 const bcrypt = require("bcryptjs");
 
@@ -5,15 +6,13 @@ const bcrypt = require("bcryptjs");
 // @route GET /api/v1/users
 // @access Public
 exports.getAllUsers = async (req, res) => {
+    const { limit, page, sort, fields } = req.query;
+    const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    let q = {};
-
-    q = req.query.role ? { ...q, role: req.query.role } : q;
-
-    // console.log(q);
-
-    const users = await User.find({ ...q });
-
+    const users = await User.find(queryObj)
+      .limit(limit * 1)
+      .sort(sort)
+      .select(fields);
     res.status(200).json(users);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -46,6 +45,9 @@ exports.createUser = async (req, res) => {
     if (bodyWR.role) {
       delete bodyWR.role;
     }
+      const slug =
+      CustomUtils.slugify(bodyWR.title) + "-" + CustomUtils.getRandomNbr();
+    bodyWR.slug = slug;
     const newUser = await User.create(bodyWR);
     await User.findByIdAndUpdate(newUser._id, { password: bodyWR.password });
 

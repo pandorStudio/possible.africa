@@ -31,8 +31,12 @@ exports.getEventTypeById = async (req, res) => {
 // @route Post /api/v1/eventTypes
 // @access Public
 exports.createEventType = async (req, res) => {
+  const CustomBody = { ...req.body };
+  const slug =
+    CustomUtils.slugify(CustomBody.name) + "-" + CustomUtils.getRandomNbr();
   try {
-    const newEventType = await EventType.create(req.body);
+    CustomBody.slug = slug;
+    const newEventType = await EventType.create(CustomBody);
     res.status(201).json(newEventType);
   } catch (error) {
     res.status(400).json({ message: error.message });

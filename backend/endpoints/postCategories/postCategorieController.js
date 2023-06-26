@@ -36,8 +36,12 @@ exports.getPostCategorieById = async (req, res) => {
 // @access Public
 
 exports.createPostCategorie = async (req, res) => {
+  const CustomBody = { ...req.body };
+  const slug =
+    CustomUtils.slugify(CustomBody.name) + "-" + CustomUtils.getRandomNbr();
   try {
-    const postCategorie = await PostCategorie.create(req.body);
+    CustomBody.slug = slug;
+    const postCategorie = await PostCategorie.create(CustomBody);
     res.status(201).json(postCategorie);
   } catch (error) {
     res.status(500).json({ message: error.message });

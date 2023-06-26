@@ -58,11 +58,16 @@ class CustomUtils {
     excludedFields.forEach(element => {
       delete queryObj[element];
     });
+    // if (queryObj.name_like) {
+    //   queryObj["role.name"] = queryObj.name_like;
+    //   delete queryObj.name_like;
+    // }
+    // console.log(queryObj);
     return queryObj;
   }
 
   static slugify = (from = "") => {
-    return from.split(" ").join("-");
+    return from.toLowerCase().split(" ").join("-");
   }
 
   static getRandomNbr(max = 9999999) {

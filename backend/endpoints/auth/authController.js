@@ -22,7 +22,9 @@ exports.signup = async (req, res, next) => {
         usernameExist = false;
       }
     }
-
+    const slug =
+      CustomUtils.slugify(bodyWR.title) + "-" + CustomUtils.getRandomNbr();
+    bodyWR.slug = slug;
     const newUser = await User.create(bodyWR);
     await User.findByIdAndUpdate(newUser._id, { password: req.body.password });
     const token = signToken(newUser._id);

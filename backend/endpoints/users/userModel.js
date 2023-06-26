@@ -42,10 +42,13 @@ const userSchema = mongoose.Schema(
     description: {
       type: String,
     },
-    role: {
+    slug: {
       type: String,
-      enum: ["admin", "contributor", "editor", "user"],
-      default: "user",
+      default: "",
+    },
+    role: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UserRole",
     },
     gender: {
       type: String,
@@ -72,6 +75,15 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+// populate response with userRole
+userSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "role",
+    select: "name slug",
+  });
+  next();
+});
 
 // Hash password universal function
 async function hashPassword(password) {
