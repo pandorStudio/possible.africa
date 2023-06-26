@@ -1,12 +1,15 @@
 import React from "react";
 import { IResourceComponentsProps } from "@refinedev/core";
-import { Create, useForm } from "@refinedev/antd";
+import { Create, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, Select } from "antd";
 
 const { Option } = Select;
 
 export const UserCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps } = useForm();
+  const { selectProps: roleSelectProps } = useSelect({
+    resource: "user_roles",
+  });
 
   return (
     <Create saveButtonProps={saveButtonProps}>
@@ -33,6 +36,10 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
+        {/* Create avatar upload input */}
+        <Form.Item label="Avatar" name={["avatar"]}>
+          <Input />
+        </Form.Item>
         <Form.Item label="N. Utilisateur" name={["username"]}>
           <Input />
         </Form.Item>
@@ -50,12 +57,18 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Role" name={["role"]}>
-          <Select defaultValue="user" style={{ width: 120 }}>
+        <Form.Item label="Role" name={["role", "_id", "name"]}>
+          {/* <Select defaultValue="user" style={{ width: 120 }}>
             <Option value="admin">Administrateur</Option>
             <Option value="contributor">Contributeur</Option>
             <Option value="user">Utilisateur</Option>
-          </Select>
+          </Select> */}
+          <Select
+            {...roleSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item label="Genre" name={["gender"]}>
           <Select defaultValue="f" style={{ width: 120 }}>
