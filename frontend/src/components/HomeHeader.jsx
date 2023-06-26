@@ -6,9 +6,7 @@ import {
   Box,
   Container,
   Flex,
-  IconButton,
   useBreakpointValue,
-  Divider,
   Text,
 } from '@chakra-ui/react'
 import CustomLink from "./CustomLink";
@@ -62,7 +60,6 @@ export const HomeHeader = () => {
                         </Flex>
                         </CustomLink>
                   ))}
-
 
               </Flex>
             
