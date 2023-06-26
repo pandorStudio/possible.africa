@@ -25,6 +25,7 @@ const PORT = process.env.PORT || 4534;
 const API_URL_BASE = process.env.API_URL_BASE ? process.env.API_URL_BASE : "/";
 const URL_CONNECT_DEV = process.env.URL_CONNECT;
 const userRoutes = require("./endpoints/users/userRoutes");
+const userRoles = require("./endpoints/userRoles/userRoleRoutes");
 const organisationTypeRoutes = require("./endpoints/organisationTypes/organisationTypeRoutes");
 const organisationRoutes = require("./endpoints/organisations/organisationRoutes");
 const authRoutes = require("./endpoints/auth/authRouter");
@@ -51,12 +52,12 @@ app.use(express.static("public"));
 // app.use(express.json());
 
 //protections
-//app.use(protect)
-
+app.use(API_URL_BASE, authRoutes);
+app.use(protect)
 app.use(API_URL_BASE + "users", userRoutes);
+app.use(API_URL_BASE + "user_roles", userRoles);
 app.use(API_URL_BASE + "organisation_types", organisationTypeRoutes);
 app.use(API_URL_BASE + "organisations", organisationRoutes);
-app.use(API_URL_BASE, authRoutes);
 app.use(API_URL_BASE + "jobs", jobRoutes);
 app.use(API_URL_BASE + "opportunity_types", opportunityTypeRoutes);
 app.use(API_URL_BASE + "opportunities", opportunityRoutes);

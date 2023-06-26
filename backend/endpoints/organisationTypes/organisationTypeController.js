@@ -34,8 +34,12 @@ exports.getOrganisationTypeById = async (req, res) => {
 // @route POST /api/v1/organisationTypes
 // @access Public
 exports.createOrganisationType = async (req, res) => {
+  const CustomBody = { ...req.body };
+  const slug =
+    CustomUtils.slugify(CustomBody.name) + "-" + CustomUtils.getRandomNbr();
   try {
-    const organisationType = await OrganisationType.create(req.body);
+    CustomBody.slug = slug;
+    const organisationType = await OrganisationType.create(CustomBody);
     res.status(201).json(organisationType);
   } catch (error) {
     res.status(500).json({ message: error.message });
