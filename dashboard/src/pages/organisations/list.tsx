@@ -45,6 +45,7 @@ import { imageUploadHandler } from "../posts/create";
 import FileSaver from "file-saver";
 import { ShowButton } from "../../components/buttons/show";
 import { ClickListPageElement } from "../../custom-components/ClickListPageElement";
+import { AdminOrContributor } from "../../custom-components/AccessControl";
 
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
@@ -239,61 +240,63 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
       <List
         headerProps={{
           extra: (
-            <Space>
-              {checkedArray.length ? (
+            <AdminOrContributor>
+              <Space>
+                {checkedArray.length ? (
+                  <Button
+                    onClick={confirmDelete}
+                    style={{ backgroundColor: "#ff4d4f", color: "white" }}
+                  >
+                    {`${checkedArray.length}`} Effacer Selection
+                  </Button>
+                ) : null}
+                <Input
+                  type="file"
+                  ref={fileImportInput}
+                  onChange={handleImport}
+                />
                 <Button
-                  onClick={confirmDelete}
-                  style={{ backgroundColor: "#ff4d4f", color: "white" }}
-                >
-                  {`${checkedArray.length}`} Effacer Selection
-                </Button>
-              ) : null}
-              <Input
-                type="file"
-                ref={fileImportInput}
-                onChange={handleImport}
-              />
-              <Button
-                type="primary"
-                onClick={() => {
-                  // log datas
-                  if (tableProps?.dataSource) {
-                    const data = tableProps?.dataSource.map((el: any) => {
-                      return {
-                        name: el.name,
-                        country: el.country,
-                        description: el.description,
-                        site_web: el.site_web,
-                        linkedin_url: el.linkedin_url,
-                        facebook_url: el.facebook_url,
-                        twitter_url: el.twitter_url,
-                        logo: el.logo,
-                      };
-                    });
-                    if (data) {
-                      const csv = papa.unparse(data);
-                      const blob = new Blob([csv], { type: "text/csv" });
-                      const url = window.URL.createObjectURL(blob);
-                      const a = document.createElement("a");
-                      a.setAttribute("hidden", "");
-                      a.setAttribute("href", url);
-                      a.setAttribute(
-                        "download",
-                        `organisations-${new Date()}-${Math.round(
-                          Math.random() * 99999999
-                        )}.csv`
-                      );
-                      document.body.appendChild(a);
-                      a.click();
-                      document.body.removeChild(a);
+                  type="primary"
+                  onClick={() => {
+                    // log datas
+                    if (tableProps?.dataSource) {
+                      const data = tableProps?.dataSource.map((el: any) => {
+                        return {
+                          name: el.name,
+                          country: el.country,
+                          description: el.description,
+                          site_web: el.site_web,
+                          linkedin_url: el.linkedin_url,
+                          facebook_url: el.facebook_url,
+                          twitter_url: el.twitter_url,
+                          logo: el.logo,
+                        };
+                      });
+                      if (data) {
+                        const csv = papa.unparse(data);
+                        const blob = new Blob([csv], { type: "text/csv" });
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        a.setAttribute("hidden", "");
+                        a.setAttribute("href", url);
+                        a.setAttribute(
+                          "download",
+                          `organisations-${new Date()}-${Math.round(
+                            Math.random() * 99999999
+                          )}.csv`
+                        );
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                      }
                     }
-                  }
-                }}
-              >
-                Exporter les données
-              </Button>
-              <CreateButton />
-            </Space>
+                  }}
+                >
+                  Exporter les données
+                </Button>
+                <CreateButton />
+              </Space>
+            </AdminOrContributor>
           ),
         }}
       >
@@ -493,24 +496,34 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             dataIndex="actions"
             render={(_, record: BaseRecord) => (
               <Space>
-                <EditButton hideText size="small" recordItemId={record.id} />
+                <AdminOrContributor>
+                  <EditButton hideText size="small" recordItemId={record.id} />
+                </AdminOrContributor>
                 <ShowButton hideText size="small" recordItemId={record.id} />
-                <DeleteButton hideText size="small" recordItemId={record.id} />
+                <AdminOrContributor>
+                  <DeleteButton
+                    hideText
+                    size="small"
+                    recordItemId={record.id}
+                  />
+                </AdminOrContributor>
               </Space>
             )}
           />
         </Table>
 
-        <Space>
-          {checkedArray.length ? (
-            <Button
-              onClick={confirmDelete}
-              style={{ backgroundColor: "#ff4d4f", color: "white" }}
-            >
-              {`${checkedArray.length}`} Effacer Selection
-            </Button>
-          ) : null}
-        </Space>
+        <AdminOrContributor>
+          <Space>
+            {checkedArray.length ? (
+              <Button
+                onClick={confirmDelete}
+                style={{ backgroundColor: "#ff4d4f", color: "white" }}
+              >
+                {`${checkedArray.length}`} Effacer Selection
+              </Button>
+            ) : null}
+          </Space>
+        </AdminOrContributor>
       </List>
     </>
   );

@@ -2,10 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { pokemonApi } from "./services/pokemon";
 import counterReducer from "./features/counter/counterSlice";
+import userReducer from "./features/user/userSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
+    user: userReducer,
     [pokemonApi.reducerPath]: pokemonApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

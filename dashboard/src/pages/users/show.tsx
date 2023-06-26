@@ -50,7 +50,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={3}>Description</Title>
       <CustomTextField type="text" size="large" value={record?.description} />
       <Title level={3}>Role</Title>
-      <CustomTextField type="text" size="large" value={record?.role} />
+      <CustomTextField type="text" size="large" value={record?.role?.name} />
       <Title level={3}>Genre</Title>
       <CustomTextField type="text" size="large" value={record?.gender} />
       <Title level={3}>Télephone</Title>

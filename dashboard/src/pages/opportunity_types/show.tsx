@@ -1,7 +1,8 @@
 import React from "react";
 import { IResourceComponentsProps, useShow } from "@refinedev/core";
-import { Show, TagField, TextField } from "@refinedev/antd";
-import { Typography } from "antd";
+import { DeleteButton, Show, TagField, TextField } from "@refinedev/antd";
+import { Space, Typography } from "antd";
+import { AdminOrContributor } from "../../custom-components/AccessControl";
 
 const { Title } = Typography;
 
@@ -12,7 +13,18 @@ export const OpportunityTypeShow: React.FC<IResourceComponentsProps> = () => {
   const record = data?.data;
 
   return (
-    <Show isLoading={isLoading}>
+    <Show
+      isLoading={isLoading}
+      headerProps={{
+        extra: (
+          <AdminOrContributor>
+            <Space>
+              <DeleteButton recordItemId={record?.id} />
+            </Space>
+          </AdminOrContributor>
+        ),
+      }}
+    >
       <Title level={5}>Nom</Title>
       <TextField value={record?.name} />
       <Title level={5}>Slug</Title>
