@@ -65,9 +65,12 @@ export const userSlice = createSlice({
       // immutable state based off those changes
       state = { ...action.payload };
     },
+    cleanState: (state) => { 
+      state = initialState;
+    },
   },
 });
 
-export const { update } = userSlice.actions;
+export const { update, cleanState } = userSlice.actions;
 
 export default userSlice.reducer;
