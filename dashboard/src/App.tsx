@@ -129,7 +129,7 @@ function App() {
     getLocale: () => i18n.language,
   };
   useEffect(() => {
-    console.log("userState", userState);
+    // console.log("userState", userState);
   }, [userState]);
 
   const adminOrContributorsRessources = [

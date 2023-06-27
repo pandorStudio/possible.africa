@@ -12,6 +12,7 @@ import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
 import { AdminOrContributor } from "../../custom-components/AccessControl";
+import Link from "antd/es/typography/Link";
 
 const { Title } = Typography;
 
@@ -22,7 +23,9 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
   const record = data?.data;
 
   return (
-    <Show isLoading={isLoading} headerProps={{
+    <Show
+      isLoading={isLoading}
+      headerProps={{
         extra: (
           <AdminOrContributor>
             <Space>
@@ -30,7 +33,8 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
             </Space>
           </AdminOrContributor>
         ),
-      }}>
+      }}
+    >
       <Title level={5}>Nom</Title>
       <TextField value={record?.name} />
       <Title level={5}>Pays</Title>
@@ -52,17 +56,76 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Email</Title>
       <EmailField value={record?.email} />
       <Title level={5}>Telephone</Title>
-      <TextField value={record?.telephone} />
+      {record?.telephone ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href="#"
+        >
+          {record?.telephone}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Site Web</Title>
-      <TextField value={record?.site_web} />
+      {record?.site_web ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={record?.site_web}
+          target="_blank"
+        >
+          {record?.site_web}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Url Linkedin</Title>
-      <TextField value={record?.linkedin_url} />
+      {record?.linkedin_url ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={record?.linkedin_url}
+          target="_blank"
+        >
+          {record?.linkedin_url}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Url Facebook</Title>
-      <TextField value={record?.facebook_url} />
+      {record?.facebook_url ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={record?.facebook_url}
+          target="_blank"
+        >
+          {record?.facebook_url}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Url Twitter</Title>
-      <TextField value={record?.twitter_url} />
+      {record?.twitter_url ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={record?.twitter_url}
+          target="_blank"
+        >
+          {record?.twitter_url}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Adresse</Title>
-      <TextField value={record?.adresse} />
+      {record?.adresse ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={"https://www.google.com/maps/search/" + record?.adresse}
+          target="_blank"
+        >
+          {record?.adresse}
+        </Link>
+      ) : (
+        "-"
+      )}
     </Show>
   );
 };

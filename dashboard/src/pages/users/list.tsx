@@ -63,7 +63,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
   const { data: user } = useGetIdentity<IUser>();
 
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
   }, [user]);
 
   const apiUrl = useApiUrl();
@@ -111,11 +111,11 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
                 }
               )
               .then((response) => {
-                console.log(response);
+                // console.log(response);
                 setImportLoading(false);
               })
               .catch(function (error) {
-                console.log(error);
+                // console.log(error);
               });
           }
         });
@@ -208,7 +208,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           });
 
           await Promise.all(results);
-          console.log(results);
+          // console.log(results);
           invalidate({
             resource: "users",
             invalidates: ["list"],

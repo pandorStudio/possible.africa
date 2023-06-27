@@ -2,6 +2,7 @@ import React from "react";
 import { IResourceComponentsProps, useShow } from "@refinedev/core";
 import { Show, TextField, EmailField } from "@refinedev/antd";
 import { Typography } from "antd";
+import Link from "antd/es/typography/Link";
 
 const { Title } = Typography;
 
@@ -39,42 +40,70 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <Show isLoading={isLoading}>
-      <Title level={3}>Nom D'Utilisateur</Title>
+      <Title level={4}>Nom D'Utilisateur</Title>
       <CustomTextField type="text" size="large" value={record?.username} />
-      <Title level={3}>Email</Title>
+      <Title level={4}>Email</Title>
       <CustomTextField type="email" size="large" value={record?.email} />
-      <Title level={3}>Prénom(s)</Title>
+      <Title level={4}>Prénom(s)</Title>
       <CustomTextField type="text" size="large" value={record?.firstname} />
-      <Title level={3}>Nom de Famille</Title>
+      <Title level={4}>Nom de Famille</Title>
       <CustomTextField type="text" size="large" value={record?.lastname} />
-      <Title level={3}>Description</Title>
+      <Title level={4}>Description</Title>
       <CustomTextField type="text" size="large" value={record?.description} />
-      <Title level={3}>Role</Title>
+      <Title level={4}>Role</Title>
       <CustomTextField type="text" size="large" value={record?.role?.name} />
-      <Title level={3}>Genre</Title>
+      <Title level={4}>Genre</Title>
       <CustomTextField type="text" size="large" value={record?.gender} />
-      <Title level={3}>Télephone</Title>
+      <Title level={4}>Télephone</Title>
       <CustomTextField type="text" size="large" value={record?.phone} />
-      <Title level={3}>Adresse</Title>
-      <CustomTextField type="text" size="large" value={record?.address} />
-      <Title level={3}>Lien Facebook </Title>
-      <CustomTextField
-        type="text"
-        size="large"
-        value={record?.facebook_profile}
-      />
-      <Title level={3}>Lien Twitter </Title>
-      <CustomTextField
-        type="text"
-        size="large"
-        value={record?.twitter_profile}
-      />
-      <Title level={3}>Lien Linkedin </Title>
-      <CustomTextField
-        type="text"
-        size="large"
-        value={record?.linkedin_profile}
-      />
+      <Title level={4}>Adresse</Title>
+      {record?.address ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={"https://www.google.com/maps/search/" + record?.address}
+          target="_blank"
+        >
+          {record?.address}
+        </Link>
+      ) : (
+        "-"
+      )}
+      <Title level={4}>Lien Facebook </Title>
+      {record?.facebook_url ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={record?.facebook_url}
+          target="_blank"
+        >
+          {record?.facebook_url}
+        </Link>
+      ) : (
+        "-"
+      )}
+      <Title level={4}>Lien Twitter </Title>
+      {record?.twitter_url ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={record?.twitter_url}
+          target="_blank"
+        >
+          {record?.twitter_url}
+        </Link>
+      ) : (
+        "-"
+      )}
+      <Title level={4}>Lien Linkedin </Title>
+      {record?.linkedin_url ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={record?.linkedin_url}
+          target="_blank"
+        >
+          {record?.linkedin_url}
+        </Link>
+      ) : (
+        "-"
+      )}
     </Show>
   );
 };

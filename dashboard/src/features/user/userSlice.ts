@@ -45,7 +45,7 @@ if (token) {
           initialState.lastname = res.data.lastname;
           initialState.firstname = res.data.firstname;
           initialState.avatar = res.data.avatar;
-          console.log("userSlice", initialState);
+          // console.log("userSlice", initialState);
         })
         .catch((err) => {
           console.log(err);

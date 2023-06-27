@@ -72,7 +72,7 @@ exports.protect = async (req, res, next) => {
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
     ) {
-      console.log("token found");
+      console.log("token found", token);
       token = req.headers.authorization.split(" ")[1];
     }
 
@@ -85,7 +85,7 @@ exports.protect = async (req, res, next) => {
 
     // 2) Verification token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    //console.log(decoded);
+    // console.log(decoded);
 
     // 3) Check if user still exists
     const currentUser = await User.findById(decoded.id);
@@ -98,6 +98,7 @@ exports.protect = async (req, res, next) => {
 
     // GRANT ACCESS TO PROTECTED ROUTE
     req.user = currentUser;
+    // console.log("token found", currentUser);
     next();
   } catch (error) {
     res.status(500).json({ message: error.message });
