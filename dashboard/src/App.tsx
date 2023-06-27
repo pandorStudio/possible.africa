@@ -706,7 +706,7 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
               </Route>
             </Routes>
-            {/* @ts-ignore */}
+            {/* @ts-ignore
             {userState.roleSlug === "user" ? (
               <Routes>
                 <Route
@@ -784,7 +784,7 @@ function App() {
                   <Route path="/forgot-password" element={<ForgotPassword />} />
                 </Route>
               </Routes>
-            ) : null}
+            ) : null} */}
 
             <RefineKbar />
             <UnsavedChangesNotifier />
