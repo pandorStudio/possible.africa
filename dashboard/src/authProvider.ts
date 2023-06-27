@@ -114,7 +114,7 @@ export const authProvider: AuthBindings = {
       const key = import.meta.env.VITE_JWT_SECRET;
       const decoded: { id: string; iat: number; exp: number } = jwt_decode(
         token,
-        key
+        key                                               
       );
       const { data } = await axiosInstance.get(
         `${API_URL}/users/${decoded.id}`

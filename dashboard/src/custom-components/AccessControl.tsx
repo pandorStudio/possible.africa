@@ -6,29 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { update } from "../features/user/userSlice";
 import { IUser } from "../features/user/userSlice";
 
-// Get token from local storage
-const token = localStorage.getItem("refine-auth");
-// console.log("token: ", token);
-
-const key = import.meta.env.VITE_JWT_SECRET;
-
-const decoded: { id: string; iat: number; exp: number } = jwt_decode(
-  token,
-  key
-);
-
-const userId = decoded.id;
-// console.log("decoded: ", userId);
-
-// const axiosInstance = axios.create({
-//   headers: {
-
-//   }
-// });
-
-const apiUrl = import.meta.env.VITE_BACKEND_PROD;
-// console.log("apiUrl: ", apiUrl);
-
 let user: IUser = {
   id: "",
   role: "",
@@ -39,20 +16,41 @@ let user: IUser = {
   avatar: "",
 };
 
-const result = await axios
-  .get(apiUrl + "/users/" + userId, {})
-  .then((res) => {
-    user.id = res.data.id;
-    user.role = res.data.role.name;
-    user.roleSlug = res.data.role.slug;
-    user.username = res.data.username;
-    user.lastname = res.data.lastname;
-    user.firstname = res.data.firstname;
-    user.avatar = res.data.avatar;
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// Get token from local storage
+const token = localStorage.getItem("refine-auth");
+
+const apiUrl = import.meta.env.VITE_BACKEND_PROD;
+
+let userId = "";
+
+if (token) {
+  // console.log("token: ", token);
+
+  const key = import.meta.env.VITE_JWT_SECRET;
+
+  const decoded: { id: string; iat: number; exp: number } = jwt_decode(
+    token,
+    key
+  );
+
+  userId = decoded.id;
+  // console.log("apiUrl: ", apiUrl);
+
+  const result = await axios
+    .get(apiUrl + "/users/" + userId, {})
+    .then((res) => {
+      user.id = res.data.id;
+      user.role = res.data.role.name;
+      user.roleSlug = res.data.role.slug;
+      user.username = res.data.username;
+      user.lastname = res.data.lastname;
+      user.firstname = res.data.firstname;
+      user.avatar = res.data.avatar;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 
 export async function InitState() {
   const dispatch = useDispatch();
