@@ -453,224 +453,259 @@ function App() {
               warnWhenUnsavedChanges: true,
             }}
           >
-            {/* @ts-ignore */}
-            {userState.roleSlug === "admin" ? (
-              <Routes>
-                <Route
-                  element={
-                    <Authenticated fallback={<CatchAllNavigate to="/login" />}>
-                      <ThemedLayoutV2
-                        Sider={() => (
-                          <ThemedSiderV2
-                            Title={() => <ThemedTitleV2 collapsed />}
-                          />
-                        )}
-                        Title={() => <ThemedTitleV2 collapsed />}
-                        Header={() => <Header isSticky={true} />}
-                      >
-                        <Outlet />
-                      </ThemedLayoutV2>
-                    </Authenticated>
-                  }
-                >
-                  <Route
-                    index
-                    element={<NavigateToResource resource="organisations" />}
-                  />
+            <Routes>
+              <Route
+                element={
+                  <Authenticated fallback={<CatchAllNavigate to="/login" />}>
+                    <ThemedLayoutV2
+                      Sider={() => (
+                        <ThemedSiderV2
+                          Title={() => <ThemedTitleV2 collapsed />}
+                        />
+                      )}
+                      Title={() => <ThemedTitleV2 collapsed />}
+                      Header={() => <Header isSticky={true} />}
+                    >
+                      <Outlet />
+                    </ThemedLayoutV2>
+                  </Authenticated>
+                }
+              >
+                {/* @ts-ignore */}
+                {userState.roleSlug === "admin" ? (
+                  <>
+                    <Route
+                      index
+                      element={<NavigateToResource resource="organisations" />}
+                    />
 
-                  <Route path="organisation_types">
-                    <Route index element={<OrganisationTypeList />} />
-                    <Route path="show/:id" element={<AntdInferencer />} />
-                    <Route path="edit/:id" element={<AntdInferencer />} />
-                    <Route path="create" element={<AntdInferencer />} />
-                  </Route>
-                  <Route path="organisations">
-                    <Route index element={<OrganisationList />} />
-                    <Route path="show/:id" element={<OrganisationShow />} />
-                    <Route path="edit/:id" element={<OrganisationEdit />} />
-                    <Route path="create" element={<OrganisationCreate />} />
-                  </Route>
-                  <Route path="jobs">
-                    <Route index element={<JobList />} />
-                    <Route path="show/:id" element={<JobShow />} />
-                    <Route path="edit/:id" element={<JobEdit />} />
-                    <Route path="create" element={<JobCreate />} />
-                  </Route>
+                    <Route path="organisation_types">
+                      <Route index element={<OrganisationTypeList />} />
+                      <Route path="show/:id" element={<AntdInferencer />} />
+                      <Route path="edit/:id" element={<AntdInferencer />} />
+                      <Route path="create" element={<AntdInferencer />} />
+                    </Route>
+                    <Route path="organisations">
+                      <Route index element={<OrganisationList />} />
+                      <Route path="show/:id" element={<OrganisationShow />} />
+                      <Route path="edit/:id" element={<OrganisationEdit />} />
+                      <Route path="create" element={<OrganisationCreate />} />
+                    </Route>
+                    <Route path="jobs">
+                      <Route index element={<JobList />} />
+                      <Route path="show/:id" element={<JobShow />} />
+                      <Route path="edit/:id" element={<JobEdit />} />
+                      <Route path="create" element={<JobCreate />} />
+                    </Route>
 
-                  <Route path="opportunity_types">
-                    <Route index element={<OpportunityTypeList />} />
-                    <Route path="show/:id" element={<OpportunityTypeShow />} />
-                    <Route path="edit/:id" element={<OpportunityTypeEdit />} />
-                    <Route path="create" element={<OpportunityTypeCreate />} />
-                  </Route>
-                  <Route path="opportunities">
-                    <Route index element={<OpportunityList />} />
-                    <Route path="show/:id" element={<OpportunityShow />} />
-                    <Route path="edit/:id" element={<OpportunityEdit />} />
-                    <Route path="create" element={<OpportunityCreate />} />
-                  </Route>
-                  <Route path="event_types">
-                    <Route index element={<EventTypeList />} />
-                    <Route path="show/:id" element={<EventTypeShow />} />
-                    <Route path="edit/:id" element={<EventTypeEdit />} />
-                    <Route path="create" element={<EventTypeCreate />} />
-                  </Route>
-                  <Route path="events">
-                    <Route index element={<EventList />} />
-                    <Route path="show/:id" element={<EventShow />} />
-                    <Route path="edit/:id" element={<EventEdit />} />
-                    <Route path="create" element={<EventCreate />} />
-                  </Route>
-                  <Route path="post_categories">
-                    <Route index element={<PostCategoryList />} />
-                    <Route path="show/:id" element={<PostCategoryShow />} />
-                    <Route path="edit/:id" element={<PostCategoryEdit />} />
-                    <Route path="create" element={<PostCategoryCreate />} />
-                  </Route>
-                  <Route path="posts">
-                    <Route index element={<PostList />} />
-                    <Route path="show/:id" element={<PostShow />} />
-                    <Route path="edit/:id" element={<PostEdit />} />
-                    <Route path="create" element={<PostCreate />} />
-                  </Route>
-                  <Route path="user_roles">
-                    <Route index element={<UserRoleList />} />
-                    <Route path="show/:id" element={<UserRoleShow />} />
-                    <Route path="edit/:id" element={<UserRoleEdit />} />
-                    <Route path="create" element={<UserRoleCreate />} />
-                  </Route>
-                  <Route path="users">
-                    <Route index element={<UserList />} />
-                    <Route path="show/:id" element={<UserShow />} />
-                    <Route path="edit/:id" element={<UserEdit />} />
-                    <Route path="create" element={<UserCreate />} />
-                  </Route>
-                </Route>
-                <Route
-                  element={
-                    <Authenticated fallback={<Outlet />}>
-                      <NavigateToResource />
-                    </Authenticated>
-                  }
-                >
-                  <Route path="/login" element={<Login />} />
-                  <Route
-                    path="/register"
-                    element={<RegisterPage title={<img />} />}
-                  />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                </Route>
-              </Routes>
-            ) : null}
-            {/* @ts-ignore */}
-            {userState.roleSlug === "contributor" ? (
-              <Routes>
-                <Route
-                  element={
-                    <Authenticated fallback={<CatchAllNavigate to="/login" />}>
-                      <ThemedLayoutV2
-                        Sider={() => (
-                          <ThemedSiderV2
-                            Title={() => <ThemedTitleV2 collapsed />}
-                          />
-                        )}
-                        Title={() => <ThemedTitleV2 collapsed />}
-                        Header={() => <Header isSticky={true} />}
-                      >
-                        <Outlet />
-                      </ThemedLayoutV2>
-                    </Authenticated>
-                  }
-                >
-                  <Route
-                    index
-                    element={<NavigateToResource resource="organisations" />}
-                  />
+                    <Route path="opportunity_types">
+                      <Route index element={<OpportunityTypeList />} />
+                      <Route
+                        path="show/:id"
+                        element={<OpportunityTypeShow />}
+                      />
+                      <Route
+                        path="edit/:id"
+                        element={<OpportunityTypeEdit />}
+                      />
+                      <Route
+                        path="create"
+                        element={<OpportunityTypeCreate />}
+                      />
+                    </Route>
+                    <Route path="opportunities">
+                      <Route index element={<OpportunityList />} />
+                      <Route path="show/:id" element={<OpportunityShow />} />
+                      <Route path="edit/:id" element={<OpportunityEdit />} />
+                      <Route path="create" element={<OpportunityCreate />} />
+                    </Route>
+                    <Route path="event_types">
+                      <Route index element={<EventTypeList />} />
+                      <Route path="show/:id" element={<EventTypeShow />} />
+                      <Route path="edit/:id" element={<EventTypeEdit />} />
+                      <Route path="create" element={<EventTypeCreate />} />
+                    </Route>
+                    <Route path="events">
+                      <Route index element={<EventList />} />
+                      <Route path="show/:id" element={<EventShow />} />
+                      <Route path="edit/:id" element={<EventEdit />} />
+                      <Route path="create" element={<EventCreate />} />
+                    </Route>
+                    <Route path="post_categories">
+                      <Route index element={<PostCategoryList />} />
+                      <Route path="show/:id" element={<PostCategoryShow />} />
+                      <Route path="edit/:id" element={<PostCategoryEdit />} />
+                      <Route path="create" element={<PostCategoryCreate />} />
+                    </Route>
+                    <Route path="posts">
+                      <Route index element={<PostList />} />
+                      <Route path="show/:id" element={<PostShow />} />
+                      <Route path="edit/:id" element={<PostEdit />} />
+                      <Route path="create" element={<PostCreate />} />
+                    </Route>
+                    <Route path="user_roles">
+                      <Route index element={<UserRoleList />} />
+                      <Route path="show/:id" element={<UserRoleShow />} />
+                      <Route path="edit/:id" element={<UserRoleEdit />} />
+                      <Route path="create" element={<UserRoleCreate />} />
+                    </Route>
+                    <Route path="users">
+                      <Route index element={<UserList />} />
+                      <Route path="show/:id" element={<UserShow />} />
+                      <Route path="edit/:id" element={<UserEdit />} />
+                      <Route path="create" element={<UserCreate />} />
+                    </Route>
+                  </>
+                // @ts-ignore
+                ) : userState.roleSlug === "contributor" ? (
+                  <>
+                    <Route
+                      index
+                      element={<NavigateToResource resource="organisations" />}
+                    />
 
-                  <Route path="organisation_types">
-                    <Route index element={<OrganisationTypeList />} />
-                    <Route path="show/:id" element={<AntdInferencer />} />
-                    <Route path="edit/:id" element={<AntdInferencer />} />
-                    <Route path="create" element={<AntdInferencer />} />
-                  </Route>
-                  <Route path="organisations">
-                    <Route index element={<OrganisationList />} />
-                    <Route path="show/:id" element={<OrganisationShow />} />
-                    <Route path="edit/:id" element={<OrganisationEdit />} />
-                    <Route path="create" element={<OrganisationCreate />} />
-                  </Route>
-                  <Route path="jobs">
-                    <Route index element={<JobList />} />
-                    <Route path="show/:id" element={<JobShow />} />
-                    <Route path="edit/:id" element={<JobEdit />} />
-                    <Route path="create" element={<JobCreate />} />
-                  </Route>
+                    <Route path="organisation_types">
+                      <Route index element={<OrganisationTypeList />} />
+                      <Route path="show/:id" element={<AntdInferencer />} />
+                      <Route path="edit/:id" element={<AntdInferencer />} />
+                      <Route path="create" element={<AntdInferencer />} />
+                    </Route>
+                    <Route path="organisations">
+                      <Route index element={<OrganisationList />} />
+                      <Route path="show/:id" element={<OrganisationShow />} />
+                      <Route path="edit/:id" element={<OrganisationEdit />} />
+                      <Route path="create" element={<OrganisationCreate />} />
+                    </Route>
+                    <Route path="jobs">
+                      <Route index element={<JobList />} />
+                      <Route path="show/:id" element={<JobShow />} />
+                      <Route path="edit/:id" element={<JobEdit />} />
+                      <Route path="create" element={<JobCreate />} />
+                    </Route>
 
-                  <Route path="opportunity_types">
-                    <Route index element={<OpportunityTypeList />} />
-                    <Route path="show/:id" element={<OpportunityTypeShow />} />
-                    <Route path="edit/:id" element={<OpportunityTypeEdit />} />
-                    <Route path="create" element={<OpportunityTypeCreate />} />
-                  </Route>
-                  <Route path="opportunities">
-                    <Route index element={<OpportunityList />} />
-                    <Route path="show/:id" element={<OpportunityShow />} />
-                    <Route path="edit/:id" element={<OpportunityEdit />} />
-                    <Route path="create" element={<OpportunityCreate />} />
-                  </Route>
-                  <Route path="event_types">
-                    <Route index element={<EventTypeList />} />
-                    <Route path="show/:id" element={<EventTypeShow />} />
-                    <Route path="edit/:id" element={<EventTypeEdit />} />
-                    <Route path="create" element={<EventTypeCreate />} />
-                  </Route>
-                  <Route path="events">
-                    <Route index element={<EventList />} />
-                    <Route path="show/:id" element={<EventShow />} />
-                    <Route path="edit/:id" element={<EventEdit />} />
-                    <Route path="create" element={<EventCreate />} />
-                  </Route>
-                  <Route path="post_categories">
-                    <Route index element={<PostCategoryList />} />
-                    <Route path="show/:id" element={<PostCategoryShow />} />
-                    <Route path="edit/:id" element={<PostCategoryEdit />} />
-                    <Route path="create" element={<PostCategoryCreate />} />
-                  </Route>
-                  <Route path="posts">
-                    <Route index element={<PostList />} />
-                    <Route path="show/:id" element={<PostShow />} />
-                    <Route path="edit/:id" element={<PostEdit />} />
-                    <Route path="create" element={<PostCreate />} />
-                  </Route>
-                  <Route path="user_roles">
-                    <Route index element={<UserRoleList />} />
-                    <Route path="show/:id" element={<UserRoleShow />} />
-                    <Route path="edit/:id" element={<UserRoleEdit />} />
-                    <Route path="create" element={<UserRoleCreate />} />
-                  </Route>
-                  <Route path="users">
-                    <Route index element={<UserList />} />
-                    <Route path="show/:id" element={<UserShow />} />
-                    <Route path="edit/:id" element={<UserEdit />} />
-                    <Route path="create" element={<UserCreate />} />
-                  </Route>
-                </Route>
+                    <Route path="opportunity_types">
+                      <Route index element={<OpportunityTypeList />} />
+                      <Route
+                        path="show/:id"
+                        element={<OpportunityTypeShow />}
+                      />
+                      <Route
+                        path="edit/:id"
+                        element={<OpportunityTypeEdit />}
+                      />
+                      <Route
+                        path="create"
+                        element={<OpportunityTypeCreate />}
+                      />
+                    </Route>
+                    <Route path="opportunities">
+                      <Route index element={<OpportunityList />} />
+                      <Route path="show/:id" element={<OpportunityShow />} />
+                      <Route path="edit/:id" element={<OpportunityEdit />} />
+                      <Route path="create" element={<OpportunityCreate />} />
+                    </Route>
+                    <Route path="event_types">
+                      <Route index element={<EventTypeList />} />
+                      <Route path="show/:id" element={<EventTypeShow />} />
+                      <Route path="edit/:id" element={<EventTypeEdit />} />
+                      <Route path="create" element={<EventTypeCreate />} />
+                    </Route>
+                    <Route path="events">
+                      <Route index element={<EventList />} />
+                      <Route path="show/:id" element={<EventShow />} />
+                      <Route path="edit/:id" element={<EventEdit />} />
+                      <Route path="create" element={<EventCreate />} />
+                    </Route>
+                    <Route path="post_categories">
+                      <Route index element={<PostCategoryList />} />
+                      <Route path="show/:id" element={<PostCategoryShow />} />
+                      <Route path="edit/:id" element={<PostCategoryEdit />} />
+                      <Route path="create" element={<PostCategoryCreate />} />
+                    </Route>
+                    <Route path="posts">
+                      <Route index element={<PostList />} />
+                      <Route path="show/:id" element={<PostShow />} />
+                      <Route path="edit/:id" element={<PostEdit />} />
+                      <Route path="create" element={<PostCreate />} />
+                    </Route>
+                    <Route path="user_roles">
+                      <Route index element={<UserRoleList />} />
+                      <Route path="show/:id" element={<UserRoleShow />} />
+                      <Route path="edit/:id" element={<UserRoleEdit />} />
+                      <Route path="create" element={<UserRoleCreate />} />
+                    </Route>
+                    <Route path="users">
+                      <Route index element={<UserList />} />
+                      <Route path="show/:id" element={<UserShow />} />
+                      <Route path="edit/:id" element={<UserEdit />} />
+                      <Route path="create" element={<UserCreate />} />
+                    </Route>
+                  </>
+                ) : (
+                  <>
+                    <Route
+                      index
+                      element={<NavigateToResource resource="organisations" />}
+                    />
+
+                    <Route path="organisation_types">
+                      <Route index element={<OrganisationTypeList />} />
+                      <Route path="show/:id" element={<AntdInferencer />} />
+                    </Route>
+                    <Route path="organisations">
+                      <Route index element={<OrganisationList />} />
+                      <Route path="show/:id" element={<OrganisationShow />} />
+                    </Route>
+                    <Route path="jobs">
+                      <Route index element={<JobList />} />
+                      <Route path="show/:id" element={<JobShow />} />
+                    </Route>
+
+                    <Route path="opportunity_types">
+                      <Route index element={<OpportunityTypeList />} />
+                      <Route
+                        path="show/:id"
+                        element={<OpportunityTypeShow />}
+                      />
+                    </Route>
+                    <Route path="opportunities">
+                      <Route index element={<OpportunityList />} />
+                      <Route path="show/:id" element={<OpportunityShow />} />
+                    </Route>
+                    <Route path="event_types">
+                      <Route index element={<EventTypeList />} />
+                      <Route path="show/:id" element={<EventTypeShow />} />
+                    </Route>
+                    <Route path="events">
+                      <Route index element={<EventList />} />
+                      <Route path="show/:id" element={<EventShow />} />
+                    </Route>
+                    <Route path="post_categories">
+                      <Route index element={<PostCategoryList />} />
+                      <Route path="show/:id" element={<PostCategoryShow />} />
+                    </Route>
+                    <Route path="posts">
+                      <Route index element={<PostList />} />
+                      <Route path="show/:id" element={<PostShow />} />
+                    </Route>
+                  </>
+                )}
+              </Route>
+              <Route
+                element={
+                  <Authenticated fallback={<Outlet />}>
+                    <NavigateToResource />
+                  </Authenticated>
+                }
+              >
+                <Route path="/login" element={<Login />} />
                 <Route
-                  element={
-                    <Authenticated fallback={<Outlet />}>
-                      <NavigateToResource />
-                    </Authenticated>
-                  }
-                >
-                  <Route path="/login" element={<Login />} />
-                  <Route
-                    path="/register"
-                    element={<RegisterPage title={<img />} />}
-                  />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                </Route>
-              </Routes>
-            ) : null}
+                  path="/register"
+                  element={<RegisterPage title={<img />} />}
+                />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+              </Route>
+            </Routes>
             {/* @ts-ignore */}
             {userState.roleSlug === "user" ? (
               <Routes>
