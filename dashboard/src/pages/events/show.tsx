@@ -12,6 +12,7 @@ import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
 import { AdminOrContributor } from "../../custom-components/AccessControl";
+import Link from 'antd/es/typography/Link';
 
 const { Title } = Typography;
 
@@ -59,11 +60,12 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
       }}
     >
       <Title level={5}>Organisation</Title>
-      {organisationIsLoading ? (
+      {record?.organisation ? <>{organisationData?.data?.name || "-"}</> : "-"}
+      {/* {organisationIsLoading ? (
         <>Loading...</>
       ) : (
         <>{organisationData?.data?.name}</>
-      )}
+      )} */}
       <Title level={5}>Titre</Title>
       <TextField value={record?.title} />
       <Title level={5}>Date de début</Title>
@@ -75,7 +77,16 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Format</Title>
       <TextField value={record?.format} />
       <Title level={5}>Pays cible</Title>
-      <TextField value={record?.target_countriy} />
+      {record?.target_country ? (
+        <Link
+          href={"https://www.google.com/maps/search/" + record?.target_country}
+          target="_blank"
+        >
+          {record?.target_country}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Secteur d'activité</Title>
       <TextField value={record?.activity_area} />
       <Title level={5}>Description</Title>
@@ -87,9 +98,28 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
           )}
       </span>
       <Title level={5}>Lien d'incsription</Title>
-      <TextField value={record?.registration_link} />
+      {record?.registration_link ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={record?.registration_link}
+          target="_blank"
+        >
+          {record?.registration_link}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Emplacement</Title>
-      <TextField value={record?.location} />
+      {record?.location ? (
+        <Link
+          href={"https://www.google.com/maps/search/" + record?.location}
+          target="_blank"
+        >
+          {record?.location}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Est récurrent</Title>
       <BooleanField value={record?.is_recurrent} />
       <Title level={5}>Frequence</Title>

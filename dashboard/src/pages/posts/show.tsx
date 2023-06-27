@@ -75,8 +75,6 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
       <ImageField style={{ maxWidth: 200 }} value={record?.image} />
       <Title level={5}>Categorie</Title>
       <TextField value={record?.categorie?.name} />
-      <Title level={5}>Id</Title>
-      <TextField value={record?.id} />
     </Show>
   );
 };

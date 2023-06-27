@@ -12,6 +12,7 @@ import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
 import { AdminOrContributor } from "../../custom-components/AccessControl";
+import Link from "antd/es/typography/Link";
 
 const { Title } = Typography;
 
@@ -47,7 +48,9 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
     });
 
   return (
-    <Show isLoading={isLoading} headerProps={{
+    <Show
+      isLoading={isLoading}
+      headerProps={{
         extra: (
           <AdminOrContributor>
             <Space>
@@ -55,13 +58,10 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
             </Space>
           </AdminOrContributor>
         ),
-      }}>
+      }}
+    >
       <Title level={5}>Organisation</Title>
-      {organisationIsLoading ? (
-        <>Loading...</>
-      ) : (
-        <>{organisationData?.data?.name}</>
-      )}
+      {record?.organisation ? <>{organisationData?.data?.name || "-"}</> : "-"}
       <Title level={5}>Contributeur</Title>
       {userIsLoading ? <>Loading...</> : <>{userData?.data?.username}</>}
       <Title level={5}>Titre</Title>
@@ -79,7 +79,16 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Acteur Cible</Title>
       <TextField value={record?.target_people} />
       <Title level={5}>Pays cible</Title>
-      <TextField value={record?.target_country} />
+      {record?.target_country ? (
+        <Link
+          href={"https://www.google.com/maps/search/" + record?.target_country}
+          target="_blank"
+        >
+          {record?.target_country}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Secteur d'activité</Title>
       <TextField value={record?.activity_area} />
       <Title level={5}>Description</Title>
@@ -97,7 +106,17 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Bénefices</Title>
       <TextField value={record?.beneficies} />
       <Title level={5}>Lien d'inscription</Title>
-      <TextField value={record?.registration_link} />
+      {record?.registration_link ? (
+        <Link
+          // href={"https://www.google.com/search?q=" + value}
+          href={record?.registration_link}
+          target="_blank"
+        >
+          {record?.registration_link}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Est Récurrent</Title>
       <BooleanField value={record?.isRecurrent} />
       <Title level={5}>Fréquence</Title>
