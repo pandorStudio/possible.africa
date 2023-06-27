@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 export interface IUser {
-  id: 0;
+  id: "";
   role: "";
   roleSlug: "";
   username: "";
@@ -12,7 +12,7 @@ export interface IUser {
 }
 
 let initialState: IUser = {
-  id: 0,
+  id: "",
   role: "",
   roleSlug: "",
   username: "",
@@ -45,6 +45,7 @@ if (token) {
           initialState.lastname = res.data.lastname;
           initialState.firstname = res.data.firstname;
           initialState.avatar = res.data.avatar;
+          console.log("userSlice", initialState);
         })
         .catch((err) => {
           console.log(err);
