@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 export interface IUser {
-  id: 0;
+  id: "";
   role: "";
   roleSlug: "";
   username: "";
@@ -12,7 +12,7 @@ export interface IUser {
 }
 
 let initialState: IUser = {
-  id: 0,
+  id: "",
   role: "",
   roleSlug: "",
   username: "",
@@ -22,38 +22,37 @@ let initialState: IUser = {
 };
 
 const token = localStorage.getItem("refine-auth");
-(async () => {
-    if (token) {
-      const key = import.meta.env.VITE_JWT_SECRET;
+if (token) {
+  const key = import.meta.env.VITE_JWT_SECRET;
 
-      const decoded: { id: string; iat: number; exp: number } = jwt_decode(
-        token,
-        key
-      );
+  const decoded: { id: string; iat: number; exp: number } = jwt_decode(
+    token,
+    key
+  );
 
-      if (decoded) {
-        const userId = decoded.id;
-        if (userId) {
-          const apiUrl = import.meta.env.VITE_BACKEND_PROD;
+  if (decoded) {
+    const userId = decoded.id;
+    if (userId) {
+      const apiUrl = import.meta.env.VITE_BACKEND_PROD;
 
-          const result = await axios
-            .get(apiUrl + "/users/" + userId, {})
-            .then((res) => {
-              initialState.id = res.data.id;
-              initialState.role = res.data.role.name;
-              initialState.roleSlug = res.data.role.slug;
-              initialState.username = res.data.username;
-              initialState.lastname = res.data.lastname;
-              initialState.firstname = res.data.firstname;
-              initialState.avatar = res.data.avatar;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-      }
+      const result = await axios
+        .get(apiUrl + "/users/" + userId, {})
+        .then((res) => {
+          initialState.id = res.data.id;
+          initialState.role = res.data.role.name;
+          initialState.roleSlug = res.data.role.slug;
+          initialState.username = res.data.username;
+          initialState.lastname = res.data.lastname;
+          initialState.firstname = res.data.firstname;
+          initialState.avatar = res.data.avatar;
+          console.log("userSlice", initialState);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  })();
+  }
+}
 
 export const userSlice = createSlice({
   name: "user",

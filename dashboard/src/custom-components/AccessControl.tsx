@@ -30,7 +30,7 @@ const apiUrl = import.meta.env.VITE_BACKEND_PROD;
 // console.log("apiUrl: ", apiUrl);
 
 let user: IUser = {
-  id: 0,
+  id: "",
   role: "",
   roleSlug: "",
   username: "",
