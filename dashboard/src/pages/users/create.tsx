@@ -22,6 +22,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
   });
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
+  const [uploadLoading, setUploadLoading] = useState(false);
 
   const getBase64 = (img: RcFile, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -44,6 +45,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
   const handleChange: UploadProps["onChange"] = async (
     info: UploadChangeParam<UploadFile>
   ) => {
+    setUploadLoading(true);
     const base64 = await file2Base64(info.file);
     const url = await imageUploadHandler(base64);
     setImageUrl(url);
@@ -57,6 +59,9 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
   );
 
   useEffect(() => {
+    if (imageUrl) {
+      setUploadLoading(false);
+    }
   }, [imageUrl]);
 
   const apiUrl = useApiUrl();

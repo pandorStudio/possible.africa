@@ -26,39 +26,10 @@ async function downloadMedia(mediaUrl) {
   }
 }
 
-async function transformMediaUrl(mediaUrl) {
-  try {
-    const apiUrl = "https://www.possible.africa/wp-json/wp/v2/media";
-    const response = await axios.get(apiUrl, {
-      params: {
-        search: mediaUrl,
-        per_page: 1,
-      },
-    });
-
-    if (response.data.length > 0) {
-      const transformedUrl = response.data[0].guid.rendered;
-      return transformedUrl;
-    } else {
-      console.error("Media not found");
-      return null;
-    }
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
-
 exports.getWpImageBuffer = async (req, res) => {
   const dataUrl = await downloadMedia(req.body.url);
   return res.status(200).json({ dataUrl });
 };
-
-// const mediaUrl =
-//   "https://www.possible.africa/wp-content/uploads/2023/03/Matrix-Software_logo-1.jpg?wpId=12603";
-// transformMediaUrl(mediaUrl).then((transformedUrl) => {
-//   console.log("Transformed URL:", transformedUrl);
-// });
 
 // @Get all organisations
 // @route GET /api/v1/organisations
@@ -66,6 +37,7 @@ exports.getWpImageBuffer = async (req, res) => {
 exports.getAllOrganisations = async (req, res) => {
   const { limit, page, sort, fields } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
+  // console.log(queryObj);
   try {
     const organisations = await Organisation.find(queryObj)
       .limit(limit * 1)
