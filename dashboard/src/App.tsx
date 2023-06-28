@@ -419,13 +419,24 @@ function App() {
         canDelete: true,
       },
     },
+    // {
+    //   name: "Utilisateurs",
+    //   meta: {
+    //     label: "Tous les utilisateurs",
+    //     icon: <UserOutlined />,
+    //     canDelete: true,
+    //     token: localStorage.getItem("refine-auth"),
+    //   },
+    // },
     {
-      name: "Utilisateurs",
+      name: "users",
+      list: "/users",
+      show: "/users/show/:id",
+      create: "/users/create",
+      edit: "/users/edit/:id",
       meta: {
-        label: "Tous les utilisateurs",
+        label: "Profil",
         icon: <UserOutlined />,
-        canDelete: true,
-        token: localStorage.getItem("refine-auth"),
       },
     },
   ];
@@ -556,8 +567,8 @@ function App() {
                       <Route path="create" element={<UserCreate />} />
                     </Route>
                   </>
-                // @ts-ignore
-                ) : userState.roleSlug === "contributor" ? (
+                ) : // @ts-ignore
+                userState.roleSlug === "contributor" ? (
                   <>
                     <Route
                       index
@@ -687,6 +698,10 @@ function App() {
                     <Route path="posts">
                       <Route index element={<PostList />} />
                       <Route path="show/:id" element={<PostShow />} />
+                    </Route>
+                    <Route path="users">
+                      <Route index element={<UserList />} />
+                      <Route path="show/:id" element={<UserShow />} />
                     </Route>
                   </>
                 )}

@@ -72,9 +72,11 @@ exports.protect = async (req, res, next) => {
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
     ) {
-      console.log("token found", token);
       token = req.headers.authorization.split(" ")[1];
+      console.log("token found", token);
     }
+
+    // console.log("token found", token);
 
     if (!token) {
       /*return res.status(401).json({
@@ -98,7 +100,7 @@ exports.protect = async (req, res, next) => {
 
     // GRANT ACCESS TO PROTECTED ROUTE
     req.user = currentUser;
-    // console.log("token found", currentUser);
+    console.log("token found", currentUser);
     next();
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -21,22 +21,22 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     defaultValue: organisationsData?.type?._id,
   });
 
-  const { selectProps: contributorSelectProps } = useSelect({
-    resource: "users?role=contributor",
-    optionValue: "_id",
-    optionLabel: "username",
-    filters: [
-      {
-        field: "role",
-        operator: "eq",
-        value: "contributor",
-      },
-    ],
-    defaultValue: organisationsData?.contributeur?._id,
-  });
+  // const { selectProps: contributorSelectProps } = useSelect({
+  //   resource: "users?role=contributor",
+  //   optionValue: "_id",
+  //   optionLabel: "username",
+  //   filters: [
+  //     {
+  //       field: "role",
+  //       operator: "eq",
+  //       value: "contributor",
+  //     },
+  //   ],
+  //   defaultValue: organisationsData?.contributeur?._id,
+  // });
 
   async function onSubmitCapture(values: any) {
-    let imgTags = editorContent.match(/<img[^>]+src="([^">]+)"/g);
+    let imgTags = editorContent?.match(/<img[^>]+src="([^">]+)"/g);
     if (imgTags && imgTags.length > 0) {
       let imgs = imgTags.map((imgTag) => {
         const img = {
@@ -103,9 +103,9 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Type" name={["type", "_id"]}>
           <Select {...typeSelectProps} />
         </Form.Item>
-        <Form.Item label="Contributeur" name={["contributeur", "_id"]}>
+        {/* <Form.Item label="Contributeur" name={["contributeur", "_id"]}>
           <Select {...contributorSelectProps} />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label="Contact" name={["owner"]}>
           <Input />
         </Form.Item>

@@ -1,19 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IResourceComponentsProps,
   file2Base64,
   useApiUrl,
 } from "@refinedev/core";
 import { Create, getValueFromEvent, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Upload } from "antd";
+import { Form, Input, Select, Upload, message } from "antd";
 import { axiosInstance } from "../../authProvider";
 import ReactQuill from "react-quill";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
+import type { UploadChangeParam } from "antd/es/upload";
+import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
   const [editorContent, setEditorContent] = useState("");
+  const [imageUrl, setImageUrl] = useState<string>();
+  const [uploadLoading, setUploadLoading] = useState(false);
   const apiUrl = useApiUrl();
+
+  const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result as string));
+    reader.readAsDataURL(img);
+  };
+
+  const beforeUpload = async (file: RcFile) => {
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    if (!isJpgOrPng) {
+      message.error("You can only upload JPG/PNG file!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("Image must smaller than 2MB!");
+    }
+    // return isJpgOrPng && isLt2M;
+  };
+
+  const handleChange: UploadProps["onChange"] = async (
+    info: UploadChangeParam<UploadFile>
+  ) => {
+    setUploadLoading(true);
+    const base64 = await file2Base64(info.file);
+    const url = await imageUploadHandler(base64);
+    setImageUrl(url);
+  };
 
   async function onSubmitCapture(values: any) {
     let imgTags = editorContent.match(/<img[^>]+src="([^">]+)"/g);
@@ -45,10 +77,8 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
       });
     }
 
-    if (values.logo && values.logo.length) {
-      const base64 = await file2Base64(values.logo[0]);
-      const url = await imageUploadHandler(base64);
-      values.logo = url;
+    if (values.logo) {
+      values.logo = imageUrl;
     }
     if (!values?.contributeur?._id) {
       values.contributeur = null;
@@ -61,12 +91,12 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     onFinish(values);
   }
 
-  const { selectProps: contributorSelectProps } = useSelect({
-    resource: "users?role=contributor",
-    optionValue: "_id",
-    optionLabel: "username",
-    defaultValue: "",
-  });
+  // const { selectProps: contributorSelectProps } = useSelect({
+  //   resource: "users?role=contributor",
+  //   optionValue: "_id",
+  //   optionLabel: "username",
+  //   defaultValue: "",
+  // });
 
   const { selectProps: organisationTypeSelectProps } = useSelect({
     resource: "organisation_types",
@@ -74,6 +104,19 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "name",
     defaultValue: "",
   });
+
+    const uploadButton = (
+      <div>
+        {uploadLoading ? <LoadingOutlined /> : <PlusOutlined />}
+        <div style={{ marginTop: 8 }}>Upload</div>
+      </div>
+    );
+
+  useEffect(() => {
+    if (imageUrl) {
+      setUploadLoading(false);
+    }
+  }, [imageUrl]);
 
   return (
     <Create saveButtonProps={saveButtonProps}>
@@ -92,30 +135,40 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Pays" name={["country"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Logo">
-          <Form.Item
-            name="logo"
-            valuePropName="fileList"
-            getValueFromEvent={getValueFromEvent}
-            noStyle
+        {/* <Form.Item label="Logo"> */}
+        <Form.Item
+          label="Logo"
+          name="logo"
+          // valuePropName="fileList"
+          // getValueFromEvent={getValueFromEvent}
+          // noStyle
+        >
+          <Upload
+            name="file"
+            listType="picture-card"
+            className="avatar-uploader"
+            showUploadList={false}
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+            // action={`${apiUrl}/upload/images`}
+            // // Define the body of the request
+            // listType="picture"
+            // maxCount={1}
           >
-            <Upload.Dragger
-              name="file"
-              action={`${apiUrl}/upload/images`}
-              // Define the body of the request
-              listType="picture"
-              maxCount={1}
-            >
-              <p className="ant-upload-text">Drag & drop a file in this area</p>
-            </Upload.Dragger>
-          </Form.Item>
+            {imageUrl ? (
+              <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
+            ) : (
+              uploadButton
+            )}
+          </Upload>
+          {/* </Form.Item> */}
         </Form.Item>
         <Form.Item label="Type" name={["type", "_id"]}>
           <Select {...organisationTypeSelectProps} />
         </Form.Item>
-        <Form.Item label="Contributeur" name={["contributeur", "_id"]}>
+        {/* <Form.Item label="Contributeur" name={["contributeur", "_id"]}>
           <Select {...contributorSelectProps} />
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item label="Contact" name={["owner"]}>
           <Input />

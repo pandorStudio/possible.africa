@@ -120,7 +120,7 @@ export const authProvider: AuthBindings = {
         `${API_URL}/users/${decoded.id}`
       );
       return {
-        id: 1,
+        id: data.id,
         role: data.role.name,
         roleSlug: data.role.slug,
         username: data.username,
