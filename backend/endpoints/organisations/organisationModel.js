@@ -33,7 +33,12 @@ const organisationSchema = mongoose.Schema(
     },
     description: { type: String },
     email: { type: String },
-    telephone: { type: String },
+    telephone: {
+      type: {
+        indicatif: { type: String },
+        number: { type: String },
+      },
+    },
     site_web: { type: String },
     linkedin_url: { type: String },
     facebook_url: { type: String },
@@ -46,18 +51,18 @@ const organisationSchema = mongoose.Schema(
 );
 
 organisationSchema.index({
-  name: 'text',
-  country: 'text',
-  slug: 'text',
-  owner: 'text',
-  description: 'text',
-  email: 'text',
-  telephone: 'text',
-  site_web: 'text',
-  linkedin_url: 'text',
-  facebook_url: 'text',
-  twitter_url: 'text',
-  adresse: 'text',
+  name: "text",
+  country: "text",
+  slug: "text",
+  owner: "text",
+  description: "text",
+  email: "text",
+  telephone: "text",
+  site_web: "text",
+  linkedin_url: "text",
+  facebook_url: "text",
+  twitter_url: "text",
+  adresse: "text",
 });
 
 // populate response with organisationType

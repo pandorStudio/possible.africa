@@ -13,6 +13,7 @@ import { CustomAdvancedEditor } from "../../components/Editors/advanced";
 import LexicalEditor from "../../components/Editors/lexical";
 import "../../components/Editors/styles.css";
 import { axiosInstance } from "../../authProvider";
+import SelectCountry from "../../custom-components/SelectCountry";
 
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
@@ -180,7 +181,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Pays" name={["country"]}>
-          <Input />
+          <SelectCountry />
         </Form.Item>
         <Form.Item
           label="Contenu"

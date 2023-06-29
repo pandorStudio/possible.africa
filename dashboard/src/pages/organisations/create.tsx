@@ -5,20 +5,27 @@ import {
   useApiUrl,
 } from "@refinedev/core";
 import { Create, getValueFromEvent, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Upload, message } from "antd";
+import { Form, Input, Select, Space, Upload, message, Typography } from "antd";
 import { axiosInstance } from "../../authProvider";
 import ReactQuill from "react-quill";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import SelectCountry from "../../custom-components/SelectCountry";
 
 export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
   const [editorContent, setEditorContent] = useState("");
   const [imageUrl, setImageUrl] = useState<string>();
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [realPhoneNumber, setRealPhoneNumber] = React.useState("");
+  const [indicatif, setIndicatif] = React.useState();
+  const [countries, setCountries] = useState([]);
   const apiUrl = useApiUrl();
+
+  const { Text } = Typography;
 
   const getBase64 = (img: RcFile, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -80,6 +87,13 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     if (values.logo) {
       values.logo = imageUrl;
     }
+    if (values.telephone) {
+      console.log(values.telephone);
+      values.telephone = {
+        indicatif: indicatif,
+        number: realPhoneNumber,
+      };
+    }
     if (!values?.contributeur?._id) {
       values.contributeur = null;
     }
@@ -105,18 +119,61 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     defaultValue: "",
   });
 
-    const uploadButton = (
-      <div>
-        {uploadLoading ? <LoadingOutlined /> : <PlusOutlined />}
-        <div style={{ marginTop: 8 }}>Upload</div>
-      </div>
-    );
+  const uploadButton = (
+    <div>
+      {uploadLoading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
+  const handlePhoneNumberChange = (event) => {
+    const { value } = event.target;
+    let formattedNumber = value.replace(/\D/g, "");
+    setRealPhoneNumber(formattedNumber);
+    if (formattedNumber.length % 2 === 0) {
+      formattedNumber = formattedNumber.replace(/(\d{2})/g, "$1 ");
+    } else {
+      formattedNumber = formattedNumber.replace(/(\d{3})/g, "$1 ");
+    }
+    if (formattedNumber.slice(-1) === " ")
+      formattedNumber = formattedNumber.slice(0, formattedNumber.length - 1);
+    console.log(formattedNumber);
+    setPhoneNumber(formattedNumber);
+  };
 
   useEffect(() => {
     if (imageUrl) {
       setUploadLoading(false);
     }
-  }, [imageUrl]);
+    if (!countries.length) {
+      // Get all countries from api
+      axiosInstance.get(`https://restcountries.com/v3.1/all`).then((res) => {
+        const countrieDatas = res.data;
+
+        let countrieDatasFiltered = [];
+
+        for (let i = 0; i < countrieDatas.length; i++) {
+          const countrieData = countrieDatas[i];
+          if (countrieData.idd.root || countrieData.idd.suffixes) {
+            countrieData.idd.suffixes.map((suffix) => {
+              countrieDatasFiltered.push({
+                ...countrieData,
+                idd: { root: `${countrieData.idd.root}${suffix}` },
+              });
+            });
+            // countrieDatasFiltered.push(countrieData);
+          }
+          continue;
+        }
+
+        // Filter countries by alphabetic order
+        countrieDatasFiltered.sort((a: any, b: any) =>
+          a.name.common > b.name.common ? 1 : -1
+        );
+        setCountries(countrieDatasFiltered);
+      });
+    }
+  }, [imageUrl, countries]);
 
   return (
     <Create saveButtonProps={saveButtonProps}>
@@ -133,7 +190,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Pays" name={["country"]}>
-          <Input />
+          <SelectCountry />
         </Form.Item>
         {/* <Form.Item label="Logo"> */}
         <Form.Item
@@ -197,7 +254,66 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Telephone" name={["telephone"]}>
-          <Input />
+          <Space.Compact style={{ width: "100%" }}>
+            <Select
+              style={{ width: "25%" }}
+              value={indicatif}
+              onChange={setIndicatif}
+              placeholder="+000"
+            >
+              {countries.map((country, index) => (
+                <Select.Option
+                  key={country.name}
+                  value={
+                    // (country.flag ? country.flag + " " : "") +
+                    (country.idd.root ? country.idd.root.toString() : "") +
+                    (country.idd.suffixes
+                      ? country.idd.suffixes.join("").toString()
+                      : "")
+                  }
+                >
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      textAlign: "start",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "35%",
+                      }}
+                    >
+                      <Text style={{ textAlign: "start" }}>
+                        {country.flag ? country.flag + " " : null}
+                        {country.idd.root ? country.idd.root.toString() : null}
+                        {country.idd.suffixes
+                          ? country.idd.suffixes.join("").toString()
+                          : null}
+                      </Text>
+                    </div>
+                    <div
+                      style={{
+                        width: "60%",
+                        textAlign: "left",
+                      }}
+                    >
+                      <Text style={{ textAlign: "start" }}>
+                        {" " + country.name.common}
+                      </Text>
+                    </div>
+                  </div>
+                </Select.Option>
+              ))}
+            </Select>
+            <Input
+              style={{ width: "25%" }}
+              onChange={handlePhoneNumberChange}
+              value={phoneNumber}
+              placeholder="26 88 88 88"
+            />
+          </Space.Compact>
         </Form.Item>
         <Form.Item label="Site Web" name={["site_web"]}>
           <Input />

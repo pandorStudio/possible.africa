@@ -58,10 +58,15 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Telephone</Title>
       {record?.telephone ? (
         <Link
-          // href={"https://www.google.com/search?q=" + value}
-          href="#"
+          href={
+            "https://www.google.com/search?q=" +
+            record?.telephone?.indicatif +
+            " " +
+            record?.telephone?.number
+          }
+          // href="#"
         >
-          {record?.telephone}
+          {record?.telephone?.indicatif + " " + record?.telephone?.number}
         </Link>
       ) : (
         "-"
