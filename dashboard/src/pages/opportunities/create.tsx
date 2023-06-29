@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import ReactQuill from "react-quill";
+import SelectCountry from "../../custom-components/SelectCountry";
 
 export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -118,7 +119,7 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
           </Select>
         </Form.Item>
         <Form.Item label="Pays Cible" name={["target_country"]}>
-          <Input />
+          <SelectCountry />
         </Form.Item>
         <Form.Item label="Secteur d'activité" name={["activity_area"]}>
           <Select defaultValue="">
@@ -177,7 +178,7 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Fréquence" name={["frequency"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="contributeur" name={["user", "_id"]}>
+        <Form.Item label="Contributeur" name={["user", "_id"]}>
           <Select {...userSelectProps} />
         </Form.Item>
         <Form.Item label="Organisation" name={["organisation", "_id"]}>

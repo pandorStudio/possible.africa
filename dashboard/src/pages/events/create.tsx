@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import ReactQuill from "react-quill";
+import SelectCountry from "../../custom-components/SelectCountry";
 
 export const EventCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -121,8 +122,8 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
             <Option value="physical">Presentiel</Option>
           </Select>
         </Form.Item>
-        <Form.Item label="Target Countriy" name={["target_countriy"]}>
-          <Input />
+        <Form.Item label="Target Country" name={["target_country"]}>
+          <SelectCountry />
         </Form.Item>
         <Form.Item label="Secteur d'activité" name={["activity_area"]}>
           <Select defaultValue="">

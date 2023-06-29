@@ -397,8 +397,11 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             render={(value: any) => {
               if (value) {
                 return (
-                  <Link href={value} target="_blank">
-                    {value}
+                  <Link
+                    href={"https://www.google.com/search?q=" + value.indicatif + " " + value.number}
+                    target="_blank"
+                  >
+                    {value.indicatif} {value.number}
                   </Link>
                 );
               } else {

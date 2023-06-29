@@ -4,11 +4,11 @@ import {
   DataProvider,
   HttpError,
 } from "@refinedev/core";
-import { AxiosInstance } from "axios";
 // import axios, { AxiosRequestConfig } from "axios";
 import { stringify } from "query-string";
-import { TOKEN_KEY } from "../authProvider";
+import {AxiosInstance} from "axios";
 
+export const TOKEN_KEY = "refine-auth";
 // Error handling ...
 // export const axiosInstance = axios.create();
 // Map refine operators to API operators
