@@ -33,6 +33,7 @@ import {
   FormProps,
   theme,
 } from "antd";
+import { ThemedTitleV2 } from "../../../themedLayout/title";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -78,7 +79,8 @@ export const LoginPage: React.FC<LoginProps> = ({
           fontSize: "20px",
         }}
       >
-        {title ?? <ThemedTitle collapsed={false} />}
+        {/* {title ?? <ThemedTitle collapsed={false} />} */}
+        {title ?? <ThemedTitleV2 collapsed={true} />}
       </div>
     );
 
@@ -150,7 +152,7 @@ export const LoginPage: React.FC<LoginProps> = ({
     >
       {renderProviders()}
       <Form<LoginFormTypes>
-        layout="vertical"
+        layout="horizontal"
         form={form}
         onFinish={(values) => login(values)}
         requiredMark={false}

@@ -28,12 +28,12 @@ if (token) {
 
   const key = import.meta.env.VITE_JWT_SECRET;
 
-  const decoded: { id: string; iat: number; exp: number } = jwt_decode(
+  const decoded: { user: any; iat: number; exp: number } = jwt_decode(
     token,
     key
   );
 
-  userId = decoded.id;
+  userId = decoded.user.id;
   // console.log("apiUrl: ", apiUrl);
 
   const result = await axios
@@ -52,32 +52,32 @@ if (token) {
     });
 }
 
-export async function InitState() {
-  const dispatch = useDispatch();
-  const result = await axios
-    .get(apiUrl + "/users/" + userId, {})
-    .then((res) => {
-      user.id = res.data.id;
-      user.role = res.data.role.name;
-      user.roleSlug = res.data.role.slug;
-      user.username = res.data.username;
-      user.lastname = res.data.lastname;
-      user.firstname = res.data.firstname;
-      user.avatar = res.data.avatar;
+// export async function InitState() {
+//   const dispatch = useDispatch();
+//   const result = await axios
+//     .get(apiUrl + "/users/" + userId, {})
+//     .then((res) => {
+//       user.id = res.data.id;
+//       user.role = res.data.role.name;
+//       user.roleSlug = res.data.role.slug;
+//       user.username = res.data.username;
+//       user.lastname = res.data.lastname;
+//       user.firstname = res.data.firstname;
+//       user.avatar = res.data.avatar;
 
-      dispatch(update(user));
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  return null;
-}
+//       dispatch(update(user));
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+//   return null;
+// }
 
 export function Connected({ children }) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // console.log("userState: ", userState);
   if (user) {
-    dispatch(update(user));
+    // dispatch(update(user));
     return <>{children}</>;
   }
 

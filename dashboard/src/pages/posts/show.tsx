@@ -11,7 +11,7 @@ export const htmlParseOptions: HTMLReactParserOptions = {
     // @ts-ignore
     if (domNode.data && domNode.data.includes("iframe")) {
       // @ts-ignore
-      console.log(domNode.data);
+      // console.log(domNode.data);
       // create a new iframe element with the string
       // @ts-ignore
       return parse(domNode.data);

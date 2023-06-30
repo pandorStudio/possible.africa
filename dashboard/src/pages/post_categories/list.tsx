@@ -64,7 +64,7 @@ export const PostCategoryList: React.FC<IResourceComponentsProps> = () => {
                 }
               )
               .then((response) => {
-                console.log(response);
+                // console.log(response);
                 setImportLoading(false);
               })
               .catch(function (error) {
@@ -161,7 +161,7 @@ export const PostCategoryList: React.FC<IResourceComponentsProps> = () => {
           });
 
           await Promise.all(results);
-          console.log(results);
+          // console.log(results);
           invalidate({
             resource: "post_categories",
             invalidates: ["list"],

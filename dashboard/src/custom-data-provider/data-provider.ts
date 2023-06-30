@@ -4,9 +4,8 @@ import {
   DataProvider,
   HttpError,
 } from "@refinedev/core";
-// import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosInstance } from "axios";
 import { stringify } from "query-string";
-import {AxiosInstance} from "axios";
 
 export const TOKEN_KEY = "refine-auth";
 // Error handling ...
@@ -28,23 +27,7 @@ export const TOKEN_KEY = "refine-auth";
 //   }
 // );
 
-// axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
-//   // Retrive the token from Local Storage
-//   const token = JSON.parse(localStorage.getItem("auth")!);
 
-//   // Check if the header property exists
-//   if (request.headers) {
-//     // Set the Authorization header if exists ...
-//     request.headers["Authorization"] = `Bearer ${token}`;
-//   } else {
-//     // Create the header property if it doesn't exist
-//     request.headers = {
-//       Authorization: `Bearer ${token}`,
-//     };
-//   }
-
-//   return request;
-// });
 const mapOperator = (operator: CrudOperators): string => {
   switch (operator) {
     case "ne":
@@ -75,11 +58,45 @@ const generateFilters = (filters?: CrudFilters) => {
   return queryFilters;
 };
 
-const token = localStorage.getItem(TOKEN_KEY);
+// const token = localStorage.getItem(TOKEN_KEY);
+// console
+
+// if (token) {
+//   const axiosInstance: AxiosInstance = axios.create({
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//       "Access-Control-Allow-Origin": "*",
+//     },
+//   });
+// } else {
+  const axiosInstance: AxiosInstance = axios.create({
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+// }
+
+axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
+  // Retrive the token from Local Storage
+  const token = localStorage.getItem(TOKEN_KEY);
+  // console.log(token);
+
+  // Check if the header property exists
+  if (request.headers) {
+    // Set the Authorization header if exists ...
+    request.headers["Authorization"] = `Bearer ${token}`;
+  } else {
+    // Create the header property if it doesn't exist
+    request.headers = {
+      Authorization: `Bearer ${token}`,
+    };
+  }
+
+  return request;
+});
 
 export const dataProvider = (
   apiUrl: string,
-  axiosInstance: AxiosInstance
 ): DataProvider => ({
   // Implement methods
 
@@ -105,10 +122,10 @@ export const dataProvider = (
     }
 
     const queryFilters = generateFilters(filters);
-    axiosInstance.defaults.headers.common = {
-      Authorization: `Bearer ${token}`,
-      "Access-Control-Allow-Origin": "*",
-    };
+    // axiosInstance.defaults.headers.common = {
+    //   // Authorization: `Bearer ${token}`,
+    //   "Access-Control-Allow-Origin": "*",
+    // };
 
     const { data, headers } = await axiosInstance.get(
       `${url}?${stringify(query)}&${stringify(queryFilters)}`

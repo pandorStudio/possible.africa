@@ -84,7 +84,7 @@ import {
   GroupOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import CustomIconJob from "./components/CustomComponents/Icons/CustomIconJob";
+import CustomIconJob from "./custom-components/Icons/CustomIconJob";
 import { ThemedTitleV2 } from "./components/themedLayout/title";
 import { ThemedSiderV2 } from "./components/themedLayout/sider";
 
@@ -95,10 +95,10 @@ export const API_URL =
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
 import { AntdInferencer } from "@refinedev/inferencer/antd";
-import CustomIconArticle from "./components/CustomComponents/Icons/CustomIconArticle";
-import CustomIconOrganisation from "./components/CustomComponents/Icons/CustomIconOrganisation";
-import CustomIconEvent from "./components/CustomComponents/Icons/CustomIconEvent";
-import CustomIconOpportunity from "./components/CustomComponents/Icons/CustomIconOpportunity";
+import CustomIconArticle from "./custom-components/Icons/CustomIconArticle";
+import CustomIconOrganisation from "./custom-components/Icons/CustomIconOrganisation";
+import CustomIconEvent from "./custom-components/Icons/CustomIconEvent";
+import CustomIconOpportunity from "./custom-components/Icons/CustomIconOpportunity";
 import { UserRoleCreate } from "./pages/user roles/create";
 import { UserRoleEdit } from "./pages/user roles/edit";
 import { UserRoleList } from "./pages/user roles/list";
@@ -107,12 +107,11 @@ import { newEnforcer } from "casbin";
 import { model, adapter } from "./accessControl";
 import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
-import {
-  AdminOrContributor,
-  InitState,
-} from "./custom-components/AccessControl";
-import { useSelector } from "react-redux";
+import { AdminOrContributor } from "./custom-components/AccessControl";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
+import { update } from "./features/user/userSlice";
+import { UserFromDb } from "./types/UserFromDb";
 
 function Logo() {
   return <img src="./assets/logos/logo.png" alt="n" />;
@@ -121,16 +120,101 @@ function Logo() {
 function App() {
   const { t, i18n } = useTranslation();
   const userState = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
   const [resource, setResource] = useState([]);
   const onDev = "http://localhost:5000";
+  const [userConnected, setUserConnected] = useState<UserFromDb>({
+    id: "",
+    _id: "",
+    username: "",
+    avatar: "",
+    email: "",
+    firstname: "",
+    lastname: "",
+    role: {
+      id: "",
+      _id: "",
+      name: "",
+      slug: "",
+    },
+    gender: "",
+    createdAt: "",
+  });
+  const [token, setToken] = useState<string>(
+    localStorage.getItem("refine-auth")
+  );
+  // let userConnected: UserFromDb;
   const i18nProvider = {
     translate: (key: string, params: object) => t(key, params),
     changeLocale: (lang: string) => i18n.changeLanguage(lang),
     getLocale: () => i18n.language,
   };
+
+  // get token from local storage
+  // if (token) {
+  //   setInterval(() => {
+  //     token = localStorage.getItem("refine-auth");
+  //     if (!token) {
+  //       window.location.reload();
+  //     }
+  //     console.log("again");
+  //   }, 500);
+  // }
+
   useEffect(() => {
-    // console.log("userState", userState);
-  }, [userState]);
+    // const interval = setInterval(() => {
+    //   if (token) {
+    //     if (token !== localStorage.getItem("refine-auth")) {
+    //       window.location.reload();
+    //     }
+    //   } else {
+    //     setUserConnected({
+    //       id: "",
+    //       _id: "",
+    //       username: "",
+    //       avatar: "",
+    //       email: "",
+    //       firstname: "",
+    //       lastname: "",
+    //       role: {
+    //         id: "",
+    //         _id: "",
+    //         name: "",
+    //         slug: "",
+    //       },
+    //       gender: "",
+    //       createdAt: "",
+    //     });
+    //   }
+    // }, 500);
+
+    if (token) {
+      if (token !== localStorage.getItem("refine-auth")) {
+        window.location.reload();
+      }
+      const key = import.meta.env.VITE_JWT_SECRET;
+      const decoded: { user: any; iat: number; exp: number } = jwt_decode(
+        token,
+        key
+      );
+      dispatch(
+        update({
+          id: decoded.user.id,
+          role: decoded.user.role.name,
+          roleSlug: decoded.user.role.slug,
+          username: decoded.user.username,
+          lastname: decoded.user.lastname,
+          firstname: decoded.user.firstname,
+          avatar: decoded.user.avatar,
+        })
+      );
+      setUserConnected({ ...decoded.user });
+    }
+    // console.log("user", userConnected);
+    // console.log("token", token);
+
+    // return () => clearInterval(interval);
+  }, [token]);
 
   const adminOrContributorsRessources = [
     {
@@ -446,16 +530,16 @@ function App() {
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
-            dataProvider={dataProvider(API_URL, axiosInstance)}
+            dataProvider={dataProvider(API_URL)}
             notificationProvider={notificationProvider}
             routerProvider={routerBindings}
             authProvider={authProvider}
             i18nProvider={i18nProvider}
             resources={
               // @ts-ignore
-              userState.roleSlug === "admin" ||
+              userConnected.role.slug === "admin" ||
               // @ts-ignore
-              userState.roleSlug === "contributor"
+              userConnected.role.slug === "contributor"
                 ? adminOrContributorsRessources
                 : userRessources
             }
@@ -483,7 +567,7 @@ function App() {
                 }
               >
                 {/* @ts-ignore */}
-                {userState.roleSlug === "admin" ? (
+                {userConnected.role.slug === "admin" ? (
                   <>
                     <Route
                       index
@@ -568,7 +652,7 @@ function App() {
                     </Route>
                   </>
                 ) : // @ts-ignore
-                userState.roleSlug === "contributor" ? (
+                userConnected.role.slug === "contributor" ? (
                   <>
                     <Route
                       index

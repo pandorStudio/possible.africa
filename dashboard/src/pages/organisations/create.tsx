@@ -88,7 +88,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
       values.logo = imageUrl;
     }
     if (values.telephone) {
-      console.log(values.telephone);
+      // console.log(values.telephone);
       values.telephone = {
         indicatif: indicatif,
         number: realPhoneNumber,
@@ -100,7 +100,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     if (!values?.type?._id) {
       values.type = null;
     }
-    console.log(values);
+    // console.log(values);
 
     onFinish(values);
   }
@@ -137,7 +137,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     }
     if (formattedNumber.slice(-1) === " ")
       formattedNumber = formattedNumber.slice(0, formattedNumber.length - 1);
-    console.log(formattedNumber);
+    // console.log(formattedNumber);
     setPhoneNumber(formattedNumber);
   };
 

@@ -32,6 +32,7 @@ import {
   Divider,
   theme,
 } from "antd";
+import { ThemedTitleV2 } from "../../../themedLayout/title";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -75,7 +76,8 @@ export const RegisterPage: React.FC<RegisterProps> = ({
           fontSize: "20px",
         }}
       >
-        {title ?? <ThemedTitle collapsed={false} />}
+        {/* {title ?? <ThemedTitle collapsed={false} />} */}
+        {<ThemedTitleV2 collapsed={true} />}
       </div>
     );
 

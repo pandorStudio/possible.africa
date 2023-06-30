@@ -1,0 +1,145 @@
+{
+  "pages": {
+    "login": {
+      "title": "Connectez-vous à votre compte",
+      "signin": "S'identifier",
+      "signup": "S'inscrire",
+      "divider": "ou",
+      "fields": {
+        "email": "Email",
+        "password": "Mot de passe"
+      },
+      "errors": {
+        "validEmail": "Adresse e-mail invalide"
+      },
+      "buttons": {
+        "submit": "Connexion",
+        "forgotPassword": "Mot de passe oublié?",
+        "noAccount": "Vous n'avez pas de compte ?",
+        "rememberMe": "Souviens-toi de moi"
+      }
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié?",
+      "fields": {
+        "email": "E-mail"
+      },
+      "errors": {
+        "validEmail": "Adresse e-mail invalide"
+      },
+      "buttons": {
+        "submit": "Envoyer des instructions de réinitialisation"
+      }
+    },
+    "register": {
+      "title": "Inscrivez-vous à votre compte",
+      "fields": {
+        "email": "E-mail",
+        "password": "Mot de passe"
+      },
+      "errors": {
+        "validEmail": "Adresse e-mail invalide"
+      },
+      "buttons": {
+        "submit": "Enregistrer",
+        "haveAccount": "Avoir un compte?"
+      }
+    },
+    "updatePassword": {
+      "title": "Mettre à jour le mot de passe",
+      "fields": {
+        "password": "nouveau mot de passe",
+        "confirmPassword": "Confirmer le nouveau mot de passe"
+      },
+      "errors": {
+        "confirmPasswordNotMatch": "Les mots de passe ne correspondent pas"
+      },
+      "buttons": {
+        "submit": "Mise à jour"
+      }
+    },
+    "error": {
+      "info": "Vous avez peut-être oublié d'ajouter le {{action}} composant de {{resource}} Ressource.",
+      "404": "Désolé, la page que vous avez visitée n'existe pas.",
+      "resource404": "Êtes-vous sûr d'avoir créé le {{resource}} Ressource.",
+      "backHome": "Retour à la maison"
+    }
+  },
+  "actions": {
+    "list": "Liste",
+    "create": "Créer",
+    "edit": "Modifier",
+    "show": "Montrer"
+  },
+  "buttons": {
+    "create": "Créer",
+    "save": "Sauvegarder",
+    "logout": "Se déconnecter",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "cancel": "Annuler",
+    "confirm": "Es-tu sûr?",
+    "filter": "Filtre",
+    "clear": "Claire",
+    "refresh": "Rafraîchir",
+    "show": "Montrer",
+    "undo": "annuler",
+    "import": "Importer",
+    "clone": "Cloner",
+    "notAccessTitle": "Vous n'avez pas la permission d'accès"
+  },
+  "warnWhenUnsavedChanges": "Êtes-vous sûr de vouloir quitter?Vous avez des changements non enregistrés.",
+  "notifications": {
+    "success": "Réussie",
+    "error": "Erreur (code d'état: {{statusCode}})",
+    "undoable": "Tu as {{seconds}} quelques secondes à annuler",
+    "createSuccess": "Créé avec succès {{resource}}",
+    "createError": "Il y a eu une erreur de création {{resource}} (code d'état: {{statusCode}})",
+    "deleteSuccess": "Supprimé avec succès {{resource}}",
+    "deleteError": "Erreur lors de la suppression {{resource}} (code d'état: {{statusCode}})",
+    "editSuccess": "Édité avec succès {{resource}}",
+    "editError": "Erreur lors de l'édition {{resource}} (code d'état: {{statusCode}})",
+    "importProgress": "Importation: {{processed}}/{{total}}"
+  },
+  "loading": "Chargement",
+  "tags": {
+    "clone": "Cloner"
+  },
+  "dashboard": {
+    "title": "Tableau de bord"
+  },
+  "blog_posts": {
+    "blog_posts": "Articles de blog",
+    "fields": {
+      "id": "Id",
+      "title": "Titre",
+      "content": "Contenu",
+      "status": "Statut",
+      "category": "Catégorie",
+      "createdAt": "Créé à"
+    },
+    "titles": {
+      "create": "Créer un article de blog",
+      "edit": "Éditer un article de blog",
+      "list": "Articles de blog",
+      "show": "Afficher un article de blog"
+    }
+  },
+  "categories": {
+    "categories": "Catégories",
+    "fields": {
+      "id": "Id",
+      "title": "Titre",
+      "createdAt": "Créé à"
+    },
+    "titles": {
+      "create": "Créer une catégorie",
+      "edit": "Modifier la catégorie",
+      "list": "Catégories",
+      "show": "Catégorie de spectacle"
+    }
+  },
+  "table": {
+    "actions": "actions"
+  }
+}
