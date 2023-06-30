@@ -73,7 +73,7 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
                 }
               )
               .then((response) => {
-                console.log(response);
+                // console.log(response);
                 setImportLoading(false);
               })
               .catch(function (error) {
@@ -83,13 +83,13 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
         });
       },
     });
-    console.log(body);
+    // console.log(body);
     let results = body.forEach(async (el) => {
-      console.log(el);
+      // console.log(el);
       //await axios.put("http://localhost:5000", el);
     });
 
-    console.log(results);
+    // console.log(results);
   }
 
   const [messageApi, contextHolder] = message.useMessage();
@@ -177,7 +177,7 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
           });
 
           await Promise.all(results);
-          console.log(results);
+          // console.log(results);
           invalidate({
             resource: "jobs",
             invalidates: ["list"],

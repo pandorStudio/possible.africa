@@ -52,7 +52,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           <Avatar size={16} src={`/images/flags/${lang}.svg`} />
         </span>
       ),
-      label: lang === "en" ? "English" : "German",
+      label: lang === "fr" ? "Français" : lang === "en" ? "English" : "Deutsch",
     }));
 
   const headerStyles: React.CSSProperties = {
@@ -82,7 +82,11 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           <Button type="text">
             <Space>
               <Avatar size={16} src={`/images/flags/${currentLocale}.svg`} />
-              {currentLocale === "en" ? "English" : "German"}
+              {currentLocale === "fr"
+                ? "Français"
+                : currentLocale === "en"
+                ? "English"
+                : "Deutsch"}
               <DownOutlined />
             </Space>
           </Button>
@@ -94,7 +98,11 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           defaultChecked={mode === "light"}
         />
         <Space style={{ marginLeft: "8px" }} size="middle">
-          {user?.lastname && <Text strong>{user.lastname} {user.firstname}</Text>}
+          {user?.lastname && (
+            <Text strong>
+              {user.lastname} {user.firstname}
+            </Text>
+          )}
           {user?.avatar && <Avatar src={user?.avatar} alt={user?.name} />}
         </Space>
       </Space>

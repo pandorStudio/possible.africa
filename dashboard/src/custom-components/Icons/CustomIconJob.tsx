@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ColorModeContext } from "../../../contexts/color-mode";
+import { ColorModeContext } from "../../contexts/color-mode";
 
 export default function CustomIconJob() {
   const { mode, setMode } = useContext(ColorModeContext);

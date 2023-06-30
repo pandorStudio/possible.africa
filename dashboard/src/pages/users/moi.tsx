@@ -16,7 +16,7 @@ export const MoiList: React.FC<IResourceComponentsProps> = () => {
     const record = data?.data;
 
     useEffect(() => {
-        console.log(record);
+        // console.log(record);
     }, [record]);
 
     return (

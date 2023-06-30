@@ -80,12 +80,12 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
   useEffect(() => {
     // console.log(user);
     if (user) {
-      console.log(user);
+      // console.log(user);
       // Get all other user informations
       axiosInstance
         .get(apiUrl + "/users/" + user.id)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           setUserConnected(response.data);
         })
         .catch(function (error) {

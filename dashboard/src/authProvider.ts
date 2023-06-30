@@ -8,7 +8,14 @@ const API_URL =
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
 
-export const axiosInstance = axios.create();
+export const axiosInstance = axios.create(
+  {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+
+    },
+  }
+);
 
 export const TOKEN_KEY = "refine-auth";
 
@@ -20,7 +27,7 @@ export const authProvider: AuthBindings = {
       email,
       password,
     });
-    console.log(status, token);
+    // console.log(status, token);
     if ((username || email) && password && status) {
       localStorage.setItem(TOKEN_KEY, token);
       // if ((username || email) && password) {
@@ -112,21 +119,21 @@ export const authProvider: AuthBindings = {
 
     if (token) {
       const key = import.meta.env.VITE_JWT_SECRET;
-      const decoded: { id: string; iat: number; exp: number } = jwt_decode(
+      const decoded: { user: any; iat: number; exp: number } = jwt_decode(
         token,
         key                                               
       );
       const { data } = await axiosInstance.get(
-        `${API_URL}/users/${decoded.id}`
+        `${API_URL}/users/${decoded.user.id}`
       );
       return {
-        id: data.id,
-        role: data.role.name,
-        roleSlug: data.role.slug,
-        username: data.username,
-        lastname: data.lastname || "",
-        firstname: data.firstname || "",
-        avatar: data.avatar,
+        id: decoded.user.id,
+        role: decoded.user.role.name,
+        roleSlug: decoded.user.role.slug,
+        username: decoded.user.username,
+        lastname: decoded.user.lastname || "",
+        firstname: decoded.user.firstname || "",
+        avatar: decoded.user.avatar,
       };
     }
     return null;

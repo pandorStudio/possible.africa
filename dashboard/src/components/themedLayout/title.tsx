@@ -62,14 +62,14 @@ export const ThemedTitleV2: React.FC<RefineLayoutThemedTitleProps> = ({
         <div
           style={{
             height: "60px",
-            width: "24px",
+            width: "100%",
             color: token.colorPrimary,
           }}
         >
           {icon}
         </div>
 
-        {!collapsed && (
+        {/* {!collapsed && (
           <Typography.Title
             style={{
               fontSize: "inherit",
@@ -79,7 +79,7 @@ export const ThemedTitleV2: React.FC<RefineLayoutThemedTitleProps> = ({
           >
             {text}
           </Typography.Title>
-        )}
+        )} */}
       </Space>
     </ActiveLink>
   );

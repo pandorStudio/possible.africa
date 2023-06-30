@@ -91,7 +91,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             const content = await processContent(el[3]);
             const imageBase64 = await downloadMedia(el[9]);
             const image = await imageUploadHandler(imageBase64.data.dataUrl);
-            console.log(image);
+            // console.log(image);
             const ob: any = {
               title: el[1],
               content: el[3],
@@ -118,7 +118,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 }
               )
               .then((response) => {
-                console.log(response);
+                // console.log(response);
                 setImportLoading(false);
               })
               .catch(function (error) {
@@ -215,7 +215,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
           });
 
           await Promise.all(results);
-          console.log(results);
+          // console.log(results);
           invalidate({
             resource: "posts",
             invalidates: ["list"],

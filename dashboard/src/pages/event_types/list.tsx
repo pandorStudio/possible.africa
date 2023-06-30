@@ -67,7 +67,7 @@ export const EventTypeList: React.FC<IResourceComponentsProps> = () => {
                 }
               )
               .then((response) => {
-                console.log(response);
+                // console.log(response);
                 setImportLoading(false);
               })
               .catch(function (error) {
@@ -164,7 +164,7 @@ export const EventTypeList: React.FC<IResourceComponentsProps> = () => {
           });
 
           await Promise.all(results);
-          console.log(results);
+          // console.log(results);
           invalidate({
             resource: "event_types",
             invalidates: ["list"],

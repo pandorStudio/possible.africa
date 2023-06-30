@@ -23,7 +23,7 @@ export const AppIcon: React.FC<{ page?: string }> = ({ page }) => {
               style={{
                 position: "absolute",
                 top: 0,
-                left: -35,
+                left: 0,
               }}
               loading="lazy"
             ></img>

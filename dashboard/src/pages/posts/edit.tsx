@@ -113,13 +113,13 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
       if (!values?.image?._id) {
         values.image = null;
       }
-      console.log(values);
+      // console.log(values);
 
       onFinish(values);
     }
 
   function handleImgSubmit(event: any) {
-    console.log(event);
+    // console.log(event);
     event.preventDefault();
   }
 
@@ -210,7 +210,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
               };
             }}
             getValueFromEvent={(...args: any) => {
-              console.log(args);
+              // console.log(args);
             }}
             noStyle
           >
