@@ -25,12 +25,10 @@ export const OrganisationTypeShow: React.FC<IResourceComponentsProps> = () => {
         ),
       }}
     >
-      <Title level={5}>Name</Title>
+      <Title level={5}>Nom</Title>
       <TextField value={record?.name} />
       <Title level={5}>Slug</Title>
       <TextField value={record?.slug} />
-      <Title level={5}>Id</Title>
-      <TextField value={record?.id} />
     </Show>
   );
 };

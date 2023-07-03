@@ -1,6 +1,6 @@
 import { DownOutlined } from "@ant-design/icons";
 import type { RefineThemedLayoutV2HeaderProps } from "@refinedev/antd";
-import { useGetIdentity, useGetLocale, useSetLocale } from "@refinedev/core";
+import { useGetIdentity, useGetLocale, useLink, useRouterContext, useRouterType, useSetLocale } from "@refinedev/core";
 import {
   Layout as AntdLayout,
   Avatar,
@@ -39,6 +39,10 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const changeLanguage = useSetLocale();
   const { data: user } = useGetIdentity<IUser>();
   const { mode, setMode } = useContext(ColorModeContext);
+  const routerType = useRouterType();
+  const NewLink = useLink();
+  const { Link: LegacyLink } = useRouterContext();
+  const Link = routerType === "legacy" ? LegacyLink : NewLink;
 
   const currentLocale = locale();
 
@@ -99,11 +103,17 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
         />
         <Space style={{ marginLeft: "8px" }} size="middle">
           {user?.lastname && (
-            <Text strong>
-              {user.lastname} {user.firstname}
-            </Text>
+            <Link to="profil">
+              <Text strong>
+                {user.lastname} {user.firstname}
+              </Text>
+            </Link>
           )}
-          {user?.avatar && <Avatar src={user?.avatar} alt={user?.name} />}
+          {user?.avatar && (
+            <Link to="profil">
+              <Avatar src={user?.avatar} alt={user?.name} />
+            </Link>
+          )}
         </Space>
       </Space>
     </AntdLayout.Header>

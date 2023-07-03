@@ -252,7 +252,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
         {modalContextHolder}
         {/* Build the me section */}
 
-        {userConnected ? (
+        {/* {userConnected ? (
           <Row
             gutter={[16, 16]}
             style={{
@@ -564,7 +564,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
               </Text>
             </Space>
           </Col>
-        )}
+        )} */}
 
         <Admin>
           <List
