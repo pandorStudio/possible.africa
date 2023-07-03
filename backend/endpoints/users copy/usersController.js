@@ -1,5 +1,5 @@
 const CustomUtils = require("../../utils/index.js");
-const User = require("./userModel");
+const User = require("./userModel.js");
 const bcrypt = require("bcryptjs");
 
 // @Get me
@@ -8,11 +8,8 @@ const bcrypt = require("bcryptjs");
 exports.getMe = async (req, res) => {
   try {
     console.log(req.user);
-    const user = await User.find({_id: req.user._id});
-    if (!user)
-      return res
-        .status(404)
-        .json({ message: `User not found !` });
+    const user = await User.find({ _id: req.user._id });
+    if (!user) return res.status(404).json({ message: `User not found !` });
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -23,8 +20,8 @@ exports.getMe = async (req, res) => {
 // @route GET /api/v1/users
 // @access Public
 exports.getAllUsers = async (req, res) => {
-    const { limit, page, sort, fields } = req.query;
-    const queryObj = CustomUtils.advancedQuery(req.query);
+  const { limit, page, sort, fields } = req.query;
+  const queryObj = CustomUtils.advancedQuery(req.query);
   try {
     const users = await User.find(queryObj)
       .limit(limit * 1)
@@ -62,7 +59,7 @@ exports.createUser = async (req, res) => {
     if (bodyWR.role) {
       delete bodyWR.role;
     }
-      const slug =
+    const slug =
       CustomUtils.slugify(bodyWR.title) + "-" + CustomUtils.getRandomNbr();
     bodyWR.slug = slug;
     const newUser = await User.create(bodyWR);

@@ -2,8 +2,8 @@ const User = require("../users/userModel");
 const jwt = require("jsonwebtoken");
 const CustomUtils = require("../../utils/index.js");
 
-function signToken(id) {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+function signToken(user) {
+  return jwt.sign({user}, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 }
@@ -27,7 +27,7 @@ exports.signup = async (req, res, next) => {
     bodyWR.slug = slug;
     const newUser = await User.create(bodyWR);
     await User.findByIdAndUpdate(newUser._id, { password: req.body.password });
-    const token = signToken(newUser._id);
+    const token = signToken(newUser);
 
     res.status(201).json({
       status: "success",
@@ -55,7 +55,7 @@ exports.signin = async (req, res, next) => {
       return res.status(401).json({ message: CustomUtils.consts.UNAUTHORIZED });
     } else {
       // If everything ok, send token to client
-      token = signToken(user._id);
+      token = signToken(user);
     }
 
     res.status(200).json({ status: "success", token });
@@ -73,7 +73,7 @@ exports.protect = async (req, res, next) => {
       req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
-      console.log("token found", token);
+      // console.log("token found", token);
     }
 
     // console.log("token found", token);
@@ -90,7 +90,7 @@ exports.protect = async (req, res, next) => {
     // console.log(decoded);
 
     // 3) Check if user still exists
-    const currentUser = await User.findById(decoded.id);
+    const currentUser = await User.findById(decoded.user.id);
     if (!currentUser) {
       /*return res.status(401).json({
         message: CustomUtils.consts.UNAUTHORIZED,
@@ -100,7 +100,7 @@ exports.protect = async (req, res, next) => {
 
     // GRANT ACCESS TO PROTECTED ROUTE
     req.user = currentUser;
-    console.log("token found", currentUser);
+    // console.log("token found", currentUser);
     next();
   } catch (error) {
     res.status(500).json({ message: error.message });

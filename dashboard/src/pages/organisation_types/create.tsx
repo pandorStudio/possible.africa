@@ -12,7 +12,7 @@ export const OrganisationTypeCreate: React.FC<
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label="Name"
+          label="Nom"
           name={["name"]}
           rules={[
             {

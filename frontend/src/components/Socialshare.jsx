@@ -24,7 +24,7 @@ function Socialshare(title, content) {
     const handleCopyLink = () => {
       navigator.clipboard.writeText(postUrl)
         .then(() => {
-          console.log('Link copied to clipboard!');
+          // console.log('Link copied to clipboard!');
           setShowTooltip(true);
           setTimeout(() => {
             setShowTooltip(false);

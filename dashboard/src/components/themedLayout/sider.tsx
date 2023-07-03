@@ -91,6 +91,10 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
         options,
       } = item;
 
+      if (item.meta?.hided) {
+        return null;
+      }
+
       if (children.length > 0) {
         return (
             <CanAccess

@@ -112,6 +112,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
 import { update } from "./features/user/userSlice";
 import { UserFromDb } from "./types/UserFromDb";
+import { Profil } from "./pages/me/list";
+import { ProfilEdit } from "./pages/me/edit";
+import { OrganisationTypeShow } from "./pages/organisation_types/show";
+import { OrganisationTypeEdit } from "./pages/organisation_types/edit";
+import { OrganisationTypeCreate } from "./pages/organisation_types/create";
 
 function Logo() {
   return <img src="./assets/logos/logo.png" alt="n" />;
@@ -382,6 +387,18 @@ function App() {
         parent: "Utilisateurs",
       },
     },
+    {
+      name: "profil",
+      list: "/profil",
+      edit: "profil/edit/:id",
+      // show: "/users/show/:id",
+      // create: "/users/create",
+      meta: {
+        label: "Profil",
+        hided: true,
+        // parent: "Utilisateurs",
+      },
+    },
   ];
 
   // userRessources is adminRessources without the create and edit routes
@@ -513,14 +530,15 @@ function App() {
     //   },
     // },
     {
-      name: "users",
-      list: "/users",
-      show: "/users/show/:id",
-      create: "/users/create",
-      edit: "/users/edit/:id",
+      name: "profil",
+      list: "/profil",
+      edit: "profil/edit/:id",
+      // show: "/users/show/:id",
+      // create: "/users/create",
       meta: {
         label: "Profil",
-        icon: <UserOutlined />,
+        hided: true,
+        // parent: "Utilisateurs",
       },
     },
   ];
@@ -576,9 +594,18 @@ function App() {
 
                     <Route path="organisation_types">
                       <Route index element={<OrganisationTypeList />} />
-                      <Route path="show/:id" element={<AntdInferencer />} />
-                      <Route path="edit/:id" element={<AntdInferencer />} />
-                      <Route path="create" element={<AntdInferencer />} />
+                      <Route
+                        path="show/:id"
+                        element={<OrganisationTypeShow />}
+                      />
+                      <Route
+                        path="edit/:id"
+                        element={<OrganisationTypeEdit />}
+                      />
+                      <Route
+                        path="create"
+                        element={<OrganisationTypeCreate />}
+                      />
                     </Route>
                     <Route path="organisations">
                       <Route index element={<OrganisationList />} />
@@ -649,6 +676,12 @@ function App() {
                       <Route path="show/:id" element={<UserShow />} />
                       <Route path="edit/:id" element={<UserEdit />} />
                       <Route path="create" element={<UserCreate />} />
+                    </Route>
+                    <Route path="profil">
+                      <Route index element={<Profil />} />
+                      <Route path="edit/:id" element={<ProfilEdit />} />
+                      {/* <Route path="show/:id" element={<UserShow />} /> */}
+                      {/* <Route path="create" element={<UserCreate />} /> */}
                     </Route>
                   </>
                 ) : // @ts-ignore
@@ -658,12 +691,20 @@ function App() {
                       index
                       element={<NavigateToResource resource="organisations" />}
                     />
-
                     <Route path="organisation_types">
                       <Route index element={<OrganisationTypeList />} />
-                      <Route path="show/:id" element={<AntdInferencer />} />
-                      <Route path="edit/:id" element={<AntdInferencer />} />
-                      <Route path="create" element={<AntdInferencer />} />
+                      <Route
+                        path="show/:id"
+                        element={<OrganisationTypeShow />}
+                      />
+                      <Route
+                        path="edit/:id"
+                        element={<OrganisationTypeEdit />}
+                      />
+                      <Route
+                        path="create"
+                        element={<OrganisationTypeCreate />}
+                      />
                     </Route>
                     <Route path="organisations">
                       <Route index element={<OrganisationList />} />
@@ -734,6 +775,12 @@ function App() {
                       <Route path="show/:id" element={<UserShow />} />
                       <Route path="edit/:id" element={<UserEdit />} />
                       <Route path="create" element={<UserCreate />} />
+                    </Route>
+                    <Route path="profil">
+                      <Route index element={<Profil />} />
+                      <Route path="edit/:id" element={<ProfilEdit />} />
+                      {/* <Route path="show/:id" element={<UserShow />} /> */}
+                      {/* <Route path="create" element={<UserCreate />} /> */}
                     </Route>
                   </>
                 ) : (
@@ -745,7 +792,10 @@ function App() {
 
                     <Route path="organisation_types">
                       <Route index element={<OrganisationTypeList />} />
-                      <Route path="show/:id" element={<AntdInferencer />} />
+                      <Route
+                        path="show/:id"
+                        element={<OrganisationTypeShow />}
+                      />
                     </Route>
                     <Route path="organisations">
                       <Route index element={<OrganisationList />} />
@@ -783,9 +833,11 @@ function App() {
                       <Route index element={<PostList />} />
                       <Route path="show/:id" element={<PostShow />} />
                     </Route>
-                    <Route path="users">
-                      <Route index element={<UserList />} />
-                      <Route path="show/:id" element={<UserShow />} />
+                    <Route path="profil">
+                      <Route index element={<Profil />} />
+                      <Route path="edit/:id" element={<ProfilEdit />} />
+                      {/* <Route path="show/:id" element={<UserShow />} /> */}
+                      {/* <Route path="create" element={<UserCreate />} /> */}
                     </Route>
                   </>
                 )}

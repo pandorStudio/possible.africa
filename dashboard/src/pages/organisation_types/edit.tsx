@@ -12,7 +12,7 @@ export const OrganisationTypeEdit: React.FC<IResourceComponentsProps> = () => {
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label="Name"
+          label="Nom"
           name={["name"]}
           rules={[
             {
@@ -24,9 +24,6 @@ export const OrganisationTypeEdit: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item label="Slug" name={["slug"]}>
           <Input />
-        </Form.Item>
-        <Form.Item label="Id" name={["id"]}>
-          <Input readOnly disabled />
         </Form.Item>
       </Form>
     </Edit>

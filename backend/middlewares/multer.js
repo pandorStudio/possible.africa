@@ -21,7 +21,7 @@ const ImagefileFilter = (req, file, cb) => {
     cb(null, true);
   } else {
     cb(null, false);
-    console.log("wrong file type");
+    // console.log("wrong file type");
   }
 };
 
@@ -40,7 +40,7 @@ const VideofileFilter = (req, file, cb) => {
     cb(null, true);
   } else {
     cb(null, false);
-    console.log("wrong file type");
+    // console.log("wrong file type");
   }
 };
 
