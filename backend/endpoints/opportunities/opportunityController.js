@@ -1,4 +1,4 @@
-const Opportunity = require("./opportunintyModel");
+const Opportunity = require("./opportunityModel");
 const CustomUtils = require("../../utils/index.js");
 
 // @Get all opportunities
@@ -34,7 +34,7 @@ exports.getOpportunityById = async (req, res) => {
 // @route POST /api/v1/opportunities
 // @access Public
 exports.createOpportunity = async (req, res) => {
-    const CustomBody = { ...req.body };
+  const CustomBody = { ...req.body };
   const slug =
     CustomUtils.slugify(CustomBody.title) + "-" + CustomUtils.getRandomNbr();
   try {

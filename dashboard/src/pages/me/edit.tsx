@@ -5,13 +5,14 @@ import {
   useApiUrl,
 } from "@refinedev/core";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select } from "antd";
+import { Form, Input, Select, Space, Typography } from "antd";
 // import dayjs from "dayjs";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { imageUploadHandler } from "../posts/create";
+import { axiosInstance } from "../../authProvider";
 
 const { Option } = Select;
 
@@ -27,7 +28,12 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
   const [imageUrlFromDb, setImageUrlFromDb] = useState<string>();
   const [imageUrl, setImageUrl] = useState<string>(data?.avatar);
   const usersData = queryResult?.data?.data;
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [realPhoneNumber, setRealPhoneNumber] = React.useState("");
+  const [indicatif, setIndicatif] = React.useState();
+  const [countries, setCountries] = useState([]);
 
+  const { Text } = Typography;
   const { selectProps: roleSelectProps } = useSelect({
     resource: "user_roles",
     optionValue: "_id",
@@ -72,8 +78,40 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
     if (data?.avatar) {
       setImageUrlFromDb(data.avatar);
     }
+    if (data?.phone) { 
+      setIndicatif(data?.phone?.indicatif);
+      setPhoneNumber(data?.phone?.number);
+    }
+    if (!countries.length) {
+      // Get all countries from api
+      axiosInstance.get(`https://restcountries.com/v3.1/all`).then((res) => {
+        const countrieDatas = res.data;
+
+        let countrieDatasFiltered = [];
+
+        for (let i = 0; i < countrieDatas.length; i++) {
+          const countrieData = countrieDatas[i];
+          if (countrieData.idd.root || countrieData.idd.suffixes) {
+            countrieData.idd.suffixes.map((suffix) => {
+              countrieDatasFiltered.push({
+                ...countrieData,
+                idd: { root: `${countrieData.idd.root}${suffix}` },
+              });
+            });
+            // countrieDatasFiltered.push(countrieData);
+          }
+          continue;
+        }
+
+        // Filter countries by alphabetic order
+        countrieDatasFiltered.sort((a: any, b: any) =>
+          a.name.common > b.name.common ? 1 : -1
+        );
+        setCountries(countrieDatasFiltered);
+      });
+    }
     // console.log(saveButtonProps);
-  }, [imageUrl, data]);
+  }, [imageUrl, data, countries]);
 
   const apiUrl = useApiUrl();
 
@@ -83,8 +121,30 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
     } else {
       values.avatar = "";
     }
+    if (values.phone) {
+      // console.log(values.telephone);
+      values.phone = {
+        indicatif: indicatif,
+        number: realPhoneNumber,
+      };
+    }
     onFinish(values);
   }
+
+  const handlePhoneNumberChange = (event) => {
+    const { value } = event.target;
+    let formattedNumber = value.replace(/\D/g, "");
+    setRealPhoneNumber(formattedNumber);
+    if (formattedNumber.length % 2 === 0) {
+      formattedNumber = formattedNumber.replace(/(\d{2})/g, "$1 ");
+    } else {
+      formattedNumber = formattedNumber.replace(/(\d{3})/g, "$1 ");
+    }
+    if (formattedNumber.slice(-1) === " ")
+      formattedNumber = formattedNumber.slice(0, formattedNumber.length - 1);
+    // console.log(formattedNumber);
+    setPhoneNumber(formattedNumber);
+  };
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
@@ -149,7 +209,66 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
           </Select>
         </Form.Item>
         <Form.Item label="Téléphone" name={["phone"]}>
-          <Input />
+          <Space.Compact style={{ width: "100%" }}>
+            <Select
+              style={{ width: "25%" }}
+              value={indicatif}
+              onChange={setIndicatif}
+              placeholder="+000"
+            >
+              {countries.map((country, index) => (
+                <Select.Option
+                  key={country.name}
+                  value={
+                    // (country.flag ? country.flag + " " : "") +
+                    (country.idd.root ? country.idd.root.toString() : "") +
+                    (country.idd.suffixes
+                      ? country.idd.suffixes.join("").toString()
+                      : "")
+                  }
+                >
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      textAlign: "start",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "35%",
+                      }}
+                    >
+                      <Text style={{ textAlign: "start" }}>
+                        {country.flag ? country.flag + " " : null}
+                        {country.idd.root ? country.idd.root.toString() : null}
+                        {country.idd.suffixes
+                          ? country.idd.suffixes.join("").toString()
+                          : null}
+                      </Text>
+                    </div>
+                    <div
+                      style={{
+                        width: "60%",
+                        textAlign: "left",
+                      }}
+                    >
+                      <Text style={{ textAlign: "start" }}>
+                        {" " + country.name.common}
+                      </Text>
+                    </div>
+                  </div>
+                </Select.Option>
+              ))}
+            </Select>
+            <Input
+              style={{ width: "25%" }}
+              onChange={handlePhoneNumberChange}
+              value={phoneNumber}
+              placeholder="26 88 88 88"
+            />
+          </Space.Compact>
         </Form.Item>
         <Form.Item label="Addresse" name={["address"]}>
           <Input />

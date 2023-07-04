@@ -600,7 +600,6 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
                               description: el.description,
                               role: el.role,
                               gender: el.gender,
-                              phone: el.phone,
                               adresse: el.adresse,
                               facebook_profile: el.facebook_profile,
                               twitter_profile: el.twitter_profile,
@@ -727,7 +726,29 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
                   }
                 }}
               />
-              <Table.Column dataIndex="phone" title="Tèl." />
+              <Table.Column
+                dataIndex="phone"
+                title="Tèl."
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link
+                        href={
+                          "https://www.google.com/search?q=" +
+                          value.indicatif +
+                          " " +
+                          value.number
+                        }
+                        target="_blank"
+                      >
+                        {value.indicatif} {value.number}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
 
               <Table.Column
                 ellipsis={true}

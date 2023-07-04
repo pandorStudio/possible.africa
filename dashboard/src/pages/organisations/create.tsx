@@ -19,9 +19,9 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   const [editorContent, setEditorContent] = useState("");
   const [imageUrl, setImageUrl] = useState<string>();
   const [uploadLoading, setUploadLoading] = useState(false);
-  const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [realPhoneNumber, setRealPhoneNumber] = React.useState("");
-  const [indicatif, setIndicatif] = React.useState();
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [realPhoneNumber, setRealPhoneNumber] = useState("");
+  const [indicatif, setIndicatif] = useState();
   const [countries, setCountries] = useState([]);
   const apiUrl = useApiUrl();
 

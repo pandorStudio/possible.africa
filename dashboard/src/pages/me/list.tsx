@@ -47,9 +47,7 @@ export const Profil: React.FC<IResourceComponentsProps> = () => {
                 title="Mon Profil"
                 extra={
                   <Link to={`edit/${userConnected?._id}`}>
-                    <Button>
-                      Modifier
-                    </Button>
+                    <Button>Modifier</Button>
                   </Link>
                 }
               >
@@ -181,7 +179,9 @@ export const Profil: React.FC<IResourceComponentsProps> = () => {
                             marginLeft: 20,
                           }}
                         >
-                          {userConnected?.phone || "-"}
+                          {userConnected?.phone?.indicatif +
+                            " " +
+                            userConnected?.phone?.number || "-"}
                         </Text>
                       </Space>
                     </Col>
