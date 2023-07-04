@@ -32,7 +32,7 @@ function Interviews() {
     } else if(isSuccess) {
         content = interviews.map(interview => {
             return (
-                <CardComponent postType="Interview" key={interview._id} title={interview.title} description={ParseSlice(interview.content)} imgUrl={interview.image} isLoaded={isLoaded} link={"/interviews/" + interview.slug} pays="Pays"/>
+                <CardComponent postType="Interview" key={interview._id} title={interview.title} description={ParseSlice(interview.content)} imgUrl={interview.image} isLoaded={isLoaded} link={"/interviews/" + interview.slug} country={interview.country || ""}/>
             )
         })
     } else if (isError) {

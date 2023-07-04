@@ -4,32 +4,28 @@ import { CalendarIcon, CountryIcon, MapIcon, OrganisationsIcon, TypeIcon, WorkIc
 
 
 // eslint-disable-next-line react/prop-types
-function CardComponent({title, description, imgUrl, isLoaded, link, postType, type, pays, dateDebut, dateFin, company,location}) {
+function CardComponent({title, description, imgUrl, isLoaded, link, postType, type, country, dateDebut, dateFin, company,location}) {
 const card = (<Card
-    direction={{ base: 'row', md: 'row' }}
-    gap={{ base: '5' }}
+    direction="row"
+    spacing={{ base: '5', md:'1' }}
     overflow='hidden'
-    minW={{base: "sm", md: "2xl"}}
-    w={{base: "sm", md: "2xl"}}
-    maxW={{ base: 'sm', md: '2xl' }}
+    w={{base: "md", md: "2xl"}}
     height={{ base: '130px', md: '130px' }}
     boxShadow="none"
     _hover={{ cursor: "pointer" }}
     borderRadius={0}
-    alignItems={{ base: 'flex-start', md: 'center'}}
+    alignItems={{ base: 'center', md: 'center'}}
     justifyContent={{ base: 'flex-start', md: 'flex-start'}}
-    zIndex={-1}
-   
-    
+    zIndex={-1}    
 >
   <Skeleton isLoaded={isLoaded} >
 
-    <Box  w={100} h="100px">
+    <Box  w={{base:70, md: 100}} h={{base: "60px", md:"100%"}} alignItems="center" justifyContent="center" alignSelf="center">
 
       <Image
           fit ='cover'
-          w="100%"
-          h="100px"
+          w={{base: "60px",md:"80px"}}
+          h={{base: "60px",md:"80px"}}
           src={imgUrl}
           alt={imgUrl}
           borderRadius={8}
@@ -42,49 +38,49 @@ const card = (<Card
 
   <Stack>
     
-    <CardBody p={{ base: '0', md: '15px' }}>
+    <CardBody px={{ base: '0', md: '0' }} alignItems="center" justifyContent="center" h={{base: "100%", md:"100%"}}>
 
-      <Heading fontSize='lg' color='teal.500' _hover={{ textDecoration: "underline" }} noOfLines={[1,2]}>{title}</Heading>
+      <Heading fontSize='md' fontWeight="600" color='gray.700' _hover={{ textDecoration: "underline" }} noOfLines={{base:1, md: [1,2]}}>{title}</Heading>
 
-      <Text noOfLines={[1]}>
+      <Text noOfLines={[1]} color='gray.500' pt="6px">
         {description}
       </Text>
      {postType === "Organisation" &&  (<>
       <Flex gap={5} marginTop={1.5} marginLeft={-1}>
-     <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="sm">{pays}</Text></Flex>
-      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="sm">{type}</Text></Flex>
+      {country && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon/> <Text fontSize="xs">{country}</Text></Flex>}
+      {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="xs">{type}</Text></Flex>}
       </Flex>
       </>)} 
      {postType === "Interview" && (<>
       <Flex gap={5} marginTop={1.5} marginLeft={-1}>
-     <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="sm">{pays}</Text></Flex>
+      {country && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="xs">{country}</Text></Flex>}
       </Flex>
      
      </>)} 
      {postType === "Actualités" && (<>
       <Flex gap={5} marginTop={1.5} marginLeft={-1}>
-     <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="sm">{pays}</Text></Flex>
+      {country && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="xs">{country}</Text></Flex>}
       </Flex>
      </>)} 
      {postType === "Agenda" && (<>
       <Flex gap={5} marginTop={1.5} marginLeft={-1}>
-     <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CalendarIcon /><Text>{dateDebut}</Text> - <Text>{dateFin}</Text></Flex>
-      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon/> <Text fontSize="sm">{pays}</Text></Flex>
-      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="sm">{type}</Text></Flex>
+      {dateDebut || dateFin && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CalendarIcon /><Text>{dateDebut}</Text> - <Text>{dateFin}</Text></Flex>}
+     {country && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><MapIcon/> <Text fontSize="xs">{country}</Text></Flex>}
+     {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="xs">{type}</Text></Flex>}
 
       </Flex>
   </>)} 
      {postType === "Opportunités" && (<>
       <Flex gap={5} marginTop={1.5} marginLeft={-1}>
-     <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="sm">{pays}</Text></Flex>
-     <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="sm">{type}</Text></Flex>
+      {country && (<><Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="xs">{country}</Text></Flex></>)}
+     {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="xs">{type}</Text></Flex>}
 
       </Flex>
      </>)} 
      {postType === "Emplois" && <><Flex gap={5} marginTop={1.5} marginLeft={-1}>
-      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><OrganisationsIcon /> <Text fontSize="sm">{company}</Text></Flex>
-      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><WorkIcon/> <Text fontSize="sm">{type}</Text></Flex>
-      <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><MapIcon/> <Text fontSize="sm">{location}</Text></Flex>
+      {company && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><OrganisationsIcon /> <Text fontSize="xs">{company}</Text></Flex>}
+     {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><WorkIcon/> <Text fontSize="xs">{type}</Text></Flex>}
+     {location && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><MapIcon/> <Text fontSize="xs">{location}</Text></Flex>}
       </Flex> 
      </>} 
 

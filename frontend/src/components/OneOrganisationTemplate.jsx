@@ -28,12 +28,12 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
      
 <Flex alignItems="center" gap={5}>
 
-        <Box  minW={150} h="150px">
+        <Box  minW={90}>
 
 <Image
     fit ='cover'
-    w="100%"
-    h="150px"
+    w={{base: "80px",md:"100px"}}
+    h={{base: "80px",md:"100px"}}
     src={organisations?.logo}
     alt={organisations?.logo}
     borderRadius={8}
@@ -42,9 +42,9 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
 />
 </Box>
 <Flex direction="column" gap={2}>
-        <Heading fontSize="4xl">{organisations?.name}</Heading>
+        <Heading fontSize={{base: "lg", md: "4xl"}}>{organisations?.name}</Heading>
         <Flex>
-        <Badge display="inline" textAlign="center" colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{organisations?.type?.name}</Badge>      
+      {organisations?.type?.name &&  <Badge display="inline" textAlign="center" colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{organisations?.type?.name}</Badge> }     
 
         </Flex>
         <Link href={organisations?.site_web} isExternal alignItems="center" fontWeight={600} fontSize={14}>

@@ -11,8 +11,8 @@ import Socialshare from "./Socialshare.jsx";
 function OnePostPage({iconSx, backUrl, news}) {
 
   const date = new Date(news?.createdAt);
-  const jour = date.getDate();
-  const mois = date.toLocaleString('default', { month: 'long' });
+  const jour = date.getDate() || "";
+  const mois = date.toLocaleString('default', { month: 'long' }) || "";
   const content = news?.content && ParseIframe(news?.content)
 
   function estimateReadingTime() {
@@ -34,24 +34,24 @@ function OnePostPage({iconSx, backUrl, news}) {
         {/* <Flex><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl}/></Flex> */}
        <Box>
         <Flex>
-        <Badge colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{news?.categorie?.name}</Badge>
+       {news?.categorie?.name && <Badge colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{news?.categorie?.name}</Badge>}
 
         </Flex>
-        <Heading fontSize="4xl">{news?.title}</Heading>
+        <Heading fontSize={{base: "xl", md: "4xl"}}>{news?.title}</Heading>
        </Box>
 
         <Flex w="full">
               <HStack w="full" h="full" spacing={2} alignItems="flex-start" justifyContent="space-between">
                 <HStack alignItems="center">
-                  <Box width="80px" overflow="hidden" borderRadius="full">
+                  <Box width="50px" overflow="hidden" borderRadius="full">
                     <Image src={news?.user?.avatar} w="100%" fit="cover" borderRadius="full" alt="image" fallbackSrc='/placeholder.png'/>
                   </Box>
                 <Box w="full">
                   <Flex direction="column" justify="space-around"  gap={1}>
-                  <Heading size="sm">{news?.user?.firstname} {news?.user?.lastname}</Heading>
+                 {news?.user?.firstname || news?.user?.firstname && (<Heading size="sm" fontWeight={500}>{news?.user?.firstname} {news?.user?.lastname}</Heading>) || (<Heading size="sm" fontWeight={500}> {"Auteur Inconnu"}</Heading>) } 
                     <Flex justify="flex-start" color="gray.500">
-                      <Box fontSize="sm" mr={4}>{jour} {mois}</Box>
-                      <Box fontSize="sm">{estimateReadingTime()} mins de lecture</Box>
+                   { jour && <Box fontSize="sm" mr={4}>{jour} {mois} </Box>  ||<Box fontSize="sm" mr={4}>{""} </Box>}   
+                    {estimateReadingTime() && <Box fontSize="sm">{estimateReadingTime()} mins de lecture </Box> || "" }  
                     </Flex>
                   </Flex>
                   

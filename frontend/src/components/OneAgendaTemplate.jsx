@@ -29,12 +29,12 @@ function OneAgendaTemplate({iconSx, backUrl, events}) {
      
 <Flex alignItems="center" gap={5}>
 
-        <Box  minW={150} h="150px">
+        <Box minW={90}>
 
 <Image
     fit ='cover'
-    w="100%"
-    h="150px"
+    w={{base: "80px",md:"100px"}}
+    h={{base: "80px",md:"100px"}}
     src={events?.organisation?.logo}
     alt={events?.organisation?.logo}
     borderRadius={8}
@@ -44,11 +44,11 @@ function OneAgendaTemplate({iconSx, backUrl, events}) {
 </Box>
 <Flex direction="column" gap={2}>
 
-        <Heading fontSize="4xl">{events?.title}</Heading>
+        <Heading fontSize={{base: "lg", md: "4xl"}}>{events?.title}</Heading>
         <Flex direction="column">
           <Flex>
 
-        <Badge display="inline" textAlign="center" colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{events?.frequence}</Badge>      
+        {events?.frequence && <Badge display="inline" textAlign="center" colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{events?.frequence}</Badge>  }    
           </Flex>
           
 <Flex gap={6}>
@@ -70,7 +70,7 @@ function OneAgendaTemplate({iconSx, backUrl, events}) {
   <Flex gap={1} alignItems="center">
   <LaunchOutlinedIcon/>
   <Text fontSize={14}>
-  {events?.registration_link}
+    En savoir plus
     </Text> 
     </Flex>
 </Link>

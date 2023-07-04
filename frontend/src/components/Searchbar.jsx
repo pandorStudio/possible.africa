@@ -181,7 +181,7 @@ const {
 
   
   return (
-    <InputGroup as="div" hideBelow={hideMeBellow} w="full" className="search" display="flex" gap={10} ref={searchContainerRef}>
+    <InputGroup as="div" hideBelow={hideMeBellow} w="full" h="full" className="search" display="flex" gap={10} ref={searchContainerRef}>
       <InputLeftElement pointerEvents="none">
         <SearchIcon color="gray.300" />
       </InputLeftElement>
@@ -191,6 +191,7 @@ const {
         type="text"
         placeholder="L'univers des possibles de l'#AfricaTech"
         value={query}
+        fontWeight={700}
         onChange={handleInputChange}
         onKeyUp={(e) => {
           if (e.key === 'Enter') {
@@ -217,7 +218,7 @@ const {
       />
 
       {(showSuggestions || query === '') && (
-        <Box className="search-results-container" p={2} zIndex={100} overflow="scroll" minH="50vh" ref={suggestionPaneRef}>
+        <Box className="search-results-container" p={2} zIndex={100} overflow="scroll" maxH="50vh" ref={suggestionPaneRef}>
           {Array.from(combinedSuggestions).filter((suggestion) => (typeof suggestion === 'string' ? suggestion : suggestion.name).toLowerCase().includes((query).toLowerCase()))
   .map((suggestion)  => (
             <Text
@@ -225,8 +226,10 @@ const {
               className="search-result"
               onClick={() => handleSearchResultClick(suggestion)}
               ref={searchElementRef}
+              borderStyle="solid" borderColor="gray.100" borderBottomWidth={1}
             >
-            { highlightMatch(typeof suggestion === 'string' ? parse(suggestion.replace(/\\n/g, "<br />").slice(0, 80)+"...") : parse(suggestion.name.replace(/\\n/g, "<br />").slice(0, 80)+"..."))}
+            { highlightMatch(typeof suggestion === 'string' ? parse(suggestion.replace(/\\n/g, "<br />").slice(0, 80)+"...") : parse(suggestion.name.replace(/\\n/g, "<br />").slice(0, 80)+"...")) }
+            {suggestion.postType}
             </Text>
           ))}
         </Box>
