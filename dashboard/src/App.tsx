@@ -117,6 +117,7 @@ import { ProfilEdit } from "./pages/me/edit";
 import { OrganisationTypeShow } from "./pages/organisation_types/show";
 import { OrganisationTypeEdit } from "./pages/organisation_types/edit";
 import { OrganisationTypeCreate } from "./pages/organisation_types/create";
+import CustomDashboard from "./pages/dashboard";
 
 function Logo() {
   return <img src="./assets/logos/logo.png" alt="n" />;
@@ -553,6 +554,7 @@ function App() {
             routerProvider={routerBindings}
             authProvider={authProvider}
             i18nProvider={i18nProvider}
+            DashboardPage={CustomDashboard}
             resources={
               // @ts-ignore
               userConnected.role.slug === "admin" ||
@@ -589,7 +591,8 @@ function App() {
                   <>
                     <Route
                       index
-                      element={<NavigateToResource resource="organisations" />}
+                      // element={<NavigateToResource resource="organisations" />}
+                      element={<CustomDashboard />}
                     />
 
                     <Route path="organisation_types">
@@ -689,7 +692,8 @@ function App() {
                   <>
                     <Route
                       index
-                      element={<NavigateToResource resource="organisations" />}
+                      // element={<NavigateToResource resource="organisations" />}
+                      element={<CustomDashboard />}
                     />
                     <Route path="organisation_types">
                       <Route index element={<OrganisationTypeList />} />
@@ -787,7 +791,8 @@ function App() {
                   <>
                     <Route
                       index
-                      element={<NavigateToResource resource="organisations" />}
+                      // element={<NavigateToResource resource="organisations" />}
+                      element={<CustomDashboard />}
                     />
 
                     <Route path="organisation_types">

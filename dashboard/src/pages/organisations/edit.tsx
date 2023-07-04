@@ -29,20 +29,6 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
 
   const { Text } = Typography;
 
-  // const { selectProps: contributorSelectProps } = useSelect({
-  //   resource: "users?role=contributor",
-  //   optionValue: "_id",
-  //   optionLabel: "username",
-  //   filters: [
-  //     {
-  //       field: "role",
-  //       operator: "eq",
-  //       value: "contributor",
-  //     },
-  //   ],
-  //   defaultValue: organisationsData?.contributeur?._id,
-  // });
-
   async function onSubmitCapture(values: any) {
     let imgTags = editorContent?.match(/<img[^>]+src="([^">]+)"/g);
     if (imgTags && imgTags.length > 0) {
@@ -83,6 +69,13 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     if (!values?.contributeur?._id) {
       values.contributeur = null;
     }
+    if (values.telephone) {
+      // console.log(values.telephone);
+      values.telephone = {
+        indicatif: indicatif,
+        number: realPhoneNumber,
+      };
+    }
     if (!values?.type?._id) {
       values.type = null;
     }
@@ -110,6 +103,10 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     // if (imageUrl) {
     //   setUploadLoading(false);
     // }
+    if (organisationsData?.telephone) {
+      setIndicatif(organisationsData?.telephone?.indicatif);
+      setPhoneNumber(organisationsData?.telephone?.number);
+    }
     if (!countries.length) {
       // Get all countries from api
       axiosInstance.get(`https://restcountries.com/v3.1/all`).then((res) => {

@@ -2,7 +2,7 @@ const Organisation = require("../organisations/organisationModel.js");
 const Post = require("../posts/postModel.js");
 const Job = require("../jobs/jobModel.js");
 const Event = require("../events/eventModel.js");
-const Opportunity = require("../opportunities/opportunintyModel.js");
+const Opportunity = require("../opportunities/opportunityModel.js");
 const bcrypt = require("bcryptjs");
 
 function calculateSecondsDiff(date1, date2) {
@@ -19,9 +19,9 @@ exports.getAllFound = async (req, res) => {
   try {
     let q = req.query.q;
     // const results = await Organisation.find({ $text: { $search: q } });
-    const startDate = new Date;
+    const startDate = new Date();
     const results = await Promise.all([
-      (async() => {
+      (async () => {
         const allFounds = await Organisation.find({
           $or: [
             { name: { $regex: q, $options: "i" } },
@@ -35,12 +35,12 @@ exports.getAllFound = async (req, res) => {
             { facebook_url: { $regex: q, $options: "i" } },
             { twitter_url: { $regex: q, $options: "i" } },
             { adresse: { $regex: q, $options: "i" } },
-            ],
+          ],
         });
-        if(allFounds.length){
+        if (allFounds.length) {
           const allFoundsCopy = [...allFounds];
           const finalFounds = allFoundsCopy.map((el) => {
-            const newEl = {searchType: "organisation", ...el._doc};
+            const newEl = { searchType: "organisation", ...el._doc };
             return newEl;
           });
           return finalFounds;
@@ -48,18 +48,18 @@ exports.getAllFound = async (req, res) => {
           return allFounds;
         }
       })(),
-      (async() => {
+      (async () => {
         const allFounds = await Post.find({
           $or: [
             { title: { $regex: q, $options: "i" } },
             { slug: { $regex: q, $options: "i" } },
             { content: { $regex: q, $options: "i" } },
-            ],
+          ],
         });
-        if(allFounds.length){
+        if (allFounds.length) {
           const allFoundsCopy = [...allFounds];
           const finalFounds = allFoundsCopy.map((el) => {
-            const newEl = {searchType: "post", ...el._doc};
+            const newEl = { searchType: "post", ...el._doc };
             return newEl;
           });
           return finalFounds;
@@ -67,7 +67,7 @@ exports.getAllFound = async (req, res) => {
           return allFounds;
         }
       })(),
-      (async() => {
+      (async () => {
         const allFounds = await Job.find({
           $or: [
             { title: { $regex: q, $options: "i" } },
@@ -75,12 +75,12 @@ exports.getAllFound = async (req, res) => {
             { location: { $regex: q, $options: "i" } },
             { skills: { $regex: q, $options: "i" } },
             { slug: { $regex: q, $options: "i" } },
-            ],
+          ],
         });
-        if(allFounds.length){
+        if (allFounds.length) {
           const allFoundsCopy = [...allFounds];
           const finalFounds = allFoundsCopy.map((el) => {
-            const newEl = {searchType: "job", ...el._doc};
+            const newEl = { searchType: "job", ...el._doc };
             return newEl;
           });
           return finalFounds;
@@ -88,7 +88,7 @@ exports.getAllFound = async (req, res) => {
           return allFounds;
         }
       })(),
-      (async() => {
+      (async () => {
         const allFounds = await Event.find({
           $or: [
             { title: { $regex: q, $options: "i" } },
@@ -99,12 +99,12 @@ exports.getAllFound = async (req, res) => {
             { slug: { $regex: q, $options: "i" } },
             { location: { $regex: q, $options: "i" } },
             { frequence: { $regex: q, $options: "i" } },
-            ],
+          ],
         });
-        if(allFounds.length){
+        if (allFounds.length) {
           const allFoundsCopy = [...allFounds];
           const finalFounds = allFoundsCopy.map((el) => {
-            const newEl = {searchType: "event", ...el._doc};
+            const newEl = { searchType: "event", ...el._doc };
             return newEl;
           });
           return finalFounds;
@@ -112,7 +112,7 @@ exports.getAllFound = async (req, res) => {
           return allFounds;
         }
       })(),
-      (async() => {
+      (async () => {
         const allFounds = await Opportunity.find({
           $or: [
             { title: { $regex: q, $options: "i" } },
@@ -126,12 +126,12 @@ exports.getAllFound = async (req, res) => {
             { beneficies: { $regex: q, $options: "i" } },
             { registration_link: { $regex: q, $options: "i" } },
             { frequency: { $regex: q, $options: "i" } },
-            ],
+          ],
         });
-        if(allFounds.length){
+        if (allFounds.length) {
           const allFoundsCopy = [...allFounds];
           const finalFounds = allFoundsCopy.map((el) => {
-            const newEl = {searchType: "ooportunity", ...el._doc};
+            const newEl = { searchType: "ooportunity", ...el._doc };
             return newEl;
           });
           return finalFounds;
@@ -142,14 +142,14 @@ exports.getAllFound = async (req, res) => {
     ]);
 
     const combinedResults = [].concat(...results);
-    const endDate = new Date;
+    const endDate = new Date();
     const duration = calculateSecondsDiff(startDate, endDate);
     const resultLength = combinedResults.length;
     const addon = {
       duration,
-      resultLength
-    }
-    combinedResults.unshift(addon)
+      resultLength,
+    };
+    combinedResults.unshift(addon);
     res.status(200).json(combinedResults);
   } catch (error) {
     res.status(404).json({ message: error.message });
