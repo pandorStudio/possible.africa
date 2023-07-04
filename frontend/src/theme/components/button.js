@@ -3,14 +3,14 @@ import { defineStyleConfig } from '@chakra-ui/react'
 export default  defineStyleConfig({
   // The styles all button have in common
   baseStyle: {
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
+    fontWeight: '500',
+
     borderRadius: '14px', // <-- border radius is same for all variants and sizes
   },
   // Two sizes: sm and md
   sizes: {
     sm: {
-      fontSize: 'sm',
+      fontSize: 'xs',
       px: 4, // <-- px is short for paddingLeft and paddingRight
       py: 3, // <-- py is short for paddingTop and paddingBottom
     },

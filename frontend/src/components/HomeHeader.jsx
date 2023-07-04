@@ -64,15 +64,15 @@ export const HomeHeader = () => {
               </Flex>
             
             ) : (
-              <Flex justify="flex-start" gap="8" overflow="scroll" className="scrollContainer" px={8} >
+              <Flex justify="flex-start" gap="8" overflow="scroll" className="scrollContainer" px="8">
 
                   {[
-                    {name:'Actualités', link:"/actualites" },
-                    {name:'Podcast/Interview', link:"/interviews"},
-                    {name:'Agenda', link:"/agenda" },
-                    {name:'Financement', link:"/opportunites"},
-                    {name:'Emplois', link:"/emplois" },
-                    {name:'Organisations', link:"/organisations" }
+                    {name:'Actualités', link:"/actualites",icons: <NewspaperIcon/>},
+                    {name:'Podcast/Interview', link:"/interviews",icons: <PodcastIcon/>},
+                    {name:'Agenda', link:"/agenda",icons: <CalendarIcon/> },
+                    {name:'Financement', link:"/opportunites",icons: <LawIcon/>},
+                    {name:'Emplois', link:"/emplois",icons: <WorkIcon/> },
+                    {name:'Organisations', link:"/organisations",icons: <OrganisationsIcon/> }
                 
                 ].map((item) => (
 

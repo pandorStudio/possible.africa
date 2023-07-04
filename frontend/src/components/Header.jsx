@@ -6,6 +6,7 @@ import { MenuIcon } from "../assets/icons";
 
 import {
   Box,
+  Button,
   ButtonGroup,
   Container,
   Drawer,
@@ -52,9 +53,9 @@ export const Header = () => {
     >
       <Box as="nav" bg="bg-surface">
         
-          <Flex gap="8" 
+          <Flex gap={{base:"8", md:"180" }}
           
-          justifyContent={{ base: 'center', md: "space-between" }} 
+          justifyContent={{ base: 'center', md: "flex-start" }} 
           alignItems={{ base: 'center', md: "space-between" }}
           direction={{
             base: 'column',
@@ -66,27 +67,21 @@ export const Header = () => {
           w="100%"
           h="100%"/></Box>
 
-            <Flex w={{ base: '100%', md: "45%" }}  alignItems="center" >
+            <Flex w={{ base: '100%', md: "50%" }}  alignItems="center" justifyContent="center" alignContent="center">
 
           
                    <Searchbar zIndex={100}/>
         
               
             </Flex>
-            {isDesktop ? (
+         
               <Flex justifyContent="space-between" alignItems="center">
-                <ButtonGroup variant="link" spacing="5">
-                  {[{name:'Possible', link:"/" }, {name:'Entrepreneurs', link:"/entrepreneurs" },{name:'Time For Africa', link:"/timeforafrica" }].map((item) => (
-
-                    <CustomLink  key={item.name} as={ReachLink} to={item.link}><Heading size="md">
-                      {item.name}
-                      </Heading></CustomLink>
-                  ))}
-                </ButtonGroup>
+              <Button   _hover={{ bg: 'teal.600' }}
+>En savoir plus</Button>
                
               </Flex>
 
-              
+                 {/* {isDesktop ? (
             ) : (
               
               <>
@@ -120,7 +115,7 @@ export const Header = () => {
               </DrawerContent>
             </Drawer>
               </>
-            )}
+            )} */}
           </Flex>
 
          

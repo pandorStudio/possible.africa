@@ -14,7 +14,7 @@ import Actualites from "./Actualites/Actualites";
 function Home() {
   return (
     <>
-    <Container maxW="full" p={0}> 
+    <Container maxW="100vw" p={0}> 
         <HomeHeader/>    
         <Actualites/>  
     </Container>

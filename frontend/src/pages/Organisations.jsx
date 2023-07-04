@@ -77,7 +77,7 @@ function Organisations() {
               isLoaded={isLoaded}
               link={"/organisations/" + organisation.id}
               type={organisation?.type?.name}
-              pays={organisation.country || "Pays"}
+              country={organisation.country || ""}
             />
           );
           return <>{instanceCard}</>;
