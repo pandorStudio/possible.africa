@@ -402,6 +402,175 @@ function App() {
     },
   ];
 
+  const contributorsRessources = [
+    {
+      name: "Organisation",
+      meta: {
+        icon: <CustomIconOrganisation />,
+      },
+    },
+    {
+      name: "organisation_types",
+      list: "/organisation_types",
+      show: "/organisation_types/show/:id",
+      create: "/organisation_types/create",
+      edit: "/organisation_types/edit/:id",
+      meta: {
+        label: "Types d'organisations",
+        parent: "Organisation",
+        canDelete: true,
+      },
+    },
+    {
+      name: "organisations",
+      list: "/organisations",
+      show: "/organisations/show/:id",
+      create: "/organisations/create",
+      edit: "/organisations/edit/:id",
+      meta: {
+        parent: "Organisation",
+        canDelete: true,
+      },
+    },
+    {
+      name: "jobs",
+      list: "/jobs",
+      show: "/jobs/show/:id",
+      create: "/jobs/create",
+      edit: "/jobs/edit/:id",
+      meta: {
+        canDelete: true,
+        label: "Emplois",
+        icon: <CustomIconJob />,
+      },
+    },
+    {
+      name: "Opportunité",
+      meta: {
+        label: "Section Opportunités",
+        icon: <CustomIconOpportunity />,
+      },
+    },
+    {
+      name: "opportunity_types",
+      list: "/opportunity_types",
+      show: "/opportunity_types/show/:id",
+      create: "/opportunity_types/create",
+      edit: "/opportunity_types/edit/:id",
+      meta: {
+        label: "Types d'opportunités",
+        parent: "Opportunité",
+        canDelete: true,
+      },
+    },
+    {
+      name: "opportunities",
+      list: "/opportunities",
+      show: "/opportunities/show/:id",
+      create: "/opportunities/create",
+      edit: "/opportunities/edit/:id",
+      meta: {
+        label: "Opportunités",
+        parent: "Opportunité",
+        canDelete: true,
+      },
+    },
+    {
+      name: "Evenement",
+      meta: {
+        label: "Section Evènements",
+        icon: <CustomIconEvent />,
+      },
+    },
+    {
+      name: "event_types",
+      list: "/event_types",
+      show: "/event_types/show/:id",
+      create: "/event_types/create",
+      edit: "/event_types/edit/:id",
+      meta: {
+        label: "Types d'évènements",
+        parent: "Evenement",
+        canDelete: true,
+      },
+    },
+    {
+      name: "events",
+      list: "/events",
+      show: "/events/show/:id",
+      create: "/events/create",
+      edit: "/events/edit/:id",
+      meta: {
+        label: "Evènements",
+        parent: "Evenement",
+        canDelete: true,
+      },
+    },
+    {
+      name: "Articles",
+      meta: {
+        label: "Articles",
+        icon: <CustomIconArticle />,
+      },
+    },
+    {
+      name: "post_categories",
+      list: "/post_categories",
+      show: "/post_categories/show/:id",
+      create: "/post_categories/create",
+      edit: "/post_categories/edit/:id",
+      meta: {
+        label: "Catégories d'articles",
+        parent: "Articles",
+        canDelete: true,
+      },
+    },
+    {
+      name: "posts",
+      list: "/posts",
+      show: "/posts/show/:id",
+      create: "/posts/create",
+      edit: "/posts/edit/:id",
+      meta: {
+        label: "Tous les articles",
+        parent: "Articles",
+        canDelete: true,
+      },
+    },
+    {
+      name: "Utilisateurs",
+      meta: {
+        label: "Tous les utilisateurs",
+        icon: <UserOutlined />,
+        canDelete: true,
+        token: localStorage.getItem("refine-auth"),
+      },
+    },
+    {
+      name: "user_roles",
+      list: "/user_roles",
+      show: "/user_roles/show/:id",
+      create: "/user_roles/create",
+      edit: "/user_roles/edit/:id",
+      meta: {
+        label: "Roles utilisateurs",
+        parent: "Utilisateurs",
+      },
+    },
+    {
+      name: "profil",
+      list: "/profil",
+      edit: "profil/edit/:id",
+      // show: "/users/show/:id",
+      // create: "/users/create",
+      meta: {
+        label: "Profil",
+        hided: true,
+        // parent: "Utilisateurs",
+      },
+    },
+  ];
+
   // userRessources is adminRessources without the create and edit routes
 
   const userRessources = [
@@ -557,10 +726,11 @@ function App() {
             DashboardPage={CustomDashboard}
             resources={
               // @ts-ignore
-              userConnected.role.slug === "admin" ||
-              // @ts-ignore
-              userConnected.role.slug === "contributor"
+              userConnected.role.slug === "admin"
                 ? adminOrContributorsRessources
+                : // @ts-ignore
+                userConnected.role.slug === "contributor"
+                ? contributorsRessources
                 : userRessources
             }
             options={{
