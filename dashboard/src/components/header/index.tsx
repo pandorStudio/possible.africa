@@ -272,11 +272,9 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                 </Text>
               </Link>
             )}
-            {user?.avatar && (
               <Link to="profil">
                 <Avatar src={user?.avatar || "https://possibledotafrica.s3.eu-west-3.amazonaws.com/users/images/1688567211420-image.png"} alt={user?.name} />
               </Link>
-            )}
           </Space>
         </Space>
       </AntdLayout.Header>
