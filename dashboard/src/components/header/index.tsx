@@ -27,7 +27,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ColorModeContext } from "../../contexts/color-mode";
 import ReactQuill from "react-quill";
-import { reactQuillModules } from "../../pages/posts/create";
 import axios from "axios";
 
 const { Text } = Typography;
@@ -105,6 +104,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 
     // convert html in text
     const text = description.replace(/<[^>]+>/g, "");
+    // const text = description;
 
     try {
       const response = await axios.post(
@@ -171,6 +171,23 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     console.log(editorContent);
     console.log(caseTitle);
   }, [editorContent, caseTitle]);
+
+  const reactQuillModules = {
+    toolbar: {
+      container: [
+        [{ font: [] }],
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        ["bold", "italic", "underline", "strike"],
+        [{ color: [] }, { background: [] }],
+        [{ script: "sub" }, { script: "super" }],
+        ["blockquote", "code-block"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+        ["formula"],
+        ["clean"],
+      ],
+    },
+  };
 
   return (
     <>
