@@ -71,6 +71,8 @@ exports.createPost = async (req, res) => {
   const slug = CustomUtils.slugify(title) + "-" + CustomUtils.getRandomNbr();
 
   try {
+    
+    if (req.user) CustomBody.user = req.user._id;
     CustomBody.slug = slug;
     const post = await Post.create(CustomBody);
     res.status(201).json(post);

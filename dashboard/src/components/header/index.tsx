@@ -274,7 +274,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             )}
             {user?.avatar && (
               <Link to="profil">
-                <Avatar src={user?.avatar} alt={user?.name} />
+                <Avatar src={user?.avatar || "https://possibledotafrica.s3.eu-west-3.amazonaws.com/users/images/1688567211420-image.png"} alt={user?.name} />
               </Link>
             )}
           </Space>
