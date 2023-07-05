@@ -162,7 +162,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     api.success({
       message: "Rapport de bug envoyé !",
       description:
-        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+        "Votre rapport de bug a bien été envoyé à notre équipe. Nous vous remercions pour votre aide.",
       icon: <BugFilled style={{ color: "#52c41a" }} />,
     });
   };
