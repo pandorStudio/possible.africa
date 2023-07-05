@@ -1,20 +1,34 @@
-import { DownOutlined } from "@ant-design/icons";
+import { BugFilled, DownOutlined } from "@ant-design/icons";
 import type { RefineThemedLayoutV2HeaderProps } from "@refinedev/antd";
-import { useGetIdentity, useGetLocale, useLink, useRouterContext, useRouterType, useSetLocale } from "@refinedev/core";
+import {
+  useGetIdentity,
+  useGetLocale,
+  useLink,
+  useRouterContext,
+  useRouterType,
+  useSetLocale,
+} from "@refinedev/core";
 import {
   Layout as AntdLayout,
   Avatar,
   Button,
+  Modal,
   Dropdown,
   MenuProps,
   Space,
   Switch,
   Typography,
   theme,
+  Form,
+  Input,
+  notification,
 } from "antd";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ColorModeContext } from "../../contexts/color-mode";
+import ReactQuill from "react-quill";
+import { reactQuillModules } from "../../pages/posts/create";
+import axios from "axios";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -43,6 +57,13 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const NewLink = useLink();
   const { Link: LegacyLink } = useRouterContext();
   const Link = routerType === "legacy" ? LegacyLink : NewLink;
+
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState("Content of the modal");
+  const [editorContent, setEditorContent] = useState("");
+  const [caseTitle, setCaseTitle] = useState("");
+  const [api, contextHolder] = notification.useNotification();
 
   const currentLocale = locale();
 
@@ -74,48 +95,174 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     headerStyles.zIndex = 1;
   }
 
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const createAsanaTicket = async (title, description) => {
+    const apiKey = "1/1204420428930521:406ac36389af52dbfc338c4a002e7ffb";
+    const projectId = "1204855739325970";
+
+    // convert html in text
+    const text = description.replace(/<[^>]+>/g, "");
+
+    try {
+      const response = await axios.post(
+        `https://app.asana.com/api/1.0/tasks`,
+        {
+          data: {
+            projects: [projectId],
+            name: title,
+            notes: text,
+          },
+        },
+        {
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        console.log("Ticket créé avec succès !");
+        console.log(response.data);
+        setOpen(false);
+        setConfirmLoading(false);
+        setTimeout(() => {
+          openNotification();
+        }, 500);
+      } else {
+        console.log("Erreur lors de la création du ticket.");
+        setConfirmLoading(false);
+      }
+    } catch (error) {
+      console.log("Erreur lors de la création du ticket :", error);
+      setConfirmLoading(false);
+    }
+  };
+
+  const handleOk = () => {
+    setModalText("The modal will be closed after two seconds");
+    setConfirmLoading(true);
+    createAsanaTicket(caseTitle, editorContent);
+    // setTimeout(() => {
+    //   setOpen(false);
+    //   setConfirmLoading(false);
+    // }, 2000);
+  };
+
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+    setOpen(false);
+  };
+
+  const openNotification = () => {
+    api.success({
+      message: "Notification Title",
+      description:
+        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+      icon: <BugFilled style={{ color: "#52c41a" }} />,
+    });
+  };
+
+  useEffect(() => {
+    console.log(editorContent);
+    console.log(caseTitle);
+  }, [editorContent, caseTitle]);
+
   return (
-    <AntdLayout.Header style={headerStyles}>
-      <Space>
-        <Dropdown
-          menu={{
-            items: menuItems,
-            selectedKeys: currentLocale ? [currentLocale] : [],
-          }}
-        >
-          <Button type="text">
-            <Space>
-              <Avatar size={16} src={`/images/flags/${currentLocale}.svg`} />
-              {currentLocale === "fr"
-                ? "Français"
-                : currentLocale === "en"
-                ? "English"
-                : "Deutsch"}
-              <DownOutlined />
-            </Space>
+    <>
+      {contextHolder}
+      <Modal
+        style={{
+          height: "80vh",
+        }}
+        width="80vw"
+        title="Reporter un bug, sur l'utilisation de l'application"
+        open={open}
+        onOk={handleOk}
+        okButtonProps={{ size: "large" }}
+        cancelButtonProps={{ size: "large" }}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+      >
+        {/* Markdown Editor Editor */}
+        <Form layout="vertical">
+          <Form.Item
+            label="Titre"
+            name="title"
+            rules={[{ required: true, message: "Veuillez entrer un titre" }]}
+          >
+            <Input
+              value={caseTitle}
+              onChange={(e) => setCaseTitle(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={[
+              { required: true, message: "Veuillez entrer une description" },
+            ]}
+          >
+            <ReactQuill
+              style={{ height: "30vh", width: "100%" }}
+              modules={reactQuillModules}
+              value={editorContent}
+              onChange={setEditorContent}
+              theme="snow"
+              placeholder="Placez votre contenu ici..."
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <AntdLayout.Header style={headerStyles}>
+        <Space>
+          <Button type="primary" onClick={showModal}>
+            Reporter Un Bug
           </Button>
-        </Dropdown>
-        <Switch
-          checkedChildren="🌛"
-          unCheckedChildren="🔆"
-          onChange={() => setMode(mode === "light" ? "dark" : "light")}
-          defaultChecked={mode === "light"}
-        />
-        <Space style={{ marginLeft: "8px" }} size="middle">
-          {user?.lastname && (
-            <Link to="profil">
-              <Text strong>
-                {user.lastname} {user.firstname}
-              </Text>
-            </Link>
-          )}
-          {user?.avatar && (
-            <Link to="profil">
-              <Avatar src={user?.avatar} alt={user?.name} />
-            </Link>
-          )}
+          <Dropdown
+            menu={{
+              items: menuItems,
+              selectedKeys: currentLocale ? [currentLocale] : [],
+            }}
+          >
+            <Button type="text">
+              <Space>
+                <Avatar size={16} src={`/images/flags/${currentLocale}.svg`} />
+                {currentLocale === "fr"
+                  ? "Français"
+                  : currentLocale === "en"
+                  ? "English"
+                  : "Deutsch"}
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+          <Switch
+            checkedChildren="🌛"
+            unCheckedChildren="🔆"
+            onChange={() => setMode(mode === "light" ? "dark" : "light")}
+            defaultChecked={mode === "light"}
+          />
+          <Space style={{ marginLeft: "8px" }} size="middle">
+            {user?.lastname && (
+              <Link to="profil">
+                <Text strong>
+                  {user.lastname} {user.firstname}
+                </Text>
+              </Link>
+            )}
+            {user?.avatar && (
+              <Link to="profil">
+                <Avatar src={user?.avatar} alt={user?.name} />
+              </Link>
+            )}
+          </Space>
         </Space>
-      </Space>
-    </AntdLayout.Header>
+      </AntdLayout.Header>
+    </>
   );
 };
