@@ -160,7 +160,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 
   const openNotification = () => {
     api.success({
-      message: "Notification Title",
+      message: "Rapport de bug envoyé !",
       description:
         "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
       icon: <BugFilled style={{ color: "#52c41a" }} />,
@@ -199,7 +199,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
         width="80vw"
         title="Reporter un bug, sur l'utilisation de l'application"
         open={open}
-        onOk={handleOk}
+        onOk={editorContent && caseTitle ? handleOk : null}
         okButtonProps={{ size: "large" }}
         cancelButtonProps={{ size: "large" }}
         confirmLoading={confirmLoading}
