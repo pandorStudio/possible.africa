@@ -9,7 +9,7 @@ export function Parse(content) {
 
 export function ParseSlice(content){
 
-    return Parse(content.slice(0, 500)+"...")
+    return ParseStrong(((content.slice(0, 500)+"...")))
 
 }
 
@@ -25,7 +25,20 @@ export function ParseSlice(content){
 
 };
 
+const parseStrongOptions = {
+  replace: (domNode) => {
+    if (domNode.data && domNode.data.includes('strong')) {
+      return parse(domNode.data);
+    }
+  },
+
+};
+
 
 export const ParseIframe = (content) => {
   return parse(content.replace(/\\n/g, "<br />"), parseOptions)
+}
+
+export const ParseStrong = (content) => {
+  return parse(content.replace(/\\n/g, "<br />"), parseStrongOptions)
 }

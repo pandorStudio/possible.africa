@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ApiProvider api={apiSlice}>
 
     <ChakraProvider theme={theme}>
-     <App />
+     <App className="App"/>
     </ChakraProvider>
     </ApiProvider>
   </React.StrictMode>,
