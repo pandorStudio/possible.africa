@@ -18,23 +18,26 @@ function calculateSecondsDiff(date1, date2) {
 exports.getAllFound = async (req, res) => {
   try {
     let q = req.query.q;
+    // console.log(q);
     // const results = await Organisation.find({ $text: { $search: q } });
+    // build a regex
+    const regex = new RegExp(q, "i");
     const startDate = new Date();
     const results = await Promise.all([
       (async () => {
         const allFounds = await Organisation.find({
           $or: [
-            { name: { $regex: q, $options: "i" } },
-            { description: { $regex: q, $options: "i" } },
-            { owner: { $regex: q, $options: "i" } },
-            { description: { $regex: q, $options: "i" } },
-            { email: { $regex: q, $options: "i" } },
-            { telephone: { $regex: q, $options: "i" } },
-            { site_web: { $regex: q, $options: "i" } },
-            { linkedin_url: { $regex: q, $options: "i" } },
-            { facebook_url: { $regex: q, $options: "i" } },
-            { twitter_url: { $regex: q, $options: "i" } },
-            { adresse: { $regex: q, $options: "i" } },
+            { name: regex },
+            { description: regex },
+            { owner: regex },
+            { description: regex },
+            { email: regex },
+            { telephone: regex },
+            { site_web: regex },
+            { linkedin_url: regex },
+            { facebook_url: regex },
+            { twitter_url: regex },
+            { adresse: regex },
           ],
         });
         if (allFounds.length) {
@@ -51,9 +54,9 @@ exports.getAllFound = async (req, res) => {
       (async () => {
         const allFounds = await Post.find({
           $or: [
-            { title: { $regex: q, $options: "i" } },
-            { slug: { $regex: q, $options: "i" } },
-            { content: { $regex: q, $options: "i" } },
+            { title: regex },
+            { slug: regex },
+            { content: regex },
           ],
         });
         if (allFounds.length) {
@@ -70,11 +73,11 @@ exports.getAllFound = async (req, res) => {
       (async () => {
         const allFounds = await Job.find({
           $or: [
-            { title: { $regex: q, $options: "i" } },
-            { description: { $regex: q, $options: "i" } },
-            { location: { $regex: q, $options: "i" } },
-            { skills: { $regex: q, $options: "i" } },
-            { slug: { $regex: q, $options: "i" } },
+            { title: regex },
+            { description: regex },
+            { location: regex },
+            { skills: regex },
+            { slug: regex },
           ],
         });
         if (allFounds.length) {
@@ -91,14 +94,14 @@ exports.getAllFound = async (req, res) => {
       (async () => {
         const allFounds = await Event.find({
           $or: [
-            { title: { $regex: q, $options: "i" } },
-            { format: { $regex: q, $options: "i" } },
-            { target_country: { $regex: q, $options: "i" } },
-            { activity_area: { $regex: q, $options: "i" } },
-            { description: { $regex: q, $options: "i" } },
-            { slug: { $regex: q, $options: "i" } },
-            { location: { $regex: q, $options: "i" } },
-            { frequence: { $regex: q, $options: "i" } },
+            { title: regex },
+            { format: regex },
+            { target_country: regex },
+            { activity_area: regex },
+            { description: regex },
+            { slug: regex },
+            { location: regex },
+            { frequence: regex },
           ],
         });
         if (allFounds.length) {
@@ -115,17 +118,17 @@ exports.getAllFound = async (req, res) => {
       (async () => {
         const allFounds = await Opportunity.find({
           $or: [
-            { title: { $regex: q, $options: "i" } },
-            { target_people: { $regex: q, $options: "i" } },
-            { target_country: { $regex: q, $options: "i" } },
-            { activity_area: { $regex: q, $options: "i" } },
-            { description: { $regex: q, $options: "i" } },
-            { eligibility: { $regex: q, $options: "i" } },
-            { processus: { $regex: q, $options: "i" } },
-            { slug: { $regex: q, $options: "i" } },
-            { beneficies: { $regex: q, $options: "i" } },
-            { registration_link: { $regex: q, $options: "i" } },
-            { frequency: { $regex: q, $options: "i" } },
+            { title: regex },
+            { target_people: regex },
+            { target_country: regex },
+            { activity_area: regex },
+            { description: regex },
+            { eligibility: regex },
+            { processus: regex },
+            { slug: regex },
+            { beneficies: regex },
+            { registration_link: regex },
+            { frequency: regex },
           ],
         });
         if (allFounds.length) {
