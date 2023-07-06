@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
+:root {
   width: 100vw;
-  background-color: red;
-} */
+}
 
 .leaflet-container {
   width: 100%;

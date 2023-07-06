@@ -19,7 +19,7 @@ function Search() {
   const limit = 10;
 
   const {
-    data: results,
+    data: results = [],
     isLoading,
     isFetching,
     isError,
@@ -29,26 +29,10 @@ function Search() {
     hasNextPage,
     fetchNextPage
   } = useSearchAllQuery({
-    q: searchTerm,
-    page: page,
-    limit: limit,});
+    query:searchTerm,
+    pageNumber:page,
+    limit:limit,});
 
-  // const {
-  //   data: { results },
-  //   isLoading,
-  //   isFetching,
-  //   isError,
-  //   isSuccess,
-  //   error,
-  //   isLoadingNextPage,
-  //   hasNextPage,
-  //   fetchNextPage
-  // } = usePaginated(todosApi.endpoints.getTodos, {
-  //   getNextPageParam: (lastPage, allPages) => lastPage.length,
-  //   merge: (prevData, newData) => ({
-  //     todos: [...prevData.todos, ...newData.todos]
-  //   })
-  // });
   let content;
   let resultLength;
   let duration;

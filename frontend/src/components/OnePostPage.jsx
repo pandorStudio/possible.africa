@@ -6,13 +6,13 @@ import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
 
 import {  ParseIframe } from "../utils/htmlParser.jsx";
 import Socialshare from "./Socialshare.jsx";
+import { HourGlassIcon } from "../assets/icons.jsx";
 
 
 function OnePostPage({iconSx, backUrl, news}) {
 
   const date = new Date(news?.createdAt);
-  const jour = date.getDate() || "";
-  const mois = date.toLocaleString('default', { month: 'long' }) || "";
+  const publishedDate = date.toLocaleDateString("en-GB") || "";
   const content = news?.content && ParseIframe(news?.content)
 
   function estimateReadingTime() {
@@ -34,7 +34,7 @@ function OnePostPage({iconSx, backUrl, news}) {
         {/* <Flex><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl}/></Flex> */}
        <Box>
         <Flex>
-       {news?.categorie?.name && <Badge colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{news?.categorie?.name}</Badge>}
+       {/* {news?.categorie?.name && <Badge colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{news?.categorie?.name}</Badge>} */}
 
         </Flex>
         <Heading fontSize={{base: "xl", md: "4xl"}}>{news?.title}</Heading>
@@ -48,10 +48,16 @@ function OnePostPage({iconSx, backUrl, news}) {
                   </Box>
                 <Box w="full">
                   <Flex direction="column" justify="space-around"  gap={1}>
-                 {news?.user?.firstname || news?.user?.firstname && (<Heading size="sm" fontWeight={500}>{news?.user?.firstname} {news?.user?.lastname}</Heading>) || (<Heading size="sm" fontWeight={500}> {"Auteur Inconnu"}</Heading>) } 
+                 {news?.user?.firstname || news?.user?.firstname && (<Heading size="sm" fontWeight={500}>{news?.user?.firstname} {news?.user?.lastname}</Heading>) || (<Heading size="sm" fontWeight={500}> {"Auteur inconnu"}</Heading>) } 
                     <Flex justify="flex-start" color="gray.500">
-                   { jour && <Box fontSize="sm" mr={4}>{jour} {mois} </Box>  ||<Box fontSize="sm" mr={4}>{""} </Box>}   
-                    {estimateReadingTime() && <Box fontSize="sm">{estimateReadingTime()} mins de lecture </Box> || "" }  
+                   { publishedDate && <Box fontSize="sm" mr={4}>{publishedDate} </Box>  ||<Box fontSize="sm" mr={4}>{""} </Box>}
+                   <Flex>
+                    <Box>
+
+                    <HourGlassIcon/>
+                    </Box>
+                    {estimateReadingTime() && <Box fontSize="sm">{estimateReadingTime()} min </Box> || "" }  
+                    </Flex>   
                     </Flex>
                   </Flex>
                   

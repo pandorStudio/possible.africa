@@ -43,15 +43,14 @@ export const Header = () => {
         base: '1',
         md: '5',
       }}
-      
-
       py={{
         base: '4',
         lg: '6',
       }}
-      maxW="container.xl"      
+      minW={{base:"100vw",lg:"container.xl"}}      
+      
     >
-      <Box as="nav" bg="bg-surface">
+      <Box as="nav" bg="bg-surface" minW="100%">
         
           <Flex gap={{base:"8", md:"180" }}
           
