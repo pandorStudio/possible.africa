@@ -12,6 +12,20 @@ function calculateSecondsDiff(date1, date2) {
   return secondsWithTwoDecimals;
 }
 
+function filterByAlphabeticalOrder(array) {
+  array.sort((a, b) => {
+    if (a.name && b.name) {
+      return a.name > b.name ? 1 : -1;
+    } else if (a.title && b.title) {
+      return a.title > b.title ? 1 : -1;
+    } else if (a.title && b.name) {
+      return a.title > b.name ? 1 : -1;
+    } else {
+      return a.name > b.title ? 1 : -1;
+    }
+  });
+}
+
 // @Get all users
 // @route GET /api/v1/users
 // @access Public
@@ -53,11 +67,7 @@ exports.getAllFound = async (req, res) => {
       })(),
       (async () => {
         const allFounds = await Post.find({
-          $or: [
-            { title: regex },
-            { slug: regex },
-            { content: regex },
-          ],
+          $or: [{ title: regex }, { slug: regex }, { content: regex }],
         });
         if (allFounds.length) {
           const allFoundsCopy = [...allFounds];
@@ -152,6 +162,7 @@ exports.getAllFound = async (req, res) => {
       duration,
       resultLength,
     };
+    filterByAlphabeticalOrder(combinedResults);
     combinedResults.unshift(addon);
     res.status(200).json(combinedResults);
   } catch (error) {
