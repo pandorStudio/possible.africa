@@ -105,7 +105,7 @@ export const apiSlice = createApi({
     }),
 
     searchAll: builder.query({
-      query: (query, pageNumber) => `search?q=${query}&page=${pageNumber}`,
+      query: (query, pageNumber) => `search?q=${query.q}&page=${pageNumber}`,
       merge: (currentCache, newItems) => {
         currentCache.push(...newItems);
       },
