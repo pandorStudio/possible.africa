@@ -2,7 +2,7 @@
 import {Badge, Box, Container, Flex, Heading, HStack, Image, Text, VStack} from "@chakra-ui/react"
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
 import Socialshare from "./Socialshare.jsx";
-import { MapIcon } from "../assets/icons.jsx";
+import { CalendarIcon, MapIcon } from "../assets/icons.jsx";
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import { Link } from "react-router-dom";
 import {Parse} from "../utils/htmlParser.jsx";
@@ -45,15 +45,10 @@ function OneAgendaTemplate({iconSx, backUrl, events}) {
 <Flex direction="column" gap={2}>
 
         <Heading fontSize={{base: "lg", md: "4xl"}}>{events?.title}</Heading>
-        <Flex direction="column">
-          <Flex>
-
-        {events?.frequence && <Badge display="inline" textAlign="center" colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{events?.frequence}</Badge>  }    
-          </Flex>
+<Flex >
           
-<Flex gap={6}>
+<Flex gap={{base:2, md: 5}} direction={{base:"column", md:"row"}}>
 <Flex gap={1} alignItems="center">
-
 <Link href={events?.location} isExternal alignItems="center" fontWeight={600} fontSize={14}>
   <Flex gap={1} alignItems="center">
   <MapIcon/>
@@ -63,6 +58,16 @@ function OneAgendaTemplate({iconSx, backUrl, events}) {
     </Flex>
 </Link>
 
+</Flex>
+
+<Flex>
+
+  <Flex gap={1} alignItems="center">
+  <CalendarIcon/>
+  <Text fontSize={14}>
+  {events?.frequence && events?.frequence  } 
+    </Text> 
+    </Flex>
 </Flex>
 <Flex>
 
@@ -75,6 +80,8 @@ function OneAgendaTemplate({iconSx, backUrl, events}) {
     </Flex>
 </Link>
 </Flex>
+
+
 </Flex>
         </Flex>
        

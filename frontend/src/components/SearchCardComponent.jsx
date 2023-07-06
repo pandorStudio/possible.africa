@@ -6,32 +6,31 @@ import { Link } from "react-router-dom";
 
 function SearchCardComponent({title, description, imgUrl, isLoaded, link, postType}) {
 const card = (<Card
-    direction={{ base: 'column', md: 'row' }}
-    overflow='hidden'
-    minW={{base: "sm", md: "2xl"}}
-    w={{base: "sm", md: "2xl"}}
-    maxW={{ base: 'sm', md: '2xl' }}
-    height={{ base: '', md: '130px' }}
-    boxShadow="none"
-    _hover={{ cursor: "pointer" }}
-    borderRadius={0}
-    alignItems={{ base: 'flex-start', md: 'center'}}
-    justifyContent={{ base: 'flex-start', md: 'flex-start'}}
-    zIndex={-1}
+  direction="row"
+  spacing={{ base: '5', md:'1' }}
+  overflow='hidden'
+  w={{base: "md", md: "2xl"}}
+  height={{ base: '130px', md: '130px' }}
+  boxShadow="none"
+  _hover={{ cursor: "pointer" }}
+  borderRadius={0}
+  alignItems={{ base: 'center', md: 'center'}}
+  justifyContent={{ base: 'flex-start', md: 'flex-start'}}
+  zIndex={-1}    
 >
   <Skeleton isLoaded={isLoaded} >
 
-    <Box  w={100} h="100px" hideBelow="md" >
+    <Box  w={{base:70, md: 100}} h={{base: "60px", md:"100%"}} alignItems="center" justifyContent="center" alignSelf="center" >
 
       <Image
-          fit ='cover'
-          w="100%"
-          h="100px"
-          src={imgUrl}
-          alt={imgUrl}
-          borderRadius={8}
-          fallbackSrc='/placeholder_org.jpeg'
-          borderStyle="solid" borderColor="gray.100" borderWidth={1}
+           fit ='cover'
+           w={{base: "60px",md:"80px"}}
+           h={{base: "60px",md:"80px"}}
+           src={imgUrl}
+           alt={imgUrl}
+           borderRadius={8}
+           fallbackSrc='/placeholder_org.jpeg'
+           borderStyle="solid" borderColor="gray.100" borderWidth={1}
           
       />
     </Box>
@@ -39,36 +38,43 @@ const card = (<Card
 
   <Stack>
     
-    <CardBody p={{ base: '0', md: '15px' }}>
+    <CardBody display='flex' flexDir="column" px={{ base: '0', md: '0' }} alignItems="flex-start" justifyContent="flex-start" h={{base: "100%", md:"100%"}} gap={1}>
 
-    <Heading paddingBottom={2} fontSize='lg' color='teal.500' _hover={{ textDecoration: "underline" }}>{title}</Heading>
+    <Heading fontSize='md' fontWeight="600" color='gray.700' _hover={{ textDecoration: "underline" }} noOfLines={{base:1, md: [1,2]}}>{title}</Heading>
 
-<Text noOfLines={[1,2]} pb={2}>
+<Text noOfLines={[2]} color='gray.500'>
   {description}
 </Text>
       
      {postType === "Organisation" &&  (<>
-      <Tag fontWeight={600} fontSize={12}>Organisation</Tag>
+      <Text fontSize="xs">Organisation</Text>
+
+      
       </>)} 
      {postType === "Interview" && (<>
-      <Tag fontWeight={600} fontSize={12}>Interview</Tag>
+      
+      <Text fontSize="xs">Interview</Text>
 
      
      </>)} 
      {postType === "Actualités" && (<>
-      <Tag fontWeight={600} fontSize={12}>Actualités</Tag>
+      <Text fontSize="xs">Actualités</Text>
 
      </>)} 
      {postType === "Agenda" && (<>
-      <Tag fontWeight={600} fontSize={12}>Agenda</Tag>
+      <Text fontSize="xs">Agenda</Text>
+
+      
 
   </>)} 
      {postType === "Opportunités" && (<>
-      <Tag fontWeight={600} fontSize={12}>Opportunités</Tag>
+      <Text fontSize="xs">Opportunités</Text>
+
+      
 
      </>)} 
      {postType === "Emplois" && <>
-     <Tag fontWeight={600} fontSize={12}>Emplois</Tag>
+     <Text fontSize="xs">Emplois</Text>
 
      </>} 
 
