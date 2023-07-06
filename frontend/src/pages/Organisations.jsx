@@ -75,7 +75,7 @@ function Organisations() {
               description={ParseSlice(organisation.description)}
               imgUrl={organisation.logo}
               isLoaded={isLoaded}
-              link={"/organisations/" + organisation.id}
+              link={"/organisations/" + organisation.slug}
               type={organisation?.type?.name}
               country={organisation.country || ""}
             />
