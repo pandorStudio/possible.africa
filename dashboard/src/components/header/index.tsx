@@ -130,6 +130,9 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
         console.log(response.data);
         setOpen(false);
         setConfirmLoading(false);
+        setCaseTitle("");
+        setEditorContent("");
+        setModalText("");
         setTimeout(() => {
           openNotification();
         }, 500);
