@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { Badge, Box, Container, Flex, Heading, HStack, Image, Link, VStack } from "@chakra-ui/react";
+import {  Box, Container, Flex, Heading, HStack, Image, Link, VStack } from "@chakra-ui/react";
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
 
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
@@ -44,8 +44,10 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
 <Flex direction="column" gap={2}>
         <Heading fontSize={{base: "lg", md: "4xl"}}>{organisations?.name}</Heading>
         <Flex gap={{base:2, md: 5}} direction={{base:"column", md:"row"}}>
+        <Link href={`/organisations/${organisations?.slug}`} isExternal alignItems="center" fontSize={14}>
 
       {organisations?.type?.name &&  organisations?.type?.name }     
+      </Link>
         <Link href={organisations?.site_web} isExternal alignItems="center" fontSize={14}>
   <Flex gap={1} alignItems="center">
   <LaunchOutlinedIcon/>

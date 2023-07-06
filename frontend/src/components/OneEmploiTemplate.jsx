@@ -10,10 +10,7 @@ import Socialshare from "./Socialshare.jsx";
 
 function OneEmploiTemplate({iconSx, backUrl, jobs}) {
 
-
-
   const content = jobs?.description && Parse(jobs?.description)
-
 
 
   return (
