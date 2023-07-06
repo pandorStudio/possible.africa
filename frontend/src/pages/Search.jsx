@@ -16,7 +16,7 @@ function Search() {
   const limit = 10;
 
   const {
-    data: results,
+    data: results = [],
     isLoading,
     isFetching,
     isError,

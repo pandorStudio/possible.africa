@@ -9,7 +9,10 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import OutlinedFlagIcon from '@mui/icons-material/OutlinedFlag';
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
-
+import HourglassTopRoundedIcon from '@mui/icons-material/HourglassTopRounded';
+import AdsClickOutlinedIcon from '@mui/icons-material/AdsClickOutlined';
+import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
 export function PodcastIcon() {
     return (
@@ -17,6 +20,25 @@ export function PodcastIcon() {
     )}
 
 
+export function HourGlassIcon(size) {
+        return (
+            <HourglassTopRoundedIcon size={size}/>
+        )}
+    
+        export function TargetIcon() {
+            return (
+                <AdsClickOutlinedIcon/>
+            )}
+
+            export function CategoryIcon() {
+                return (
+                    <CategoryOutlinedIcon/>
+                )}
+
+        export function MoneyIcon() {
+            return (
+                <PaymentsOutlinedIcon/>
+            )}
 
 export function NewspaperIcon() {
         return (

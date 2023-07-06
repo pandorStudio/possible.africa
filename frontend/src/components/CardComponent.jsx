@@ -1,6 +1,6 @@
 import { Box, Card, CardBody, Flex, Heading, Image, Skeleton, Stack, Text } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
-import { CalendarIcon, CountryIcon, MapIcon, OrganisationsIcon, TypeIcon, WorkIcon } from '../assets/icons';
+import { CalendarIcon, CategoryIcon, CountryIcon, MapIcon, MoneyIcon, OrganisationsIcon, TargetIcon, TypeIcon, WorkIcon } from '../assets/icons';
 
 
 // eslint-disable-next-line react/prop-types
@@ -38,17 +38,17 @@ const card = (<Card
 
   <Stack>
     
-    <CardBody px={{ base: '0', md: '0' }} alignItems="center" justifyContent="center" h={{base: "100%", md:"100%"}}>
+    <CardBody display='flex' flexDir="column" px={{ base: '0', md: '0' }} alignItems="flex-start" justifyContent="flex-start" h={{base: "100%", md:"100%"}} gap={1}>
 
-      <Heading fontSize='md' fontWeight="600" color='gray.700' _hover={{ textDecoration: "underline" }} noOfLines={{base:1, md: [1,2]}}>{title}</Heading>
+      <Heading fontSize='md' fontWeight="600" color='gray.700' _hover={{ textDecoration: "underline" }} noOfLines={{base:[1], md: [1,2]}}>{title}</Heading>
 
-      <Text noOfLines={[1]} color='gray.500' pt="6px">
+      <Text noOfLines={[2]} color='gray.500'>
         {description}
       </Text>
      {postType === "Organisation" &&  (<>
       <Flex gap={5} marginTop={1.5} marginLeft={-1}>
       {country && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon/> <Text fontSize="xs">{country}</Text></Flex>}
-      {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="xs">{type}</Text></Flex>}
+      {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CategoryIcon/> <Text fontSize="xs">{type}</Text></Flex>}
       </Flex>
       </>)} 
      {postType === "Interview" && (<>
@@ -72,8 +72,8 @@ const card = (<Card
   </>)} 
      {postType === "Opportunités" && (<>
       <Flex gap={5} marginTop={1.5} marginLeft={-1}>
-      {country && (<><Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon /> <Text fontSize="xs">{country}</Text></Flex></>)}
-     {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="xs">{type}</Text></Flex>}
+      {country && (<><Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TargetIcon /> <Text fontSize="xs">{country}</Text></Flex></>)}
+     {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><MoneyIcon/> <Text fontSize="xs">{type}</Text></Flex>}
 
       </Flex>
      </>)} 

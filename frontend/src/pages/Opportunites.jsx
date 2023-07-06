@@ -29,7 +29,7 @@ let isLoaded = true;
     } else if(isSuccess) {
         content = opportunities.map(opportunity => {
             return (
-                <CardComponent postType="Opportunités" key={opportunity._id} title={opportunity.title} description={ParseSlice(opportunity.description)} imgUrl={opportunity?.organisation?.logo} isLoaded={isLoaded} link={"/opportunites/" + opportunity.id} type={opportunity?.opportunity_type?.name} country={opportunity?.target_country}/>
+                <CardComponent postType="Opportunités" key={opportunity._id} title={opportunity.title} description={ParseSlice(opportunity.description)} imgUrl={opportunity?.organisation?.logo} isLoaded={isLoaded} link={"/opportunites/" + opportunity?.id} type={opportunity?.opportunity_type?.name} country={opportunity?.target_country}/>
             )
         })
     } else if (isError) {

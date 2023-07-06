@@ -39,9 +39,9 @@ function OneOpportunityTemplate({iconSx, backUrl, opportunities}) {
 />
 </Box>
 <Flex direction="column" gap={2}>
-        <Heading fontSize={{base: "lg", md: "4xl"}}>{opportunities?.title}</Heading>
+        <Heading fontSize={{base: "lg", md: "4xl"}} as="h1">{opportunities?.title}</Heading>
         <Flex>
-        { opportunities?.target_country && <Badge display="inline" textAlign="center" colorScheme="green" p={2} borderRadius={50} marginBottom={3}>{opportunities?.target_country}</Badge>   }   
+        { opportunities?.target_country && opportunities?.target_country  }   
 
         </Flex>
        

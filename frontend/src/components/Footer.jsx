@@ -53,9 +53,9 @@ export const Footer = () => {
             
               <Flex justifyContent={{ base: 'center', md: "flex-end" }} alignItems="center" w={{ base: '100%', md: "50%" }}>
                 <ButtonGroup variant="link" spacing="5">
-                  {[{name:'Tableau de bord', link:"https://dashboard.possible.africa" }].map((item) => (
+                  {[{name:'Tableau de bord', link:"https://dashboard.possible.africa" },{name:'Reporter un bug', link:"#" }].map((item) => (
 
-                    <CustomLink  key={item.name} as={ReachLink} to={item.link} target="_blank"><Heading size="sm" fontWeight="600">
+                    <CustomLink  key={item.name} as={ReachLink} to={item.link} target="_blank"><Heading size="sm" fontWeight="400">
                       {item.name}
                       </Heading></CustomLink>
                   ))}

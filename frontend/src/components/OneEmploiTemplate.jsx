@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 
-import { Box, Container, Flex, Heading, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, HStack, Image, Link, Text, VStack } from "@chakra-ui/react";
 import { MapIcon, OrganisationsIcon, WorkIcon } from "../assets/icons.jsx";
 import { Parse } from "../utils/htmlParser.jsx";
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
@@ -10,10 +10,7 @@ import Socialshare from "./Socialshare.jsx";
 
 function OneEmploiTemplate({iconSx, backUrl, jobs}) {
 
-
-
   const content = jobs?.description && Parse(jobs?.description)
-
 
 
   return (
@@ -76,7 +73,11 @@ function OneEmploiTemplate({iconSx, backUrl, jobs}) {
         </VStack>
         <VStack w={{ base: '100%', md: "25%" }} maxHeight="full" p={10} spacing={2} alignItems="flex-start" bg="white" borderStyle="solid" borderColor="gray.100" borderLeftWidth={1}>
 
-        <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><OrganisationsIcon /> <Text fontSize="sm">{jobs?.organisation?.name}</Text></Flex>
+        <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><OrganisationsIcon />        
+        <Link href={`/organisations/${jobs?.organisation?._id}`} isExternal alignItems="center" fontSize={14}>
+<Text fontSize="sm">{jobs?.organisation?.name}</Text>
+</Link>
+</Flex>
       <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><WorkIcon/> <Text fontSize="sm">{jobs?.type}</Text></Flex>
       <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><MapIcon/> <Text fontSize="sm">{jobs?.location}</Text></Flex>
 
