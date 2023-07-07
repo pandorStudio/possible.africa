@@ -229,7 +229,7 @@ export const Footer = () => {
               <CustomLink
                 key="Tableau de bord"
                 as={ReachLink}
-                to="https://dashboard.possible.africa"
+                to="https://app.possible.africa"
                 target="_blank"
               >
                 <Heading size="sm" fontWeight="400">

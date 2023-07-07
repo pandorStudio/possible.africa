@@ -62,9 +62,22 @@ export const Header = () => {
           }}
           >
           
-            <Box w={{ base: '50%', md: "10%" }} h="70px" as="a" href="/"><Image src={Logo} fit ='contain'
+            <Box w={{ base: '100%', md: "10%" }} h="70px" display="flex" flexDirection="row" alignItems="space-between" justifyContent="space-between">
+              
+              <Box as="a" href="/">
+
+              <Image src={Logo} fit ='contain'
           w="100%"
-          h="100%"/></Box>
+          h="100%"
+          />
+              </Box>
+              <Box display="flex" alignItems="center">
+
+            <Button   _hover={{ bg: 'teal.600' }}
+hideFrom="md">En savoir plus</Button>
+
+</Box>
+          </Box>
 
             <Flex w={{ base: '100%', md: "50%" }}  alignItems="center" justifyContent="center" alignContent="center">
 
@@ -76,7 +89,7 @@ export const Header = () => {
          
               <Flex justifyContent="space-between" alignItems="center">
               <Button   _hover={{ bg: 'teal.600' }}
->En savoir plus</Button>
+hideBelow="md">En savoir plus</Button>
                
               </Flex>
 
