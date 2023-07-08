@@ -25,9 +25,9 @@ function App() {
       <BrowserRouter>
           <Routes>
             <Route path="/" element={[<Header key="1"/>, <Footer key="2"/>]}>
-                <Route index element={<Accueil />} />
                 
                 <Route path="/" element={<HomeHeader />}>
+                <Route index element={<Accueil />} />
                     <Route path='/organisations' >
                         <Route index path='/organisations'  element={<Organisations />} />
                         <Route path='/organisations/:slug' element={<OneOrganisation />} />
