@@ -5,6 +5,8 @@ import CustomContainer from "../utils/CustomContainer";
 import { ParseSlice } from "../utils/htmlParser";
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import NoData from "../utils/NoData";
+import CenteredContainer from "../utils/CenteredContainer";
 
 function Organisations() {
   const [page, setPage] = useState(1);
@@ -44,11 +46,17 @@ function Organisations() {
 
   let isLoaded = true;
 
+  if (organisations?.length === 0) {
+    return (
+    <NoData/>
+    );
+  }
+
   if (isLoading) {
     return (
-      <VStack>
+      <CenteredContainer>
         <Spinner />
-      </VStack>
+      </CenteredContainer>
     );
   }
   if (organisations.length) {

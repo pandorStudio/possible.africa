@@ -3,6 +3,8 @@ import CardComponent from "../components/CardComponent.jsx";
 import { useGetJobsQuery } from "../features/api/apiSlice.js";
 import CustomContainer from "../utils/CustomContainer.jsx";
 import { ParseSlice } from "../utils/htmlParser.jsx";
+import NoData from "../utils/NoData.jsx";
+import CenteredContainer from "../utils/CenteredContainer.jsx";
 
 
 function Emplois() {
@@ -23,8 +25,15 @@ function Emplois() {
 // setInterval(() => {
 //   setIsLoaded(true)
 // }, 1000);
+
+if (jobs?.length === 0) {
+    return (
+    <NoData/>
+    );
+  }
+
     if (isLoading || isFetching) {
-        return <VStack><Spinner/></VStack>
+        return <CenteredContainer><Spinner/></CenteredContainer>
     } else if(isSuccess) {
         content = jobs.map(job => {
             return (
