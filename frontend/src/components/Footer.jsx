@@ -250,11 +250,6 @@ export const Footer = () => {
                   Reporter un bug
                 </Heading>
               </CustomLink>
-              {/* <Button style={{
-                border: "none"
-              }} onClick={showModal}>
-                Reporter Un Bug
-              </Button> */}
             </ButtonGroup>
           </Flex>
         </Flex>

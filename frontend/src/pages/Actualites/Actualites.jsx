@@ -8,6 +8,7 @@ import CustomContainer from "../../utils/CustomContainer.jsx";
 import { ParseSlice } from "../../utils/htmlParser.jsx";
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import NoData from "../../utils/NoData.jsx";
 
 function Actualites() {
   const [page, setPage] = useState(1);
@@ -57,11 +58,14 @@ function Actualites() {
 
   if (allNews?.length === 0) {
     return (
-      <VStack>
-        <Spinner />
-      </VStack>
+    <NoData/>
     );
   }
+
+  if (isLoading || isFetching) {
+    return <CenteredContainer><Spinner/></CenteredContainer>
+}
+
   if (allNews.length) {
     content = (
       <InfiniteScroll
@@ -78,8 +82,13 @@ function Actualites() {
             <Spinner as="div" mx="45%" mt={10} />
           </div>
         }
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
       >
-        {allNews.map((news, index) => {
+        {allNews && allNews.map((news, index) => {
           const instanceCard = (
             <CardComponent
               postType="Actualités"
@@ -97,9 +106,11 @@ function Actualites() {
             <>
               {instanceCard}
               {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
-                <HStack>
-                  <Spinner />
-                </HStack>
+               <CustomContainer>
+
+                 <Spinner />
+               </CustomContainer>
+
               )}
             </>
           );
