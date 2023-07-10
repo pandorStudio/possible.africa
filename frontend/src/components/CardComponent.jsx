@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, Flex, Heading, Image, Skeleton, Stack, Text } from '@chakra-ui/react';
+import { Box, Card, CardBody, Flex, Image, Skeleton, Stack, Text } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
 import { CalendarIcon, CategoryIcon, CountryIcon, MapIcon, MoneyIcon, OrganisationsIcon, TargetIcon, TypeIcon, WorkIcon } from '../assets/icons';
 

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { Box, Card, CardBody, Heading, Image, Skeleton, Stack, Tag, Text } from '@chakra-ui/react';
+import { Box, Card, CardBody, Image, Skeleton, Stack, Text } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
 
 
