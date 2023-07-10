@@ -1,4 +1,5 @@
-import { HStack, Spinner, VStack } from "@chakra-ui/react";
+// eslint-disable-next-line no-unused-vars
+import { Box, Spinner, VStack } from "@chakra-ui/react";
 import CardComponent from "../../components/CardComponent.jsx";
 import {
   useGetPostCategoriesQuery,
@@ -6,13 +7,14 @@ import {
 } from "../../features/api/apiSlice.js";
 import CustomContainer from "../../utils/CustomContainer.jsx";
 import { ParseSlice } from "../../utils/htmlParser.jsx";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NoData from "../../utils/NoData.jsx";
+import CenteredContainer from "../../utils/CenteredContainer.jsx";
 
 function Actualites() {
   const [page, setPage] = useState(1);
-  const [infiniteScrollIsFetching, setinfiniteScrollIsFetching] =
+  const [infiniteScrollIsFetching] =
     useState(false);
   const { data: interviewCategories = [] } = useGetPostCategoriesQuery({
     limit: 10,
@@ -36,23 +38,6 @@ function Actualites() {
   });
   let content;
 
-  // useEffect(() => {
-  //   function handleScroll() {
-  //     if (
-  //       window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-  //       !infiniteScrollIsFetching
-  //     ) {
-  //       setPage((prevPage) => prevPage + 1);
-  //       setinfiniteScrollIsFetching(true);
-  //     }
-  //   }
-
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [infiniteScrollIsFetching]);
 
   let isLoaded = true;
 
@@ -62,7 +47,7 @@ function Actualites() {
     );
   }
 
-  if (isLoading || isFetching) {
+  if (isLoading ) {
     return <CenteredContainer><Spinner/></CenteredContainer>
 }
 
@@ -73,20 +58,16 @@ function Actualites() {
         next={() => setPage((prevPage) => prevPage + 1)}
         hasMore={true}
         loader={
-          <div
+          <Box
             styles={{
               display: "flex",
               justifyContent: "center",
             }}
           >
             <Spinner as="div" mx="45%" mt={10} />
-          </div>
+          </Box>
         }
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
+       
       >
         {allNews && allNews.map((news, index) => {
           const instanceCard = (
@@ -120,7 +101,7 @@ function Actualites() {
   }
   if (isError) {
     console.log({ error });
-    return <div>{error.status}</div>;
+    return <Box>{error.status}</Box>;
   }
 
   return <CustomContainer content={content} />;

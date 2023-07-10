@@ -31,7 +31,7 @@ if (opportunities?.length === 0) {
     );
   }
 
-    if (isLoading || isFetching) {
+    if (isLoading) {
         return <CenteredContainer><Spinner/></CenteredContainer>
     } else if(isSuccess) {
         content = opportunities.map(opportunity => {

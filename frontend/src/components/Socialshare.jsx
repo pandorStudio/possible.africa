@@ -1,4 +1,4 @@
-import { Box, HStack } from '@chakra-ui/react'
+import { Box, HStack, VStack } from '@chakra-ui/react'
 import FacebookCustomIcon from './icons/FacebookCustomIcon'
 import LinkSolidCustomIcon from './icons/LinkSolidCustomIcon'
 import LinkedinCustomIcon from './icons/LinkedinCustomIcon'
@@ -37,7 +37,7 @@ function Socialshare(title, content) {
     };
   return (
 
-    <HStack alignItems="center" h="100%">
+    <HStack alignItems="center" h="100%"  position="relative">
                   <TwitterShareButton 
             url={postUrl}
             title="Titre"
@@ -75,8 +75,9 @@ function Socialshare(title, content) {
         >
             <MailCustomIcon sx={iconSx}/>
         </EmailShareButton>
+
+                    {showTooltip && <Box placement='top' bg="gray.800" borderRadius={4} color="white" px={2} fontSize="sm" zIndices="tooltip" position="absolute" top="-30px"  left="67%" className='tooltip'>Copié</Box>}
                     <LinkSolidCustomIcon sx={iconSx} onClick={handleCopyLink}/>
-                    {showTooltip && <Box placement='top' bg="gray.800" borderRadius={4} color="white" px={2} fontSize="sm" zIndices="tooltip">Copié</Box>}
                 </HStack>
     )
 }

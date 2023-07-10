@@ -32,7 +32,7 @@ if (jobs?.length === 0) {
     );
   }
 
-    if (isLoading || isFetching) {
+    if (isLoading) {
         return <CenteredContainer><Spinner/></CenteredContainer>
     } else if(isSuccess) {
         content = jobs.map(job => {

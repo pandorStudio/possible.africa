@@ -64,7 +64,7 @@ export const Header = () => {
           
             <Box w={{ base: '100%', md: "10%" }} h="70px" display="flex" flexDirection="row" alignItems="space-between" justifyContent="space-between">
               
-              <Box as="a" href="/">
+              <Box as="a" href="/" w="100px">
 
               <Image src={Logo} fit ='contain'
           w="100%"
@@ -79,7 +79,7 @@ hideFrom="md" as="a" href='https://possible-africa.notion.site/POSSIBLE-AFRICA-d
 </Box>
           </Box>
 
-            <Flex w={{ base: '100%', md: "50%" }}  alignItems="center" justifyContent="center" alignContent="center">
+            <Flex w={{ base: '100%', md: "70%" }}  alignItems="center" justifyContent="center" alignContent="center">
 
           
                    <Searchbar zIndex={100}/>
@@ -89,7 +89,10 @@ hideFrom="md" as="a" href='https://possible-africa.notion.site/POSSIBLE-AFRICA-d
          
               <Flex justifyContent="space-between" alignItems="center">
               <Button   _hover={{ bg: 'teal.600' }}
-hideBelow="md"  as="a" href='https://possible-africa.notion.site/POSSIBLE-AFRICA-ddb414537adf439f9f06c5e63914d1be?pvs=4' target='_blank'>En savoir plus</Button>
+hideBelow="md"
+as="a" href='https://possible-africa.notion.site/POSSIBLE-AFRICA-ddb414537adf439f9f06c5e63914d1be?pvs=4'
+target='_blank'
+>En savoir plus</Button>
                
               </Flex>
 
