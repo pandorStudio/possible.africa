@@ -1,8 +1,8 @@
 import { Container, Fade, SlideFade, Text, VStack, useDisclosure } from '@chakra-ui/react'
 import { Box } from '@mui/material'
 
-function CustomContainer({content, title, children}) {
-  const { isOpen, onToggle } = useDisclosure()
+function CustomContainer({content, title}) {
+  const { onToggle } = useDisclosure()
 
 
 
