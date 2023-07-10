@@ -35,7 +35,7 @@ if (interviews?.length === 0) {
     );
   }
 
-    if (isLoading || isFetching) {
+    if (isLoading) {
         return <CenteredContainer><Spinner/></CenteredContainer>
     } else if(isSuccess) {
         content = interviews.map(interview => {

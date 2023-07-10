@@ -9,7 +9,7 @@ const card = (<Card
   direction="row"
   spacing={{ base: '5', md:'1' }}
   overflow='hidden'
-  w={{base: "md", md: "2xl"}}
+  w={{base: "100%", md: "2xl"}}
   height={{ base: '130px', md: '130px' }}
   boxShadow="none"
   _hover={{ cursor: "pointer" }}
@@ -40,7 +40,7 @@ const card = (<Card
     
     <CardBody display='flex' flexDir="column" px={{ base: '0', md: '0' }} alignItems="flex-start" justifyContent="flex-start" h={{base: "100%", md:"100%"}} gap={1}>
 
-    <Heading fontSize='md' fontWeight="600" color='gray.700' _hover={{ textDecoration: "underline" }} noOfLines={{base:1, md: [1,2]}}>{title}</Heading>
+    <Text as="h2" fontSize='md' fontWeight="600" color='gray.700' _hover={{ textDecoration: "underline" }} noOfLines={[2]}>{title}</Text>
 
 <Text noOfLines={[2]} color='gray.500'>
   {description}

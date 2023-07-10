@@ -1,4 +1,4 @@
-import { Flex, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text, VStack } from "@chakra-ui/react";
 import CardComponent from "../components/CardComponent";
 import { useGetOrganisationsQuery } from "../features/api/apiSlice";
 import CustomContainer from "../utils/CustomContainer";
@@ -27,22 +27,6 @@ function Organisations() {
   });
   let content;
 
-  // useEffect(() => {
-  //   function handleScroll() {
-  //     if (
-  //       window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-  //       !infiniteScrollIsFetching
-  //     ) {
-  //       setPage((prevPage) => prevPage + 1);
-  //       setinfiniteScrollIsFetching(true);
-  //     }
-  //   }
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [infiniteScrollIsFetching, page]);
 
   let isLoaded = true;
 
@@ -66,12 +50,16 @@ function Organisations() {
         next={() => setPage((prevPage) => prevPage + 1)}
         hasMore={true}
         loader={
-          <div styles={{
+          // eslint-disable-next-line react/no-unknown-property
+          <Box styles={{
             display: "flex",
             justifyContent: "center",
           }}>
             <Spinner as="div" mx="45%" mt={10} />
-          </div>
+          </Box>
+        }
+        endMessage={
+            <Text>Yay! You have seen it all</Text>
         }
       >
         {organisations.map((organisation, index) => {

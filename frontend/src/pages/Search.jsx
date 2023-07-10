@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 
-import { Button, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Button, Spinner, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SearchCardComponent from "../components/SearchCardComponent";
 import { useSearchAllQuery } from "../features/api/apiSlice";
 import CustomContainer from "../utils/CustomContainer";
 import { ParseSlice } from "../utils/htmlParser";
+import NoData from "../utils/NoData";
 
 function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,6 +55,8 @@ function Search() {
 
   let isLoaded = true;
 
+
+
   if (isLoading || isFetching) {
     return (
       <VStack minH="50vh" alignItems="center" justifyContent="center">
@@ -65,13 +68,22 @@ function Search() {
 
     duration = results[0].duration;
 
+    if (results?.length === 0) {
+      return (
+      <NoData/>
+      );
+    }
+   
+
     // resultLength = results.pages.Map(page => page.result).length;
     // duration = results.pages[0].duration;
 
     content = results.map((result) => {
       return (
         <>
-          {result.searchType === "organisation" && (
+
+
+{result.searchType === "organisation" && (
             <SearchCardComponent
               postType="Organisation"
               key={result._id}
@@ -139,13 +151,13 @@ function Search() {
               type={result?.type}
               location={result?.location}
             />
-          )}
+          )} 
         </>
       );
     });
   } else if (isError) {
     console.log({ error });
-    return <div>{error.status}</div>;
+    return <Box>{error.status}</Box>;
   }
   return (
     <>
@@ -154,7 +166,7 @@ function Search() {
         title={`Environ ${resultLength} resultats trouvés (${duration} secondes)`}
       />
       {/* Render the "Load More" button */}
-      {isLoading ? <div>Loading...</div> : <Button>{"Load More"}</Button>}
+      {/* {isLoading ? <div>Loading...</div> : <Button>{"Load More"}</Button>} */}
     </>
   );
 }

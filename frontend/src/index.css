@@ -161,3 +161,17 @@ button:focus-visible {
   }
 }
 */
+
+
+.tooltip::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% - 30px); /* Adjust this value to position the arrow */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+

@@ -43,7 +43,7 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
 </Box>
 <Flex direction="column" gap={2}>
         <Heading fontSize={{base: "lg", md: "4xl"}}>{organisations?.name}</Heading>
-        <Flex gap={{base:2, md: 5}} direction={{base:"column", md:"row"}}>
+        <Flex gap={{base:2, md: 5}} direction={{base:"row", md:"row"} } alignItems="center">
         <Link href={`/organisations/${organisations?.slug}`} isExternal alignItems="center" fontSize={14}>
 
       {organisations?.type?.name &&  organisations?.type?.name }     

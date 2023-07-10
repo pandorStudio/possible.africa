@@ -124,10 +124,13 @@ const {
 
 
   const handleSearchResultClick = (suggestion) => {
+    const results = performSearch(suggestion);
+    setSearchResults(results);
+
     setQuery(suggestion);
     navigate(`search?q=${(encodeURIComponent(suggestion).replace(/%20/g, "+"))}`);
     addSearchToLocalstorage(suggestion);
-    setShowSuggestions(false);
+    // setShowSuggestions(false);
   };
 
 
@@ -181,17 +184,18 @@ const {
 
   
   return (
-    <InputGroup as="div" hideBelow={hideMeBellow} w="full" h="full" className="search" display="flex" gap={10} ref={searchContainerRef}>
+    <InputGroup as="div" hideBelow={hideMeBellow} w="100%" h="full" className="search" display="flex" gap={10} ref={searchContainerRef}>
       <InputLeftElement pointerEvents="none">
         <SearchIcon color="gray.300" />
       </InputLeftElement>
       <Input
-        borderRadius={16}
+        borderRadius={10}
         className="input"
         type="text"
         placeholder="L'univers des possibles de l'#AfricaTech"
         value={query}
         fontWeight={700}
+        w="100%"
         onChange={handleInputChange}
         onKeyUp={(e) => {
           if (e.key === 'Enter') {
@@ -204,6 +208,7 @@ const {
             inputRef.current.blur();
           }
         }}
+
         outline="none"
         ref={inputRef}
         onFocus={() => setShowSuggestions(true)}
