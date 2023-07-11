@@ -13,6 +13,7 @@ import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { imageUploadHandler } from "../posts/create";
 import { axiosInstance } from "../../authProvider";
+import { Admin } from "../../custom-components/AccessControl";
 
 const { Option } = Select;
 
@@ -213,14 +214,16 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Role" name={["role"]}>
-          {/* <Select defaultValue="user" style={{ width: 120 }}>
+        <Admin>
+          <Form.Item label="Role" name={["role"]}>
+            {/* <Select defaultValue="user" style={{ width: 120 }}>
             <Option value="admin">Administrateur</Option>
             <Option value="contributor">Contributeur</Option>
             <Option value="user">Utilisateur</Option>
           </Select> */}
-          <Select {...roleSelectProps} />
-        </Form.Item>
+            <Select {...roleSelectProps} />
+          </Form.Item>
+        </Admin>
         <Form.Item label="Genre" name={["gender"]}>
           <Select defaultValue="f" style={{ width: 120 }}>
             <Option value="f">Féminin</Option>
