@@ -49,6 +49,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     info: UploadChangeParam<UploadFile>
   ) => {
     setUploadLoading(true);
+    setImageUrl("");
     const base64 = await file2Base64(info.file);
     const url = await imageUploadHandler(base64);
     setImageUrl(url);
@@ -173,7 +174,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         setCountries(countrieDatasFiltered);
       });
     }
-  }, [imageUrl, countries]);
+  }, [imageUrl, countries, uploadLoading]);
 
   return (
     <Create saveButtonProps={saveButtonProps}>
@@ -192,14 +193,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Pays" name={["country"]}>
           <SelectCountry />
         </Form.Item>
-        {/* <Form.Item label="Logo"> */}
-        <Form.Item
-          label="Logo"
-          name="logo"
-          // valuePropName="fileList"
-          // getValueFromEvent={getValueFromEvent}
-          // noStyle
-        >
+        <Form.Item label="Logo" name="logo">
           <Upload
             name="file"
             listType="picture-card"
@@ -207,15 +201,29 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
             showUploadList={false}
             beforeUpload={beforeUpload}
             onChange={handleChange}
-            // action={`${apiUrl}/upload/images`}
-            // // Define the body of the request
-            // listType="picture"
-            // maxCount={1}
           >
-            {imageUrl ? (
-              <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
-            ) : (
+            {uploadLoading || !imageUrl ? (
               uploadButton
+            ) : (
+              <div style={{ position: "relative" }}>
+                <img
+                  src={imageUrl}
+                  alt="avatar"
+                  style={{ width: "100%", borderRadius: "8px" }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    left: "0",
+                    right: "0",
+                    bottom: "0",
+                    color: "GrayText",
+                    backgroundColor: "white",
+                  }}
+                >
+                  Modifier
+                </span>
+              </div>
             )}
           </Upload>
           {/* </Form.Item> */}

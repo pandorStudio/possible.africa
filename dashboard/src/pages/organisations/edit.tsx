@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { IResourceComponentsProps, file2Base64 } from "@refinedev/core";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Space, Typography } from "antd";
+import { Form, Input, Select, Space, Typography, Upload, message } from "antd";
 import ReactQuill from "react-quill";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import { axiosInstance } from "../../authProvider";
+import { RcFile, UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -19,6 +21,10 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   const [realPhoneNumber, setRealPhoneNumber] = React.useState("");
   const [indicatif, setIndicatif] = React.useState();
   const [countries, setCountries] = useState([]);
+  
+  const [imageUrlFromDb, setImageUrlFromDb] = useState<string>();
+  const [imageUrl, setImageUrl] = useState<string>(organisationsData?.logo);
+  const [uploadLoading, setUploadLoading] = useState(false);
 
   const { selectProps: typeSelectProps } = useSelect({
     resource: "organisation_types",
@@ -60,11 +66,16 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
       );
     }
 
-    if (values.image && values.image.length) {
-      const base64 = await file2Base64(values.image[0]);
-      const url = await imageUploadHandler(base64);
-      values.image = url;
-    }
+    // if (values.image && values.image.length) {
+    //   const base64 = await file2Base64(values.image[0]);
+    //   const url = await imageUploadHandler(base64);
+    //   values.image = url;
+    // }
+        if (values.logo) {
+          values.logo = imageUrl;
+        } else {
+          values.logo = "";
+        }
 
     if (!values?.contributeur?._id) {
       values.contributeur = null;
@@ -99,10 +110,42 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     setPhoneNumber(formattedNumber);
   };
 
+  const beforeUpload = async (file: RcFile) => {
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    if (!isJpgOrPng) {
+      message.error("You can only upload JPG/PNG file!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("Image must smaller than 2MB!");
+    }
+    // return isJpgOrPng && isLt2M;
+  };
+
+  const handleChange: UploadProps["onChange"] = async (
+    info: UploadChangeParam<UploadFile>
+  ) => {
+    setUploadLoading(true);
+    setImageUrl("");
+    const base64 = await file2Base64(info.file);
+    const url = await imageUploadHandler(base64);
+    setImageUrl(url);
+  };
+
+  const uploadButton = (
+    <div>
+      {uploadLoading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
   useEffect(() => {
-    // if (imageUrl) {
-    //   setUploadLoading(false);
-    // }
+    if (imageUrl) {
+      setUploadLoading(false);
+    }
+    if (organisationsData?.logo) {
+      setImageUrlFromDb(organisationsData.logo);
+    }
     if (organisationsData?.telephone) {
       setIndicatif(organisationsData?.telephone?.indicatif);
       setPhoneNumber(organisationsData?.telephone?.number);
@@ -135,7 +178,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         setCountries(countrieDatasFiltered);
       });
     }
-  }, [countries]);
+  }, [imageUrl, countries, organisationsData, uploadLoading]);
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
@@ -153,6 +196,41 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item label="Pays" name={["country"]}>
           <Input />
+        </Form.Item>
+        <Form.Item label="Logo" name="logo">
+          <Upload
+            name="file"
+            listType="picture-card"
+            className="avatar-uploader"
+            showUploadList={false}
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+          >
+            {uploadLoading || (!imageUrl && !imageUrlFromDb) ? (
+              uploadButton
+            ) : (
+              <div style={{ position: "relative" }}>
+                <img
+                  src={imageUrl || imageUrlFromDb}
+                  alt="avatar"
+                  style={{ width: "100%", borderRadius: "8px" }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    left: "0",
+                    right: "0",
+                    bottom: "0",
+                    color: "GrayText",
+                    backgroundColor: "white",
+                  }}
+                >
+                  Modifier
+                </span>
+              </div>
+            )}
+          </Upload>
+          {/* </Form.Item> */}
         </Form.Item>
         <Form.Item label="Type" name={["type", "_id"]}>
           <Select {...typeSelectProps} />

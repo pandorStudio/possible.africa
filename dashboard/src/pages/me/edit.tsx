@@ -27,6 +27,7 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
   const [loading, setLoading] = useState(false);
   const [imageUrlFromDb, setImageUrlFromDb] = useState<string>();
   const [imageUrl, setImageUrl] = useState<string>(data?.avatar);
+  const [uploadLoading, setUploadLoading] = useState(false);
   const usersData = queryResult?.data?.data;
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [realPhoneNumber, setRealPhoneNumber] = React.useState("");
@@ -62,6 +63,8 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
   const handleChange: UploadProps["onChange"] = async (
     info: UploadChangeParam<UploadFile>
   ) => {
+    setUploadLoading(true);
+    setImageUrl("");
     const base64 = await file2Base64(info.file);
     const url = await imageUploadHandler(base64);
     setImageUrl(url);
@@ -69,16 +72,19 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
 
   const uploadButton = (
     <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      {uploadLoading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
 
   useEffect(() => {
+    if (imageUrl) {
+      setUploadLoading(false);
+    }
     if (data?.avatar) {
       setImageUrlFromDb(data.avatar);
     }
-    if (data?.phone) { 
+    if (data?.phone) {
       setIndicatif(data?.phone?.indicatif);
       setPhoneNumber(data?.phone?.number);
     }
@@ -111,7 +117,7 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
       });
     }
     // console.log(saveButtonProps);
-  }, [imageUrl, data, countries]);
+  }, [imageUrl, data, countries, uploadLoading]);
 
   const apiUrl = useApiUrl();
 
@@ -179,14 +185,28 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
-            {imageUrlFromDb || imageUrl ? (
-              <img
-                src={imageUrl || imageUrlFromDb}
-                alt="avatar"
-                style={{ width: "100%" }}
-              />
-            ) : (
+            {uploadLoading || (!imageUrl && !imageUrlFromDb) ? (
               uploadButton
+            ) : (
+              <div style={{ position: "relative" }}>
+                <img
+                  src={imageUrl || imageUrlFromDb}
+                  alt="avatar"
+                  style={{ width: "100%", borderRadius: "8px" }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    left: "0",
+                    right: "0",
+                    bottom: "0",
+                    color: "GrayText",
+                    backgroundColor: "white",
+                  }}
+                >
+                  Modifier
+                </span>
+              </div>
             )}
           </Upload>
         </Form.Item>
