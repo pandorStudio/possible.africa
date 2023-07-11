@@ -53,6 +53,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
     info: UploadChangeParam<UploadFile>
   ) => {
     setUploadLoading(true);
+    setImageUrl("");
     const base64 = await file2Base64(info.file);
     const url = await imageUploadHandler(base64);
     setImageUrl(url);
@@ -60,7 +61,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
 
   const uploadButton = (
     <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      {uploadLoading ? <LoadingOutlined /> : <PlusOutlined />}
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
@@ -113,7 +114,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         setCountries(countrieDatasFiltered);
       });
     }
-  }, [imageUrl, countries]);
+  }, [imageUrl, countries, uploadLoading]);
 
   const apiUrl = useApiUrl();
 
@@ -123,7 +124,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
     } else {
       values.avatar = "";
     }
-    
+
     if (values.telephone) {
       // console.log(values.telephone);
       values.telephone = {
@@ -169,10 +170,28 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
-            {imageUrl ? (
-              <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
-            ) : (
+            {uploadLoading || !imageUrl ? (
               uploadButton
+            ) : (
+              <div style={{ position: "relative" }}>
+                <img
+                  src={imageUrl}
+                  alt="avatar"
+                  style={{ width: "100%", borderRadius: "8px" }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    left: "0",
+                    right: "0",
+                    bottom: "0",
+                    color: "GrayText",
+                    backgroundColor: "white",
+                  }}
+                >
+                  Modifier
+                </span>
+              </div>
             )}
           </Upload>
         </Form.Item>

@@ -10,7 +10,7 @@ const card = (<Card
     spacing={{ base: '5', md:'1' }}
     overflow='hidden'
     w={{base: "100%", md: "2xl"}}
-    height={{ base: '130px', md: '130px' }}
+    height={{ base: '100%', md: '130px' }}
     boxShadow="none"
     _hover={{ cursor: "pointer" }}
     borderRadius={0}
@@ -38,7 +38,7 @@ const card = (<Card
 
   <Stack>
     
-    <CardBody display='flex' flexDir="column" px={{ base: '0', md: '0' }} alignItems="flex-start" justifyContent="flex-start" h={{base: "100%", md:"100%"}} gap={1}>
+    <CardBody display='flex' flexDir="column" px={{ base: '0', md: '0' }} py="5px" alignItems="flex-start" justifyContent="flex-start" h={{base: "100%", md:"100%"}} gap={1}>
 
       <Text as="h2" fontSize='md' fontWeight="600" color='gray.700' _hover={{ textDecoration: "underline" }} noOfLines={[2]}>{title}</Text>
 
@@ -46,7 +46,7 @@ const card = (<Card
         {description}
       </Text>
      {postType === "Organisation" &&  (<>
-      <Flex gap={5} marginTop={1.5} marginLeft={-1}>
+      <Flex gap={5} marginTop={1.5} marginLeft={-1} >
       {country && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon/> <Text fontSize="xs">{country}</Text></Flex>}
       {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CategoryIcon/> <Text fontSize="xs">{type}</Text></Flex>}
       </Flex>
@@ -63,7 +63,7 @@ const card = (<Card
       </Flex>
      </>)} 
      {postType === "Agenda" && (<>
-      <Flex gap={5} marginTop={1.5} marginLeft={-1}>
+      <Flex gap={5} marginTop={1.5} marginLeft={-1} hideBelow="md">
       {dateDebut || dateFin && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CalendarIcon /><Text>{dateDebut}</Text> - <Text>{dateFin}</Text></Flex>}
      {country && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><MapIcon/> <Text fontSize="xs">{country}</Text></Flex>}
      {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="xs">{type}</Text></Flex>}

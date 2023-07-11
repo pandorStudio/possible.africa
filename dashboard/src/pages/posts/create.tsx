@@ -5,7 +5,7 @@ import {
   useApiUrl,
 } from "@refinedev/core";
 import { Create, useForm, getValueFromEvent, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Upload } from "antd";
+import { Form, Input, Select, Upload, message } from "antd";
 // import BasicEditor from "../../components/Editors/basic";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -14,6 +14,9 @@ import LexicalEditor from "../../components/Editors/lexical";
 import "../../components/Editors/styles.css";
 import { axiosInstance } from "../../authProvider";
 import SelectCountry from "../../custom-components/SelectCountry";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
+import { UploadProps } from "antd/lib/upload";
 
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
@@ -61,11 +64,16 @@ export const reactQuillModules = {
 export const PostCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
   const [editorContent, setEditorContent] = useState("");
+  const [imageUrl, setImageUrl] = useState<string>();
+  const [uploadLoading, setUploadLoading] = useState(false);
   const apiUrl = useApiUrl();
 
   useEffect(() => {
     //console.log(editorContent);
-  }, [editorContent]);
+    if (imageUrl) {
+      setUploadLoading(false);
+    }
+  }, [imageUrl, editorContent]);
 
   const { selectProps: userSelectProps } = useSelect({
     resource: "users",
@@ -115,33 +123,64 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
       });
     }
 
-    if (values.image && values.image.length) {
-      const base64 = await file2Base64(values.image[0]);
-      const url = await imageUploadHandler(base64);
-      values.image = url;
+    // if (values.image && values.image.length) {
+    //   const base64 = await file2Base64(values.image[0]);
+    //   const url = await imageUploadHandler(base64);
+    //   values.image = url;
+    // }
+    if (values.image) {
+      values.image = imageUrl;
     }
 
-      if (!values?.user?._id) {
-        values.user = null;
-      }
-      if (!values?.organisations?._id) {
-        values.organisations = null;
-      }
-      if (!values?.country?._id) {
-        values.country = null;
-      }
-      if (!values?.categorie?._id) {
-        values.categorie = null;
-      }
-      if (!values?.content?._id) {
-        values.content = null;
-      }
-      if (!values?.image?._id) {
-        values.image = null;
-      }
+    if (!values?.user?._id) {
+      values.user = null;
+    }
+    if (!values?.organisations?._id) {
+      values.organisations = null;
+    }
+    if (!values?.country?._id) {
+      values.country = null;
+    }
+    if (!values?.categorie?._id) {
+      values.categorie = null;
+    }
+    if (!values?.content?._id) {
+      values.content = null;
+    }
+    if (!values?.image) {
+      values.image = null;
+    }
 
     onFinish(values);
   }
+
+  const uploadButton = (
+    <div>
+      {uploadLoading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
+  const beforeUpload = async (file: RcFile) => {
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    if (!isJpgOrPng) {
+      message.error("You can only upload JPG/PNG file!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("Image must smaller than 2MB!");
+    }
+    // return isJpgOrPng && isLt2M;
+  };
+
+  const handleChange: UploadProps["onChange"] = async (
+    info: UploadChangeParam<UploadFile>
+  ) => {
+    setUploadLoading(true);
+    const base64 = await file2Base64(info.file);
+    const url = await imageUploadHandler(base64);
+    setImageUrl(url);
+  };
 
   return (
     <Create
@@ -204,7 +243,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             placeholder="Placez votre contenu ici..."
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Slug"
           name={["slug"]}
           rules={[
@@ -214,7 +253,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
           ]}
         >
           <Input />
-        </Form.Item>
+        </Form.Item> */}
         {/* <Form.Item
           label="Contenu"
           name={["content"]}
@@ -226,14 +265,14 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item> */}
-        <Form.Item label="Couverture">
-          <Form.Item
-            name="image"
-            valuePropName="fileList"
-            getValueFromEvent={getValueFromEvent}
-            noStyle
-          >
-            <Upload.Dragger
+        <Form.Item
+          label="Couverture"
+          name="image"
+          // valuePropName="fileList"
+          // getValueFromEvent={getValueFromEvent}
+          // noStyle
+        >
+          {/* <Upload.Dragger
               name="file"
               action={`${API_URL}/upload/images`}
               // Define the body of the request
@@ -241,8 +280,38 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
               maxCount={1}
             >
               <p className="ant-upload-text">Drag & drop a file in this area</p>
-            </Upload.Dragger>
-          </Form.Item>
+            </Upload.Dragger> */}
+          <Upload
+            name="file"
+            listType="picture-card"
+            className="avatar-uploader"
+            showUploadList={false}
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+          >
+            {uploadLoading || !imageUrl ? (
+              uploadButton
+            ) : (
+              <div style={{ position: "relative" }}>
+                <img
+                  src={imageUrl}
+                  alt="avatar"
+                  style={{ width: "100%", borderRadius: "8px" }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    left: "5%",
+                    right: "5%",
+                    bottom: "5%",
+                    color: "GrayText",
+                  }}
+                >
+                  Modifier
+                </span>
+              </div>
+            )}
+          </Upload>
         </Form.Item>
         <Form.Item label="Categorie" name={["categorie"]}>
           <Select {...categorieSelectProps} />
