@@ -184,7 +184,7 @@ export const Footer = () => {
       >
         <Flex
           gap="10"
-          direction={{ base: "column", md: "row" }}
+          direction={{ base: "row", md: "row" }}
           as="footer"
           bg="bg-surface"
           borderStyle="solid"
@@ -198,9 +198,14 @@ export const Footer = () => {
           alignItems="center"
           justifyContent={{ base: "center", md: "space-between" }}
         >
-          <Box w={{ base: "30%", md: "10%" }} h="70px" as="a" href="/">
-            <Image src={Logo} fit="contain" w="100%" h="100%" />
-          </Box>
+          <Box as="a" href="/" w="100px">
+
+<Image src={Logo} fit ='contain'
+w="100%"
+h="100%"
+/>
+</Box>
+         
 
           <Flex
             justifyContent={{ base: "center", md: "flex-end" }}
@@ -229,10 +234,10 @@ export const Footer = () => {
               <CustomLink
                 key="Tableau de bord"
                 as={ReachLink}
-                to="https://dashboard.possible.africa"
+                to="https://app.possible.africa"
                 target="_blank"
               >
-                <Heading size="sm" fontWeight="400">
+                <Heading size="sm" fontWeight="500">
                   Tableau de bord
                 </Heading>
               </CustomLink>
@@ -246,15 +251,10 @@ export const Footer = () => {
                   showModal();
                 }}
               >
-                <Heading size="sm" fontWeight="400">
+                <Heading size="sm" fontWeight="500">
                   Reporter un bug
                 </Heading>
               </CustomLink>
-              {/* <Button style={{
-                border: "none"
-              }} onClick={showModal}>
-                Reporter Un Bug
-              </Button> */}
             </ButtonGroup>
           </Flex>
         </Flex>

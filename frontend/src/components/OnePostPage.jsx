@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 
-import { Badge, Box, Container, Flex, Heading, HStack, Image, VStack } from "@chakra-ui/react";
+import { Badge, Box, Container, Flex, Heading, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import ArrowLeftSolidCustomIcon from "./icons/ArrowLeftSolidCustomIcon.jsx";
 
 import {  ParseIframe } from "../utils/htmlParser.jsx";
@@ -12,7 +12,11 @@ import { HourGlassIcon } from "../assets/icons.jsx";
 function OnePostPage({iconSx, backUrl, news}) {
 
   const date = new Date(news?.createdAt);
-  const publishedDate = date.toLocaleDateString("en-GB") || "";
+  const publishedDate = date.toLocaleString(undefined, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  }) || "";
   const content = news?.content && ParseIframe(news?.content)
 
   function estimateReadingTime() {
@@ -27,10 +31,12 @@ function OnePostPage({iconSx, backUrl, news}) {
 
   return (
     <Container maxW="container.lg" p={0} >
-         <Flex ml={10}><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl} mr="1" mt={5}/></Flex>
+         <Flex ml={10}>
+          
+          <ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl} mr="1" mt={5}/></Flex>
 
     <Flex py={0} direction={{ base: 'column', md: "row" }}>
-        <VStack w={{ base: '100%', md: "75%" }} h="full" p={10} spacing={10} alignItems="flex-start">
+        <VStack w={{ base: '100%', md: "75%" }} h="full" p={10} spacing={10} alignItems="center">
         {/* <Flex><ArrowLeftSolidCustomIcon sx={iconSx} backUrl={backUrl}/></Flex> */}
        <Box>
         <Flex>
@@ -41,22 +47,20 @@ function OnePostPage({iconSx, backUrl, news}) {
        </Box>
 
         <Flex w="full">
-              <HStack w="full" h="full" spacing={2} alignItems="flex-start" justifyContent="space-between">
+              <Flex w="full" h="full" gap={{base: "24px"}} flexDirection={{base:"column", md: "row"}} alignItems="flex-start" justifyContent="space-between">
                 <HStack alignItems="center">
                   <Box width="50px" overflow="hidden" borderRadius="full">
                     <Image src={news?.user?.avatar} w="100%" fit="cover" borderRadius="full" alt="image" fallbackSrc='/placeholder.png'/>
                   </Box>
                 <Box w="full">
                   <Flex direction="column" justify="space-around"  gap={1}>
-                 {news?.user?.firstname || news?.user?.firstname && (<Heading size="sm" fontWeight={500}>{news?.user?.firstname} {news?.user?.lastname}</Heading>) || (<Heading size="sm" fontWeight={500}> {"Auteur inconnu"}</Heading>) } 
+                 {news?.user?.firstname || news?.user?.firstname && (<Heading size="xs" fontWeight={500}>{news?.user?.firstname} {news?.user?.lastname}</Heading>) || (<Heading size="sm" fontWeight={500}> {"Auteur inconnu"}</Heading>) } 
                     <Flex justify="flex-start" color="gray.500">
-                   { publishedDate && <Box fontSize="sm" mr={4}>{publishedDate} </Box>  ||<Box fontSize="sm" mr={4}>{""} </Box>}
+                   { publishedDate ? (<Box fontSize="sm" mr={4}><Text fontSize="14px">{publishedDate}</Text> </Box>)  : (<Box fontSize="sm" mr={4}><Text>{""}</Text></Box>)}
+                      
                    <Flex>
-                    <Box>
-
-                    <HourGlassIcon/>
-                    </Box>
-                    {estimateReadingTime() && <Box fontSize="sm">{estimateReadingTime()} min </Box> || "" }  
+                    
+                    {estimateReadingTime() && <Box fontSize="sm"><Text fontSize="14px">{estimateReadingTime()} min de lecture </Text></Box> || "" }  
                     </Flex>   
                     </Flex>
                   </Flex>
@@ -64,7 +68,7 @@ function OnePostPage({iconSx, backUrl, news}) {
                 </Box>
                 </HStack>
                 <Socialshare/>
-              </HStack>
+              </Flex>
 
             </Flex>
 

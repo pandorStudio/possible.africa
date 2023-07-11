@@ -3,6 +3,8 @@ import CardComponent from "../components/CardComponent.jsx";
 import { useGetOpportunitiesQuery } from "../features/api/apiSlice.js";
 import CustomContainer from "../utils/CustomContainer.jsx";
 import { ParseSlice } from "../utils/htmlParser.jsx";
+import NoData from "../utils/NoData.jsx";
+import CenteredContainer from "../utils/CenteredContainer.jsx";
 
 function Opportunites() {
 
@@ -23,9 +25,14 @@ function Opportunites() {
 // }, 1000);
 let isLoaded = true;
 
+if (opportunities?.length === 0) {
+    return (
+    <NoData/>
+    );
+  }
 
-    if (isLoading || isFetching) {
-        return <VStack><Spinner/></VStack>
+    if (isLoading) {
+        return <CenteredContainer><Spinner/></CenteredContainer>
     } else if(isSuccess) {
         content = opportunities.map(opportunity => {
             return (

@@ -43,7 +43,7 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
 </Box>
 <Flex direction="column" gap={2}>
         <Heading fontSize={{base: "lg", md: "4xl"}}>{organisations?.name}</Heading>
-        <Flex gap={{base:2, md: 5}} direction={{base:"column", md:"row"}}>
+        <Flex gap={{base:2, md: 5}} direction={{base:"row", md:"row"} } alignItems="center">
         <Link href={`/organisations/${organisations?.slug}`} isExternal alignItems="center" fontSize={14}>
 
       {organisations?.type?.name &&  organisations?.type?.name }     
@@ -70,15 +70,9 @@ function OneOrganisationTemplate({iconSx, backUrl, organisations}) {
                 
                 <HStack alignItems="center" gap={2}>
               
-                  <Box width="80px" overflow="hidden" borderRadius="full">
-                    <Image src={organisations?.contributeur?.avatar} w="100%" fit="cover" borderRadius="full" alt="image" fallbackSrc='/placeholder_org.jpeg' />
-                  </Box>
+                  
                 <Box w="full">
-                  <Flex direction="column" justify="space-around"  gap={2} alignItems="flex-start">
-                    <Heading size="sm">{organisations?.contributeur?.firstname} {organisations?.contributeur?.lastname}</Heading>
-                    {/* <Badge display="inline" maxW={120} textAlign="center" fontSize={11} colorScheme="gray" p={2} borderRadius={50} >Contributeur</Badge> */}
-
-                  </Flex>
+               
                 </Box>
                 </HStack>
                 <Socialshare titre={organisations?.name}/>

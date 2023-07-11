@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, Flex, Heading, Image, Skeleton, Stack, Text } from '@chakra-ui/react';
+import { Box, Card, CardBody, Flex, Image, Skeleton, Stack, Text } from '@chakra-ui/react';
 import { Link } from "react-router-dom";
 import { CalendarIcon, CategoryIcon, CountryIcon, MapIcon, MoneyIcon, OrganisationsIcon, TargetIcon, TypeIcon, WorkIcon } from '../assets/icons';
 
@@ -9,8 +9,8 @@ const card = (<Card
     direction="row"
     spacing={{ base: '5', md:'1' }}
     overflow='hidden'
-    w={{base: "md", md: "2xl"}}
-    height={{ base: '130px', md: '130px' }}
+    w={{base: "100%", md: "2xl"}}
+    height={{ base: '100%', md: '130px' }}
     boxShadow="none"
     _hover={{ cursor: "pointer" }}
     borderRadius={0}
@@ -38,15 +38,15 @@ const card = (<Card
 
   <Stack>
     
-    <CardBody display='flex' flexDir="column" px={{ base: '0', md: '0' }} alignItems="flex-start" justifyContent="flex-start" h={{base: "100%", md:"100%"}} gap={1}>
+    <CardBody display='flex' flexDir="column" px={{ base: '0', md: '0' }} py="5px" alignItems="flex-start" justifyContent="flex-start" h={{base: "100%", md:"100%"}} gap={1}>
 
-      <Heading fontSize='md' fontWeight="600" color='gray.700' _hover={{ textDecoration: "underline" }} noOfLines={{base:[1], md: [1,2]}}>{title}</Heading>
+      <Text as="h2" fontSize='md' fontWeight="600" color='gray.700' _hover={{ textDecoration: "underline" }} noOfLines={[2]}>{title}</Text>
 
       <Text noOfLines={[2]} color='gray.500'>
         {description}
       </Text>
      {postType === "Organisation" &&  (<>
-      <Flex gap={5} marginTop={1.5} marginLeft={-1}>
+      <Flex gap={5} marginTop={1.5} marginLeft={-1} >
       {country && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon/> <Text fontSize="xs">{country}</Text></Flex>}
       {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CategoryIcon/> <Text fontSize="xs">{type}</Text></Flex>}
       </Flex>
@@ -63,7 +63,7 @@ const card = (<Card
       </Flex>
      </>)} 
      {postType === "Agenda" && (<>
-      <Flex gap={5} marginTop={1.5} marginLeft={-1}>
+      <Flex gap={5} marginTop={1.5} marginLeft={-1} hideBelow="md">
       {dateDebut || dateFin && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CalendarIcon /><Text>{dateDebut}</Text> - <Text>{dateFin}</Text></Flex>}
      {country && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><MapIcon/> <Text fontSize="xs">{country}</Text></Flex>}
      {type && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><TypeIcon/> <Text fontSize="xs">{type}</Text></Flex>}

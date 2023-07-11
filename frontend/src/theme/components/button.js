@@ -5,17 +5,17 @@ export default  defineStyleConfig({
   baseStyle: {
     fontWeight: '500',
 
-    borderRadius: '14px', // <-- border radius is same for all variants and sizes
+    borderRadius: '10px', // <-- border radius is same for all variants and sizes
   },
   // Two sizes: sm and md
   sizes: {
     sm: {
-      fontSize: 'xs',
+      size: '14px',
       px: 4, // <-- px is short for paddingLeft and paddingRight
-      py: 3, // <-- py is short for paddingTop and paddingBottom
+      py: 5, // <-- py is short for paddingTop and paddingBottom
     },
     md: {
-      fontSize: 'md',
+      size: '16px',
       px: 6, // <-- these values are tokens from the design system
       py: 6, // <-- these values are tokens from the design system
     },
@@ -34,7 +34,7 @@ export default  defineStyleConfig({
   },
   // The default size and variant values
   defaultProps: {
-    size: 'md',
+    size: 'sm',
     variant: 'solid',
   },
 })

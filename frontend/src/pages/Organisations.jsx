@@ -1,10 +1,12 @@
-import { Flex, Spinner, VStack } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text, VStack } from "@chakra-ui/react";
 import CardComponent from "../components/CardComponent";
 import { useGetOrganisationsQuery } from "../features/api/apiSlice";
 import CustomContainer from "../utils/CustomContainer";
 import { ParseSlice } from "../utils/htmlParser";
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import NoData from "../utils/NoData";
+import CenteredContainer from "../utils/CenteredContainer";
 
 function Organisations() {
   const [page, setPage] = useState(1);
@@ -25,30 +27,20 @@ function Organisations() {
   });
   let content;
 
-  // useEffect(() => {
-  //   function handleScroll() {
-  //     if (
-  //       window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-  //       !infiniteScrollIsFetching
-  //     ) {
-  //       setPage((prevPage) => prevPage + 1);
-  //       setinfiniteScrollIsFetching(true);
-  //     }
-  //   }
-  //   window.addEventListener("scroll", handleScroll);
-
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [infiniteScrollIsFetching, page]);
 
   let isLoaded = true;
 
+  if (organisations?.length === 0) {
+    return (
+    <NoData/>
+    );
+  }
+
   if (isLoading) {
     return (
-      <VStack>
+      <CenteredContainer>
         <Spinner />
-      </VStack>
+      </CenteredContainer>
     );
   }
   if (organisations.length) {
@@ -58,12 +50,16 @@ function Organisations() {
         next={() => setPage((prevPage) => prevPage + 1)}
         hasMore={true}
         loader={
-          <div styles={{
+          // eslint-disable-next-line react/no-unknown-property
+          <Box styles={{
             display: "flex",
             justifyContent: "center",
           }}>
             <Spinner as="div" mx="45%" mt={10} />
-          </div>
+          </Box>
+        }
+        endMessage={
+            <Text>Yay! You have seen it all</Text>
         }
       >
         {organisations.map((organisation, index) => {
