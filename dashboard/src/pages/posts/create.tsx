@@ -144,7 +144,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     if (!values?.categorie?._id) {
       values.categorie = null;
     }
-    if (!values?.content?._id) {
+    if (!values?.content) {
       values.content = null;
     }
     if (!values?.image) {
