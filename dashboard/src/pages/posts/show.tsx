@@ -29,7 +29,7 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
   const { data: organisationsData, isLoading: organisationIsLoading } = useMany(
     {
       resource: "organisations",
-      ids: record?.organisations.map((item: any) => item?.organisations) ?? [],
+      ids: record?.organisations?.map((item: any) => item?.organisations) ?? [],
     }
   );
 
@@ -51,7 +51,7 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Organisations</Title>
       {organisationIsLoading ? (
         <>Loading ...</>
-      ) : organisationsData?.data?.length ? (
+      ) : (organisationsData?.data?.length && record?.organisations?.length) ? (
         <>
           {record?.organisations.map((organisation: any) => (
             <TagField key={organisation?._id} value={organisation?.name} />

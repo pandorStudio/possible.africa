@@ -22,7 +22,7 @@ function OnePostPage({iconSx, backUrl, news}) {
   function estimateReadingTime() {
     const wordsPerMinute = 200; // Change this value according to your preference
   
-    const wordCount = news?.content.trim().split(/\s+/).length;
+    const wordCount = news?.content ? news?.content.trim().split(/\s+/).length : "Pas de contenu".trim().split(/\s+/).length;
     const readingTimeMinutes = Math.ceil(wordCount / wordsPerMinute);
   
     return readingTimeMinutes;
@@ -73,7 +73,7 @@ function OnePostPage({iconSx, backUrl, news}) {
             </Flex>
 
             <Box as="main">
-            {content}
+            {content ?? "Pas de contenu"}
             </Box>
         </VStack>
         <VStack w={{ base: '100%', md: "25%" }} h="full" p={10} spacing={10} alignItems="flex-start">
