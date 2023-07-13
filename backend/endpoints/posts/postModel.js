@@ -22,6 +22,11 @@ const postSchema = mongoose.Schema(
     slug: { type: String, required: true, unique: true },
     content: { type: String },
     image: { type: String, default: "" },
+    status: {
+      type: String,
+      enum: ["published", "draft", "trash", "deleted", "archived"],
+      default: "draft",
+    }
   },
   {
     timestamps: true,

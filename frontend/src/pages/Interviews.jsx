@@ -12,13 +12,21 @@ function Interviews() {
         data: interviewCategories = [],
     } = useGetPostCategoriesQuery({limit: 10, page: 1, fields: [], eq: [{field: "slug", value: "/podcast"}]});
     const {
-        data: interviews = [],
-        isLoading,
-        isFetching,
-        isError,
-        isSuccess,
-        error,
-    } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: [{field: "categorie", value: `${interviewCategories[0]?._id}`}]});
+      data: interviews = [],
+      isLoading,
+      isFetching,
+      isError,
+      isSuccess,
+      error,
+    } = useGetPostsQuery({
+      limit: 10,
+      page: 1,
+      fields: [],
+      eq: [
+        { field: "categorie", value: `${interviewCategories[0]?._id}` },
+        { field: "status", value: "published" },
+      ],
+    });
     let content;
 
     let isLoaded = true;

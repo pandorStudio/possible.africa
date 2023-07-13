@@ -34,7 +34,7 @@ function Actualites() {
     limit: 10 * page,
     page: page,
     fields: [],
-    eq: [{ field: "categorie", value: `${interviewCategories[0]?._id}` }],
+    eq: [{ field: "categorie", value: `${interviewCategories[0]?._id}` }, { field: "status", value: "published" }],
   });
   let content;
 

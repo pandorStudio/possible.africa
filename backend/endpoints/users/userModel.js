@@ -61,6 +61,11 @@ const userSchema = mongoose.Schema(
         number: { type: String },
       },
     },
+    status: {
+      type: String,
+      enum: ["active", "inactive", "deleted"],
+      default: "inactive",
+    },
     address: {
       type: String,
     },
