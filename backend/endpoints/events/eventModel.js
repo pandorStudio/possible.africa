@@ -50,7 +50,14 @@ const eventSchema = mongoose.Schema(
       type: String,
     },
     is_recurrent: { type: Boolean, default: false },
-    frequence: String,
+    frequence: {
+      type: String,
+    },
+    status: {
+      type: String,
+      enum: ["published", "draft", "deleted", "archived"],
+      default: "draft",
+    },
   },
   {
     timestamps: true,

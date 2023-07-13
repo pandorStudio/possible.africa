@@ -1,23 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  IResourceComponentsProps,
   BaseRecord,
-  useMany,
+  IResourceComponentsProps,
   useApiUrl,
   useInvalidate,
+  useMany,
 } from "@refinedev/core";
 import {
-  useTable,
-  List,
-  EditButton,
-  ShowButton,
-  ImageField,
-  DeleteButton,
-  TagField,
-  ExportButton,
   CreateButton,
+  DeleteButton,
+  EditButton,
+  ImageField,
+  List,
+  ShowButton,
+  TagField,
+  useTable,
 } from "@refinedev/antd";
-import { Table, Space, message, Input, Modal, Button, Checkbox } from "antd";
+import {
+  Button,
+  Checkbox,
+  Input,
+  message,
+  Modal,
+  Select,
+  Space,
+  Table,
+  Tooltip,
+} from "antd";
 import papa from "papaparse";
 import { axiosInstance } from "../../authProvider";
 import { downloadMedia } from "../organisations/list";
@@ -74,6 +83,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
   const [modal, modalContextHolder] = Modal.useModal();
   const [pageCheckboxes, setPageCheckboxes] = useState([]);
   const [visibleCheckAll, setVisibleCheckAll] = useState(false);
+  const [postStatus, setPostStatus] = useState("");
   const invalidate = useInvalidate();
   let checkboxRefs = useRef([]);
 
@@ -133,6 +143,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
+    console.log(postStatus);
     if (importLoading) {
       messageApi.open({
         type: "loading",
@@ -158,7 +169,13 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
         fileImportInput.current!.value! = "";
       }
     };
-  }, [importLoading, checkedArray, deleteLoading, allCheckedOnPage]);
+  }, [
+    importLoading,
+    checkedArray,
+    deleteLoading,
+    allCheckedOnPage,
+    postStatus,
+  ]);
 
   function handleCheckBoxAll(e: any) {
     const checked = e.target.checked;
@@ -224,6 +241,105 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
         }
       },
     });
+  };
+
+  const confirmStatusChange = (id: string | number, status: string) => {
+    let statusSelected = "";
+    modal.confirm({
+      title: "Confirmer le changement de statut",
+      icon: <ExclamationCircleOutlined />,
+      content: (
+        <Space>
+          <Select
+            size="large"
+            defaultValue={status}
+            onChange={(status) => {
+              statusSelected = status;
+            }}
+            style={{ width: 200 }}
+            options={[
+              {
+                label: "Brouillon",
+                value: "draft",
+              },
+              {
+                label: "Publié",
+                value: "published",
+              },
+              {
+                label: "Archivé",
+                value: "archived",
+              },
+              {
+                label: "Corbeille",
+                value: "trash",
+              },
+            ]}
+          />
+        </Space>
+      ),
+      okText: "Enrégistrer",
+      cancelText: "Annuler",
+      async onOk(...args) {
+        console.log(id, statusSelected);
+        if (statusSelected) {
+          // const results = checkedArray.map(async (ob) => {
+          await axiosInstance.put(
+            apiUrl + `/posts/${id}`,
+            {
+              status: statusSelected,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          // });
+
+          // console.log(results);
+          invalidate({
+            resource: "posts",
+            invalidates: ["list"],
+          });
+        }
+      },
+    });
+  };
+
+  const statusVariables = {
+    draft: {
+      color: "#1890ff",
+      styles: {
+        marginLeft: "auto",
+        backgroundColor: "#1890ff",
+      },
+      label: "Brouillon",
+    },
+    published: {
+      color: "#52c41a",
+      styles: {
+        marginLeft: "auto",
+        backgroundColor: "#52c41a",
+      },
+      label: "Publié",
+    },
+    archived: {
+      color: "#faad14",
+      styles: {
+        marginLeft: "auto",
+        backgroundColor: "#faad14",
+      },
+      label: "Archivé",
+    },
+    trash: {
+      color: "#ff4d4f",
+      styles: {
+        marginLeft: "auto",
+        backgroundColor: "#ff4d4f",
+      },
+      label: "Corbeille",
+    },
   };
 
   return (
@@ -318,6 +434,44 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               );
             }}
           />
+          <Table.Column
+            fixed="left"
+            title="Statut"
+            width="4%"
+            dataIndex="actions"
+            render={(_, record: BaseRecord) => (
+              <Space>
+                <Tooltip
+                  title={statusVariables[`${record.status}`].label}
+                  color={statusVariables[`${record.status}`].color}
+                  key={record.id}
+                >
+                  <Button
+                    style={statusVariables[`${record.status}`].styles}
+                    size="small"
+                    shape="circle"
+                    onClick={() => {
+                      confirmStatusChange(record.id, record.status);
+                    }}
+                  ></Button>
+                </Tooltip>
+              </Space>
+            )}
+          />
+          <Table.Column
+            width={120}
+            dataIndex={["image"]}
+            title="Couverture"
+            render={(value: any) => {
+              if (value) {
+                return <ImageField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
+          <Table.Column dataIndex={["categorie", "name"]} title="Categorie" />
           <Table.Column dataIndex={["user", "username"]} title="Auteur" />
           <Table.Column
             dataIndex="organisations"
@@ -341,22 +495,8 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               )
             }
           />
-          <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
           <Table.Column dataIndex="country" title="Pays" />
           <Table.Column dataIndex="slug" title="Slug" ellipsis={true} />
-          <Table.Column
-            width={120}
-            dataIndex={["image"]}
-            title="Couverture"
-            render={(value: any) => {
-              if (value) {
-                return <ImageField value={value} />;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column dataIndex={["categorie", "name"]} title="Categorie" />
           <Table.Column
             fixed="right"
             title="Actions"
@@ -374,6 +514,20 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                     recordItemId={record.id}
                   />
                 </AdminOrContributor>
+                {/*<Tooltip*/}
+                {/*  title={statusVariables[`${record.status}`].label}*/}
+                {/*  color={statusVariables[`${record.status}`].color}*/}
+                {/*  key={record.id}*/}
+                {/*>*/}
+                {/*  <Button*/}
+                {/*    style={statusVariables[`${record.status}`].styles}*/}
+                {/*    size="small"*/}
+                {/*    shape="circle"*/}
+                {/*    onClick={() => {*/}
+                {/*      confirmStatusChange(record.id, record.status);*/}
+                {/*    }}*/}
+                {/*  ></Button>*/}
+                {/*</Tooltip>*/}
               </Space>
             )}
           />
