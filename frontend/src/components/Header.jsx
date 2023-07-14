@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import { Outlet, Link as ReachLink } from "react-router-dom";
+import { Link, Outlet, Link as ReachLink } from "react-router-dom";
 import Logo from "../assets/LogoPossible.png";
 import { MenuIcon } from "../assets/icons";
 
@@ -64,13 +64,15 @@ export const Header = () => {
           
             <Box w={{ base: '100%', md: "10%" }} h="70px" display="flex" flexDirection="row" alignItems="space-between" justifyContent="space-between">
               
-              <Box as="a" href="/" w="100px">
+<Link to="/">
+              <Box w="100px">
 
               <Image src={Logo} fit ='contain'
           w="100%"
           h="100%"
           />
               </Box>
+</Link>
               <Box display="flex" alignItems="center">
 
             <Button   _hover={{ bg: 'teal.600' }}

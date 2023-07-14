@@ -4,7 +4,7 @@ import { CalendarIcon, CategoryIcon, CountryIcon, MapIcon, MoneyIcon, Organisati
 
 
 // eslint-disable-next-line react/prop-types
-function CardComponent({title, description, imgUrl, isLoaded, link, postType, type, country, dateDebut, dateFin, company,location}) {
+function CardComponent({title, description, imgUrl, isLoaded, link, postType, type, country, dateDebut, dateFin, company,location, hideMeBellow}) {
 const card = (<Card
     direction="row"
     spacing={{ base: '5', md:'1' }}
@@ -20,9 +20,11 @@ const card = (<Card
 >
   <Skeleton isLoaded={isLoaded} >
 
-    <Box  w={{base:70, md: 100}} h={{base: "60px", md:"100%"}} alignItems="center" justifyContent="center" alignSelf="center">
+    <Box
+    hideBelow={hideMeBellow}
+ w={{base:70, md: 100}} h={{base: "60px", md:"100%"}} alignItems="center" justifyContent="center" alignSelf="center">
 
-      <Image
+       <Image
           fit ='cover'
           w={{base: "60px",md:"80px"}}
           h={{base: "60px",md:"80px"}}
@@ -31,6 +33,7 @@ const card = (<Card
           borderRadius={8}
           fallbackSrc='/placeholder_org.jpeg'
           borderStyle="solid" borderColor="gray.100" borderWidth={1}
+          
           
       />
     </Box>
@@ -42,9 +45,10 @@ const card = (<Card
 
       <Text as="h2" fontSize='md' fontWeight="600" color='gray.700' _hover={{ textDecoration: "underline" }} noOfLines={[2]}>{title}</Text>
 
-      <Text noOfLines={[2]} color='gray.500'>
+      <Text noOfLines={[1,2]} color='gray.500'>
         {description}
       </Text>
+
      {postType === "Organisation" &&  (<>
       <Flex gap={5} marginTop={1.5} marginLeft={-1} >
       {country && <Flex alignItems="center" justifyContent="center" gap={1} color="gray.600"><CountryIcon/> <Text fontSize="xs">{country}</Text></Flex>}

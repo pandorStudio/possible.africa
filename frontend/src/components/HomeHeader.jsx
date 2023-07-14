@@ -10,6 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import CustomLink from "./CustomLink";
+import MenuLink from "./MenuLink";
 
 
 export const HomeHeader = () => {
@@ -45,7 +46,7 @@ export const HomeHeader = () => {
 
                   {
                   [
-                    {name:'Actualités', link:"/actualites", icons: <NewspaperIcon/> },
+                    {name:'Actualités', link:"/actualites" || "", icons: <NewspaperIcon/> },
                     {name:'Podcast/Interview', link:"/interviews", icons: <PodcastIcon/> },
                     {name:'Agenda', link:"/agenda", icons: <CalendarIcon/> },
                     {name:'Financement', link:"/opportunites", icons: <LawIcon/> },
@@ -53,12 +54,12 @@ export const HomeHeader = () => {
                     {name:'Organisations', link:"/organisations", icons: <OrganisationsIcon/> }
                 ].map((item) => (
 
-                    <CustomLink  key={item.name} as={ReachLink} to={item.link}>
+                    <MenuLink  key={item.name} as={ReachLink} to={item.link}>
                         <Flex flexDir="row" gap={1}>
                             {item.icons}
                             <Text fontWeight="400" fontSize="md">{item.name}</Text>
                         </Flex>
-                        </CustomLink>
+                        </MenuLink>
                   ))}
 
               </Flex>
