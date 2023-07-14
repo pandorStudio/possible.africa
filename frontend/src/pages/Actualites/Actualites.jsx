@@ -75,7 +75,7 @@ function Actualites() {
               postType="Actualités"
               key={news._id}
               title={news.title}
-              description={ParseSlice(news.content)}
+              description={ParseSlice(news.content || "Pas de contenu")}
               imgUrl={news.image}
               isLoaded={isLoaded}
               link={"/actualites/" + news.slug}
