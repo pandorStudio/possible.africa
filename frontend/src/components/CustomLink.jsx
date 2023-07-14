@@ -6,9 +6,10 @@ function CustomLink({...rest}) {
   return (
     <Link
     textDecoration="none"
-    _hover={{ color: 'teal.500' }}
-    _focus={{ color: 'teal.500' }}
-    _active={{ color: 'teal.500' }}
+    color="teal.500"
+    _hover={{ textDecoration: "underline" }}
+    _focus={{ textDecoration: "underline" }}
+    _active={{ textDecoration: "underline" }}
     {...rest}
     />
 
