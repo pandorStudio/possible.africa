@@ -1,18 +1,17 @@
 import React from "react";
-import { IResourceComponentsProps, useShow, useOne } from "@refinedev/core";
+import { IResourceComponentsProps, useOne, useShow } from "@refinedev/core";
 import {
-  Show,
-  TagField,
-  TextField,
-  DateField,
   BooleanField,
+  DateField,
   DeleteButton,
+  Show,
+  TextField,
 } from "@refinedev/antd";
 import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
 import { AdminOrContributor } from "../../custom-components/AccessControl";
-import Link from 'antd/es/typography/Link';
+import Link from "antd/es/typography/Link";
 
 const { Title } = Typography;
 
@@ -25,6 +24,14 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
   const { data: organisationData, isLoading: organisationIsLoading } = useOne({
     resource: "organisations",
     id: record?.organisation || "",
+    queryOptions: {
+      enabled: !!record,
+    },
+  });
+
+  const { data: countryData, isLoading: countryIsLoading } = useOne({
+    resource: "countries",
+    id: record?.target_country || "",
     queryOptions: {
       enabled: !!record,
     },
@@ -77,12 +84,15 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Format</Title>
       <TextField value={record?.format} />
       <Title level={5}>Pays cible</Title>
-      {record?.target_country ? (
+      {countryData?.data ? (
         <Link
-          href={"https://www.google.com/maps/search/" + record?.target_country}
+          href={
+            "https://www.google.com/maps/search/" +
+            countryData?.data?.name?.common
+          }
           target="_blank"
         >
-          {record?.target_country}
+          {countryData?.data?.name?.common}
         </Link>
       ) : (
         "-"

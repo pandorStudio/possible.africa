@@ -72,7 +72,7 @@ function OnePostPage({iconSx, backUrl, news}) {
 
             </Flex>
 
-            <Box as="main">
+          <Box as="main">
             {content ?? "Pas de contenu"}
             </Box>
         </VStack>

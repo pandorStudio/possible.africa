@@ -13,12 +13,12 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      // required: true,
       select: false,
     },
     confirmPassword: {
       type: String,
-      required: true,
+      // required: true,
       validate: {
         validator: function (el) {
           return el === this.password;
@@ -28,8 +28,8 @@ const userSchema = mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
-      unique: true,
+      // required: true,
+      // unique: true,
       lowercase: true,
       validate: [validator.isEmail, "Please provide a valid email"],
     },

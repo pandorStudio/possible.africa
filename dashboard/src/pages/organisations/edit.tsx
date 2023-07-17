@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { IResourceComponentsProps, file2Base64 } from "@refinedev/core";
+import { file2Base64, IResourceComponentsProps } from "@refinedev/core";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Space, Typography, Upload, message } from "antd";
+import { Form, Input, message, Select, Space, Typography, Upload } from "antd";
 import ReactQuill from "react-quill";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import { axiosInstance } from "../../authProvider";
-import { RcFile, UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
+import {
+  RcFile,
+  UploadChangeParam,
+  UploadFile,
+  UploadProps,
+} from "antd/es/upload";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
@@ -21,7 +26,8 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   const [realPhoneNumber, setRealPhoneNumber] = React.useState("");
   const [indicatif, setIndicatif] = React.useState();
   const [countries, setCountries] = useState([]);
-  
+  const [countryFromDB, setCountryFromDB] = useState("");
+
   const [imageUrlFromDb, setImageUrlFromDb] = useState<string>();
   const [imageUrl, setImageUrl] = useState<string>(organisationsData?.logo);
   const [uploadLoading, setUploadLoading] = useState(false);
@@ -31,6 +37,27 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     optionValue: "_id",
     optionLabel: "name",
     defaultValue: organisationsData?.type?._id,
+  });
+
+  const { selectProps: contactSelectProps } = useSelect({
+    resource: "users",
+    optionValue: "_id",
+    optionLabel: "lastname",
+    defaultValue: organisationsData?.owner?._id,
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contact",
+      },
+    ],
+  });
+
+  const { selectProps: countrySelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "name.common",
+    defaultValue: organisationsData?.country?._id,
   });
 
   const { Text } = Typography;
@@ -71,14 +98,13 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     //   const url = await imageUploadHandler(base64);
     //   values.image = url;
     // }
-        if (values.logo) {
-          values.logo = imageUrl;
-        } else {
-          values.logo = "";
-        }
-
-    if (!values?.contributeur?._id) {
-      values.contributeur = null;
+    if (values.logo) {
+      values.logo = imageUrl;
+    } else {
+      values.logo = "";
+    }
+    if (!values?.owner?._id) {
+      values.owner = null;
     }
     if (values.telephone) {
       // console.log(values.telephone);
@@ -140,6 +166,10 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   );
 
   useEffect(() => {
+    if (organisationsData?.country) {
+      setCountryFromDB(organisationsData.country);
+      console.log(organisationsData.country._id);
+    }
     if (imageUrl) {
       setUploadLoading(false);
     }
@@ -195,7 +225,13 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Pays" name={["country"]}>
-          <Input />
+          <Select
+            {...countrySelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+          {/*<SelectCountry country={countryFromDB} />*/}
         </Form.Item>
         <Form.Item label="Logo" name="logo">
           <Upload
@@ -238,8 +274,13 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         {/* <Form.Item label="Contributeur" name={["contributeur", "_id"]}>
           <Select {...contributorSelectProps} />
         </Form.Item> */}
-        <Form.Item label="Contact" name={["owner"]}>
-          <Input />
+        <Form.Item label="Contact" name={["owner", "_id"]}>
+          <Select
+            {...contactSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
 
         <Form.Item

@@ -28,7 +28,8 @@ const opportunitySchema = mongoose.Schema(
       ],
     },
     target_country: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Country",
     },
     activity_area: {
       type: String,
@@ -60,31 +61,42 @@ const opportunitySchema = mongoose.Schema(
 );
 
 // populate organisation
-opportunitySchema.pre("find", function (next) {
+opportunitySchema.pre(/^find/, function (next) {
   this.populate({
     path: "organisation",
     select: "name type contributeur",
   });
-  next();
-});
-
-// populate contributeur
-opportunitySchema.pre("find", function (next) {
   this.populate({
     path: "user",
     select: "username firstname lastname email phone role",
   });
-  next();
-});
-
-// populate type
-opportunitySchema.pre("find", function (next) {
   this.populate({
     path: "opportunity_type",
     select: "name slug",
   });
+  // this.populate({
+  //   path: "target_country",
+  //   select: "name idd flag",
+  // });
   next();
 });
+
+// populate target_country
+opportunitySchema.pre("find", function (next) {
+  this.populate({
+    path: "target_country",
+    select: "name idd flag",
+  });
+  next();
+});
+
+// opportunitySchema.pre("find", function (next) {
+//   this.populate({
+//     path: "target_country",
+//     select: "name idd flag",
+//   });
+//   next();
+// });
 
 const Opportunity = mongoose.model("Opportunity", opportunitySchema);
 module.exports = Opportunity;

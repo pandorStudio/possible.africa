@@ -1,6 +1,6 @@
 import React from "react";
 import { IResourceComponentsProps, useShow } from "@refinedev/core";
-import { Show, TextField, EmailField } from "@refinedev/antd";
+import { EmailField, Show, TextField } from "@refinedev/antd";
 import { Typography } from "antd";
 import Link from "antd/es/typography/Link";
 
@@ -55,7 +55,21 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={4}>Genre</Title>
       <CustomTextField type="text" size="large" value={record?.gender} />
       <Title level={4}>Télephone</Title>
-      <CustomTextField type="text" size="large" value={record?.phone} />
+      {record?.phone ? (
+        <Link
+          href={
+            "https://www.google.com/search?q=" +
+            record?.phone?.indicatif +
+            " " +
+            record?.phone?.number
+          }
+          // href="#"
+        >
+          {record?.phone?.indicatif + " " + record?.phone?.number}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={4}>Adresse</Title>
       {record?.address ? (
         <Link

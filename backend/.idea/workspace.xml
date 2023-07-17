@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="01f71483-bcbf-426f-b1b2-e57a6286b4c7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/endpoints/events/eventController.js" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/events/eventController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endpoints/events/eventModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/events/eventModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endpoints/opportunities/opportunityModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/opportunities/opportunityModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endpoints/organisations/organisationController.js" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/organisations/organisationController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endpoints/organisations/organisationModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/organisations/organisationModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endpoints/posts/postModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/posts/postModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endpoints/users/userModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/users/userModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endpoints/users/usersController.js" beforeDir="false" afterPath="$PROJECT_DIR$/endpoints/users/usersController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/custom-components/SelectCountry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/custom-components/SelectCountry.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/events/create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/events/create.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/events/edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/events/edit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/events/list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/events/list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/events/show.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/events/show.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/opportunities/create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/opportunities/create.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/opportunities/edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/opportunities/edit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/opportunities/list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/opportunities/list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/opportunities/show.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/opportunities/show.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/organisations/create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/organisations/create.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/organisations/edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/organisations/edit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/organisations/list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/organisations/list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/organisations/show.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/organisations/show.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/posts/create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/posts/create.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/posts/edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/posts/edit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/posts/list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/posts/list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/posts/show.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/posts/show.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/users/create.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/users/create.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/users/edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/users/edit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dashboard/src/pages/users/show.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../dashboard/src/pages/users/show.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/OnePostPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/OnePostPage.jsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2SgwqpLTq2Gw7qATIfOH0lCWmMe" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "develop",
+    "last_opened_file_path": "C:/Users/Bobo/Documents/Pandore/possible.africa/backend",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="01f71483-bcbf-426f-b1b2-e57a6286b4c7" name="Changes" comment="" />
+      <created>1689581726164</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1689581726164</updated>
+      <workItem from="1689581734359" duration="74000" />
+    </task>
+    <servers />
+  </component>
+</project>

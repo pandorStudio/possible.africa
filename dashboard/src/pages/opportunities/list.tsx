@@ -1,22 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  IResourceComponentsProps,
   BaseRecord,
-  useInvalidate,
+  IResourceComponentsProps,
   useApiUrl,
+  useInvalidate,
 } from "@refinedev/core";
 import {
-  useTable,
-  List,
-  EditButton,
-  ShowButton,
-  DateField,
   BooleanField,
-  DeleteButton,
-  ExportButton,
   CreateButton,
+  DateField,
+  DeleteButton,
+  EditButton,
+  List,
+  ShowButton,
+  useTable,
 } from "@refinedev/antd";
-import { Table, Space, Input, message, Button, Checkbox, Modal } from "antd";
+import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
 import { axiosInstance } from "../../authProvider";
 import papa from "papaparse";
 import Link from "antd/es/typography/Link";
@@ -163,6 +162,7 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
       setCheckedArray(checkedArrayCopy);
     }
   }
+
   const confirmDelete = () => {
     modal.confirm({
       title: "Confirm",
@@ -319,7 +319,18 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
           <Table.Column dataIndex="target_people" title="Cible" />
-          <Table.Column dataIndex="target_country" title="pays" />
+          <Table.Column
+            dataIndex="target_country"
+            title="pays"
+            render={(value: any) => {
+              if (value) {
+                return `${value.name.common}`;
+                // return "-";
+              } else {
+                return "-";
+              }
+            }}
+          />
           <Table.Column dataIndex="activity_area" title="Secteur D'Activité" />
           {/* <Table.Column
             dataIndex="description"

@@ -495,7 +495,19 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               )
             }
           />
-          <Table.Column dataIndex="country" title="Pays" />
+          <Table.Column
+            dataIndex="country"
+            title="Pays"
+            render={(value: any) => {
+              console.log(value);
+              if (value) {
+                return `${value.name.common}`;
+                // return "-";
+              } else {
+                return "-";
+              }
+            }}
+          />
           <Table.Column dataIndex="slug" title="Slug" ellipsis={true} />
           <Table.Column
             fixed="right"

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { IResourceComponentsProps, file2Base64 } from "@refinedev/core";
+import { file2Base64, IResourceComponentsProps } from "@refinedev/core";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, DatePicker, Checkbox } from "antd";
+import { Checkbox, DatePicker, Form, Input, Select } from "antd";
 import dayjs from "dayjs";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import ReactQuill from "react-quill";
@@ -11,7 +11,7 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
 
   const eventsData = queryResult?.data?.data;
 
-    const [editorContent, setEditorContent] = useState(eventsData?.description);
+  const [editorContent, setEditorContent] = useState(eventsData?.description);
 
   const { selectProps: organisationSelectProps } = useSelect({
     resource: "organisations",
@@ -32,6 +32,13 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
     optionValue: "_id",
     defaultValue: eventsData?.user,
     optionLabel: "username",
+  });
+
+  const { selectProps: countrySelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "name.common",
+    defaultValue: eventsData?.target_country?._id,
   });
 
   async function onSubmitCapture(values: any) {
@@ -123,8 +130,13 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Format" name={["format"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Pays cible" name={["target_countriy"]}>
-          <Input />
+        <Form.Item label="Pays cible" name={["target_country"]}>
+          <Select
+            {...countrySelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item label="Secteur d'activité" name={["activity_area"]}>
           <Input />

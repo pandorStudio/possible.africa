@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { IResourceComponentsProps, file2Base64 } from "@refinedev/core";
+import { file2Base64, IResourceComponentsProps } from "@refinedev/core";
 import { Create, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, DatePicker, Checkbox } from "antd";
+import { Checkbox, DatePicker, Form, Input, Select } from "antd";
 import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import ReactQuill from "react-quill";
-import SelectCountry from "../../custom-components/SelectCountry";
 
 export const EventCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -28,6 +27,12 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
     resource: "users",
     optionValue: "_id",
     optionLabel: "username",
+  });
+
+  const { selectProps: countrySelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "name.common",
   });
 
   async function onSubmitCapture(values: any) {
@@ -123,7 +128,13 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
           </Select>
         </Form.Item>
         <Form.Item label="Target Country" name={["target_country"]}>
-          <SelectCountry />
+          {/*<SelectCountry />*/}
+          <Select
+            {...countrySelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item label="Secteur d'activité" name={["activity_area"]}>
           <Select defaultValue="">

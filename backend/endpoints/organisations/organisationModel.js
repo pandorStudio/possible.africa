@@ -20,16 +20,16 @@ const organisationSchema = mongoose.Schema(
       ref: "User",
     },
     country: {
-      type: String,
-      default: "",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Country",
     },
     slug: {
       type: String,
       default: "",
     },
     owner: {
-      type: String,
-      default: "Inconnu",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     description: { type: String },
     email: { type: String },
@@ -72,7 +72,11 @@ organisationSchema.pre(/^find/, function (next) {
     select: "name slug",
   });
   this.populate({
-    path: "contributeur",
+    path: "country",
+    select: "name idd flag",
+  });
+  this.populate({
+    path: "owner",
     select: "username firstname lastname email phone role avatar",
   });
   next();
