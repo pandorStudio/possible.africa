@@ -39,7 +39,7 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
   const { selectProps: countrySelectProps } = useSelect({
     resource: "countries",
     optionValue: "_id",
-    optionLabel: "name.common",
+    optionLabel: "translations.fra.common",
     defaultValue: opportunitiesData?.target_country?._id,
   });
 

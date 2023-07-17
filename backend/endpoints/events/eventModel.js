@@ -96,7 +96,7 @@ eventSchema.pre("find", function (next) {
 eventSchema.pre("find", function (next) {
   this.populate({
     path: "target_country",
-    select: "name idd flag",
+    select: "name idd flag translations",
   });
   next();
 });

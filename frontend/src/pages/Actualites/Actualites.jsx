@@ -79,7 +79,7 @@ function Actualites() {
               imgUrl={news.image}
               isLoaded={isLoaded}
               link={"/actualites/" + news.slug}
-              country={news.country || ""}
+              country={news.country?.translations?.fra?.common || ""}
               hideMeBellow="md"
             />
           );
@@ -89,7 +89,6 @@ function Actualites() {
               {instanceCard}
               {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
                <CustomContainer>
-
                  <Spinner />
                </CustomContainer>
 

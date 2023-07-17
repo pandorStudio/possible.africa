@@ -27,13 +27,10 @@ function Organisations() {
   });
   let content;
 
-
   let isLoaded = true;
 
   if (organisations?.length === 0) {
-    return (
-    <NoData/>
-    );
+    return <NoData />;
   }
 
   if (isLoading) {
@@ -51,16 +48,16 @@ function Organisations() {
         hasMore={true}
         loader={
           // eslint-disable-next-line react/no-unknown-property
-          <Box styles={{
-            display: "flex",
-            justifyContent: "center",
-          }}>
+          <Box
+            styles={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Spinner as="div" mx="45%" mt={10} />
           </Box>
         }
-        endMessage={
-            <Text>Yay! You have seen it all</Text>
-        }
+        endMessage={<Text>Yay! You have seen it all</Text>}
       >
         {organisations.map((organisation, index) => {
           const instanceCard = (
@@ -68,14 +65,17 @@ function Organisations() {
               postType="Organisation"
               key={organisation._id}
               title={organisation.name}
-              description={ParseSlice(organisation?.description || "Pas de contenu")}
+              description={ParseSlice(
+                organisation?.description || "Pas de contenu"
+              )}
               imgUrl={organisation?.logo}
               isLoaded={isLoaded}
               link={"/organisations/" + organisation?.id}
               type={organisation?.type?.name}
-              country={organisation?.country?.name?.common || ""}
+              country={organisation?.country?.translations?.fra?.common || ""}
             />
           );
+          console.log(organisation?.country);
           return <>{instanceCard}</>;
         })}
       </InfiniteScroll>

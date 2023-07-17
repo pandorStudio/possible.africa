@@ -37,7 +37,7 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
   const { selectProps: countrySelectProps } = useSelect({
     resource: "countries",
     optionValue: "_id",
-    optionLabel: "name.common",
+    optionLabel: "translations.fra.common",
     defaultValue: eventsData?.target_country?._id,
   });
 

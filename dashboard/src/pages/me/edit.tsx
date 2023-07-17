@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
-  IResourceComponentsProps,
   file2Base64,
+  IResourceComponentsProps,
   useApiUrl,
 } from "@refinedev/core";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Space, Typography } from "antd";
+import { Form, Input, message, Select, Space, Typography, Upload } from "antd";
 // import dayjs from "dayjs";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { imageUploadHandler } from "../posts/create";
@@ -112,7 +111,7 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
 
         // Filter countries by alphabetic order
         countrieDatasFiltered.sort((a: any, b: any) =>
-          a.name.common > b.name.common ? 1 : -1
+          a?.translations?.fra?.common > b?.translations?.fra?.common ? 1 : -1
         );
         setCountries(countrieDatasFiltered);
       });
@@ -278,7 +277,7 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
                       }}
                     >
                       <Text style={{ textAlign: "start" }}>
-                        {" " + country.name.common}
+                        {" " + country?.translations?.fra?.common}
                       </Text>
                     </div>
                   </div>

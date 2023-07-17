@@ -11,6 +11,7 @@ const countrySchema = mongoose.Schema(
     },
     idd: { type: Object },
     flag: { type: String },
+    translations: { type: Object },
   },
   {
     timestamps: true,
