@@ -335,7 +335,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             title="Pays Cible"
             render={(value: any) => {
               if (value) {
-                return `${value.name.common}`;
+                return `${value?.translations?.fra?.common}`;
                 // return "-";
               } else {
                 return "-";

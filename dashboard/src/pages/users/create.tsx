@@ -110,7 +110,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
 
         // Filter countries by alphabetic order
         countrieDatasFiltered.sort((a: any, b: any) =>
-          a.name.common > b.name.common ? 1 : -1
+          a?.translations?.fra?.common > b?.translations?.fra?.common ? 1 : -1
         );
         setCountries(countrieDatasFiltered);
       });
@@ -288,7 +288,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
                       }}
                     >
                       <Text style={{ textAlign: "start" }}>
-                        {" " + country.name.common}
+                        {" " + country?.translations?.fra?.common}
                       </Text>
                     </div>
                   </div>

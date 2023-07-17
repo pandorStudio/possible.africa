@@ -3,6 +3,7 @@ const Country = require("../countries/countryModel");
 const CustomUtils = require("../../utils/index.js");
 
 const transformJson = async () => {
+  let nbFr = 0;
   const fs = require("fs");
   const path = require("path");
   const filePath = path.join(__dirname, "countries.json");
@@ -10,18 +11,40 @@ const transformJson = async () => {
   const countries = JSON.parse(data);
   console.log(countries);
 
+  const countryFromDb = await Country.find();
+
   const countriesReducted = countries.map((country) => {
-    const { name, idd, flag } = country;
-    return { name, idd, flag };
+    const {
+      name,
+      idd,
+      flag,
+      translations: { fra },
+    } = country;
+    return { name, idd, flag, translations: { fra } };
   });
 
-  console.log(countriesReducted);
-  for(let i = 0; i < countriesReducted.length; i++) {
-    const country = countriesReducted[i];
-    const newCountry = await Country.create(country);
+  // const countriesReducted = countryFromDb.map((country, index) => {
+  //   // const { name, idd, flag, translations } = country;
+  //   // return { name, idd, flag };
+  //   await Country.findByIdAndUpdate(country._id, countries[index]);
+  // });
+
+  // console.log(countriesReducted);
+  for (let i = 0; i < countryFromDb.length; i++) {
+    const country = countryFromDb[i];
+    const newCountry = await Country.findByIdAndUpdate(
+      country._id,
+      countriesReducted[i],
+      {
+        new: true,
+      }
+    );
     console.log(newCountry);
+    if(countriesReducted[i].translations.fra) nbFr++;
   }
- }
+
+  console.log(nbFr);
+};
 
 // @Gett all events
 // @route GET /api/v1/events
@@ -55,7 +78,8 @@ exports.getEventById = async (req, res, next) => {
 // @access Public
 exports.createEvent = async (req, res, next) => {
   const CustomBody = { ...req.body };
-  const slug = CustomUtils.slugify(CustomBody.title) + "-" + CustomUtils.getRandomNbr();
+  const slug =
+    CustomUtils.slugify(CustomBody.title) + "-" + CustomUtils.getRandomNbr();
   try {
     CustomBody.slug = slug;
     const event = await Event.create(CustomBody);

@@ -48,7 +48,7 @@ if (interviews?.length === 0) {
     } else if(isSuccess) {
         content = interviews.map(interview => {
             return (
-                <CardComponent postType="Interview" key={interview._id} title={interview.title} description={ParseSlice(interview.content ?? "Pas de contenu")} imgUrl={interview.image} isLoaded={isLoaded} link={"/interviews/" + interview.slug} country={interview.country || ""}               hideMeBellow="md"
+                <CardComponent postType="Interview" key={interview._id} title={interview.title} description={ParseSlice(interview.content ?? "Pas de contenu")} imgUrl={interview.image} isLoaded={isLoaded} link={"/interviews/" + interview.slug} country={interview?.country?.translations?.fra?.common || "" || ""}               hideMeBellow="md"
                 />
             )
         })

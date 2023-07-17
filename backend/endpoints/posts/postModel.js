@@ -49,8 +49,8 @@ postSchema.pre(/^find/, function (next) {
     select: "name slug",
   });
   this.populate({
-      path: "organisations",
-      select: "name contributeur",
+    path: "organisations",
+    select: "name contributeur",
   });
   next();
 });
@@ -59,7 +59,7 @@ postSchema.pre(/^find/, function (next) {
 postSchema.pre("find", function (next) {
   this.populate({
     path: "country",
-    select: "name idd flag",
+    select: "name idd flag translations",
   });
   next();
 });

@@ -501,7 +501,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             render={(value: any) => {
               console.log(value);
               if (value) {
-                return `${value.name.common}`;
+                return `${value?.translations?.fra?.common}`;
                 // return "-";
               } else {
                 return "-";

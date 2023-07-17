@@ -56,7 +56,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   const { selectProps: countrySelectProps } = useSelect({
     resource: "countries",
     optionValue: "_id",
-    optionLabel: "name.common",
+    optionLabel: "translations.fra.common",
     defaultValue: organisationsData?.country?._id,
   });
 
@@ -203,7 +203,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
 
         // Filter countries by alphabetic order
         countrieDatasFiltered.sort((a: any, b: any) =>
-          a.name.common > b.name.common ? 1 : -1
+          a?.translations?.fra?.common > b?.translations?.fra?.common ? 1 : -1
         );
         setCountries(countrieDatasFiltered);
       });
@@ -354,7 +354,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
                       }}
                     >
                       <Text style={{ textAlign: "start" }}>
-                        {" " + country.name.common}
+                        {" " + country?.translations?.fra?.common}
                       </Text>
                     </div>
                   </div>

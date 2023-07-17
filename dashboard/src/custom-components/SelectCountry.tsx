@@ -12,7 +12,7 @@ export default function SelectCountry(props) {
         const countrieDatas = res.data;
         // Filter countries by alphabetic order
         countrieDatas.sort((a: any, b: any) =>
-          a.name.common > b.name.common ? 1 : -1
+          a.translations?.fra?.common > b.translations?.fra?.common ? 1 : -1
         );
         setCountries(countrieDatas);
       });
@@ -21,8 +21,8 @@ export default function SelectCountry(props) {
   return (
     <Select defaultValue={existingCountry}>
       {countries.map((country) => (
-        <Select.Option value={country.name.common}>
-          {country.name.common}
+        <Select.Option value={country?.translations?.fra?.common}>
+          {country?.translations?.fra?.common}
         </Select.Option>
       ))}
     </Select>

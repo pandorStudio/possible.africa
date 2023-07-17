@@ -116,7 +116,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         field: "role",
         operator: "eq",
         value: "contact",
-        },
+      },
     ],
   });
 
@@ -130,7 +130,14 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   const { selectProps: countrySelectProps } = useSelect({
     resource: "countries",
     optionValue: "_id",
-    optionLabel: "name.common",
+    optionLabel: "translations.fra.common",
+    // defaultValue: "",
+  });
+
+  const { selectProps: indicatifSelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "translations.fra.common",
     // defaultValue: "",
   });
 
@@ -184,7 +191,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
 
         // Filter countries by alphabetic order
         countrieDatasFiltered.sort((a: any, b: any) =>
-          a.name.common > b.name.common ? 1 : -1
+          a?.translations?.fra?.common > b?.translations?.fra?.common ? 1 : -1
         );
         setCountries(countrieDatasFiltered);
       });
@@ -335,7 +342,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
                       }}
                     >
                       <Text style={{ textAlign: "start" }}>
-                        {" " + country.name.common}
+                        {" " + country?.translations?.fra?.common}
                       </Text>
                     </div>
                   </div>

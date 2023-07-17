@@ -74,10 +74,6 @@ opportunitySchema.pre(/^find/, function (next) {
     path: "opportunity_type",
     select: "name slug",
   });
-  // this.populate({
-  //   path: "target_country",
-  //   select: "name idd flag",
-  // });
   next();
 });
 
@@ -85,18 +81,10 @@ opportunitySchema.pre(/^find/, function (next) {
 opportunitySchema.pre("find", function (next) {
   this.populate({
     path: "target_country",
-    select: "name idd flag",
+    select: "name idd flag translations",
   });
   next();
 });
-
-// opportunitySchema.pre("find", function (next) {
-//   this.populate({
-//     path: "target_country",
-//     select: "name idd flag",
-//   });
-//   next();
-// });
 
 const Opportunity = mongoose.model("Opportunity", opportunitySchema);
 module.exports = Opportunity;

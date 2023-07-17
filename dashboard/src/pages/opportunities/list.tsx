@@ -324,7 +324,7 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
             title="pays"
             render={(value: any) => {
               if (value) {
-                return `${value.name.common}`;
+                return `${value?.translations?.fra?.common}`;
                 // return "-";
               } else {
                 return "-";

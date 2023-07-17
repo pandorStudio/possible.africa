@@ -72,12 +72,16 @@ organisationSchema.pre(/^find/, function (next) {
     select: "name slug",
   });
   this.populate({
-    path: "country",
-    select: "name idd flag",
-  });
-  this.populate({
     path: "owner",
     select: "username firstname lastname email phone role avatar",
+  });
+  next();
+});
+
+organisationSchema.pre("find", function (next) {
+  this.populate({
+    path: "country",
+    select: "name idd flag translations",
   });
   next();
 });
