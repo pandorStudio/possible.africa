@@ -75,11 +75,12 @@ function Actualites() {
               postType="Actualités"
               key={news._id}
               title={news.title}
-              description={ParseSlice(news.content || "Pas de contenu")}
+              description={ParseSlice(news.content)}
               imgUrl={news.image}
               isLoaded={isLoaded}
               link={"/actualites/" + news.slug}
               country={news.country || ""}
+              hideMeBellow="md"
             />
           );
 
