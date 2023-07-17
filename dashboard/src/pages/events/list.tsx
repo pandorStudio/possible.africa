@@ -1,23 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  IResourceComponentsProps,
   BaseRecord,
+  IResourceComponentsProps,
   useApiUrl,
   useInvalidate,
 } from "@refinedev/core";
 import {
-  useTable,
-  List,
-  EditButton,
-  ShowButton,
-  DateField,
   BooleanField,
-  DeleteButton,
   CreateButton,
-  ExportButton,
+  DateField,
+  DeleteButton,
+  EditButton,
   ImageField,
+  List,
+  ShowButton,
+  useTable,
 } from "@refinedev/antd";
-import { Table, Space, Input, message, Modal, Button, Checkbox } from "antd";
+import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
 import { axiosInstance } from "@refinedev/simple-rest";
 import papa from "papaparse";
 import { downloadMedia } from "../organisations/list";
@@ -331,7 +330,18 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             title="Type d'évenement"
           />
           <Table.Column dataIndex="format" title="Format" />
-          <Table.Column dataIndex="target_countriy" title="Pays Cible" />
+          <Table.Column
+            dataIndex="target_country"
+            title="Pays Cible"
+            render={(value: any) => {
+              if (value) {
+                return `${value.name.common}`;
+                // return "-";
+              } else {
+                return "-";
+              }
+            }}
+          />
           <Table.Column dataIndex="activity_area" title="Secteur d'activité" />
           {/* <Table.Column
             dataIndex="description"

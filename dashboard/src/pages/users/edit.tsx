@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
-  IResourceComponentsProps,
   file2Base64,
+  IResourceComponentsProps,
   useApiUrl,
 } from "@refinedev/core";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Space, Typography } from "antd";
+import { Form, Input, message, Select, Space, Typography, Upload } from "antd";
 // import dayjs from "dayjs";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { imageUploadHandler } from "../posts/create";
@@ -160,20 +159,28 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item
           label="Email"
           name={["email"]}
-          rules={[
-            {
-              required: true,
-              type: "email",
-            },
-          ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     type: "email",
+          //   },
+          // ]}
         >
+          <Input />
+        </Form.Item>
+        <Form.Item label="Nom de famille" name={["lastname"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Prénom.s" name={["firstname"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Nom de famille" name={["lastname"]}>
-          <Input />
+        <Form.Item label="Role" name={["role"]}>
+          {/* <Select defaultValue="user" style={{ width: 120 }}>
+            <Option value="admin">Administrateur</Option>
+            <Option value="contributor">Contributeur</Option>
+            <Option value="user">Utilisateur</Option>
+          </Select> */}
+          <Select {...roleSelectProps} />
         </Form.Item>
         <Form.Item label="Avatar" name={["avatar"]}>
           <Upload
@@ -211,14 +218,6 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item label="Description" name={["description"]}>
           <Input />
-        </Form.Item>
-        <Form.Item label="Role" name={["role"]}>
-          {/* <Select defaultValue="user" style={{ width: 120 }}>
-            <Option value="admin">Administrateur</Option>
-            <Option value="contributor">Contributeur</Option>
-            <Option value="user">Utilisateur</Option>
-          </Select> */}
-          <Select {...roleSelectProps} />
         </Form.Item>
         <Form.Item label="Genre" name={["gender"]}>
           <Select defaultValue="f" style={{ width: 120 }}>

@@ -1,5 +1,6 @@
 const CustomUtils = require("../../utils/index.js");
 const User = require("./userModel");
+const UserRole = require("../userRoles/userRoleModel");
 const bcrypt = require("bcryptjs");
 
 // @Get me
@@ -7,7 +8,7 @@ const bcrypt = require("bcryptjs");
 // @access Private
 exports.getMe = async (req, res) => {
   try {
-    console.log(req.user);
+    // console.log(req.user);
     const user = await User.find({_id: req.user._id});
     if (!user)
       return res
@@ -26,6 +27,12 @@ exports.getAllUsers = async (req, res) => {
     const { limit, page, sort, fields } = req.query;
     const queryObj = CustomUtils.advancedQuery(req.query);
   try {
+    const roleSlug = queryObj.role;
+    if (roleSlug) {
+      const role = await UserRole.find({ slug: roleSlug });
+      if (role.length) queryObj.role = role[0]._id; 
+    }
+    // console.log(roleId);
     const users = await User.find(queryObj)
       .limit(limit * 1)
       .sort(sort)

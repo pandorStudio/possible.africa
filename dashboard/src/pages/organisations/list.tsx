@@ -1,50 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  IResourceComponentsProps,
   BaseRecord,
-  useExport,
-  useImport,
-  useCreate,
+  IResourceComponentsProps,
   useApiUrl,
-  file2Base64,
+  useInvalidate,
 } from "@refinedev/core";
 import {
-  useTable,
-  List,
-  EditButton,
-  TagField,
-  EmailField,
-  ImportButton,
-  ExportButton,
   CreateButton,
   DeleteButton,
-  RefreshButton,
+  EditButton,
+  EmailField,
   ImageField,
+  List,
+  useTable,
 } from "@refinedev/antd";
-import {
-  Table,
-  Space,
-  Button,
-  Input,
-  Spin,
-  Alert,
-  message,
-  Modal,
-  Checkbox,
-} from "antd";
-import { IPost, IPostFile } from "../../interfaces";
+import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
 import papa from "papaparse";
-import { dataProvider } from "../../custom-data-provider/data-provider";
-import axios from "axios";
 import { axiosInstance } from "../../authProvider";
 import Link from "antd/es/typography/Link";
-import { useRefineContext } from "@pankod/refine";
-import { useInvalidate } from "@refinedev/core";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { imageUploadHandler } from "../posts/create";
-import FileSaver from "file-saver";
 import { ShowButton } from "../../components/buttons/show";
-import { ClickListPageElement } from "../../custom-components/ClickListPageElement";
 import { AdminOrContributor } from "../../custom-components/AccessControl";
 
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -344,7 +320,19 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
           <Table.Column fixed="left" width="8%" dataIndex="name" title="Nom" />
-          <Table.Column width="7%" dataIndex="country" title="Pays" />
+          <Table.Column
+            width="7%"
+            dataIndex="country"
+            title="Pays"
+            render={(value: any) => {
+              if (value) {
+                return `${value.name.common}`;
+                // return "-";
+              } else {
+                return "-";
+              }
+            }}
+          />
           {/* <Table.Column
             width="10%"
             dataIndex="couverture"
@@ -364,7 +352,17 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             dataIndex={["contributeur", "username"]}
             title="Contributeur"
           />
-          <Table.Column dataIndex={"owner"} title="Contact" />
+          <Table.Column
+            dataIndex={"owner"}
+            title="Contact"
+            render={(value: any) => {
+              if (value) {
+                return `${value.lastname} ${value.firstname}`;
+              } else {
+                return "-";
+              }
+            }}
+          />
           {/* <Table.Column
             dataIndex="description"
             title="Description"
@@ -398,7 +396,12 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               if (value) {
                 return (
                   <Link
-                    href={"https://www.google.com/search?q=" + value.indicatif + " " + value.number}
+                    href={
+                      "https://www.google.com/search?q=" +
+                      value.indicatif +
+                      " " +
+                      value.number
+                    }
                     target="_blank"
                   >
                     {value.indicatif} {value.number}

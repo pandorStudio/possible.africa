@@ -1,10 +1,33 @@
 const Event = require("./eventModel");
+const Country = require("../countries/countryModel");
 const CustomUtils = require("../../utils/index.js");
+
+const transformJson = async () => {
+  const fs = require("fs");
+  const path = require("path");
+  const filePath = path.join(__dirname, "countries.json");
+  const data = fs.readFileSync(filePath);
+  const countries = JSON.parse(data);
+  console.log(countries);
+
+  const countriesReducted = countries.map((country) => {
+    const { name, idd, flag } = country;
+    return { name, idd, flag };
+  });
+
+  console.log(countriesReducted);
+  for(let i = 0; i < countriesReducted.length; i++) {
+    const country = countriesReducted[i];
+    const newCountry = await Country.create(country);
+    console.log(newCountry);
+  }
+ }
 
 // @Gett all events
 // @route GET /api/v1/events
 // @access Public
 exports.getAllEvents = async (req, res, next) => {
+  // transformJson();
   try {
     const events = await Event.find();
     res.status(200).json(events);

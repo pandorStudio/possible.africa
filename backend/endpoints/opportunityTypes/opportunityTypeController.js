@@ -1,4 +1,5 @@
 const OpportunityType = require("./opportunityTypeModel");
+const CustomUtils = require("../../utils/index.js");
 
 // @Get all opportunity types
 // @Route: /api/v1/opportunityTypes

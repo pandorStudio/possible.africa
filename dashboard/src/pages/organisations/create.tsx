@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
-  IResourceComponentsProps,
   file2Base64,
+  IResourceComponentsProps,
   useApiUrl,
 } from "@refinedev/core";
-import { Create, getValueFromEvent, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Space, Upload, message, Typography } from "antd";
+import { Create, useForm, useSelect } from "@refinedev/antd";
+import { Form, Input, message, Select, Space, Typography, Upload } from "antd";
 import { axiosInstance } from "../../authProvider";
 import ReactQuill from "react-quill";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import SelectCountry from "../../custom-components/SelectCountry";
 
 export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -95,8 +94,8 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         number: realPhoneNumber,
       };
     }
-    if (!values?.contributeur?._id) {
-      values.contributeur = null;
+    if (!values?.owner?._id) {
+      values.owner = null;
     }
     if (!values?.type?._id) {
       values.type = null;
@@ -106,18 +105,33 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     onFinish(values);
   }
 
-  // const { selectProps: contributorSelectProps } = useSelect({
-  //   resource: "users?role=contributor",
-  //   optionValue: "_id",
-  //   optionLabel: "username",
-  //   defaultValue: "",
-  // });
+  const { selectProps: contactSelectProps } = useSelect({
+    resource: "users",
+    optionValue: "_id",
+    optionLabel: "username",
+    defaultValue: "",
+    queryOptions: {},
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contact",
+        },
+    ],
+  });
 
   const { selectProps: organisationTypeSelectProps } = useSelect({
     resource: "organisation_types",
     optionValue: "_id",
     optionLabel: "name",
     defaultValue: "",
+  });
+
+  const { selectProps: countrySelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "name.common",
+    // defaultValue: "",
   });
 
   const uploadButton = (
@@ -143,6 +157,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   };
 
   useEffect(() => {
+    console.log(countrySelectProps);
     if (imageUrl) {
       setUploadLoading(false);
     }
@@ -174,7 +189,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         setCountries(countrieDatasFiltered);
       });
     }
-  }, [imageUrl, countries, uploadLoading]);
+  }, [imageUrl, countries, uploadLoading, countrySelectProps]);
 
   return (
     <Create saveButtonProps={saveButtonProps}>
@@ -191,7 +206,13 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Pays" name={["country"]}>
-          <SelectCountry />
+          {/*<SelectCountry />*/}
+          <Select
+            {...countrySelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item label="Logo" name="logo">
           <Upload
@@ -229,14 +250,20 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
           {/* </Form.Item> */}
         </Form.Item>
         <Form.Item label="Type" name={["type", "_id"]}>
-          <Select {...organisationTypeSelectProps} />
+          <Select
+            {...organisationTypeSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
-        {/* <Form.Item label="Contributeur" name={["contributeur", "_id"]}>
-          <Select {...contributorSelectProps} />
-        </Form.Item> */}
-
-        <Form.Item label="Contact" name={["owner"]}>
-          <Input />
+        <Form.Item label="Contact" name={["owner", "_id"]}>
+          <Select
+            {...contactSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item
           label="Description"

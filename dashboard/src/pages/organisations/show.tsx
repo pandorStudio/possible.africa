@@ -1,13 +1,6 @@
 import React from "react";
 import { IResourceComponentsProps, useShow } from "@refinedev/core";
-import {
-  Show,
-  TagField,
-  TextField,
-  EmailField,
-  BooleanField,
-  DeleteButton,
-} from "@refinedev/antd";
+import { DeleteButton, EmailField, Show, TextField } from "@refinedev/antd";
 import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
@@ -38,7 +31,7 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Nom</Title>
       <TextField value={record?.name} />
       <Title level={5}>Pays</Title>
-      <TextField value={record?.country} />
+      <TextField value={record?.country?.name?.common} />
       <Title level={5}>Type</Title>
       <TextField value={record?.type?.name} />
       <Title level={5}>Contributeur</Title>

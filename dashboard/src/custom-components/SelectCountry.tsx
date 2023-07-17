@@ -2,9 +2,9 @@ import { Select } from "antd";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../authProvider";
 
-export default function SelectCountry() {
+export default function SelectCountry(props) {
   const [countries, setCountries] = useState([]);
-
+  const existingCountry = props.country;
   useEffect(() => {
     if (!countries.length) {
       // Get all countries from api
@@ -19,7 +19,7 @@ export default function SelectCountry() {
     }
   }, [countries]);
   return (
-    <Select>
+    <Select defaultValue={existingCountry}>
       {countries.map((country) => (
         <Select.Option value={country.name.common}>
           {country.name.common}

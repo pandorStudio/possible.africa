@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-  IResourceComponentsProps,
   file2Base64,
+  IResourceComponentsProps,
   useApiUrl,
 } from "@refinedev/core";
-import { Edit, useForm, getValueFromEvent, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Upload, message } from "antd";
+import { Edit, useForm, useSelect } from "@refinedev/antd";
+import { Form, Input, message, Select, Upload } from "antd";
 import ReactQuill from "react-quill";
 import { imageUploadHandler } from "./create";
 import {
@@ -53,6 +53,13 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "username",
     optionValue: "_id",
     defaultValue: postsData?.user?._id,
+  });
+
+  const { selectProps: countrySelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "name.common",
+    defaultValue: postsData?.country?._id,
   });
 
   const { selectProps: categorieSelectProps } = useSelect({
@@ -116,7 +123,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     if (!values?.organisations?._id) {
       values.organisations = null;
     }
-    if (!values?.country?._id) {
+    if (!values?.country) {
       values.country = null;
     }
     if (!values?.categorie?._id) {
@@ -212,7 +219,12 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Pays" name={["country"]}>
-          <Input />
+          <Select
+            {...countrySelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item label="Slug" name={["slug"]}>
           <Input />

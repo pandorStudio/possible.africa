@@ -105,15 +105,18 @@ exports.createOrganisation = async (req, res) => {
 // @route PUT /api/v1/organisations/:id
 // @access Public
 exports.updateOrganisation = async (req, res) => {
+  const CustomBody = { ...req.body };
   try {
     const organisation = await Organisation.findById(req.params.id);
     if (!organisation) {
       return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     }
 
+    if (req.user) CustomBody.contributeur = organisation.contributeur;
+
     const updatedOrganisation = await Organisation.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      CustomBody,
       { new: true }
     );
     res.json(updatedOrganisation);

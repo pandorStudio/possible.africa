@@ -39,6 +39,7 @@ const postCategorieRoutes = require("./endpoints/postCategories/postCategorieRou
 const postRoutes = require("./endpoints/posts/postRouter");
 const uploadRoutes = require("./endpoints/uploads/uploadRoutes");
 const searchRoutes = require("./endpoints/search/searchRoutes");
+const countryRoutes = require("./endpoints/countries/countryRoutes");
 const dashboardRoutes = require("./endpoints/tableauDeBord/dashboardRoutes");
 
 // Middleware
@@ -70,6 +71,7 @@ app.use(API_URL_BASE + "post_categories", postCategorieRoutes);
 app.use(API_URL_BASE + "posts", postRoutes);
 app.use(API_URL_BASE + "upload", uploadRoutes);
 app.use(API_URL_BASE + "search", searchRoutes);
+app.use(API_URL_BASE + "countries", countryRoutes);
 app.use(API_URL_BASE + "dashboard", dashboardRoutes);
 
 // Routes

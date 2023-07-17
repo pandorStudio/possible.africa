@@ -39,7 +39,7 @@ if (events?.length === 0) {
     } else if(isSuccess) {
         content = events.map(event => {
             return (
-                <CardComponent postType="Agenda" key={event._id} title={event.title} description={ParseSlice(event.description)} imgUrl={event?.cover} isLoaded={isLoaded} link={"/agenda/" + event.id} country={event.target_country || ""} type={event?.event_type?.name}/>
+                <CardComponent postType="Agenda" key={event._id} title={event.title} description={ParseSlice(event.description || "Pas de contenu")} imgUrl={event?.cover} isLoaded={isLoaded} link={"/agenda/" + event.id} country={event?.target_country?.name?.common || ""} type={event?.event_type?.name}/>
             )
         })
     } else if (isError) {

@@ -23,7 +23,8 @@ const eventSchema = mongoose.Schema(
       default: "",
     },
     target_country: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Country",
     },
     activity_area: {
       type: String,
@@ -87,6 +88,15 @@ eventSchema.pre("find", function (next) {
   this.populate({
     path: "event_type",
     select: "name slug",
+  });
+  next();
+});
+
+// populate target_country
+eventSchema.pre("find", function (next) {
+  this.populate({
+    path: "target_country",
+    select: "name idd flag",
   });
   next();
 });

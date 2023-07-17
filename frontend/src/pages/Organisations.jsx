@@ -68,12 +68,12 @@ function Organisations() {
               postType="Organisation"
               key={organisation._id}
               title={organisation.name}
-              description={ParseSlice(organisation.description)}
-              imgUrl={organisation.logo}
+              description={ParseSlice(organisation?.description || "Pas de contenu")}
+              imgUrl={organisation?.logo}
               isLoaded={isLoaded}
               link={"/organisations/" + organisation?.id}
               type={organisation?.type?.name}
-              country={organisation.country || ""}
+              country={organisation?.country?.name?.common || ""}
             />
           );
           return <>{instanceCard}</>;

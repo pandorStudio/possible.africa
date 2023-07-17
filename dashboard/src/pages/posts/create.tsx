@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
-  IResourceComponentsProps,
   file2Base64,
+  IResourceComponentsProps,
   useApiUrl,
 } from "@refinedev/core";
-import { Create, useForm, getValueFromEvent, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Upload, message } from "antd";
+import { Create, useForm, useSelect } from "@refinedev/antd";
+import { Form, Input, message, Select, Upload } from "antd";
 // import BasicEditor from "../../components/Editors/basic";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { CustomAdvancedEditor } from "../../components/Editors/advanced";
-import LexicalEditor from "../../components/Editors/lexical";
 import "../../components/Editors/styles.css";
 import { axiosInstance } from "../../authProvider";
-import SelectCountry from "../../custom-components/SelectCountry";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 import { UploadProps } from "antd/lib/upload";
@@ -93,6 +90,12 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "name",
   });
 
+  const { selectProps: countrySelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "name.common",
+  });
+
   async function onSubmitCapture(values: any) {
     let imgTags = editorContent?.match(/<img[^>]+src="([^">]+)"/g);
     if (imgTags && imgTags.length > 0) {
@@ -138,7 +141,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     if (!values?.organisations?._id) {
       values.organisations = null;
     }
-    if (!values?.country?._id) {
+    if (!values?.country) {
       values.country = null;
     }
     if (!values?.categorie?._id) {
@@ -220,7 +223,13 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Pays" name={["country"]}>
-          <SelectCountry />
+          {/*<SelectCountry />*/}
+          <Select
+            {...countrySelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item
           label="Contenu"

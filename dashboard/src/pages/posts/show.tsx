@@ -1,9 +1,21 @@
 import React from "react";
-import { IResourceComponentsProps, useMany, useShow } from "@refinedev/core";
-import { Show, TagField, TextField, ImageField, DeleteButton } from "@refinedev/antd";
+import {
+  IResourceComponentsProps,
+  useMany,
+  useOne,
+  useShow,
+} from "@refinedev/core";
+import {
+  DeleteButton,
+  ImageField,
+  Show,
+  TagField,
+  TextField,
+} from "@refinedev/antd";
 import { Space, Typography } from "antd";
 import parse, { HTMLReactParserOptions } from "html-react-parser";
 import { AdminOrContributor } from "../../custom-components/AccessControl";
+import Link from "antd/es/typography/Link";
 
 export const htmlParseOptions: HTMLReactParserOptions = {
   // @ts-ignore
@@ -33,6 +45,14 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
     }
   );
 
+  const { data: countryData, isLoading: countryIsLoading } = useOne({
+    resource: "countries",
+    id: record?.country || "",
+    queryOptions: {
+      enabled: !!record,
+    },
+  });
+
   return (
     <Show
       isLoading={isLoading}
@@ -51,7 +71,7 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Organisations</Title>
       {organisationIsLoading ? (
         <>Loading ...</>
-      ) : (organisationsData?.data?.length && record?.organisations?.length) ? (
+      ) : organisationsData?.data?.length && record?.organisations?.length ? (
         <>
           {record?.organisations.map((organisation: any) => (
             <TagField key={organisation?._id} value={organisation?.name} />
@@ -63,7 +83,19 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Title</Title>
       <TextField value={record?.title} />
       <Title level={5}>Country</Title>
-      <TextField value={record?.country} />
+      {countryData?.data ? (
+        <Link
+          href={
+            "https://www.google.com/maps/search/" +
+            countryData?.data?.name?.common
+          }
+          target="_blank"
+        >
+          {countryData?.data?.name?.common}
+        </Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Slug</Title>
       <TextField value={record?.slug} />
       <Title level={5}>Content</Title>

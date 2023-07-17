@@ -6,6 +6,10 @@ const postSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    source: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Organisation",
+    },
     organisations: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Organisation",
@@ -15,8 +19,8 @@ const postSchema = mongoose.Schema(
       ref: "PostCategorie",
     },
     country: {
-      type: String,
-      default: "",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Country",
     },
     title: { type: String, required: true, unique: true },
     slug: { type: String, required: true, unique: true },
@@ -26,7 +30,7 @@ const postSchema = mongoose.Schema(
       type: String,
       enum: ["published", "draft", "trash", "deleted", "archived"],
       default: "draft",
-    }
+    },
   },
   {
     timestamps: true,
@@ -47,6 +51,15 @@ postSchema.pre(/^find/, function (next) {
   this.populate({
       path: "organisations",
       select: "name contributeur",
+  });
+  next();
+});
+
+// populate country
+postSchema.pre("find", function (next) {
+  this.populate({
+    path: "country",
+    select: "name idd flag",
   });
   next();
 });

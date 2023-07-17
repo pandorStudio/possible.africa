@@ -1,18 +1,8 @@
 import "./init";
-import {
-  Authenticated,
-  CanAccess,
-  GitHubBanner,
-  Refine,
-  useGetIdentity,
-} from "@refinedev/core";
-import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
+import {Authenticated, Refine,} from "@refinedev/core";
+import {RefineKbar, RefineKbarProvider} from "@refinedev/kbar";
 
-import {
-  ErrorComponent,
-  notificationProvider,
-  ThemedLayoutV2,
-} from "@refinedev/antd";
+import {notificationProvider, ThemedLayoutV2,} from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
 
 import routerBindings, {
@@ -20,73 +10,76 @@ import routerBindings, {
   NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
-import { useTranslation } from "react-i18next";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { authProvider, axiosInstance } from "./authProvider";
-import { Header } from "./components/header";
-import { ColorModeContextProvider } from "./contexts/color-mode";
-import {
-  BlogPostCreate,
-  BlogPostEdit,
-  BlogPostList,
-  BlogPostShow,
-} from "./pages/blog-posts";
-import {
-  CategoryCreate,
-  CategoryEdit,
-  CategoryList,
-  CategoryShow,
-} from "./pages/categories";
-import { ForgotPassword } from "./pages/forgotPassword";
-import { Login } from "./pages/login";
-import { Register } from "./pages/register";
-import { UserList } from "./pages/users/list";
-import { UserShow } from "./pages/users/show";
-import { UserEdit } from "./pages/users/edit";
-import { UserCreate } from "./pages/users/create";
-import { OrganisationTypeList } from "./pages/organisation_types/list";
-import { OrganisationList } from "./pages/organisations/list";
-import { OrganisationShow } from "./pages/organisations/show";
-import { OrganisationEdit } from "./pages/organisations/edit";
-import { OrganisationCreate } from "./pages/organisations/create";
-import { dataProvider } from "./custom-data-provider/data-provider";
-import { EventList } from "./pages/events/list";
-import { JobList } from "./pages/jobs/list";
-import { JobShow } from "./pages/jobs/show";
-import { JobEdit } from "./pages/jobs/edit";
-import { JobCreate } from "./pages/jobs/create";
-import { OpportunityTypeList } from "./pages/opportunity_types/list";
-import { OpportunityTypeShow } from "./pages/opportunity_types/show";
-import { OpportunityTypeEdit } from "./pages/opportunity_types/edit";
-import { OpportunityTypeCreate } from "./pages/opportunity_types/create";
-import { OpportunityList } from "./pages/opportunities/list";
-import { OpportunityEdit } from "./pages/opportunities/edit";
-import { OpportunityCreate } from "./pages/opportunities/create";
-import { OpportunityShow } from "./pages/opportunities/show";
-import { EventTypeList } from "./pages/event_types/list";
-import { EventTypeEdit } from "./pages/event_types/edit";
-import { EventTypeShow } from "./pages/event_types/show";
-import { EventTypeCreate } from "./pages/event_types/create";
-import { EventEdit } from "./pages/events/edit";
-import { EventCreate } from "./pages/events/create";
-import { EventShow } from "./pages/events/show";
-import { RegisterPage } from "./components/pages/auth/components";
-import { PostList } from "./pages/posts/list";
-import { PostEdit } from "./pages/posts/edit";
-import { PostCreate } from "./pages/posts/create";
-import { PostShow } from "./pages/posts/show";
-import { PostCategoryList } from "./pages/post_categories/list";
-import { PostCategoryEdit } from "./pages/post_categories/edit";
-import { PostCategoryShow } from "./pages/post_categories/show";
-import { PostCategoryCreate } from "./pages/post_categories/create";
-import {
-  FileTextOutlined,
-  GroupOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import {useTranslation} from "react-i18next";
+import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
+import {authProvider} from "./authProvider";
+import {Header} from "./components/header";
+import {ColorModeContextProvider} from "./contexts/color-mode";
+import {ForgotPassword} from "./pages/forgotPassword";
+import {Login} from "./pages/login";
+import {UserList} from "./pages/users/list";
+import {UserShow} from "./pages/users/show";
+import {UserEdit} from "./pages/users/edit";
+import {UserCreate} from "./pages/users/create";
+import {OrganisationTypeList} from "./pages/organisation_types/list";
+import {OrganisationList} from "./pages/organisations/list";
+import {OrganisationShow} from "./pages/organisations/show";
+import {OrganisationEdit} from "./pages/organisations/edit";
+import {OrganisationCreate} from "./pages/organisations/create";
+import {dataProvider} from "./custom-data-provider/data-provider";
+import {EventList} from "./pages/events/list";
+import {JobList} from "./pages/jobs/list";
+import {JobShow} from "./pages/jobs/show";
+import {JobEdit} from "./pages/jobs/edit";
+import {JobCreate} from "./pages/jobs/create";
+import {OpportunityTypeList} from "./pages/opportunity_types/list";
+import {OpportunityTypeShow} from "./pages/opportunity_types/show";
+import {OpportunityTypeEdit} from "./pages/opportunity_types/edit";
+import {OpportunityTypeCreate} from "./pages/opportunity_types/create";
+import {OpportunityList} from "./pages/opportunities/list";
+import {OpportunityEdit} from "./pages/opportunities/edit";
+import {OpportunityCreate} from "./pages/opportunities/create";
+import {OpportunityShow} from "./pages/opportunities/show";
+import {EventTypeList} from "./pages/event_types/list";
+import {EventTypeEdit} from "./pages/event_types/edit";
+import {EventTypeShow} from "./pages/event_types/show";
+import {EventTypeCreate} from "./pages/event_types/create";
+import {EventEdit} from "./pages/events/edit";
+import {EventCreate} from "./pages/events/create";
+import {EventShow} from "./pages/events/show";
+import {RegisterPage} from "./components/pages/auth/components";
+import {PostList} from "./pages/posts/list";
+import {PostEdit} from "./pages/posts/edit";
+import {PostCreate} from "./pages/posts/create";
+import {PostShow} from "./pages/posts/show";
+import {PostCategoryList} from "./pages/post_categories/list";
+import {PostCategoryEdit} from "./pages/post_categories/edit";
+import {PostCategoryShow} from "./pages/post_categories/show";
+import {PostCategoryCreate} from "./pages/post_categories/create";
+import {UserOutlined,} from "@ant-design/icons";
 import CustomIconJob from "./custom-components/Icons/CustomIconJob";
-import { ThemedTitleV2 } from "./components/themedLayout/title";
-import { ThemedSiderV2 } from "./components/themedLayout/sider";
+import {ThemedTitleV2} from "./components/themedLayout/title";
+import {ThemedSiderV2} from "./components/themedLayout/sider";
+import CustomIconArticle from "./custom-components/Icons/CustomIconArticle";
+import CustomIconOrganisation from "./custom-components/Icons/CustomIconOrganisation";
+import CustomIconEvent from "./custom-components/Icons/CustomIconEvent";
+import CustomIconOpportunity from "./custom-components/Icons/CustomIconOpportunity";
+import {UserRoleCreate} from "./pages/user roles/create";
+import {UserRoleEdit} from "./pages/user roles/edit";
+import {UserRoleList} from "./pages/user roles/list";
+import {UserRoleShow} from "./pages/user roles/show";
+import {useEffect, useState} from "react";
+import jwt_decode from "jwt-decode";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "./store";
+import {update} from "./features/user/userSlice";
+import {UserFromDb} from "./types/UserFromDb";
+import {Profil} from "./pages/me/list";
+import {ProfilEdit} from "./pages/me/edit";
+import {OrganisationTypeShow} from "./pages/organisation_types/show";
+import {OrganisationTypeEdit} from "./pages/organisation_types/edit";
+import {OrganisationTypeCreate} from "./pages/organisation_types/create";
+import CustomDashboard from "./pages/dashboard";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -94,30 +87,6 @@ export const API_URL =
   ENV === "developement"
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
-import { AntdInferencer } from "@refinedev/inferencer/antd";
-import CustomIconArticle from "./custom-components/Icons/CustomIconArticle";
-import CustomIconOrganisation from "./custom-components/Icons/CustomIconOrganisation";
-import CustomIconEvent from "./custom-components/Icons/CustomIconEvent";
-import CustomIconOpportunity from "./custom-components/Icons/CustomIconOpportunity";
-import { UserRoleCreate } from "./pages/user roles/create";
-import { UserRoleEdit } from "./pages/user roles/edit";
-import { UserRoleList } from "./pages/user roles/list";
-import { UserRoleShow } from "./pages/user roles/show";
-import { newEnforcer } from "casbin";
-import { model, adapter } from "./accessControl";
-import { useEffect, useState } from "react";
-import jwt_decode from "jwt-decode";
-import { AdminOrContributor } from "./custom-components/AccessControl";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./store";
-import { update } from "./features/user/userSlice";
-import { UserFromDb } from "./types/UserFromDb";
-import { Profil } from "./pages/me/list";
-import { ProfilEdit } from "./pages/me/edit";
-import { OrganisationTypeShow } from "./pages/organisation_types/show";
-import { OrganisationTypeEdit } from "./pages/organisation_types/edit";
-import { OrganisationTypeCreate } from "./pages/organisation_types/create";
-import CustomDashboard from "./pages/dashboard";
 
 function Logo() {
   return <img src="./assets/logos/logo.png" alt="n" />;
@@ -567,6 +536,16 @@ function App() {
         label: "Profil",
         hided: true,
         // parent: "Utilisateurs",
+      },
+    },
+    {
+      name: "countries",
+      list: "/countries",
+      show: "/countries/show/:id",
+      create: "/countries/create",
+      edit: "/countries/edit/:id",
+      meta: {
+        label: "Pays",
       },
     },
   ];

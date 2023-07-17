@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
-  IResourceComponentsProps,
   file2Base64,
+  IResourceComponentsProps,
   useApiUrl,
 } from "@refinedev/core";
 import { Create, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, Select, Space, Typography } from "antd";
+import { Form, Input, message, Select, Space, Typography, Upload } from "antd";
 
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { imageUploadHandler } from "../posts/create";
@@ -20,6 +19,8 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, onFinish } = useForm();
   const { selectProps: roleSelectProps } = useSelect({
     resource: "user_roles",
+    optionValue: "_id",
+    optionLabel: "name",
   });
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
@@ -125,9 +126,9 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
       values.avatar = "";
     }
 
-    if (values.telephone) {
+    if (values.phone) {
       // console.log(values.telephone);
-      values.telephone = {
+      values.phone = {
         indicatif: indicatif,
         number: realPhoneNumber,
       };
@@ -138,6 +139,17 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
+        <Form.Item
+          label="Nom de Famille"
+          name={["lastname"]}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
         <Form.Item
           label="Prénom.s"
           name={["firstname"]}
@@ -150,15 +162,25 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="N. Famille"
-          name={["lastname"]}
+          label="Role"
+          name={["role", "_id"]}
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Input />
+          {/* <Select defaultValue="user" style={{ width: 120 }}>
+            <Option value="admin">Administrateur</Option>
+            <Option value="contributor">Contributeur</Option>
+            <Option value="user">Utilisateur</Option>
+          </Select> */}
+          <Select
+            {...roleSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         {/* Create avatar upload input */}
         <Form.Item label="Avatar" name={["avatar"]}>
@@ -195,7 +217,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
             )}
           </Upload>
         </Form.Item>
-        <Form.Item label="N. Utilisateur" name={["username"]}>
+        <Form.Item label="Nom d'Utilisateur" name={["username"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Email" name={["email"]}>
@@ -211,19 +233,6 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item label="Description" name={["description"]}>
           <Input />
-        </Form.Item>
-        <Form.Item label="Role" name={["role", "_id", "name"]}>
-          {/* <Select defaultValue="user" style={{ width: 120 }}>
-            <Option value="admin">Administrateur</Option>
-            <Option value="contributor">Contributeur</Option>
-            <Option value="user">Utilisateur</Option>
-          </Select> */}
-          <Select
-            {...roleSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
         </Form.Item>
         <Form.Item label="Genre" name={["gender"]}>
           <Select defaultValue="f" style={{ width: 120 }}>
