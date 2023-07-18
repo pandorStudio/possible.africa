@@ -81,17 +81,15 @@ function Search() {
     content = results.map((result) => {
       return (
         <>
-
-
-{result.searchType === "organisation" && (
+          {result.searchType === "organisation" && (
             <SearchCardComponent
               postType="Organisation"
-              key={result._id}
-              title={result.name}
-              description={ParseSlice(result.description)}
-              imgUrl={result.logo}
+              key={result?._id}
+              title={result?.name}
+              description={ParseSlice(result?.description || "Pas de contenu")}
+              imgUrl={result?.logo}
               isLoaded={isLoaded}
-              link={"/organisations/" + result._id}
+              link={"/organisations/" + result?._id}
               type={result?.type?.name}
               pays="Pays"
             />
@@ -100,13 +98,13 @@ function Search() {
           {result.searchType === "event" && (
             <SearchCardComponent
               postType="Agenda"
-              key={result._id}
-              title={result.title}
-              description={ParseSlice(result.description)}
+              key={result?._id}
+              title={result?.title}
+              description={ParseSlice(result?.description || "Pas de contenu")}
               imgUrl={result?.organisation?.logo}
               isLoaded={isLoaded}
-              link={"/agenda/" + result._id}
-              pays={result.target_country || "Togo"}
+              link={"/agenda/" + result?._id}
+              pays={result?.target_country || "Togo"}
               type={result?.event_type?.name}
             />
           )}
@@ -114,12 +112,12 @@ function Search() {
           {result.searchType === "post" && (
             <SearchCardComponent
               postType="Actualités"
-              key={result._id}
-              title={result.title}
-              description={ParseSlice(result.content)}
-              imgUrl={result.image}
+              key={result?._id}
+              title={result?.title}
+              description={ParseSlice(result?.content || "Pas de contenu")}
+              imgUrl={result?.image}
               isLoaded={isLoaded}
-              link={"/actualites/" + result.slug}
+              link={"/actualites/" + result?.slug}
               pays="Pays"
             />
           )}
@@ -127,12 +125,12 @@ function Search() {
           {result.searchType === "ooportunity" && (
             <SearchCardComponent
               postType="Opportunités"
-              key={result._id}
-              title={result.title}
-              description={ParseSlice(result.description)}
+              key={result?._id}
+              title={result?.title}
+              description={ParseSlice(result?.description || "Pas de contenu")}
               imgUrl={result?.organisation?.logo}
               isLoaded={isLoaded}
-              link={"/opportunites/" + result._id}
+              link={"/opportunites/" + result?._id}
               type={result?.result_type?.name}
               pays={result?.target_country}
             />
@@ -141,17 +139,17 @@ function Search() {
           {result.searchType === "job" && (
             <SearchCardComponent
               postType="Emplois"
-              key={result._id}
-              title={result.title}
-              description={ParseSlice(result.description)}
+              key={result?._id}
+              title={result?.title}
+              description={ParseSlice(result?.description || "Pas de contenu")}
               imgUrl={result?.organisation?.logo}
               isLoaded={isLoaded}
-              link={"/emplois/" + result._id}
+              link={"/emplois/" + result?._id}
               company={result?.organisation?.name}
               type={result?.type}
               location={result?.location}
             />
-          )} 
+          )}
         </>
       );
     });
@@ -162,8 +160,8 @@ function Search() {
   return (
     <>
       <CustomContainer
-        content={content}
-        title={`Environ ${resultLength} resultats trouvés (${duration} secondes)`}
+        content={content || "Pas de contenu"}
+        title={`Environ ${resultLength || 0} resultats trouvés (${duration || 0} secondes)`}
       />
       {/* Render the "Load More" button */}
       {/* {isLoading ? <div>Loading...</div> : <Button>{"Load More"}</Button>} */}
