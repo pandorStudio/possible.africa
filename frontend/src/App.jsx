@@ -25,7 +25,7 @@ function App() {
   console.log(MODE);
   return (
     <>
-      {MODE ? (
+      {MODE === "maintenance" ? (
         <Maintenance />
       ) : (
         <BrowserRouter>
