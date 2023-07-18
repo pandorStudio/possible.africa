@@ -43,12 +43,12 @@ function Agenda() {
       return (
         <CardComponent
           postType="Agenda"
-          key={event._id}
-          title={event.title}
-          description={ParseSlice(event.description || "Pas de contenu")}
+          key={event?._id}
+          title={event?.title}
+          description={ParseSlice(event?.description || "Pas de contenu")}
           imgUrl={event?.cover}
           isLoaded={isLoaded}
-          link={"/agenda/" + event.id}
+          link={"/agenda/" + event?.id}
           country={event?.target_country?.translations?.fra?.common || ""}
           type={event?.event_type?.name}
         />
@@ -59,7 +59,7 @@ function Agenda() {
     return <div>{error.status}</div>;
   }
 
-  return <CustomContainer content={content} />;
+  return <CustomContainer content={content || "Pas de contenu"} />;
 }
 
 export default Agenda;

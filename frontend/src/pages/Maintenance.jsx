@@ -1,6 +1,6 @@
 import { Alert, Container, Heading, Text, VStack } from "@chakra-ui/react";
 
-function TimeForAfrica() {
+function Maintenance() {
   return (
     <Container maxW="container.lg" p={0}>
       <VStack
@@ -12,12 +12,12 @@ function TimeForAfrica() {
         alignItems="flex-start"
       >
         <Alert status="success" flexDirection="column">
-          <Heading size="xl">This is Time for Africa</Heading>
-          <Text textAlign="center">{`Nous sommes en train de fédérer une communauté d'investisseurs pour soutenir l'amorçage en Afrique. Cette page sera bientôt en ligne.`}</Text>
+          <Heading size="xl">Bienvenue sur Possible.Africa</Heading>
+          <Text textAlign="center">{`Cet site est actuellement en maintenance, il sera bientôt remis en ligne.`}</Text>
         </Alert>
       </VStack>
     </Container>
   );
 }
 
-export default TimeForAfrica;
+export default Maintenance;

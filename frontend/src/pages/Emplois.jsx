@@ -37,7 +37,7 @@ if (jobs?.length === 0) {
     } else if(isSuccess) {
         content = jobs.map(job => {
             return (
-                <CardComponent postType="Emplois" key={job._id} title={job.title} description={ParseSlice(job.description)} imgUrl={job?.organisation?.logo} isLoaded={isLoaded} link={"/emplois/" + job?.id} company={job?.organisation?.name} type={job?.type} location={job?.location}/>
+                <CardComponent postType="Emplois" key={job?._id} title={job?.title} description={ParseSlice(job?.description || "Pas de description")} imgUrl={job?.organisation?.logo} isLoaded={isLoaded} link={"/emplois/" + job?.id} company={job?.organisation?.name} type={job?.type} location={job?.location}/>
             )
         })
     } else if (isError) {
@@ -45,7 +45,7 @@ if (jobs?.length === 0) {
         return <div>{error.status}</div>;
     }
   return (
-    <CustomContainer content={content}/>
+    <CustomContainer content={content || "Pas de contenu"}/>
 
   )
 }
