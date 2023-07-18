@@ -13,7 +13,7 @@ function Maintenance() {
       >
         <Alert status="success" flexDirection="column">
           <Heading size="xl">Bienvenue sur Possible.Africa</Heading>
-          <Text textAlign="center">{`Cet site est actuellement en maintenance, il sera bientôt remis en ligne.`}</Text>
+          <Text textAlign="center">{`Ce site est actuellement en maintenance, il sera bientôt remis en ligne.`}</Text>
         </Alert>
       </VStack>
     </Container>
