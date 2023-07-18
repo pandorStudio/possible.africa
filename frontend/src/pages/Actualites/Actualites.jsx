@@ -73,12 +73,12 @@ function Actualites() {
           const instanceCard = (
             <CardComponent
               postType="Actualités"
-              key={news._id}
-              title={news.title}
-              description={ParseSlice(news.content || "Pas de contenu")}
-              imgUrl={news.image}
+              key={news?._id}
+              title={news?.title}
+              description={ParseSlice(news?.content || "Pas de contenu")}
+              imgUrl={news?.image}
               isLoaded={isLoaded}
-              link={"/actualites/" + news.slug}
+              link={"/actualites/" + news?.slug}
               country={news.country?.translations?.fra?.common || ""}
               hideMeBellow="md"
             />

@@ -36,7 +36,7 @@ if (opportunities?.length === 0) {
     } else if(isSuccess) {
         content = opportunities.map(opportunity => {
             return (
-                <CardComponent postType="Opportunités" key={opportunity._id} title={opportunity?.title} description={ParseSlice(opportunity?.description || "Pas de contenu")} imgUrl={opportunity?.organisation?.logo} isLoaded={isLoaded} link={"/opportunites/" + opportunity?.id} type={opportunity?.opportunity_type?.name} country={opportunity?.target_country?.translations?.fra?.common || ""}/>
+                <CardComponent postType="Opportunités" key={opportunity._id} title={opportunity?.title} description={ParseSlice(opportunity?.description || "Pas de description")} imgUrl={opportunity?.organisation?.logo} isLoaded={isLoaded} link={"/opportunites/" + opportunity?.id} type={opportunity?.opportunity_type?.name} country={opportunity?.target_country?.translations?.fra?.common || ""}/>
             )
         })
     } else if (isError) {
@@ -45,7 +45,7 @@ if (opportunities?.length === 0) {
     }
 
   return (
-    <CustomContainer content={content}/>
+    <CustomContainer content={content || "Pas de contenu"}/>
 
   )
 }

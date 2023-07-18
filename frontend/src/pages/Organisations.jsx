@@ -63,10 +63,10 @@ function Organisations() {
           const instanceCard = (
             <CardComponent
               postType="Organisation"
-              key={organisation._id}
-              title={organisation.name}
+              key={organisation?._id}
+              title={organisation?.name}
               description={ParseSlice(
-                organisation?.description || "Pas de contenu"
+                organisation?.description || "Pas de Description"
               )}
               imgUrl={organisation?.logo}
               isLoaded={isLoaded}
@@ -75,7 +75,6 @@ function Organisations() {
               country={organisation?.country?.translations?.fra?.common || ""}
             />
           );
-          console.log(organisation?.country);
           return <>{instanceCard}</>;
         })}
       </InfiniteScroll>
@@ -85,7 +84,7 @@ function Organisations() {
     console.log({ error });
     return <div>{error.status}</div>;
   }
-  return <CustomContainer content={content} />;
+  return <CustomContainer content={content || "Pas de contenu"} />;
 }
 
 export default Organisations;
