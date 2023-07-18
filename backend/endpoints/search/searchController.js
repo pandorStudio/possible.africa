@@ -43,7 +43,7 @@ exports.getAllFound = async (req, res) => {
           $or: [
             { name: regex },
             { description: regex },
-            { owner: regex },
+            // { owner: regex },
             { description: regex },
             { email: regex },
             { telephone: regex },
@@ -106,7 +106,7 @@ exports.getAllFound = async (req, res) => {
           $or: [
             { title: regex },
             { format: regex },
-            { target_country: regex },
+            // { target_country: regex },
             { activity_area: regex },
             { description: regex },
             { slug: regex },
@@ -130,7 +130,7 @@ exports.getAllFound = async (req, res) => {
           $or: [
             { title: regex },
             { target_people: regex },
-            { target_country: regex },
+            // { target_country: regex },
             { activity_area: regex },
             { description: regex },
             { eligibility: regex },

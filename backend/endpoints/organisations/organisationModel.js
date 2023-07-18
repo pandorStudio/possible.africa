@@ -14,6 +14,7 @@ const organisationSchema = mongoose.Schema(
     type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "OrganisationType",
+      createIndexes: true,
     },
     contributeur: {
       type: mongoose.Schema.Types.ObjectId,
