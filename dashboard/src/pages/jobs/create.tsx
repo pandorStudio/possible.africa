@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { IResourceComponentsProps, file2Base64 } from "@refinedev/core";
+import { file2Base64, IResourceComponentsProps } from "@refinedev/core";
 import { Create, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, DatePicker } from "antd";
+import { DatePicker, Form, Input } from "antd";
 import dayjs from "dayjs";
 import Select from "antd/lib/select";
 import { Option } from "antd/es/mentions";
@@ -53,7 +53,7 @@ export const JobCreate: React.FC<IResourceComponentsProps> = () => {
       const url = await imageUploadHandler(base64);
       values.logo = url;
     }
-    if (!values?.organisation?._id) {
+    if (!values?.organisation) {
       values.organisation = null;
     }
     onFinish(values);
@@ -73,7 +73,9 @@ export const JobCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Description" name={["description"]} 
+        <Form.Item
+          label="Description"
+          name={["description"]}
           style={{
             height: "600px",
             display: "flex",

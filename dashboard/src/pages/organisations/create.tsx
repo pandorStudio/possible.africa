@@ -94,10 +94,10 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         number: realPhoneNumber,
       };
     }
-    if (!values?.owner?._id) {
+    if (!values?.owner) {
       values.owner = null;
     }
-    if (!values?.type?._id) {
+    if (!values?.type) {
       values.type = null;
     }
     // console.log(values);

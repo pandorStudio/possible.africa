@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { IResourceComponentsProps, file2Base64 } from "@refinedev/core";
+import { file2Base64, IResourceComponentsProps } from "@refinedev/core";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { Form, Input, DatePicker, Select } from "antd";
+import { DatePicker, Form, Input, Select } from "antd";
 import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
@@ -57,7 +57,7 @@ export const JobEdit: React.FC<IResourceComponentsProps> = () => {
       const url = await imageUploadHandler(base64);
       values.image = url;
     }
-    if (!values?.organisation?._id) {
+    if (!values?.organisation) {
       values.organisation = null;
     }
     onFinish(values);

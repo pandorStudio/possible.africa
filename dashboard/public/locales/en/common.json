@@ -35,7 +35,10 @@
       "title": "Sign up for your account",
       "fields": {
         "email": "Email",
-        "password": "Password"
+        "password": "Password",
+        "lastname": "Lastname",
+        "firstname": "Firstname",
+        "confirmPassword": "Confirm Password"
       },
       "errors": {
         "validEmail": "Invalid email address"

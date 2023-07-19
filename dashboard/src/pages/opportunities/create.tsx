@@ -69,13 +69,13 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
       const url = await imageUploadHandler(base64);
       values.logo = url;
     }
-    if (!values?.organisation?._id) {
+    if (!values?.organisation) {
       values.organisation = null;
     }
-    if (!values?.user?._id) {
+    if (!values?.user) {
       values.user = null;
     }
-    if (!values?.opportunity_type?._id) {
+    if (!values?.opportunity_type) {
       values.opportunity_type = null;
     }
     onFinish(values);

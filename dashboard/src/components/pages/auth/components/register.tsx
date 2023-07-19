@@ -1,36 +1,35 @@
 import React from "react";
 import {
-  RegisterPageProps,
   RegisterFormTypes,
-  useRouterType,
-  useLink,
+  RegisterPageProps,
   useActiveAuthProvider,
-  useTranslate,
-  useRouterContext,
+  useLink,
   useRegister,
+  useRouterContext,
+  useRouterType,
+  useTranslate,
 } from "@refinedev/core";
-import { ThemedTitle } from "@refinedev/antd";
 import {
-  layoutStyles,
-  containerStyles,
-  titleStyles,
-  headStyles,
   bodyStyles,
+  containerStyles,
+  headStyles,
+  layoutStyles,
+  titleStyles,
 } from "./styles";
 import {
-  Row,
-  Col,
-  Layout,
-  Card,
-  Typography,
-  Form,
-  Input,
   Button,
-  LayoutProps,
+  Card,
   CardProps,
-  FormProps,
+  Col,
   Divider,
+  Form,
+  FormProps,
+  Input,
+  Layout,
+  LayoutProps,
+  Row,
   theme,
+  Typography,
 } from "antd";
 import { ThemedTitleV2 } from "../../../themedLayout/title";
 
@@ -168,64 +167,70 @@ export const RegisterPage: React.FC<RegisterProps> = ({
         {...formProps}
       >
         <Form.Item
-            name="email"
-            label={translate("pages.register.email", "Email")}
-            rules={[
-              { required: true },
-              {
-                type: "email",
-                message: translate(
-                    "pages.register.errors.validEmail",
-                    "Invalid email address"
-                ),
-              },
-            ]}
+          name="email"
+          label={translate("pages.register.fields.email", "Email")}
+          rules={[
+            { required: true },
+            {
+              type: "email",
+              message: translate(
+                "pages.register.errors.validEmail",
+                "Invalid email address"
+              ),
+            },
+          ]}
         >
           <Input
-              size="large"
-              placeholder={translate("pages.register.fields.email", "Email")}
+            size="large"
+            placeholder={translate("pages.register.fields.email", "Email")}
           />
         </Form.Item>
         <Form.Item
-            name="lastname"
-            label={translate("pages.register.lastname", "Lastname")}
-            rules={[
-              { required: true },
-              {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //@ts-ignore
-                type: "text",
-                message: translate(
-                    "pages.register.errors.validLastname",
-                    "Mauvais Nom de famille"
-                ),
-              },
-            ]}
+          name="lastname"
+          label={translate("pages.register.fields.lastname", "Lastname")}
+          rules={[
+            { required: true },
+            {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-ignore
+              type: "text",
+              message: translate(
+                "pages.register.errors.validLastname",
+                "Mauvais Nom de famille"
+              ),
+            },
+          ]}
         >
           <Input
-              size="large"
-              placeholder={translate("pages.register.fields.lastname", "Lastname")}
+            size="large"
+            placeholder={translate(
+              "pages.register.fields.lastname",
+              "Lastname"
+            )}
           />
         </Form.Item>
         <Form.Item
-            name="firstname"
-            label={translate("pages.register.firstname", "Firstname")}
-            rules={[
-              { required: true },
-              {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //@ts-ignore
-                type: "text",
-                message: translate(
-                    "pages.register.errors.validFirstname",
-                    "Mauvaises entrée pour le.s prénom.s"
-                ),
-              },
-            ]}
+          name="firstname"
+          label={translate("pages.register.fields.firstname", "Firstname")}
+          rules={[
+            { required: true },
+            {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              //@ts-ignore
+              type: "text",
+              message: translate(
+                "pages.register.errors.validFirstname",
+                "Mauvaises entrée pour le.s prénom.s"
+              ),
+            },
+          ]}
         >
           <Input
-              size="large"
-              placeholder={translate("pages.register.fields.firstname", "Firstname")}
+            size="large"
+            placeholder={translate(
+              "pages.register.fields.firstname",
+              "Firstname"
+            )}
           />
         </Form.Item>
         <Form.Item
@@ -239,7 +244,7 @@ export const RegisterPage: React.FC<RegisterProps> = ({
           name="confirmPassword"
           label={translate(
             "pages.register.fields.confirmPassword",
-            "Confirmer Password"
+            "Confirm Password"
           )}
           rules={[
             {

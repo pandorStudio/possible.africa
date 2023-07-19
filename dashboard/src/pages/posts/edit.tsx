@@ -117,10 +117,10 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
       values.image = "";
     }
 
-    if (!values?.user?._id) {
+    if (!values?.user) {
       values.user = null;
     }
-    if (!values?.organisations?._id) {
+    if (!values?.organisations) {
       values.organisations = null;
     }
     if (!values?.country) {

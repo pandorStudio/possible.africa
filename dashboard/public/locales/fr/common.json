@@ -35,7 +35,10 @@
       "title": "Inscrivez-vous à votre compte",
       "fields": {
         "email": "E-mail",
-        "password": "Mot de passe"
+        "password": "Mot de passe",
+        "lastname": "Nom de famille",
+        "firstname": "Prénom(s)",
+        "confirmPassword": "Confirmation"
       },
       "errors": {
         "validEmail": "Adresse e-mail invalide"
