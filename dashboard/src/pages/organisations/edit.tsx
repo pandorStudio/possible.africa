@@ -103,7 +103,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     } else {
       values.logo = "";
     }
-    if (!values?.owner?._id) {
+    if (!values?.owner) {
       values.owner = null;
     }
     if (values.telephone) {
@@ -113,7 +113,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         number: realPhoneNumber,
       };
     }
-    if (!values?.type?._id) {
+    if (!values?.type) {
       values.type = null;
     }
     // console.log(values);

@@ -143,7 +143,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
-    console.log(postStatus);
+    // console.log(postStatus);
     if (importLoading) {
       messageApi.open({
         type: "loading",
@@ -281,7 +281,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
       okText: "Enrégistrer",
       cancelText: "Annuler",
       async onOk(...args) {
-        console.log(id, statusSelected);
+        // console.log(id, statusSelected);
         if (statusSelected) {
           // const results = checkedArray.map(async (ob) => {
           await axiosInstance.put(
@@ -484,11 +484,13 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                   {value?.map((item, index) => (
                     <TagField
                       key={index}
-                      value={
-                        organisationsData?.data?.find(
-                          (resourcesItems) => resourcesItems._id === item?._id
-                        )?.name
-                      }
+                      // value={organisationsData?.data?.filter(
+                      //   (resourcesItems) => {
+                      //     console.log(resourcesItems);
+                      //     return resourcesItems._id === item?._id;
+                      //   }
+                      // )}
+                      value={item?.name}
                     />
                   ))}
                 </>
@@ -499,7 +501,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             dataIndex="country"
             title="Pays"
             render={(value: any) => {
-              console.log(value);
+              // console.log(value);
               if (value) {
                 return `${value?.translations?.fra?.common}`;
                 // return "-";

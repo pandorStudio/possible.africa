@@ -77,13 +77,13 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
       const url = await imageUploadHandler(base64);
       values.image = url;
     }
-    if (!values?.organisation?._id) {
+    if (!values?.organisation) {
       values.organisation = null;
     }
-    if (!values?.user?._id) {
+    if (!values?.user) {
       values.user = null;
     }
-    if (!values?.event_type?._id) {
+    if (!values?.event_type) {
       values.event_type = null;
     }
     onFinish(values);

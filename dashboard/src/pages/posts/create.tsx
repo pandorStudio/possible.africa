@@ -135,16 +135,16 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
       values.image = imageUrl;
     }
 
-    if (!values?.user?._id) {
+    if (!values?.user) {
       values.user = null;
     }
-    if (!values?.organisations?._id) {
+    if (!values?.organisations) {
       values.organisations = null;
     }
     if (!values?.country) {
       values.country = null;
     }
-    if (!values?.categorie?._id) {
+    if (!values?.categorie) {
       values.categorie = null;
     }
     if (!values?.content) {
