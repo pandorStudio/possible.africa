@@ -92,10 +92,10 @@ exports.protect = async (req, res, next) => {
     // console.log("token found", token);
 
     if (!token) {
-      return res.status(401).json({
-        message: CustomUtils.consts.NOT_LOGGED_IN,
-      });
-      // return next();
+      // return res.status(401).json({
+      //   message: CustomUtils.consts.NOT_LOGGED_IN,
+      // });
+      return next();
     }
 
     // 2) Verification token
@@ -105,10 +105,10 @@ exports.protect = async (req, res, next) => {
     // 3) Check if user still exists
     const currentUser = await User.findById(decoded.user.id);
     if (!currentUser) {
-      return res.status(401).json({
-        message: CustomUtils.consts.UNAUTHORIZED,
-      });
-      // return next();
+      // return res.status(401).json({
+      //   message: CustomUtils.consts.UNAUTHORIZED,
+      // });
+      return next();
     }
 
     // GRANT ACCESS TO PROTECTED ROUTE
