@@ -9,11 +9,8 @@ const bcrypt = require("bcryptjs");
 exports.getMe = async (req, res) => {
   try {
     // console.log(req.user);
-    const user = await User.find({_id: req.user._id});
-    if (!user)
-      return res
-        .status(404)
-        .json({ message: `User not found !` });
+    const user = await User.find({ _id: req.user._id });
+    if (!user) return res.status(404).json({ message: `User not found !` });
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -24,13 +21,13 @@ exports.getMe = async (req, res) => {
 // @route GET /api/v1/users
 // @access Public
 exports.getAllUsers = async (req, res) => {
-    const { limit, page, sort, fields } = req.query;
-    const queryObj = CustomUtils.advancedQuery(req.query);
+  const { limit, page, sort, fields } = req.query;
+  const queryObj = CustomUtils.advancedQuery(req.query);
   try {
     const roleSlug = queryObj.role;
     if (roleSlug) {
       const role = await UserRole.find({ slug: roleSlug });
-      if (role.length) queryObj.role = role[0]._id; 
+      if (role.length) queryObj.role = role[0]._id;
     }
     // console.log(roleId);
     const users = await User.find(queryObj)
@@ -66,10 +63,18 @@ exports.getUserById = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const bodyWR = { ...req.body };
-    if (bodyWR.role) {
-      delete bodyWR.role;
+    const role = await UserRole.find({ slug: "contact" });
+    if (role.length) bodyWR.role = role[0]._id;
+    if (bodyWR.email) {
+      const existingEmail = await User.find({
+        email: bodyWR.email,
+      });
+      if (existingEmail.length)
+        return res
+          .status(400)
+          .json({ message: CustomUtils.consts.EXISTING_ACCOUNT });
     }
-      const slug =
+    const slug =
       CustomUtils.slugify(bodyWR.title) + "-" + CustomUtils.getRandomNbr();
     bodyWR.slug = slug;
     const newUser = await User.create(bodyWR);

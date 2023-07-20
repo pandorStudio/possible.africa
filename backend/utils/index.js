@@ -6,6 +6,7 @@ class CustomUtils {
     NOT_EXIST: "Not Exist",
     INVALID_CREDENTIALS: "Invalid Credentials",
     METHOD_NOT_ALLOWED: "Method not allowed",
+    EXISTING_ACCOUNT: "Un compte existe déjà avec les données fournies",
     NOT_FOUND: "Not Found",
     TOKEN_KEY: "miam_auth",
     SUCCESS: "Success",

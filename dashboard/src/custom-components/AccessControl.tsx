@@ -1,101 +1,36 @@
-import { RootState } from "../store";
-import { useGetIdentity } from "@refinedev/core";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
-import { useDispatch, useSelector } from "react-redux";
-import { update } from "../features/user/userSlice";
-import { IUser } from "../features/user/userSlice";
-
-let user: IUser = {
-  id: "",
-  role: "",
-  roleSlug: "",
-  username: "",
-  lastname: "",
-  firstname: "",
-  avatar: "",
-};
-
-// Get token from local storage
-const token = localStorage.getItem("refine-auth");
-
-const apiUrl = import.meta.env.VITE_BACKEND_PROD;
-
-let userId = "";
-
-if (token) {
-  // console.log("token: ", token);
-
-  const key = import.meta.env.VITE_JWT_SECRET;
-
-  const decoded: { user: any; iat: number; exp: number } = jwt_decode(
-    token,
-    key
-  );
-
-  userId = decoded.user.id;
-  // console.log("apiUrl: ", apiUrl);
-
-  const result = await axios
-    .get(apiUrl + "/users/" + userId, {})
-    .then((res) => {
-      user.id = res.data.id;
-      user.role = res.data.role.name;
-      user.roleSlug = res.data.role.slug;
-      user.username = res.data.username;
-      user.lastname = res.data.lastname;
-      user.firstname = res.data.firstname;
-      user.avatar = res.data.avatar;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-}
-
-// export async function InitState() {
-//   const dispatch = useDispatch();
-//   const result = await axios
-//     .get(apiUrl + "/users/" + userId, {})
-//     .then((res) => {
-//       user.id = res.data.id;
-//       user.role = res.data.role.name;
-//       user.roleSlug = res.data.role.slug;
-//       user.username = res.data.username;
-//       user.lastname = res.data.lastname;
-//       user.firstname = res.data.firstname;
-//       user.avatar = res.data.avatar;
-
-//       dispatch(update(user));
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-//   return null;
-// }
+import { useContextSelector } from "use-context-selector";
+import { userContext } from "../UserContext";
 
 export function Connected({ children }) {
-  // const dispatch = useDispatch();
-  // console.log("userState: ", userState);
+  const user = useContextSelector(userContext, (v) => v[0].user);
   if (user) {
     // dispatch(update(user));
+    // console.log(user);
     return <>{children}</>;
   }
-
-  return null;
+  return <div>Vous n'êtes pas connecté !</div>;
 }
 
 export function AdminOrContributor({ children }) {
-  // @ts-ignore
-  if (user.roleSlug === "admin" || user.roleSlug === "contributor") {
+  const user = useContextSelector(userContext, (v) => v[0].user);
+  if (user?.role?.slug === "admin" || user?.role?.slug === "contributor") {
     return <>{children}</>;
   }
-
   return null;
 }
 
 export function Admin({ children }) {
-  // @ts-ignore
-  if (user.roleSlug === "admin") {
+  const user = useContextSelector(userContext, (v) => v[0].user);
+  console.log(user);
+  if (user?.role?.slug === "admin") {
+    return <>{children}</>;
+  }
+  return null;
+}
+
+export function Contributor({ children }) {
+  const user = useContextSelector(userContext, (v) => v[0].user);
+  if (user?.role?.slug === "contributor") {
     return <>{children}</>;
   }
 
@@ -103,8 +38,8 @@ export function Admin({ children }) {
 }
 
 export function User({ children }) {
-  // @ts-ignore
-  if (user.roleSlug === "user") {
+  const user = useContextSelector(userContext, (v) => v[0].user);
+  if (user?.role?.slug === "user") {
     return <>{children}</>;
   }
 

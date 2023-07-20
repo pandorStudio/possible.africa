@@ -1,15 +1,14 @@
 import React from "react";
 import {
-  LoginPageProps,
   LoginFormTypes,
-  useLink,
-  useRouterType,
+  LoginPageProps,
   useActiveAuthProvider,
+  useLink,
   useLogin,
-  useTranslate,
   useRouterContext,
+  useRouterType,
+  useTranslate,
 } from "@refinedev/core";
-import { ThemedTitle } from "@refinedev/antd";
 import {
   bodyStyles,
   containerStyles,
@@ -18,22 +17,25 @@ import {
   titleStyles,
 } from "./styles";
 import {
-  Row,
-  Col,
-  Layout,
-  Card,
-  Typography,
-  Form,
-  Input,
   Button,
-  Checkbox,
+  Card,
   CardProps,
-  LayoutProps,
+  Checkbox,
+  Col,
   Divider,
+  Form,
   FormProps,
+  Input,
+  Layout,
+  LayoutProps,
+  Row,
   theme,
+  Typography,
 } from "antd";
 import { ThemedTitleV2 } from "../../../themedLayout/title";
+import { useContextSelector } from "use-context-selector";
+import { userContext } from "../../../../UserContext";
+import jwt_decode from "jwt-decode";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -68,6 +70,8 @@ export const LoginPage: React.FC<LoginProps> = ({
   const { mutate: login, isLoading } = useLogin<LoginFormTypes>({
     v3LegacyAuthProviderCompatible: Boolean(authProvider?.isLegacy),
   });
+
+  const setUserD = useContextSelector(userContext, (v) => v[1]);
 
   const PageTitle =
     title === false ? null : (
@@ -139,6 +143,17 @@ export const LoginPage: React.FC<LoginProps> = ({
     return null;
   };
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const values = {
+      email: e.currentTarget.username.value,
+      password: e.currentTarget.password.value,
+    };
+
+    login(values);
+  };
+
   const CardContent = (
     <Card
       title={CardTitle}
@@ -154,7 +169,36 @@ export const LoginPage: React.FC<LoginProps> = ({
       <Form<LoginFormTypes>
         layout="horizontal"
         form={form}
-        onFinish={(values) => login(values)}
+        onSubmitCapture={(event) => {
+          event.preventDefault();
+        }}
+        onFinish={(values) => {
+          return login(values, {
+            onSuccess: (data) => {
+              console.log("loged in");
+              const localStorageToken = localStorage.getItem("refine-auth");
+              if (localStorageToken) {
+                if (localStorageToken != localStorage.getItem("refine-auth")) {
+                  window.location.reload();
+                  console.log("reloading");
+                }
+                const key = import.meta.env.VITE_JWT_SECRET;
+                const decoded: { user: any; iat: number; exp: number } =
+                  jwt_decode(localStorageToken, key);
+                setUserD((s) => ({
+                  ...s,
+                  user: { ...decoded.user },
+                }));
+              }
+            },
+            onError: (data) => {
+              console.log("login error");
+            },
+            onSettled: (data) => {
+              console.log("login settled");
+            },
+          });
+        }}
         requiredMark={false}
         initialValues={{
           remember: false,

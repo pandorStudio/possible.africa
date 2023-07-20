@@ -2,20 +2,18 @@ import { AuthBindings } from "@refinedev/core";
 // import jwt from "jsonwebtoken";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
   ENV === "developement"
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
 
-export const axiosInstance = axios.create(
-  {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-
-    },
-  }
-);
+export const axiosInstance = axios.create({
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+  },
+});
 
 export const TOKEN_KEY = "refine-auth";
 
@@ -33,8 +31,8 @@ export const authProvider: AuthBindings = {
       // if ((username || email) && password) {
       //   localStorage.setItem(TOKEN_KEY, username);
       /*axiosInstance.defaults.headers.common = {
-        Authorization: `Bearer ${token}`,
-      };*/
+                                Authorization: `Bearer ${token}`,
+                              };*/
       return {
         success: true,
         redirectTo: "/",
@@ -49,9 +47,15 @@ export const authProvider: AuthBindings = {
       },
     };
   },
-  register: async ({ email, firstname, lastname, password, confirmPassword }) => {
+  register: async ({
+    email,
+    firstname,
+    lastname,
+    password,
+    confirmPassword,
+  }) => {
     const {
-      data: { status, token },
+      data: { status, token, message },
     } = await axiosInstance.post(
       `${API_URL}/signup`,
       {
@@ -59,7 +63,7 @@ export const authProvider: AuthBindings = {
         confirmPassword,
         email,
         firstname,
-        lastname
+        lastname,
       },
       {
         headers: {
@@ -77,8 +81,8 @@ export const authProvider: AuthBindings = {
     ) {
       localStorage.setItem(TOKEN_KEY, token);
       /*axiosInstance.defaults.headers.common = {
-        Authorization: `Bearer ${token}`,
-      };*/
+                                Authorization: `Bearer ${token}`,
+                              };*/
       return {
         success: true,
         redirectTo: "/",
@@ -113,7 +117,19 @@ export const authProvider: AuthBindings = {
       redirectTo: "/login",
     };
   },
-  getPermissions: async () => null,
+  getPermissions: async () => {
+    const token = localStorage.getItem(TOKEN_KEY);
+
+    if (token) {
+      const key = import.meta.env.VITE_JWT_SECRET;
+      const decoded: { user: any; iat: number; exp: number } = jwt_decode(
+        token,
+        key
+      );
+      return [decoded.user.role.slug];
+    }
+    return null;
+  },
   getIdentity: async () => {
     const token = localStorage.getItem(TOKEN_KEY);
 
@@ -121,11 +137,11 @@ export const authProvider: AuthBindings = {
       const key = import.meta.env.VITE_JWT_SECRET;
       const decoded: { user: any; iat: number; exp: number } = jwt_decode(
         token,
-        key                                               
+        key
       );
-      const { data } = await axiosInstance.get(
-        `${API_URL}/users/${decoded.user.id}`
-      );
+      // const { data } = await axiosInstance.get(
+      //   `${API_URL}/users/${decoded.user.id}`
+      // );
       return {
         id: decoded.user.id,
         role: decoded.user.role.name,

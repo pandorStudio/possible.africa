@@ -1,36 +1,33 @@
 import React, { CSSProperties } from "react";
 import {
-  useTranslate,
-  useLogout,
-  useTitle,
   CanAccess,
   ITreeMenu,
+  pickNotDeprecated,
+  useActiveAuthProvider,
   useIsExistAuthentication,
-  useRouterContext,
+  useLink,
+  useLogout,
   useMenu,
   useRefineContext,
-  useLink,
+  useRouterContext,
   useRouterType,
-  useActiveAuthProvider,
-  pickNotDeprecated,
+  useTitle,
+  useTranslate,
   useWarnAboutChange,
 } from "@refinedev/core";
+import type { RefineThemedLayoutV2SiderProps } from "@refinedev/antd";
 import { ThemedTitleV2, useSiderVisible } from "@refinedev/antd";
 import {
-  DashboardOutlined,
-  LogoutOutlined,
-  UnorderedListOutlined,
   BarsOutlined,
+  DashboardOutlined,
   LeftOutlined,
+  LogoutOutlined,
   RightOutlined,
+  UnorderedListOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, Grid, Drawer, Button, theme } from "antd";
-import type { RefineThemedLayoutV2SiderProps } from "@refinedev/antd";
-import {
-  AdminOrContributor,
-  Connected,
-  User,
-} from "../../custom-components/AccessControl";
+import { Button, Drawer, Grid, Layout, Menu, theme } from "antd";
+import { useContextSelector } from "use-context-selector";
+import { userContext } from "../../UserContext";
 
 const drawerButtonStyles: CSSProperties = {
   borderTopLeftRadius: 0,
@@ -48,6 +45,7 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
   render,
   meta,
 }) => {
+  const setUserD = useContextSelector(userContext, (v) => v[1]);
   const { token } = useToken();
   const {
     siderVisible,
@@ -97,24 +95,22 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
 
       if (children.length > 0) {
         return (
-            <CanAccess
+          <CanAccess
+            key={item.key}
+            resource={name.toLowerCase()}
+            action="list"
+            params={{
+              resource: item,
+            }}
+          >
+            <SubMenu
               key={item.key}
-              resource={name.toLowerCase()}
-              action="list"
-              params={{
-                resource: item,
-              }}
+              icon={icon ?? <UnorderedListOutlined />}
+              title={label}
             >
-              <SubMenu
-                key={item.key}
-                icon={icon ?? <UnorderedListOutlined />}
-                title={label}
-              >
-                <Connected key={item.key}>
-                  {renderTreeView(children, selectedKey)}
-                </Connected>
-              </SubMenu>
-            </CanAccess>
+              {renderTreeView(children, selectedKey)}
+            </SubMenu>
+          </CanAccess>
         );
       }
       const isSelected = key === selectedKey;
@@ -124,24 +120,24 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
       );
 
       return (
-          <CanAccess
+        <CanAccess
+          key={item.key}
+          resource={name.toLowerCase()}
+          action="list"
+          params={{
+            resource: item,
+          }}
+        >
+          <Menu.Item
             key={item.key}
-            resource={name.toLowerCase()}
-            action="list"
-            params={{
-              resource: item,
-            }}
+            icon={icon ?? (isRoute && <UnorderedListOutlined />)}
           >
-            <Menu.Item
-              key={item.key}
-              icon={icon ?? (isRoute && <UnorderedListOutlined />)}
-            >
-              <Link to={route ?? ""}>{label}</Link>
-              {!drawerSiderVisible && isSelected && (
-                <div className="ant-menu-tree-arrow" />
-              )}
-            </Menu.Item>
-          </CanAccess>
+            <Link to={route ?? ""}>{label}</Link>
+            {!drawerSiderVisible && isSelected && (
+              <div className="ant-menu-tree-arrow" />
+            )}
+          </Menu.Item>
+        </CanAccess>
       );
     });
   };
@@ -157,10 +153,18 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
 
       if (confirm) {
         setWarnWhen(false);
+        setUserD((s) => ({
+          ...s,
+          user: {},
+        }));
         mutateLogout();
       }
     } else {
       mutateLogout();
+      setUserD((s) => ({
+        ...s,
+        user: {},
+      }));
     }
   };
 
