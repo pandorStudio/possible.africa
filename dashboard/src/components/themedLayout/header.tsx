@@ -1,6 +1,6 @@
 import React from "react";
 import { useActiveAuthProvider, useGetIdentity } from "@refinedev/core";
-import { Layout as AntdLayout, Typography, Avatar, Space, theme } from "antd";
+import { Avatar, Layout as AntdLayout, Space, theme, Typography } from "antd";
 import type { RefineThemedLayoutV2HeaderProps } from "@refinedev/antd";
 
 const { Text } = Typography;
@@ -10,13 +10,12 @@ export const ThemedHeaderV2: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   isSticky,
 }) => {
   const { token } = useToken();
-
   const authProvider = useActiveAuthProvider();
   const { data: user } = useGetIdentity({
     v3LegacyAuthProviderCompatible: Boolean(authProvider?.isLegacy),
   });
 
-  const shouldRenderHeader = user && (user.name || user.avatar);
+  const shouldRenderHeader = user && (user.firstname || user.avatar);
 
   if (!shouldRenderHeader) {
     return null;
@@ -41,7 +40,11 @@ export const ThemedHeaderV2: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     <AntdLayout.Header style={headerStyles}>
       <Space>
         <Space size="middle">
-          {user?.lastname && <Text strong>{user.lastname} {user.firstname}</Text>}
+          {user?.lastname && (
+            <Text strong>
+              {user.lastname} {user.firstname}
+            </Text>
+          )}
           {user?.avatar && <Avatar src={user?.avatar} alt={user?.name} />}
         </Space>
       </Space>

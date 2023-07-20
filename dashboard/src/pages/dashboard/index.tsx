@@ -1,15 +1,19 @@
-import {useApiUrl, useLink, useRouterContext, useRouterType} from "@refinedev/core";
-import { Card, Col, Row, Statistic } from "antd";
+import {
+  useApiUrl,
+  useLink,
+  useRouterContext,
+  useRouterType,
+} from "@refinedev/core";
+import { Card, Col, Row, Spin, Statistic } from "antd";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../authProvider";
 import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
 import CustomIconOrganisation from "../../custom-components/Icons/CustomIconOrganisation";
 import CustomIconJob from "../../custom-components/Icons/CustomIconJob";
 import CustomIconOpportunity from "../../custom-components/Icons/CustomIconOpportunity";
 import CustomIconEvent from "../../custom-components/Icons/CustomIconEvent";
 import CustomIconArticle from "../../custom-components/Icons/CustomIconArticle";
-import {Admin} from "../../custom-components/AccessControl";
+import { Admin } from "../../custom-components/AccessControl";
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
@@ -26,22 +30,33 @@ export default function CustomDashboard() {
   const NewLink = useLink();
   const { Link: LegacyLink } = useRouterContext();
   const Link = routerType === "legacy" ? LegacyLink : NewLink;
+  const [token, setToken] = useState<string>(
+    localStorage.getItem("refine-auth")
+  );
 
   useEffect(() => {
     if (dashboardData === null) {
       axiosInstance
-        .get(`${apiUrl}/dashboard`)
+        .get(`${apiUrl}/dashboard`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => {
           setLoading(true);
           setDashboardData(res.data);
           setLoading(false);
-          console.log(dashboardData);
+          // console.log(dashboardData);
         })
         .catch((err) => {
           console.log(err);
         });
     }
+    // console.log(userD);
   }, [dashboardData, loading]);
+
+  // if (!Object.keys(userD).length) <div>Chargement ...</div>;
+
   return (
     <div>
       <Row gutter={[16, 16]}>
@@ -49,55 +64,56 @@ export default function CustomDashboard() {
           <Link to="organisations">
             <Card>
               {loading ? (
-                  <CustomSpiner />
+                <CustomSpiner />
               ) : (
-                  <Statistic
-                      style={{ color: "red" }}
-                      title={
-                        <h3>
-                          <CustomIconOrganisation />
-                          Total Organisations
-                        </h3>
-                      }
-                      value={dashboardData?.organisations}
-                  />
+                <Statistic
+                  style={{ color: "red" }}
+                  title={
+                    <h3>
+                      <CustomIconOrganisation />
+                      Total Organisations
+                    </h3>
+                  }
+                  value={dashboardData?.organisations}
+                />
               )}
             </Card>
-        </Link>
+          </Link>
         </Col>
         <Col span={6}>
           <Link to="jobs">
             <Card>
-            {loading ? (
+              {loading ? (
                 <CustomSpiner />
-            ) : (
+              ) : (
                 <Statistic
-                    title={
-                      <h3>
-                        <CustomIconJob />
-                        Total Emplois
-                      </h3>
-                    }
-                    value={dashboardData?.jobs}
+                  title={
+                    <h3>
+                      <CustomIconJob />
+                      Total Emplois
+                    </h3>
+                  }
+                  value={dashboardData?.jobs}
                 />
-            )}
-          </Card></Link>
+              )}
+            </Card>
+          </Link>
         </Col>
         <Col span={6}>
           <Link to="opportunities">
             <Card>
               {loading ? (
-                  <CustomSpiner />
+                <CustomSpiner />
               ) : (
-                  <Statistic
-                      title={
-                        <h3>
-                          <CustomIconOpportunity />
-                          Total Opportunités
-                        </h3>
-                      }
-                      value={dashboardData?.opportunities}
-                  />
+                <Statistic
+                  title={
+                    <h3>
+                      <CustomIconOpportunity />
+                      Total Opportunités
+                    </h3>
+                  }
+                  value={dashboardData?.opportunities}
+                />
               )}
             </Card>
           </Link>
@@ -106,17 +122,17 @@ export default function CustomDashboard() {
           <Link to="events">
             <Card>
               {loading ? (
-                  <CustomSpiner />
+                <CustomSpiner />
               ) : (
-                  <Statistic
-                      title={
-                        <h3>
-                          <CustomIconEvent />
-                          Total Evènements
-                        </h3>
-                      }
-                      value={dashboardData?.events}
-                  />
+                <Statistic
+                  title={
+                    <h3>
+                      <CustomIconEvent />
+                      Total Evènements
+                    </h3>
+                  }
+                  value={dashboardData?.events}
+                />
               )}
             </Card>
           </Link>
@@ -125,17 +141,17 @@ export default function CustomDashboard() {
           <Link to="posts">
             <Card>
               {loading ? (
-                  <CustomSpiner />
+                <CustomSpiner />
               ) : (
-                  <Statistic
-                      title={
-                        <h3>
-                          <CustomIconArticle />
-                          Total Articles
-                        </h3>
-                      }
-                      value={dashboardData?.posts}
-                  />
+                <Statistic
+                  title={
+                    <h3>
+                      <CustomIconArticle />
+                      Total Articles
+                    </h3>
+                  }
+                  value={dashboardData?.posts}
+                />
               )}
             </Card>
           </Link>
@@ -145,17 +161,22 @@ export default function CustomDashboard() {
             <Link to="users">
               <Card>
                 {loading ? (
-                    <CustomSpiner />
+                  <CustomSpiner />
                 ) : (
-                    <Statistic
-                        title={
-                          <h3>
-                            <UserOutlined style={{display: "inline-block", marginRight: "8px"}} />
-                            Total Utilisateurs
-                          </h3>
-                        }
-                        value={dashboardData?.users}
-                    />
+                  <Statistic
+                    title={
+                      <h3>
+                        <UserOutlined
+                          style={{
+                            display: "inline-block",
+                            marginRight: "8px",
+                          }}
+                        />
+                        Total Utilisateurs
+                      </h3>
+                    }
+                    value={dashboardData?.users}
+                  />
                 )}
               </Card>
             </Link>

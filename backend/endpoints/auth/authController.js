@@ -1,17 +1,30 @@
 const User = require("../users/userModel");
+const UserRole = require("../userRoles/userRoleModel");
 const jwt = require("jsonwebtoken");
 const CustomUtils = require("../../utils/index.js");
 
 function signToken(user) {
-  return jwt.sign({user}, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+  return jwt.sign({ user }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
   });
 }
 
 exports.signup = async (req, res, next) => {
   try {
     const bodyWR = { ...req.body };
-    delete bodyWR.role;
+
+    const role = await UserRole.find({ slug: "contact" });
+    if (role.length) bodyWR.role = role[0]._id;
+    // look if email exist
+    if (bodyWR.email) {
+      const existingEmail = await User.find({
+        email: bodyWR.email,
+      });
+      if (existingEmail.length)
+        return res
+          .status(400)
+          .json({ message: CustomUtils.consts.EXISTING_ACCOUNT });
+    }
 
     // Generate a random four digit number
     let usernameExist = true;
@@ -23,7 +36,7 @@ exports.signup = async (req, res, next) => {
       }
     }
     const slug =
-      CustomUtils.slugify(bodyWR.title) + "-" + CustomUtils.getRandomNbr();
+      CustomUtils.slugify(bodyWR.username) + "-" + CustomUtils.getRandomNbr();
     bodyWR.slug = slug;
     const newUser = await User.create(bodyWR);
     await User.findByIdAndUpdate(newUser._id, { password: req.body.password });
@@ -79,10 +92,10 @@ exports.protect = async (req, res, next) => {
     // console.log("token found", token);
 
     if (!token) {
-      /*return res.status(401).json({
+      return res.status(401).json({
         message: CustomUtils.consts.NOT_LOGGED_IN,
-      });*/
-      return next();
+      });
+      // return next();
     }
 
     // 2) Verification token
@@ -92,10 +105,10 @@ exports.protect = async (req, res, next) => {
     // 3) Check if user still exists
     const currentUser = await User.findById(decoded.user.id);
     if (!currentUser) {
-      /*return res.status(401).json({
+      return res.status(401).json({
         message: CustomUtils.consts.UNAUTHORIZED,
-      });*/
-      return next();
+      });
+      // return next();
     }
 
     // GRANT ACCESS TO PROTECTED ROUTE

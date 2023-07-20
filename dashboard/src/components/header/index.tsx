@@ -9,25 +9,28 @@ import {
   useSetLocale,
 } from "@refinedev/core";
 import {
-  Layout as AntdLayout,
   Avatar,
   Button,
-  Modal,
   Dropdown,
-  MenuProps,
-  Space,
-  Switch,
-  Typography,
-  theme,
   Form,
   Input,
+  Layout as AntdLayout,
+  MenuProps,
+  Modal,
   notification,
+  Space,
+  Switch,
+  theme,
+  Typography,
 } from "antd";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ColorModeContext } from "../../contexts/color-mode";
 import ReactQuill from "react-quill";
 import axios from "axios";
+import { useContextSelector } from "use-context-selector";
+import { userContext } from "../../UserContext";
+import { headerRechardedContext } from "../../HeaderRechargedContext";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -63,8 +66,17 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const [editorContent, setEditorContent] = useState("");
   const [caseTitle, setCaseTitle] = useState("");
   const [api, contextHolder] = notification.useNotification();
-
+  // const [localStorageToken, setLocalStorageToken] = useState<string>("");
+  const setHeaderRecharged = useContextSelector(
+    headerRechardedContext,
+    (v) => v[1]
+  );
+  const setUserD = useContextSelector(userContext, (v) => v[1]);
+  const userD = useContextSelector(userContext, (v) => v[0].user);
   const currentLocale = locale();
+  const [userRecharded, setUserRecharded] = useState(
+    useContextSelector(headerRechardedContext, (v) => v[0].headerRecharged)
+  );
 
   const menuItems: MenuProps["items"] = [...(i18n.languages || [])]
     .sort()
@@ -169,12 +181,6 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       icon: <BugFilled style={{ color: "#52c41a" }} />,
     });
   };
-
-  useEffect(() => {
-    console.log(editorContent);
-    console.log(caseTitle);
-  }, [editorContent, caseTitle]);
-
   const reactQuillModules = {
     toolbar: {
       container: [
@@ -191,6 +197,33 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       ],
     },
   };
+
+  // useEffect(() => {
+  //   if (!userRecharded) {
+  //     const localStorageToken = localStorage.getItem("refine-auth");
+  //     if (localStorageToken) {
+  //       if (localStorageToken != localStorage.getItem("refine-auth")) {
+  //         window.location.reload();
+  //         console.log("reloading");
+  //       }
+  //       const key = import.meta.env.VITE_JWT_SECRET;
+  //       const decoded: { user: any; iat: number; exp: number } = jwt_decode(
+  //         localStorageToken,
+  //         key
+  //       );
+  //       setUserD((s) => ({
+  //         ...s,
+  //         user: { ...decoded.user },
+  //       }));
+  //       setHeaderRecharged((s) => ({
+  //         ...s,
+  //         headerRecharged: true,
+  //       }));
+  //       console.info("Haeder.tsx");
+  //       // setUserConnected({ ...decoded.user });
+  //     }
+  //   }
+  // }, []);
 
   return (
     <>
@@ -268,16 +301,22 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             defaultChecked={mode === "light"}
           />
           <Space style={{ marginLeft: "8px" }} size="middle">
-            {user?.lastname && (
+            {userD?.lastname && (
               <Link to="profil">
                 <Text strong>
-                  {user.lastname} {user.firstname}
+                  {userD.lastname} {userD.firstname}
                 </Text>
               </Link>
             )}
-              <Link to="profil">
-                <Avatar src={user?.avatar || "https://possibledotafrica.s3.eu-west-3.amazonaws.com/users/images/1688567211420-image.png"} alt={user?.name} />
-              </Link>
+            <Link to="profil">
+              <Avatar
+                src={
+                  userD?.avatar ||
+                  "https://possibledotafrica.s3.eu-west-3.amazonaws.com/users/images/1688567211420-image.png"
+                }
+                alt={userD?.firstname}
+              />
+            </Link>
           </Space>
         </Space>
       </AntdLayout.Header>
