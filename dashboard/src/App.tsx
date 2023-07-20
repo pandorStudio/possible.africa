@@ -668,13 +668,7 @@ function App() {
             authProvider={authProvider}
             i18nProvider={i18nProvider}
             DashboardPage={CustomDashboard}
-            resources={
-              userD?.role?.slug === "admin"
-                ? resources.admin
-                : userD?.role?.slug === "contributor"
-                ? resources.contributor
-                : resources.user
-            }
+            resources={resources[userD?.role?.slug]}
             options={{
               syncWithLocation: true,
               warnWhenUnsavedChanges: true,
