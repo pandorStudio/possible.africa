@@ -76,6 +76,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
   );
 
   useEffect(() => {
+    // console.log(usersData);
     if (imageUrl) {
       setUploadLoading(false);
     }
@@ -125,11 +126,10 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
       values.avatar = "";
     }
 
-    if (values.telephone) {
-      // console.log(values.telephone);
-      values.telephone = {
+    if (values.phone) {
+      values.phone = {
         indicatif: indicatif,
-        number: realPhoneNumber,
+        number: phoneNumber,
       };
     }
     onFinish(values);
@@ -174,7 +174,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Prénom.s" name={["firstname"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Role" name={["role"]}>
+        <Form.Item label="Role" name={["role", "_id"]}>
           {/* <Select defaultValue="user" style={{ width: 120 }}>
             <Option value="admin">Administrateur</Option>
             <Option value="contributor">Contributeur</Option>

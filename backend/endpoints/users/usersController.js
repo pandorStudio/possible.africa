@@ -23,7 +23,11 @@ exports.getMe = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   const { limit, page, sort, fields } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
+  // 
+  // console.log(req.user.role.slug)
   try {
+    if (req.user.role.slug !== "admin") queryObj.created_by = req.user._id;
+    // console.log(queryObj);
     const roleSlug = queryObj.role;
     if (roleSlug) {
       const role = await UserRole.find({ slug: roleSlug });
@@ -51,6 +55,7 @@ exports.getUserById = async (req, res) => {
       return res
         .status(404)
         .json({ message: `User with id: ${req.params.id} not found !` });
+    
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -63,8 +68,28 @@ exports.getUserById = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const bodyWR = { ...req.body };
-    const role = await UserRole.find({ slug: "contact" });
-    if (role.length) bodyWR.role = role[0]._id;
+    
+    const contactRole = await UserRole.find({ slug: "contact" });
+    // if (role.length) bodyWR.role = role[0]._id;
+    switch (req.user.role.slug) {
+      case "admin":
+        break;
+      case "contributor":
+        if (contactRole.length) bodyWR.role = contactRole[0]._id;
+        break;
+      case "user":
+        if (contactRole.length) bodyWR.role = contactRole[0]._id;
+        break;
+      case "contact":
+        return res
+          .status(400)
+          .json({ message: CustomUtils.consts.UNAUTHORIZED });
+      default:
+        return res
+          .status(400)
+          .json({ message: CustomUtils.consts.UNAUTHORIZED });
+    }
+
     if (bodyWR.email) {
       const existingEmail = await User.find({
         email: bodyWR.email,
@@ -77,6 +102,7 @@ exports.createUser = async (req, res) => {
     const slug =
       CustomUtils.slugify(bodyWR.title) + "-" + CustomUtils.getRandomNbr();
     bodyWR.slug = slug;
+    bodyWR.created_by = req.user._id;
     const newUser = await User.create(bodyWR);
     await User.findByIdAndUpdate(newUser._id, { password: bodyWR.password });
 
@@ -93,7 +119,8 @@ exports.updateUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: `User not found !` });
-
+    // console.log(req.user.role.slug);
+    if ((user._id !== req.user._id) && req.user.role.slug !== "admin") return res.status(400).json({ message: CustomUtils.consts.UNAUTHORIZED });
     const userUpdated = await User.findByIdAndUpdate(req.params.id, req.body, {
       runValidators: true,
       new: true,
@@ -115,6 +142,8 @@ exports.deleteUser = async (req, res) => {
       return res
         .status(404)
         .json({ message: `User with id: ${req.params.id} not found !` });
+    if (user._id !== req.user._id && req.user.role.slug !== "admin")
+      return res.status(400).json({ message: CustomUtils.consts.UNAUTHORIZED });
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "User deleted successfully !" });
   } catch (error) {

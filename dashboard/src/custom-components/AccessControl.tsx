@@ -19,6 +19,18 @@ export function AdminOrContributor({ children }) {
   return null;
 }
 
+export function AdminOrContributorOrUser({ children }) {
+  const user = useContextSelector(userContext, (v) => v[0].user);
+  if (
+    user?.role?.slug === "admin" ||
+    user?.role?.slug === "contributor" ||
+    user?.role?.slug === "user"
+  ) {
+    return <>{children}</>;
+  }
+  return null;
+}
+
 export function Admin({ children }) {
   const user = useContextSelector(userContext, (v) => v[0].user);
   // console.log(user);

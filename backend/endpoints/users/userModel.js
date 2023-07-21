@@ -78,6 +78,10 @@ const userSchema = mongoose.Schema(
     linkedin_profile: {
       type: String,
     },
+    created_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    }
   },
   {
     timestamps: true,
@@ -89,6 +93,10 @@ userSchema.pre(/^find/, function (next) {
   this.populate({
     path: "role",
     select: "name slug",
+  });
+  this.populate({
+    path: "created_by",
+    select: "username",
   });
   next();
 });
