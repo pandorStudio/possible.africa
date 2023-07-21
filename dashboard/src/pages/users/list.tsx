@@ -32,10 +32,7 @@ import { axiosInstance } from "../../authProvider";
 import { downloadMedia } from "../organisations/list";
 import { imageUploadHandler } from "../posts/create";
 import papa from "papaparse";
-import {
-  Admin,
-  AdminOrContributor,
-} from "../../custom-components/AccessControl";
+import { AdminOrContributor } from "../../custom-components/AccessControl";
 
 type IUser = {
   id: number;
@@ -559,287 +556,287 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           </Col>
         )} */}
 
-      <Admin>
-        <List
-          headerProps={{
-            extra: (
-              <Space>
-                {checkedArray.length ? (
-                  <Button
-                    onClick={confirmDelete}
-                    style={{ backgroundColor: "#ff4d4f", color: "white" }}
-                  >
-                    {`${checkedArray.length}`} Effacer Selection
-                  </Button>
-                ) : null}
-                <Input
-                  type="file"
-                  ref={fileImportInput}
-                  onChange={handleImport}
-                />
-                <AdminOrContributor>
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      // log datas
-                      if (tableProps?.dataSource) {
-                        const data = tableProps?.dataSource.map((el: any) => {
-                          return {
-                            username: el.username,
-                            avatar: el.avatar,
-                            email: el.email,
-                            firstname: el.firstname,
-                            lastname: el.lastname,
-                            description: el.description,
-                            role: el.role,
-                            gender: el.gender,
-                            adresse: el.adresse,
-                            facebook_profile: el.facebook_profile,
-                            twitter_profile: el.twitter_profile,
-                            linkedin_profile: el.linkedin_profile,
-                          };
-                        });
-                        if (data) {
-                          const csv = papa.unparse(data);
-                          const blob = new Blob([csv], { type: "text/csv" });
-                          const url = window.URL.createObjectURL(blob);
-                          const a = document.createElement("a");
-                          a.setAttribute("hidden", "");
-                          a.setAttribute("href", url);
-                          a.setAttribute(
-                            "download",
-                            `users-${new Date()}-${Math.round(
-                              Math.random() * 99999999
-                            )}.csv`
-                          );
-                          document.body.appendChild(a);
-                          a.click();
-                          document.body.removeChild(a);
-                        }
+      <List
+        headerProps={{
+          extra: (
+            <Space>
+              {checkedArray.length ? (
+                <Button
+                  onClick={confirmDelete}
+                  style={{ backgroundColor: "#ff4d4f", color: "white" }}
+                >
+                  {`${checkedArray.length}`} Effacer Selection
+                </Button>
+              ) : null}
+              <Input
+                type="file"
+                ref={fileImportInput}
+                onChange={handleImport}
+              />
+              <AdminOrContributor>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    // log datas
+                    if (tableProps?.dataSource) {
+                      const data = tableProps?.dataSource.map((el: any) => {
+                        return {
+                          username: el.username,
+                          avatar: el.avatar,
+                          email: el.email,
+                          firstname: el.firstname,
+                          lastname: el.lastname,
+                          description: el.description,
+                          role: el.role,
+                          gender: el.gender,
+                          adresse: el.adresse,
+                          facebook_profile: el.facebook_profile,
+                          twitter_profile: el.twitter_profile,
+                          linkedin_profile: el.linkedin_profile,
+                        };
+                      });
+                      if (data) {
+                        const csv = papa.unparse(data);
+                        const blob = new Blob([csv], { type: "text/csv" });
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        a.setAttribute("hidden", "");
+                        a.setAttribute("href", url);
+                        a.setAttribute(
+                          "download",
+                          `users-${new Date()}-${Math.round(
+                            Math.random() * 99999999
+                          )}.csv`
+                        );
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
                       }
-                    }}
-                  >
-                    Exporter les données
-                  </Button>
-                </AdminOrContributor>
-
-                <CreateButton />
-              </Space>
-            ),
-          }}
-        >
-          {contextHolder}
-          <Table {...tableProps} rowKey="_id" scroll={{ x: 2500, y: "auto" }}>
-            <Table.Column
-              fixed="left"
-              width={68}
-              dataIndex=""
-              title={
-                visibleCheckAll ? (
-                  <Checkbox
-                    checked={allCheckedOnPage}
-                    defaultChecked={false}
-                    onChange={handleCheckBoxAll}
-                  />
-                ) : (
-                  "#"
-                )
-              }
-              render={(_, record: BaseRecord) => {
-                return (
-                  <Checkbox
-                    key={record.id}
-                    checked={checkedArray.includes(record.id)}
-                    ref={(input) =>
-                      (checkboxRefs.current[record.id] = record.id)
                     }
-                    className="ant-table-row-checkbox"
-                    onChange={() => handleCheckBox(event, record.id)}
-                  />
+                  }}
+                >
+                  Exporter les données
+                </Button>
+              </AdminOrContributor>
+
+              <CreateButton />
+            </Space>
+          ),
+        }}
+      >
+        {contextHolder}
+        <Table {...tableProps} rowKey="_id" scroll={{ x: 2500, y: "auto" }}>
+          <Table.Column
+            fixed="left"
+            width={68}
+            dataIndex=""
+            title={
+              visibleCheckAll ? (
+                <Checkbox
+                  checked={allCheckedOnPage}
+                  defaultChecked={false}
+                  onChange={handleCheckBoxAll}
+                />
+              ) : (
+                "#"
+              )
+            }
+            render={(_, record: BaseRecord) => {
+              return (
+                <Checkbox
+                  key={record.id}
+                  checked={checkedArray.includes(record.id)}
+                  ref={(input) => (checkboxRefs.current[record.id] = record.id)}
+                  className="ant-table-row-checkbox"
+                  onChange={() => handleCheckBox(event, record.id)}
+                />
+              );
+            }}
+          />
+          <Table.Column
+            fixed="left"
+            dataIndex="username"
+            title="N. Utilisateur"
+          />
+
+          <Table.Column
+            width={68}
+            dataIndex="avatar"
+            title="Profil"
+            render={(value: any) => {
+              if (value) {
+                return <Avatar src={value} />;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            width="6%"
+            ellipsis={true}
+            dataIndex={["email"]}
+            title="Email"
+            render={(value: any) => {
+              if (value) {
+                return <EmailField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column dataIndex="firstname" title="Prénom.s" />
+          <Table.Column dataIndex="lastname" title="N. Famille" />
+          <Table.Column dataIndex="description" title="Description" />
+          <Table.Column
+            dataIndex="role"
+            title="Role"
+            render={(value: any) => {
+              if (value) {
+                return value?.name;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            dataIndex="gender"
+            title="Genre"
+            render={(value: any) => {
+              if (value) {
+                value === "m"
+                  ? "Masculin"
+                  : value === "f"
+                  ? "Féminin"
+                  : "Autre";
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            dataIndex="phone"
+            title="Tèl."
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link
+                    href={
+                      "https://www.google.com/search?q=" +
+                      value.indicatif +
+                      " " +
+                      value.number
+                    }
+                    target="_blank"
+                  >
+                    {value.indicatif} {value.number}
+                  </Link>
                 );
-              }}
-            />
-            <Table.Column
-              fixed="left"
-              dataIndex="username"
-              title="N. Utilisateur"
-            />
+              } else {
+                return "-";
+              }
+            }}
+          />
 
-            <Table.Column
-              width={68}
-              dataIndex="avatar"
-              title="Profil"
-              render={(value: any) => {
-                if (value) {
-                  return <Avatar src={value} />;
-                } else {
-                  return "-";
-                }
-              }}
-            />
-            <Table.Column
-              width="6%"
-              ellipsis={true}
-              dataIndex={["email"]}
-              title="Email"
-              render={(value: any) => {
-                if (value) {
-                  return <EmailField value={value} />;
-                } else {
-                  return "-";
-                }
-              }}
-            />
-            <Table.Column dataIndex="firstname" title="Prénom.s" />
-            <Table.Column dataIndex="lastname" title="N. Famille" />
-            <Table.Column dataIndex="description" title="Description" />
-            <Table.Column
-              dataIndex="role"
-              title="Role"
-              render={(value: any) => {
-                if (value) {
-                  return value?.name;
-                } else {
-                  return "-";
-                }
-              }}
-            />
-            <Table.Column
-              dataIndex="gender"
-              title="Genre"
-              render={(value: any) => {
-                if (value) {
-                  value === "m"
-                    ? "Masculin"
-                    : value === "f"
-                    ? "Féminin"
-                    : "Autre";
-                } else {
-                  return "-";
-                }
-              }}
-            />
-            <Table.Column
-              dataIndex="phone"
-              title="Tèl."
-              render={(value: any) => {
-                if (value) {
-                  return (
-                    <Link
-                      href={
-                        "https://www.google.com/search?q=" +
-                        value.indicatif +
-                        " " +
-                        value.number
-                      }
-                      target="_blank"
-                    >
-                      {value.indicatif} {value.number}
-                    </Link>
-                  );
-                } else {
-                  return "-";
-                }
-              }}
-            />
-
-            <Table.Column
-              ellipsis={true}
-              dataIndex="adresse"
-              title="Adresse"
-              render={(value: any) => {
-                if (value) {
-                  return (
-                    <Link
-                      href={"https://www.google.com/search?q=" + value}
-                      target="_blank"
-                    >
-                      {value}
-                    </Link>
-                  );
-                } else {
-                  return "-";
-                }
-              }}
-            />
-            <Table.Column
-              ellipsis={true}
-              dataIndex="facebook_profile"
-              title="Profile Fb."
-              render={(value: any) => {
-                if (value) {
-                  return (
-                    <Link href={value} target="_blank">
-                      {value}
-                    </Link>
-                  );
-                } else {
-                  return "-";
-                }
-              }}
-            />
-            <Table.Column
-              ellipsis={true}
-              dataIndex="twitter_profile"
-              title="Profile Tw."
-              render={(value: any) => {
-                if (value) {
-                  return (
-                    <Link href={value} target="_blank">
-                      {value}
-                    </Link>
-                  );
-                } else {
-                  return "-";
-                }
-              }}
-            />
-            <Table.Column
-              ellipsis={true}
-              dataIndex="linkedin_profile"
-              title="Profile Li."
-              render={(value: any) => {
-                if (value) {
-                  return (
-                    <Link href={value} target="_blank">
-                      {value}
-                    </Link>
-                  );
-                } else {
-                  return "-";
-                }
-              }}
-            />
-            <Table.Column
-              fixed="right"
-              title="Actions"
-              dataIndex="actions"
-              render={(_, record: BaseRecord) => (
-                <Space>
+          <Table.Column
+            ellipsis={true}
+            dataIndex="adresse"
+            title="Adresse"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link
+                    href={"https://www.google.com/search?q=" + value}
+                    target="_blank"
+                  >
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="facebook_profile"
+            title="Profile Fb."
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="twitter_profile"
+            title="Profile Tw."
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="linkedin_profile"
+            title="Profile Li."
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            fixed="right"
+            title="Actions"
+            dataIndex="actions"
+            render={(_, record: BaseRecord) => (
+              <Space>
+                <AdminOrContributor>
                   <EditButton hideText size="small" recordItemId={record.id} />
-                  <ShowButton hideText size="small" recordItemId={record.id} />
+                </AdminOrContributor>
+                <ShowButton hideText size="small" recordItemId={record.id} />
+                <AdminOrContributor>
                   <DeleteButton
                     hideText
                     size="small"
                     recordItemId={record.id}
                   />
-                </Space>
-              )}
-            />
-          </Table>
+                </AdminOrContributor>
+              </Space>
+            )}
+          />
+        </Table>
 
-          <Space>
-            {checkedArray.length ? (
-              <Button
-                onClick={confirmDelete}
-                style={{ backgroundColor: "#ff4d4f", color: "white" }}
-              >
-                {`${checkedArray.length}`} Effacer Selection
-              </Button>
-            ) : null}
-          </Space>
-        </List>
-      </Admin>
+        <Space>
+          {checkedArray.length ? (
+            <Button
+              onClick={confirmDelete}
+              style={{ backgroundColor: "#ff4d4f", color: "white" }}
+            >
+              {`${checkedArray.length}`} Effacer Selection
+            </Button>
+          ) : null}
+        </Space>
+      </List>
     </>
   );
 };

@@ -1,6 +1,8 @@
 import {
+  useActiveAuthProvider,
   useApiUrl,
   useLink,
+  useLogout,
   useRouterContext,
   useRouterType,
 } from "@refinedev/core";
@@ -36,6 +38,10 @@ export default function CustomDashboard() {
     localStorage.getItem("refine-auth")
   );
 
+  const authProvider = useActiveAuthProvider();
+  const { mutate: mutateLogout } = useLogout({
+    v3LegacyAuthProviderCompatible: Boolean(authProvider?.isLegacy),
+  });
   const userD = useContextSelector(userContext, (v) => v[0].user);
 
   useEffect(() => {
@@ -50,9 +56,13 @@ export default function CustomDashboard() {
           setLoading(true);
           setDashboardData(res.data);
           setLoading(false);
+          console.log(res);
           // console.log(dashboardData);
         })
         .catch((err) => {
+          if (err?.response?.data?.message === "jwt expired") {
+            mutateLogout();
+          }
           console.log(err);
         });
     }

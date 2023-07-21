@@ -80,7 +80,7 @@ import {OrganisationTypeCreate} from "./pages/organisation_types/create";
 import CustomDashboard from "./pages/dashboard";
 import {useContextSelector} from "use-context-selector";
 import {userContext} from "./UserContext";
-import {AdminOrContributor} from "./custom-components/AccessControl";
+import {AdminOrContributor, AdminOrContributorOrUser,} from "./custom-components/AccessControl";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -976,17 +976,17 @@ function App() {
                     <Route
                       path="edit/:id"
                       element={
-                        <AdminOrContributor>
+                        <AdminOrContributorOrUser>
                           <UserEdit />
-                        </AdminOrContributor>
+                        </AdminOrContributorOrUser>
                       }
                     />
                     <Route
                       path="create"
                       element={
-                        <AdminOrContributor>
+                        <AdminOrContributorOrUser>
                           <UserCreate />
-                        </AdminOrContributor>
+                        </AdminOrContributorOrUser>
                       }
                     />
                   </Route>
@@ -995,9 +995,9 @@ function App() {
                     <Route
                       path="edit/:id"
                       element={
-                        <AdminOrContributor>
+                        <AdminOrContributorOrUser>
                           <ProfilEdit />
-                        </AdminOrContributor>
+                        </AdminOrContributorOrUser>
                       }
                     />
                     {/* <Route path="show/:id" element={<UserShow />} /> */}
