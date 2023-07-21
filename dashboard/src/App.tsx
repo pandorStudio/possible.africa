@@ -761,9 +761,11 @@ function App() {
                     index
                     // element={<NavigateToResource resource="organisations" />}
                     element={
-                      (userD?.role?.slug === "contact" && (
+                      userD?.role?.slug === "contact" ? (
                         <ContactsWelcome />
-                      )) || <CustomDashboard />
+                      ) : (
+                        <CustomDashboard />
+                      )
                     }
                   />
 

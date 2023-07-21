@@ -32,6 +32,9 @@ import {
   Typography,
 } from "antd";
 import { ThemedTitleV2 } from "../../../themedLayout/title";
+import jwt_decode from "jwt-decode";
+import { useContextSelector } from "use-context-selector";
+import { userContext } from "../../../../UserContext";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -59,6 +62,8 @@ export const RegisterPage: React.FC<RegisterProps> = ({
   const { Link: LegacyLink } = useRouterContext();
 
   const ActiveLink = routerType === "legacy" ? LegacyLink : Link;
+
+  const setUserD = useContextSelector(userContext, (v) => v[1]);
 
   const authProvider = useActiveAuthProvider();
   const { mutate: register, isLoading } = useRegister<RegisterFormTypes>({
@@ -162,7 +167,33 @@ export const RegisterPage: React.FC<RegisterProps> = ({
       <Form<RegisterFormTypes>
         layout="horizontal"
         form={form}
-        onFinish={(values) => register(values)}
+        onFinish={(values) => {
+          return register(values, {
+            onSuccess: (data) => {
+              // console.log("loged in");
+              const localStorageToken = localStorage.getItem("refine-auth");
+              if (localStorageToken) {
+                if (localStorageToken != localStorage.getItem("refine-auth")) {
+                  window.location.reload();
+                  // console.log("reloading");
+                }
+                const key = import.meta.env.VITE_JWT_SECRET;
+                const decoded: { user: any; iat: number; exp: number } =
+                  jwt_decode(localStorageToken, key);
+                setUserD((s) => ({
+                  ...s,
+                  user: { ...decoded.user },
+                }));
+              }
+            },
+            onError: (data) => {
+              // console.log("login error");
+            },
+            onSettled: (data) => {
+              // console.log("login settled");
+            },
+          });
+        }}
         requiredMark={false}
         {...formProps}
       >
