@@ -15,7 +15,7 @@ import CustomIconJob from "../../custom-components/Icons/CustomIconJob";
 import CustomIconOpportunity from "../../custom-components/Icons/CustomIconOpportunity";
 import CustomIconEvent from "../../custom-components/Icons/CustomIconEvent";
 import CustomIconArticle from "../../custom-components/Icons/CustomIconArticle";
-import { Admin } from "../../custom-components/AccessControl";
+import { AdminOrContributorOrUser } from "../../custom-components/AccessControl";
 import { useContextSelector } from "use-context-selector";
 import { userContext } from "../../UserContext";
 
@@ -172,7 +172,7 @@ export default function CustomDashboard() {
             </Card>
           </Link>
         </Col>
-        <Admin>
+        <AdminOrContributorOrUser>
           <Col span={6}>
             <Link to="users">
               <Card>
@@ -197,7 +197,7 @@ export default function CustomDashboard() {
               </Card>
             </Link>
           </Col>
-        </Admin>
+        </AdminOrContributorOrUser>
       </Row>
       {/* Add more cards and statistics as needed */}
     </div>
