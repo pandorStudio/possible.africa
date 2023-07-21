@@ -24,20 +24,16 @@ export const HeaderRechardedStateProvider = ({ children }) => (
   </headerRechardedContext.Provider>
 );
 
-root.render(<>Loading before app</>);
-
-setTimeout(() => {
-  root.render(
-    <React.StrictMode>
-      <React.Suspense fallback="">
-        <Provider store={store}>
-          <UserStateProvider>
-            {/*<HeaderRechardedStateProvider>*/}
-            <App />
-            {/*</HeaderRechardedStateProvider>*/}
-          </UserStateProvider>
-        </Provider>
-      </React.Suspense>
-    </React.StrictMode>
-  );
-}, 5000);
+root.render(
+  <React.StrictMode>
+    <React.Suspense fallback="">
+      <Provider store={store}>
+        <UserStateProvider>
+          {/*<HeaderRechardedStateProvider>*/}
+          <App />
+          {/*</HeaderRechardedStateProvider>*/}
+        </UserStateProvider>
+      </Provider>
+    </React.Suspense>
+  </React.StrictMode>
+);
