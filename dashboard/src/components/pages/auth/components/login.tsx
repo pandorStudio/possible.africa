@@ -175,12 +175,12 @@ export const LoginPage: React.FC<LoginProps> = ({
         onFinish={(values) => {
           return login(values, {
             onSuccess: (data) => {
-              console.log("loged in");
+              // console.log("loged in");
               const localStorageToken = localStorage.getItem("refine-auth");
               if (localStorageToken) {
                 if (localStorageToken != localStorage.getItem("refine-auth")) {
                   window.location.reload();
-                  console.log("reloading");
+                  // console.log("reloading");
                 }
                 const key = import.meta.env.VITE_JWT_SECRET;
                 const decoded: { user: any; iat: number; exp: number } =
@@ -192,10 +192,10 @@ export const LoginPage: React.FC<LoginProps> = ({
               }
             },
             onError: (data) => {
-              console.log("login error");
+              // console.log("login error");
             },
             onSettled: (data) => {
-              console.log("login settled");
+              // console.log("login settled");
             },
           });
         }}

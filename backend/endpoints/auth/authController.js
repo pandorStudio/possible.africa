@@ -40,6 +40,7 @@ exports.signup = async (req, res, next) => {
     bodyWR.slug = slug;
     const newUser = await User.create(bodyWR);
     await User.findByIdAndUpdate(newUser._id, { password: req.body.password });
+    newUser.role = role[0];
     const token = signToken(newUser);
 
     res.status(201).json({
