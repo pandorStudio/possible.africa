@@ -14,6 +14,8 @@ import CustomIconOpportunity from "../../custom-components/Icons/CustomIconOppor
 import CustomIconEvent from "../../custom-components/Icons/CustomIconEvent";
 import CustomIconArticle from "../../custom-components/Icons/CustomIconArticle";
 import { Admin } from "../../custom-components/AccessControl";
+import { useContextSelector } from "use-context-selector";
+import { userContext } from "../../UserContext";
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
@@ -33,6 +35,8 @@ export default function CustomDashboard() {
   const [token, setToken] = useState<string>(
     localStorage.getItem("refine-auth")
   );
+
+  const userD = useContextSelector(userContext, (v) => v[0].user);
 
   useEffect(() => {
     if (dashboardData === null) {
@@ -56,6 +60,8 @@ export default function CustomDashboard() {
   }, [dashboardData, loading]);
 
   // if (!Object.keys(userD).length) <div>Chargement ...</div>;
+
+  // if (userD?.role?.slug === "contact") return null;
 
   return (
     <div>

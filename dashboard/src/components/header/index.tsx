@@ -30,7 +30,6 @@ import ReactQuill from "react-quill";
 import axios from "axios";
 import { useContextSelector } from "use-context-selector";
 import { userContext } from "../../UserContext";
-import { headerRechardedContext } from "../../HeaderRechargedContext";
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -66,17 +65,9 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const [editorContent, setEditorContent] = useState("");
   const [caseTitle, setCaseTitle] = useState("");
   const [api, contextHolder] = notification.useNotification();
-  // const [localStorageToken, setLocalStorageToken] = useState<string>("");
-  const setHeaderRecharged = useContextSelector(
-    headerRechardedContext,
-    (v) => v[1]
-  );
   const setUserD = useContextSelector(userContext, (v) => v[1]);
   const userD = useContextSelector(userContext, (v) => v[0].user);
   const currentLocale = locale();
-  const [userRecharded, setUserRecharded] = useState(
-    useContextSelector(headerRechardedContext, (v) => v[0].headerRecharged)
-  );
 
   const menuItems: MenuProps["items"] = [...(i18n.languages || [])]
     .sort()
