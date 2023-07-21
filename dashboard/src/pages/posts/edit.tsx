@@ -173,10 +173,15 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
       setUploadLoading(false);
     }
 
-    if (postsData?.logo) {
-      setImageUrlFromDb(postsData.logo);
+    if (queryResult.isFetching) {
+      setUploadLoading(true);
+    } else {
+      setImageUrlFromDb(postsData.image);
+      setUploadLoading(false);
     }
-  }, [imageUrl, postsData, uploadLoading]);
+
+    // console.log(queryResult.isFetching);
+  }, [imageUrl, postsData, queryResult.isFetching, uploadLoading]);
 
   return (
     <Edit saveButtonProps={saveButtonProps}>

@@ -144,7 +144,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     if (!values?.country) {
       values.country = null;
     }
-    if (!values?.categorie) {
+    if (!values?.categorie?._id) {
       values.categorie = null;
     }
     if (!values?.content) {
@@ -322,7 +322,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             )}
           </Upload>
         </Form.Item>
-        <Form.Item label="Categorie" name={["categorie"]}>
+        <Form.Item label="Categorie" name={["categorie", "_id"]}>
           <Select {...categorieSelectProps} />
         </Form.Item>
       </Form>
