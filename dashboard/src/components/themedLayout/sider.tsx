@@ -88,7 +88,7 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
         meta,
         options,
       } = item;
-
+      // console.log(item);
       if (item.meta?.hided) {
         return null;
       }

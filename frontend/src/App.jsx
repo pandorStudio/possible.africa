@@ -22,7 +22,7 @@ import Maintenance from "./pages/Maintenance";
 
 function App() {
   const MODE = import.meta.env.VITE_APP_MODE;
-  console.log(MODE);
+  // console.log(MODE);
   return (
     <>
       {MODE === "maintenance" ? (

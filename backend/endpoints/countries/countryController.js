@@ -9,7 +9,12 @@ exports.getAllCountries = async (req, res) => {
   const queryObj = CustomUtils.advancedQuery(req.query);
   try {
     const countries = await Country.find(queryObj);
-    res.status(200).json(countries);
+
+    res.status(200).json(
+      countries.sort((a, b) => {
+        return a.translations.fra.common > b.translations.fra.common ? 1 : -1;
+      })
+    );
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

@@ -9,6 +9,7 @@ import {
 
 import { Title, useTable } from "@refinedev/antd";
 import { Avatar, Button, Card, Col, Row, Space, Typography } from "antd";
+import { AdminOrContributor } from "../../custom-components/AccessControl";
 
 export const Profil: React.FC<IResourceComponentsProps> = () => {
   const translate = useTranslate();
@@ -28,7 +29,7 @@ export const Profil: React.FC<IResourceComponentsProps> = () => {
       setUserConnected(tableProps?.dataSource[0]);
     }
     // console.log(userConnected);
-  }, [tableProps, userConnected]);
+  }, [tableProps]);
 
   return (
     <>
@@ -43,16 +44,24 @@ export const Profil: React.FC<IResourceComponentsProps> = () => {
             <Card
               title="Mon Profil"
               extra={
-                <Link to={`edit/${userConnected?._id}`}>
-                  <Button>Modifier</Button>
-                </Link>
+                <AdminOrContributor>
+                  <Link to={`edit/${userConnected?._id}`}>
+                    <Button>Modifier</Button>
+                  </Link>
+                </AdminOrContributor>
               }
             >
               <Row gutter={[16, 16]}>
                 <>
                   <Col span={24}>
                     <Space direction="horizontal">
-                      <Avatar size={100} src={userConnected?.avatar} />
+                      <Avatar
+                        size={100}
+                        src={
+                          userConnected?.avatar ||
+                          "https://possibledotafrica.s3.eu-west-3.amazonaws.com/users/images/1688567211420-image.png"
+                        }
+                      />
                       <Space direction="vertical">
                         <Title
                           level={3}
