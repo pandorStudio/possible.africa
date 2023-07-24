@@ -21,7 +21,10 @@ import Link from "antd/es/typography/Link";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { imageUploadHandler } from "../posts/create";
 import { ShowButton } from "../../components/buttons/show";
-import { AdminOrContributor } from "../../custom-components/AccessControl";
+import {
+  Admin,
+  AdminOrContributor,
+} from "../../custom-components/AccessControl";
 
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
@@ -506,13 +509,13 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                   <EditButton hideText size="small" recordItemId={record.id} />
                 </AdminOrContributor>
                 <ShowButton hideText size="small" recordItemId={record.id} />
-                <AdminOrContributor>
+                <Admin>
                   <DeleteButton
                     hideText
                     size="small"
                     recordItemId={record.id}
                   />
-                </AdminOrContributor>
+                </Admin>
               </Space>
             )}
           />

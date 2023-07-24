@@ -153,8 +153,13 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
-        <Form.Item label="Nom D'Utilisateur" name={["username"]}>
-          <Input />
+        <Form.Item label="Role" name={["role", "_id"]}>
+          {/* <Select defaultValue="user" style={{ width: 120 }}>
+            <Option value="admin">Administrateur</Option>
+            <Option value="contributor">Contributeur</Option>
+            <Option value="user">Utilisateur</Option>
+          </Select> */}
+          <Select {...roleSelectProps} />
         </Form.Item>
         <Form.Item
           label="Email"
@@ -168,21 +173,17 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Nom de famille" name={["lastname"]}>
+        {/*<Form.Item label="Nom D'Utilisateur" name={["username"]}>*/}
+        {/*  <Input />*/}
+        {/*</Form.Item>*/}
+
+        <Form.Item label="Prénom" name={["firstname"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Prénom.s" name={["firstname"]}>
+        <Form.Item label="Nom" name={["lastname"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Role" name={["role", "_id"]}>
-          {/* <Select defaultValue="user" style={{ width: 120 }}>
-            <Option value="admin">Administrateur</Option>
-            <Option value="contributor">Contributeur</Option>
-            <Option value="user">Utilisateur</Option>
-          </Select> */}
-          <Select {...roleSelectProps} />
-        </Form.Item>
-        <Form.Item label="Avatar" name={["avatar"]}>
+        <Form.Item label="Photo de profil" name={["avatar"]}>
           <Upload
             name="avatar"
             listType="picture-card"
@@ -284,20 +285,20 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
               style={{ width: "25%" }}
               onChange={handlePhoneNumberChange}
               value={phoneNumber}
-              placeholder="26 88 88 88"
+              placeholder="00 00 00 00"
             />
           </Space.Compact>
         </Form.Item>
-        <Form.Item label="Addresse" name={["address"]}>
+        <Form.Item label="Email de contact" name={["address"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Profile Facebook" name={["facebook_profile"]}>
+        <Form.Item label="Linkedin (URL)" name={["linkedin_profile"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Profile Twitter" name={["twitter_profile"]}>
+        <Form.Item label="Twitter (URL)" name={["twitter_profile"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Profile Linkedin" name={["linkedin_profile"]}>
+        <Form.Item label="Facebook (URL)" name={["facebook_profile"]}>
           <Input />
         </Form.Item>
       </Form>

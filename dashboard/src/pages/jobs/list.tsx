@@ -1,26 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  IResourceComponentsProps,
   BaseRecord,
+  IResourceComponentsProps,
   useApiUrl,
   useInvalidate,
 } from "@refinedev/core";
 import {
-  useTable,
-  List,
-  EditButton,
-  ShowButton,
+  CreateButton,
   DateField,
   DeleteButton,
-  ExportButton,
-  CreateButton,
+  EditButton,
+  List,
+  ShowButton,
+  useTable,
 } from "@refinedev/antd";
-import { Table, Space, Input, message, Modal, Button, Checkbox } from "antd";
+import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
 import papa from "papaparse";
 import { axiosInstance } from "../../authProvider";
 import Link from "antd/es/typography/Link";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { AdminOrContributor } from "../../custom-components/AccessControl";
+import {
+  Admin,
+  AdminOrContributor,
+} from "../../custom-components/AccessControl";
+
 export const JobList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
   const fileImportInput = useRef(null);
@@ -368,13 +371,13 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
                   <EditButton hideText size="small" recordItemId={record.id} />
                 </AdminOrContributor>
                 <ShowButton hideText size="small" recordItemId={record.id} />
-                <AdminOrContributor>
+                <Admin>
                   <DeleteButton
                     hideText
                     size="small"
                     recordItemId={record.id}
                   />
-                </AdminOrContributor>
+                </Admin>
               </Space>
             )}
           />

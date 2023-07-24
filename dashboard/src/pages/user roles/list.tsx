@@ -1,22 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  IResourceComponentsProps,
   BaseRecord,
+  IResourceComponentsProps,
   useApiUrl,
   useInvalidate,
 } from "@refinedev/core";
 import {
-  useTable,
-  List,
-  EditButton,
-  ShowButton,
-  DeleteButton,
   CreateButton,
+  DeleteButton,
+  EditButton,
+  List,
+  ShowButton,
+  useTable,
 } from "@refinedev/antd";
-import { Table, Space, Modal, message, Button, Input, Checkbox } from "antd";
+import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
 import papa from "papaparse";
 import { axiosInstance } from "../../authProvider";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Admin } from "../../custom-components/AccessControl";
 
 export const UserRoleList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
@@ -269,8 +270,16 @@ export const UserRoleList: React.FC<IResourceComponentsProps> = () => {
             render={(_, record: BaseRecord) => (
               <Space>
                 <EditButton hideText size="small" recordItemId={record.id} />
-                <ShowButton hideText size="small" recordItemId={record.id} />
-                <DeleteButton hideText size="small" recordItemId={record.id} />
+                <Admin>
+                  <ShowButton hideText size="small" recordItemId={record.id} />
+                </Admin>
+                <Admin>
+                  <DeleteButton
+                    hideText
+                    size="small"
+                    recordItemId={record.id}
+                  />
+                </Admin>
               </Space>
             )}
           />

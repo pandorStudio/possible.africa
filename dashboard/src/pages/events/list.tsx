@@ -23,7 +23,10 @@ import { downloadMedia } from "../organisations/list";
 import { imageUploadHandler } from "../posts/create";
 import Link from "antd/es/typography/Link";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { AdminOrContributor } from "../../custom-components/AccessControl";
+import {
+  Admin,
+  AdminOrContributor,
+} from "../../custom-components/AccessControl";
 
 export const EventList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
@@ -414,13 +417,13 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                   <EditButton hideText size="small" recordItemId={record.id} />
                 </AdminOrContributor>
                 <ShowButton hideText size="small" recordItemId={record.id} />
-                <AdminOrContributor>
+                <Admin>
                   <DeleteButton
                     hideText
                     size="small"
                     recordItemId={record.id}
                   />
-                </AdminOrContributor>
+                </Admin>
               </Space>
             )}
           />

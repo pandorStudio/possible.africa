@@ -35,6 +35,7 @@ import { ThemedTitleV2 } from "../../../themedLayout/title";
 import jwt_decode from "jwt-decode";
 import { useContextSelector } from "use-context-selector";
 import { userContext } from "../../../../UserContext";
+import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
@@ -160,12 +161,14 @@ export const RegisterPage: React.FC<RegisterProps> = ({
       style={{
         ...containerStyles,
         backgroundColor: token.colorBgElevated,
+        maxHeight: "60vh",
+        overflowY: "scroll",
       }}
       {...(contentProps ?? {})}
     >
       {renderProviders()}
       <Form<RegisterFormTypes>
-        layout="horizontal"
+        layout="vertical"
         form={form}
         onFinish={(values) => {
           return register(values, {
@@ -199,7 +202,7 @@ export const RegisterPage: React.FC<RegisterProps> = ({
       >
         <Form.Item
           name="email"
-          label={translate("pages.register.fields.email", "Email")}
+          // label={translate("pages.register.fields.email", "Email")}
           rules={[
             { required: true },
             {
@@ -212,13 +215,21 @@ export const RegisterPage: React.FC<RegisterProps> = ({
           ]}
         >
           <Input
+            prefix={
+              <MailOutlined
+                style={{
+                  color: "#2bb19c",
+                }}
+                className="site-form-item-icon"
+              />
+            }
             size="large"
             placeholder={translate("pages.register.fields.email", "Email")}
           />
         </Form.Item>
         <Form.Item
           name="lastname"
-          label={translate("pages.register.fields.lastname", "Lastname")}
+          // label={translate("pages.register.fields.lastname", "Lastname")}
           rules={[
             { required: true },
             {
@@ -233,6 +244,14 @@ export const RegisterPage: React.FC<RegisterProps> = ({
           ]}
         >
           <Input
+            prefix={
+              <UserOutlined
+                style={{
+                  color: "#2bb19c",
+                }}
+                className="site-form-item-icon"
+              />
+            }
             size="large"
             placeholder={translate(
               "pages.register.fields.lastname",
@@ -242,7 +261,7 @@ export const RegisterPage: React.FC<RegisterProps> = ({
         </Form.Item>
         <Form.Item
           name="firstname"
-          label={translate("pages.register.fields.firstname", "Firstname")}
+          // label={translate("pages.register.fields.firstname", "Firstname")}
           rules={[
             { required: true },
             {
@@ -257,6 +276,14 @@ export const RegisterPage: React.FC<RegisterProps> = ({
           ]}
         >
           <Input
+            prefix={
+              <UserOutlined
+                style={{
+                  color: "#2bb19c",
+                }}
+                className="site-form-item-icon"
+              />
+            }
             size="large"
             placeholder={translate(
               "pages.register.fields.firstname",
@@ -266,17 +293,29 @@ export const RegisterPage: React.FC<RegisterProps> = ({
         </Form.Item>
         <Form.Item
           name="password"
-          label={translate("pages.register.fields.password", "Password")}
+          // label={translate("pages.register.fields.password", "Password")}
           rules={[{ required: true }]}
         >
-          <Input type="password" placeholder="●●●●●●●●" size="large" />
+          <Input
+            prefix={
+              <LockOutlined
+                style={{
+                  color: "#2bb19c",
+                }}
+                className="site-form-item-icon"
+              />
+            }
+            type="password"
+            placeholder="●●●●●●●●"
+            size="large"
+          />
         </Form.Item>
         <Form.Item
           name="confirmPassword"
-          label={translate(
-            "pages.register.fields.confirmPassword",
-            "Confirm Password"
-          )}
+          // label={translate(
+          //   "pages.register.fields.confirmPassword",
+          //   "Confirm Password"
+          // )}
           rules={[
             {
               required: true,
@@ -285,7 +324,19 @@ export const RegisterPage: React.FC<RegisterProps> = ({
             { validator: validatePassword },
           ]}
         >
-          <Input type="password" placeholder="●●●●●●●●" size="large" />
+          <Input
+            prefix={
+              <LockOutlined
+                style={{
+                  color: "#2bb19c",
+                }}
+                className="site-form-item-icon"
+              />
+            }
+            type="password"
+            placeholder="●●●●●●●●"
+            size="large"
+          />
         </Form.Item>
         <div
           style={{
@@ -301,7 +352,7 @@ export const RegisterPage: React.FC<RegisterProps> = ({
                 marginLeft: "auto",
               }}
             >
-              {translate("pages.login.buttons.haveAccount", "Have an account?")}{" "}
+              {translate("pages.login.buttons.noAccount", "Have an account?")}{" "}
               <ActiveLink
                 style={{
                   fontWeight: "bold",
