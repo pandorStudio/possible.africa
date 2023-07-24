@@ -40,18 +40,18 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <Show isLoading={isLoading}>
-      <Title level={4}>Nom D'Utilisateur</Title>
-      <CustomTextField type="text" size="large" value={record?.username} />
-      <Title level={4}>Email</Title>
-      <CustomTextField type="email" size="large" value={record?.email} />
+      <Title level={4}>Nom</Title>
+      <CustomTextField type="text" size="large" value={record?.lastname} />
       <Title level={4}>Prénom(s)</Title>
       <CustomTextField type="text" size="large" value={record?.firstname} />
-      <Title level={4}>Nom de Famille</Title>
-      <CustomTextField type="text" size="large" value={record?.lastname} />
-      <Title level={4}>Description</Title>
-      <CustomTextField type="text" size="large" value={record?.description} />
+      <Title level={4}>Email</Title>
+      <CustomTextField type="email" size="large" value={record?.email} />
       <Title level={4}>Role</Title>
       <CustomTextField type="text" size="large" value={record?.role?.name} />
+      <Title level={4}>Nom d'utilisateur</Title>
+      <CustomTextField type="text" size="large" value={record?.username} />
+      <Title level={4}>Description</Title>
+      <CustomTextField type="text" size="large" value={record?.description} />
       <Title level={4}>Genre</Title>
       <CustomTextField type="text" size="large" value={record?.gender} />
       <Title level={4}>Télephone</Title>
@@ -70,31 +70,35 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       ) : (
         "-"
       )}
-      <Title level={4}>Adresse</Title>
-      {record?.address ? (
+      <Title level={4}>Email de contact</Title>
+
+      <CustomTextField type="email" size="large" value={record?.address} />
+      {/*{record?.address ? (*/}
+      {/*  <Link*/}
+      {/*    // href={"https://www.google.com/search?q=" + value}*/}
+      {/*    href={"https://www.google.com/maps/search/" + record?.address}*/}
+      {/*    target="_blank"*/}
+      {/*  >*/}
+      {/*    {record?.address}*/}
+      {/*  </Link>*/}
+      {/*) : (*/}
+      {/*  "-"*/}
+      {/*)}*/}
+
+      <Title level={4}>Linkedin (URL)</Title>
+      {record?.linkedin_url ? (
         <Link
           // href={"https://www.google.com/search?q=" + value}
-          href={"https://www.google.com/maps/search/" + record?.address}
+          href={record?.linkedin_url}
           target="_blank"
         >
-          {record?.address}
+          {record?.linkedin_url}
         </Link>
       ) : (
         "-"
       )}
-      <Title level={4}>Lien Facebook </Title>
-      {record?.facebook_url ? (
-        <Link
-          // href={"https://www.google.com/search?q=" + value}
-          href={record?.facebook_url}
-          target="_blank"
-        >
-          {record?.facebook_url}
-        </Link>
-      ) : (
-        "-"
-      )}
-      <Title level={4}>Lien Twitter </Title>
+
+      <Title level={4}>Twitter (URL)</Title>
       {record?.twitter_url ? (
         <Link
           // href={"https://www.google.com/search?q=" + value}
@@ -106,14 +110,15 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       ) : (
         "-"
       )}
-      <Title level={4}>Lien Linkedin </Title>
-      {record?.linkedin_url ? (
+
+      <Title level={4}>Facebook (URL)</Title>
+      {record?.facebook_url ? (
         <Link
           // href={"https://www.google.com/search?q=" + value}
-          href={record?.linkedin_url}
+          href={record?.facebook_url}
           target="_blank"
         >
-          {record?.linkedin_url}
+          {record?.facebook_url}
         </Link>
       ) : (
         "-"

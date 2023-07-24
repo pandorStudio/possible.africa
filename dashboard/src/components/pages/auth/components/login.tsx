@@ -36,16 +36,13 @@ import { ThemedTitleV2 } from "../../../themedLayout/title";
 import { useContextSelector } from "use-context-selector";
 import { userContext } from "../../../../UserContext";
 import jwt_decode from "jwt-decode";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 const { Text, Title } = Typography;
 const { useToken } = theme;
 
 type LoginProps = LoginPageProps<LayoutProps, CardProps, FormProps>;
-/**
- * **refine** has a default login page form which is served on `/login` route when the `authProvider` configuration is provided.
- *
- * @see {@link https://refine.dev/docs/ui-frameworks/antd/components/antd-auth-page/#login} for more details.
- */
+
 export const LoginPage: React.FC<LoginProps> = ({
   providers,
   registerLink,
@@ -167,7 +164,7 @@ export const LoginPage: React.FC<LoginProps> = ({
     >
       {renderProviders()}
       <Form<LoginFormTypes>
-        layout="horizontal"
+        layout="vertical"
         form={form}
         onSubmitCapture={(event) => {
           event.preventDefault();
@@ -207,7 +204,7 @@ export const LoginPage: React.FC<LoginProps> = ({
       >
         <Form.Item
           name="email"
-          label={translate("pages.login.fields.email", "Email")}
+          // label={translate("pages.login.fields.email", "Email")}
           rules={[
             { required: true },
             {
@@ -220,16 +217,36 @@ export const LoginPage: React.FC<LoginProps> = ({
           ]}
         >
           <Input
+            prefix={
+              <UserOutlined
+                style={{
+                  color: "#2bb19c",
+                }}
+                className="site-form-item-icon"
+              />
+            }
             size="large"
             placeholder={translate("pages.login.fields.email", "Email")}
           />
         </Form.Item>
         <Form.Item
           name="password"
-          label={translate("pages.login.fields.password", "Password")}
+          // label={translate("pages.login.fields.password", "Password")}
           rules={[{ required: true }]}
         >
-          <Input type="password" placeholder="●●●●●●●●" size="large" />
+          <Input
+            prefix={
+              <LockOutlined
+                style={{
+                  color: "#2bb19c",
+                }}
+                className="site-form-item-icon"
+              />
+            }
+            type="password"
+            placeholder="●●●●●●●●"
+            size="large"
+          />
         </Form.Item>
         <div
           style={{

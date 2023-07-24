@@ -14,7 +14,7 @@ import {
 } from "@refinedev/antd";
 import { Space, Typography } from "antd";
 import parse, { HTMLReactParserOptions } from "html-react-parser";
-import { AdminOrContributor } from "../../custom-components/AccessControl";
+import { Admin } from "../../custom-components/AccessControl";
 import Link from "antd/es/typography/Link";
 
 export const htmlParseOptions: HTMLReactParserOptions = {
@@ -58,11 +58,11 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
       isLoading={isLoading}
       headerProps={{
         extra: (
-          <AdminOrContributor>
+          <Admin>
             <Space>
               <DeleteButton recordItemId={record?.id} />
             </Space>
-          </AdminOrContributor>
+          </Admin>
         ),
       }}
     >

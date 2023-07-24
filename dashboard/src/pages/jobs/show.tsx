@@ -1,17 +1,16 @@
 import React from "react";
 import { IResourceComponentsProps, useShow } from "@refinedev/core";
 import {
-  Show,
-  TagField,
-  TextField,
-  NumberField,
   DateField,
   DeleteButton,
+  NumberField,
+  Show,
+  TextField,
 } from "@refinedev/antd";
 import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
-import { AdminOrContributor } from "../../custom-components/AccessControl";
+import { Admin } from "../../custom-components/AccessControl";
 
 const { Title } = Typography;
 
@@ -26,11 +25,11 @@ export const JobShow: React.FC<IResourceComponentsProps> = () => {
       isLoading={isLoading}
       headerProps={{
         extra: (
-          <AdminOrContributor>
+          <Admin>
             <Space>
               <DeleteButton recordItemId={record?.id} />
             </Space>
-          </AdminOrContributor>
+          </Admin>
         ),
       }}
     >

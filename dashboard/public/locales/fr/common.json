@@ -15,8 +15,8 @@
       "buttons": {
         "submit": "Connexion",
         "forgotPassword": "Mot de passe oublié?",
-        "noAccount": "Vous n'avez pas de compte ?",
-        "rememberMe": "Souviens-toi de moi"
+        "noAccount": "Vous n'avez pas de compte?",
+        "rememberMe": "Se souvenir de moi"
       }
     },
     "forgotPassword": {
@@ -36,7 +36,7 @@
       "fields": {
         "email": "E-mail",
         "password": "Mot de passe",
-        "lastname": "Nom de famille",
+        "lastname": "Nom",
         "firstname": "Prénom(s)",
         "confirmPassword": "Confirmation"
       },
@@ -45,7 +45,7 @@
       },
       "buttons": {
         "submit": "Enregistrer",
-        "haveAccount": "Avoir un compte?"
+        "haveAccount": "Vous avez déjà un compte?"
       }
     },
     "updatePassword": {

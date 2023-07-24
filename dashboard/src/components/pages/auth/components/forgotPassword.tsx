@@ -1,35 +1,36 @@
 import React from "react";
 import {
-  ForgotPasswordPageProps,
   ForgotPasswordFormTypes,
-  useRouterType,
-  useLink,
-  useTranslate,
-  useRouterContext,
+  ForgotPasswordPageProps,
   useForgotPassword,
+  useLink,
+  useRouterContext,
+  useRouterType,
+  useTranslate,
 } from "@refinedev/core";
-import { ThemedTitle } from "@refinedev/antd";
 import {
-  layoutStyles,
-  containerStyles,
-  titleStyles,
-  headStyles,
   bodyStyles,
+  containerStyles,
+  headStyles,
+  layoutStyles,
+  titleStyles,
 } from "./styles";
 import {
-  Row,
-  Col,
-  Layout,
-  Card,
-  Typography,
-  Form,
-  Input,
   Button,
-  LayoutProps,
+  Card,
   CardProps,
+  Col,
+  Form,
   FormProps,
+  Input,
+  Layout,
+  LayoutProps,
+  Row,
   theme,
+  Typography,
 } from "antd";
+import { ThemedTitleV2 } from "../../../themedLayout/title";
+import { MailOutlined } from "@ant-design/icons";
 
 type ResetPassworProps = ForgotPasswordPageProps<
   LayoutProps,
@@ -75,7 +76,8 @@ export const ForgotPasswordPage: React.FC<ResetPassworProps> = ({
           fontSize: "20px",
         }}
       >
-        {title ?? <ThemedTitle collapsed={false} />}
+        {/*{title ?? <ThemedTitle collapsed={false} />}*/}
+        {title ?? <ThemedTitleV2 collapsed={true} />}
       </div>
     );
 
@@ -110,7 +112,7 @@ export const ForgotPasswordPage: React.FC<ResetPassworProps> = ({
       >
         <Form.Item
           name="email"
-          label={translate("pages.forgotPassword.fields.email", "Email")}
+          // label={translate("pages.forgotPassword.fields.email", "Email")}
           rules={[
             { required: true },
             {
@@ -123,6 +125,14 @@ export const ForgotPasswordPage: React.FC<ResetPassworProps> = ({
           ]}
         >
           <Input
+            prefix={
+              <MailOutlined
+                style={{
+                  color: "#2bb19c",
+                }}
+                className="site-form-item-icon"
+              />
+            }
             type="email"
             size="large"
             placeholder={translate(

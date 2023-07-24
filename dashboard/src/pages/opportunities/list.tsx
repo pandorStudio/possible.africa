@@ -20,7 +20,10 @@ import { axiosInstance } from "../../authProvider";
 import papa from "papaparse";
 import Link from "antd/es/typography/Link";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { AdminOrContributor } from "../../custom-components/AccessControl";
+import {
+  Admin,
+  AdminOrContributor,
+} from "../../custom-components/AccessControl";
 
 export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
@@ -425,13 +428,13 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
                   <EditButton hideText size="small" recordItemId={record.id} />
                 </AdminOrContributor>
                 <ShowButton hideText size="small" recordItemId={record.id} />
-                <AdminOrContributor>
+                <Admin>
                   <DeleteButton
                     hideText
                     size="small"
                     recordItemId={record.id}
                   />
-                </AdminOrContributor>
+                </Admin>
               </Space>
             )}
           />

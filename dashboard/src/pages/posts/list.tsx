@@ -32,7 +32,10 @@ import { axiosInstance } from "../../authProvider";
 import { downloadMedia } from "../organisations/list";
 import { imageUploadHandler } from "./create";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { AdminOrContributor } from "../../custom-components/AccessControl";
+import {
+  Admin,
+  AdminOrContributor,
+} from "../../custom-components/AccessControl";
 
 async function processContent(content: string) {
   let imgTags = content.match(/<img[^>]+src="([^">]+)"/g);
@@ -521,13 +524,13 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                   <EditButton hideText size="small" recordItemId={record.id} />
                 </AdminOrContributor>
                 <ShowButton hideText size="small" recordItemId={record.id} />
-                <AdminOrContributor>
+                <Admin>
                   <DeleteButton
                     hideText
                     size="small"
                     recordItemId={record.id}
                   />
-                </AdminOrContributor>
+                </Admin>
                 {/*<Tooltip*/}
                 {/*  title={statusVariables[`${record.status}`].label}*/}
                 {/*  color={statusVariables[`${record.status}`].color}*/}

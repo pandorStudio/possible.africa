@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   file2Base64,
   IResourceComponentsProps,
+  RegisterFormTypes,
   useApiUrl,
 } from "@refinedev/core";
 import { Create, useForm, useSelect } from "@refinedev/antd";
@@ -16,6 +17,7 @@ import { axiosInstance } from "../../authProvider";
 const { Option } = Select;
 
 export const UserCreate: React.FC<IResourceComponentsProps> = () => {
+  const [form] = Form.useForm<RegisterFormTypes>();
   const { formProps, saveButtonProps, onFinish } = useForm();
   const { selectProps: roleSelectProps } = useSelect({
     resource: "user_roles",
@@ -29,6 +31,8 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
   const [realPhoneNumber, setRealPhoneNumber] = useState("");
   const [indicatif, setIndicatif] = useState();
   const [countries, setCountries] = useState([]);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
 
   const { Text } = Typography;
 
@@ -136,45 +140,29 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
     onFinish(values);
   }
 
+  const validatePassword = (_: any, value: string | undefined) => {
+    if (value && value !== password) {
+      return Promise.reject(
+        new Error("Les deux mots de passe ne sont pas identiques.")
+      );
+    }
+
+    return Promise.resolve();
+  };
+
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
-        <Form.Item
-          label="Nom de Famille"
-          name={["lastname"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Prénom.s"
-          name={["firstname"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
         <Form.Item
           label="Role"
           name={["role", "_id"]}
           rules={[
             {
               required: true,
+              message: "Veuillez renseigner le champ role.",
             },
           ]}
         >
-          {/* <Select defaultValue="user" style={{ width: 120 }}>
-            <Option value="admin">Administrateur</Option>
-            <Option value="contributor">Contributeur</Option>
-            <Option value="user">Utilisateur</Option>
-          </Select> */}
           <Select
             {...roleSelectProps}
             onSearch={undefined}
@@ -182,8 +170,40 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
             optionFilterProp="label"
           />
         </Form.Item>
+        <Form.Item label="Email" name={["email"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Mot de passe" name={["password"]}>
+          <Input.Password
+            placeholder="●●●●●●●●"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Confirmer le mot de passe"
+          name={["confirmPassword"]}
+          rules={[{ validator: validatePassword }]}
+        >
+          <Input.Password placeholder="●●●●●●●●" />
+        </Form.Item>
+        <Form.Item
+          label="Prénom"
+          name={["firstname"]}
+          rules={[
+            {
+              required: true,
+              message: "Veuillez renseigner le champ prénom.",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item label="Nom" name={["lastname"]}>
+          <Input />
+        </Form.Item>
         {/* Create avatar upload input */}
-        <Form.Item label="Avatar" name={["avatar"]}>
+        <Form.Item label="Photo de profil" name={["avatar"]}>
           <Upload
             name="avatar"
             listType="picture-card"
@@ -217,20 +237,9 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
             )}
           </Upload>
         </Form.Item>
-        <Form.Item label="Nom d'Utilisateur" name={["username"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Email" name={["email"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Mot de passe" name={["password"]}>
-          <Input.Password />
-        </Form.Item>
-
-        {/* Input for confirmPassword it must be the same as password input */}
-        <Form.Item label="Confirmer le mot de passe" name={["confirmPassword"]}>
-          <Input.Password />
-        </Form.Item>
+        {/*<Form.Item label="Nom d'Utilisateur" name={["username"]}>*/}
+        {/*  <Input />*/}
+        {/*</Form.Item>*/}
         <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
@@ -303,16 +312,16 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
             />
           </Space.Compact>
         </Form.Item>
-        <Form.Item label="Adresse" name={["address"]}>
+        <Form.Item label="Email de contact" name={["address"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Profile Fb." name={["facebook_profile"]}>
+        <Form.Item label="Linkedin (URL)" name={["linkedin_profile"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Profile Tw." name={["twitter_profile"]}>
+        <Form.Item label="Twitter (URL)" name={["twitter_profile"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Profile Li." name={["linkedin_profile"]}>
+        <Form.Item label="Facebook (URL)" name={["facebook_profile"]}>
           <Input />
         </Form.Item>
       </Form>

@@ -32,7 +32,10 @@ import { axiosInstance } from "../../authProvider";
 import { downloadMedia } from "../organisations/list";
 import { imageUploadHandler } from "../posts/create";
 import papa from "papaparse";
-import { AdminOrContributor } from "../../custom-components/AccessControl";
+import {
+  Admin,
+  AdminOrContributor,
+} from "../../custom-components/AccessControl";
 
 type IUser = {
   id: number;
@@ -240,321 +243,6 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
     <>
       {contextHolder}
       {modalContextHolder}
-      {/* Build the me section */}
-
-      {/* {userConnected ? (
-          <Row
-            gutter={[16, 16]}
-            style={{
-              marginBottom: 20,
-            }}
-          >
-            <Col span={24}>
-              <Card
-                title="Mon Profil"
-                extra={
-                  <Button
-                    onClick={() => {
-                      // setModalVisible(true);
-                      // setModalType("edit");
-                    }}
-                  >
-                    Modifier
-                  </Button>
-                }
-              >
-                <Row gutter={[16, 16]}>
-                  {hideProfile ? null : (
-                    <>
-                      <Col span={24}>
-                        <Space direction="horizontal">
-                          <Avatar size={100} src={userConnected?.avatar} />
-                          <Space direction="vertical">
-                            <Title
-                              level={3}
-                            >{`${userConnected?.firstname} ${userConnected?.lastname}`}</Title>
-                            <Title level={4}>{userConnected?.username}</Title>
-                          </Space>
-                        </Space>
-                      </Col>
-                      <Col span={24}>
-                        <Space
-                          direction="horizontal"
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "left",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Title level={4}>Email :</Title>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              display: "inline-block",
-                              marginBottom: 10,
-                              marginLeft: 20,
-                            }}
-                          >
-                            {userConnected?.email || "-"}
-                          </Text>
-                        </Space>
-                      </Col>
-                      <Col span={24}>
-                        <Space
-                          direction="horizontal"
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "left",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Title level={4}>Description :</Title>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              display: "inline-block",
-                              marginBottom: 10,
-                              marginLeft: 20,
-                            }}
-                          >
-                            {userConnected?.description || "-"}
-                          </Text>
-                        </Space>
-                      </Col>
-                      <Col span={24}>
-                        <Space
-                          direction="horizontal"
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "left",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Title level={4}>Role :</Title>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              display: "inline-block",
-                              marginBottom: 10,
-                              marginLeft: 20,
-                            }}
-                          >
-                            {userConnected?.role?.name || "-"}
-                          </Text>
-                        </Space>
-                      </Col>
-                      <Col span={24}>
-                        <Space
-                          direction="horizontal"
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "left",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Title level={4}>Genre :</Title>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              display: "inline-block",
-                              marginBottom: 10,
-                              marginLeft: 20,
-                            }}
-                          >
-                            {userConnected?.gender === "m"
-                              ? "Masculin"
-                              : userConnected?.gender === "f"
-                              ? "Féminin"
-                              : "Autre"}
-                          </Text>
-                        </Space>
-                      </Col>
-                      <Col span={24}>
-                        <Space
-                          direction="horizontal"
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "left",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Title level={4}>Téléphone :</Title>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              display: "inline-block",
-                              marginBottom: 10,
-                              marginLeft: 20,
-                            }}
-                          >
-                            {userConnected?.phone || "-"}
-                          </Text>
-                        </Space>
-                      </Col>
-                      <Col span={24}>
-                        <Space
-                          direction="horizontal"
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "left",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Title level={4}>Addresse :</Title>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              display: "inline-block",
-                              marginBottom: 10,
-                              marginLeft: 20,
-                            }}
-                          >
-                            {userConnected?.address || "-"}
-                          </Text>
-                        </Space>
-                      </Col>
-                      <Col span={24}>
-                        <Space
-                          direction="horizontal"
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "left",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Title level={4}>Profile Facebook :</Title>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              display: "inline-block",
-                              marginBottom: 10,
-                              marginLeft: 20,
-                            }}
-                          >
-                            {userConnected?.facebook_profile || "-"}
-                          </Text>
-                        </Space>
-                      </Col>
-                      <Col span={24}>
-                        <Space
-                          direction="horizontal"
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "left",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Title level={4}>Profile Twitter :</Title>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              display: "inline-block",
-                              marginBottom: 10,
-                              marginLeft: 20,
-                            }}
-                          >
-                            {userConnected?.twitter_profile || "-"}
-                          </Text>
-                        </Space>
-                      </Col>
-                      <Col span={24}>
-                        <Space
-                          direction="horizontal"
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "left",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Title level={4}>Profile Linkedin :</Title>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              display: "inline-block",
-                              marginBottom: 10,
-                              marginLeft: 20,
-                            }}
-                          >
-                            {userConnected?.linkedin_profile || "-"}
-                          </Text>
-                        </Space>
-                      </Col>
-                    </>
-                  )}
-
-                  <Col span={24} style={{}}>
-                    <Space
-                      direction="horizontal"
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "right",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Button
-                        style={{
-                          margin: "auto",
-                          width: "100%",
-                        }}
-                        type="primary"
-                        onClick={() => {
-                          setHideProfile(!hideProfile);
-                        }}
-                      >
-                        {hideProfile
-                          ? "Voir mon profile"
-                          : "Cacher mon profile"}
-                      </Button>
-                    </Space>
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-          </Row>
-        ) : (
-          <Col
-            span={24}
-            style={{
-              display: "block",
-              borderRadius: 10,
-            }}
-          >
-            <Space
-              direction="horizontal"
-              style={{
-                width: "100%",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "left",
-                alignItems: "center",
-                marginBottom: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  display: "inline-block",
-                  width: "100%",
-                  backgroundColor: "#fff",
-                  padding: 10,
-                }}
-              >
-                Chargement du profil ...
-              </Text>
-            </Space>
-          </Col>
-        )} */}
 
       <List
         headerProps={{
@@ -654,12 +342,6 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
           <Table.Column
-            fixed="left"
-            dataIndex="username"
-            title="N. Utilisateur"
-          />
-
-          <Table.Column
             width={68}
             dataIndex="avatar"
             title="Profil"
@@ -671,6 +353,9 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
               }
             }}
           />
+          <Table.Column dataIndex="lastname" title="Nom" />
+          <Table.Column dataIndex="firstname" title="Prénom" />
+          {/*<Table.Column dataIndex="username" title="N. Utilisateur" />*/}
           <Table.Column
             width="6%"
             ellipsis={true}
@@ -684,8 +369,6 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
               }
             }}
           />
-          <Table.Column dataIndex="firstname" title="Prénom.s" />
-          <Table.Column dataIndex="lastname" title="N. Famille" />
           <Table.Column dataIndex="description" title="Description" />
           <Table.Column
             dataIndex="role"
@@ -715,7 +398,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           />
           <Table.Column
             dataIndex="phone"
-            title="Tèl."
+            title="Téléphone"
             render={(value: any) => {
               if (value) {
                 return (
@@ -740,7 +423,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             ellipsis={true}
             dataIndex="adresse"
-            title="Adresse"
+            title="Email de contact"
             render={(value: any) => {
               if (value) {
                 return (
@@ -758,8 +441,8 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           />
           <Table.Column
             ellipsis={true}
-            dataIndex="facebook_profile"
-            title="Profile Fb."
+            dataIndex="linkedin_profile"
+            title="Linkedin (URL)"
             render={(value: any) => {
               if (value) {
                 return (
@@ -775,7 +458,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             ellipsis={true}
             dataIndex="twitter_profile"
-            title="Profile Tw."
+            title="Twitter (URL)"
             render={(value: any) => {
               if (value) {
                 return (
@@ -790,8 +473,8 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           />
           <Table.Column
             ellipsis={true}
-            dataIndex="linkedin_profile"
-            title="Profile Li."
+            dataIndex="facebook_profile"
+            title="Facebook (URL)"
             render={(value: any) => {
               if (value) {
                 return (
@@ -814,13 +497,13 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
                   <EditButton hideText size="small" recordItemId={record.id} />
                 </AdminOrContributor>
                 <ShowButton hideText size="small" recordItemId={record.id} />
-                <AdminOrContributor>
+                <Admin>
                   <DeleteButton
                     hideText
                     size="small"
                     recordItemId={record.id}
                   />
-                </AdminOrContributor>
+                </Admin>
               </Space>
             )}
           />

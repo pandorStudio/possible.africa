@@ -4,7 +4,7 @@ import { DeleteButton, EmailField, Show, TextField } from "@refinedev/antd";
 import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
-import { AdminOrContributor } from "../../custom-components/AccessControl";
+import { Admin } from "../../custom-components/AccessControl";
 import Link from "antd/es/typography/Link";
 
 const { Title } = Typography;
@@ -20,11 +20,11 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       isLoading={isLoading}
       headerProps={{
         extra: (
-          <AdminOrContributor>
+          <Admin>
             <Space>
               <DeleteButton recordItemId={record?.id} />
             </Space>
-          </AdminOrContributor>
+          </Admin>
         ),
       }}
     >

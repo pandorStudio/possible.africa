@@ -1,8 +1,8 @@
 import React from "react";
 import { IResourceComponentsProps, useShow } from "@refinedev/core";
-import { DeleteButton, Show, TagField, TextField } from "@refinedev/antd";
+import { DeleteButton, Show, TextField } from "@refinedev/antd";
 import { Space, Typography } from "antd";
-import { AdminOrContributor } from "../../custom-components/AccessControl";
+import { Admin } from "../../custom-components/AccessControl";
 
 const { Title } = Typography;
 
@@ -17,11 +17,11 @@ export const PostCategoryShow: React.FC<IResourceComponentsProps> = () => {
       isLoading={isLoading}
       headerProps={{
         extra: (
-          <AdminOrContributor>
+          <Admin>
             <Space>
               <DeleteButton recordItemId={record?.id} />
             </Space>
-          </AdminOrContributor>
+          </Admin>
         ),
       }}
     >
