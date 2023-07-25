@@ -7,8 +7,7 @@ const postSchema = mongoose.Schema(
       ref: "User",
     },
     source: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "Organisation",
+      type: String,
     },
     organisations: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -18,8 +17,8 @@ const postSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "PostCategorie",
     },
-    country: {
-      type: mongoose.Schema.Types.ObjectId,
+    countries: {
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Country",
     },
     title: { type: String, required: true, unique: true },
@@ -30,6 +29,21 @@ const postSchema = mongoose.Schema(
       type: String,
       enum: ["published", "draft", "trash", "deleted", "archived"],
       default: "draft",
+    },
+    authors: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+    },
+    editors: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Organisation",
+    },
+    publication_language: {
+      type: "String",
+    },
+    labels: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "PostLabel",
     },
   },
   {
@@ -45,24 +59,40 @@ postSchema.pre(/^find/, function (next) {
     select: "username firstname lastname email phone role avatar",
   });
   this.populate({
+    path: "authors",
+    select: "username firstname lastname email phone role avatar",
+  });
+  this.populate({
     path: "categorie",
+    select: "name slug",
+  });
+  this.populate({
+    path: "labels",
     select: "name slug",
   });
   this.populate({
     path: "organisations",
     select: "name contributeur",
   });
-  next();
-});
-
-// populate country
-postSchema.pre("find", function (next) {
   this.populate({
-    path: "country",
+    path: "editors",
+    select: "name contributeur",
+  });
+  this.populate({
+    path: "countries",
     select: "name idd flag translations",
   });
   next();
 });
+
+// populate country
+// postSchema.pre("find", function (next) {
+//   this.populate({
+//     path: "countries",
+//     select: "name idd flag translations",
+//   });
+//   next();
+// });
 
 const Post = mongoose.model("Post", postSchema);
 module.exports = Post;

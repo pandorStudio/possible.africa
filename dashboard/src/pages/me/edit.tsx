@@ -41,7 +41,19 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "name",
     defaultValue: usersData?.role?._id,
   });
+  const { selectProps: originCountriesSelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "translations.fra.common",
+    defaultValue: usersData?.origin_countries?._id,
+  });
 
+  const { selectProps: coveredCountriesSelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "translations.fra.common",
+    defaultValue: usersData?.covered_countries?._id,
+  });
   const getBase64 = (img: RcFile, callback: (url: string) => void) => {
     const reader = new FileReader();
     reader.addEventListener("load", () => callback(reader.result as string));
@@ -127,6 +139,12 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
     } else {
       values.avatar = "";
     }
+    if (!values?.covered_countries) {
+      values.covered_countries = null;
+    }
+    if (!values?.origin_countries) {
+      values.origin_countries = null;
+    }
     if (values.phone) {
       // console.log(values.telephone);
       values.phone = {
@@ -175,6 +193,60 @@ export const ProfilEdit: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item label="Nom de famille" name={["lastname"]}>
           <Input />
+        </Form.Item>
+        <Form.Item
+          label="Pays d'origine"
+          name={["origin_countries"]}
+          getValueProps={(value: any[]) => {
+            console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...originCountriesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Pays couvert"
+          name={["covered_countries"]}
+          getValueProps={(value: any[]) => {
+            console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...coveredCountriesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item label="Avatar" name={["avatar"]}>
           <Upload

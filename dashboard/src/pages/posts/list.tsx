@@ -77,6 +77,26 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
       ids: tableProps?.dataSource?.map((item) => item?.organisations) ?? [],
     });
 
+  const { data: editorsData, isLoading: editorsIsLoading } = useMany({
+    resource: "organisations",
+    ids: tableProps?.dataSource?.map((item) => item?.editors) ?? [],
+  });
+
+  const { data: labelsData, isLoading: labelsIsLoading } = useMany({
+    resource: "post_labels",
+    ids: tableProps?.dataSource?.map((item) => item?.labels) ?? [],
+  });
+
+  const { data: countriesData, isLoading: countriesIsLoading } = useMany({
+    resource: "countries",
+    ids: tableProps?.dataSource?.map((item) => item?.countries) ?? [],
+  });
+
+  const { data: authorsData, isLoading: authorsIsLoading } = useMany({
+    resource: "users",
+    ids: tableProps?.dataSource?.map((item) => item?.authors) ?? [],
+  });
+
   const [importLoading, setImportLoading] = useState(false);
   const fileImportInput = useRef(null);
   const apiUrl = useApiUrl();
@@ -485,35 +505,68 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               ) : (
                 <>
                   {value?.map((item, index) => (
-                    <TagField
-                      key={index}
-                      // value={organisationsData?.data?.filter(
-                      //   (resourcesItems) => {
-                      //     console.log(resourcesItems);
-                      //     return resourcesItems._id === item?._id;
-                      //   }
-                      // )}
-                      value={item?.name}
-                    />
+                    <TagField key={index} value={item?.name} />
                   ))}
                 </>
               )
             }
           />
           <Table.Column
-            dataIndex="country"
+            dataIndex="editors"
+            title="Editeurs"
+            render={(value: any[]) =>
+              editorsIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField key={index} value={item?.name} />
+                  ))}
+                </>
+              )
+            }
+          />
+
+          <Table.Column
+            dataIndex="labels"
+            title="Etiquettes"
+            render={(value: any[]) =>
+              editorsIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField key={index} value={item?.name} />
+                  ))}
+                </>
+              )
+            }
+          />
+          <Table.Column
+            dataIndex="countries"
             title="Pays"
-            render={(value: any) => {
-              // console.log(value);
-              if (value) {
-                return `${value?.translations?.fra?.common}`;
-                // return "-";
-              } else {
-                return "-";
-              }
-            }}
+            render={(value: any[]) =>
+              countriesIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField
+                      key={index}
+                      value={item?.translations?.fra?.common}
+                    />
+                  ))}
+                </>
+              )
+            }
           />
           <Table.Column dataIndex="slug" title="Slug" ellipsis={true} />
+          <Table.Column
+            dataIndex="publication_language"
+            title="Langue"
+            render={(value) => (value ? value : "_")}
+            ellipsis={true}
+          />
           <Table.Column
             fixed="right"
             title="Actions"

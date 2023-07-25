@@ -81,6 +81,10 @@ import CustomDashboard from "./pages/dashboard";
 import {useContextSelector} from "use-context-selector";
 import {userContext} from "./UserContext";
 import {AdminOrContributor, AdminOrContributorOrUser,} from "./custom-components/AccessControl";
+import {PostLabelList} from "./pages/post_labels/list";
+import {PostLabelShow} from "./pages/post_labels/show";
+import {PostLabelEdit} from "./pages/post_labels/edit";
+import {PostLabelCreate} from "./pages/post_labels/create";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -238,6 +242,18 @@ function App() {
         edit: "/post_categories/edit/:id",
         meta: {
           label: "Catégories",
+          parent: "Publications",
+          canDelete: true,
+        },
+      },
+      {
+        name: "post_labels",
+        list: "/post_labels",
+        show: "/post_labels/show/:id",
+        create: "/post_labels/create",
+        edit: "/post_labels/edit/:id",
+        meta: {
+          label: "Etiquettes",
           parent: "Publications",
           canDelete: true,
         },
@@ -432,6 +448,18 @@ function App() {
         edit: "/post_categories/edit/:id",
         meta: {
           label: "Catégories",
+          parent: "Publications",
+          canDelete: true,
+        },
+      },
+      {
+        name: "post_labels",
+        list: "/post_labels",
+        show: "/post_labels/show/:id",
+        create: "/post_labels/create",
+        edit: "/post_labels/edit/:id",
+        meta: {
+          label: "Etiquettes",
           parent: "Publications",
           canDelete: true,
         },
@@ -926,6 +954,26 @@ function App() {
                       element={
                         <AdminOrContributor>
                           <PostCategoryCreate />
+                        </AdminOrContributor>
+                      }
+                    />
+                  </Route>
+                  <Route path="/post_labels">
+                    <Route index element={<PostLabelList />} />
+                    <Route path="show/:id" element={<PostLabelShow />} />
+                    <Route
+                      path="edit/:id"
+                      element={
+                        <AdminOrContributor>
+                          <PostLabelEdit />
+                        </AdminOrContributor>
+                      }
+                    />
+                    <Route
+                      path="create"
+                      element={
+                        <AdminOrContributor>
+                          <PostLabelCreate />
                         </AdminOrContributor>
                       }
                     />

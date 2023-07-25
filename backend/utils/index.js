@@ -54,9 +54,16 @@ class CustomUtils {
   };
 
   static advancedQuery = (query) => {
-    const queryObj = {...query};
-    const excludedFields = ['page', 'sort', 'limit', 'fields', "_end", "_start"];
-    excludedFields.forEach(element => {
+    const queryObj = { ...query };
+    const excludedFields = [
+      "page",
+      "sort",
+      "limit",
+      "fields",
+      "_end",
+      "_start",
+    ];
+    excludedFields.forEach((element) => {
       delete queryObj[element];
     });
     // if (queryObj.name_like) {
@@ -65,14 +72,15 @@ class CustomUtils {
     // }
     // console.log(queryObj);
     return queryObj;
-  }
+  };
 
   static slugify = (from = "") => {
     return from.toLowerCase().split(" ").join("-");
-  }
+  };
 
   static getRandomNbr(max = 9999999) {
-    return Math.round((Math.random() * max));
+    // return Math.round((Math.random() * max));
+    return "";
   }
 }
 

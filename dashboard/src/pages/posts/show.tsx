@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  IResourceComponentsProps,
-  useMany,
-  useOne,
-  useShow,
-} from "@refinedev/core";
+import { IResourceComponentsProps, useMany, useShow } from "@refinedev/core";
 import {
   DeleteButton,
   ImageField,
@@ -38,6 +33,10 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
 
   const record = data?.data;
 
+  // useEffect(() => {
+  //   console.log(record);
+  // }, [record]);
+
   const { data: organisationsData, isLoading: organisationIsLoading } = useMany(
     {
       resource: "organisations",
@@ -45,12 +44,19 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
     }
   );
 
-  const { data: countryData, isLoading: countryIsLoading } = useOne({
+  const { data: countriesData, isLoading: countryIsLoading } = useMany({
     resource: "countries",
-    id: record?.country || "",
-    queryOptions: {
-      enabled: !!record,
-    },
+    ids: record?.countries?.map((item: any) => item?.countries) ?? [],
+  });
+
+  const { data: labelsData, isLoading: labelsIsLoading } = useMany({
+    resource: "countries",
+    ids: record?.labels?.map((item: any) => item?.labels) ?? [],
+  });
+
+  const { data: editorsData, isLoading: editorsIsLoading } = useMany({
+    resource: "organisations",
+    ids: record?.editors?.map((item: any) => item?.editors) ?? [],
   });
 
   return (
@@ -83,21 +89,69 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Title</Title>
       <TextField value={record?.title} />
       <Title level={5}>Country</Title>
-      {countryData?.data ? (
-        <Link
-          href={
-            "https://www.google.com/maps/search/" +
-            countryData?.data?.name?.common
-          }
-          target="_blank"
-        >
-          {countryData?.data?.name?.common}
+      {countryIsLoading ? (
+        <>Loading ...</>
+      ) : countriesData?.data?.length && record?.countries?.length ? (
+        <>
+          {record?.countries.map((country: any) => (
+            <Link
+              href={
+                "https://www.google.com/maps/search/" + country?.name?.common
+              }
+              target="_blank"
+              key={country?._id}
+            >
+              {country?.name?.common + " "}
+            </Link>
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+      <Title level={5}>Etiquettes</Title>
+      {labelsIsLoading ? (
+        <>Loading ...</>
+      ) : labelsData?.data?.length && record?.labels?.length ? (
+        <>
+          {record?.labels.map((label: any) => (
+            <TagField key={label?._id} value={label?.name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+
+      <Title level={5}>Editeurs</Title>
+      {editorsIsLoading ? (
+        <>Loading ...</>
+      ) : editorsData?.data?.length && record?.editors?.length ? (
+        <>
+          {record?.editors.map((editor: any) => (
+            <TagField key={editor?._id} value={editor?.name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+
+      <Title level={5}>Slug</Title>
+      <TextField value={record?.slug} />
+      <Title level={5}>Source</Title>
+      {/*<TextField value={record?.source} />*/}
+      {record?.source ? (
+        <Link href={record?.source}>{record?.source}</Link>
+      ) : (
+        "-"
+      )}
+      <Title level={5}>Langue</Title>
+      {/*<TextField value={record?.source} />*/}
+      {record?.publication_language ? (
+        <Link href={record?.publication_language}>
+          {record?.publication_language}
         </Link>
       ) : (
         "-"
       )}
-      <Title level={5}>Slug</Title>
-      <TextField value={record?.slug} />
       <Title level={5}>Content</Title>
       <span>
         {record?.content &&

@@ -123,11 +123,29 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
 
   const apiUrl = useApiUrl();
 
+  const { selectProps: originCountriesSelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "translations.fra.common",
+  });
+
+  const { selectProps: coveredCountriesSelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "translations.fra.common",
+  });
+
   async function onSubmitCapture(values: any) {
     if (values.avatar) {
       values.avatar = imageUrl;
     } else {
       values.avatar = "";
+    }
+    if (!values?.covered_countries) {
+      values.covered_countries = null;
+    }
+    if (!values?.origin_countries) {
+      values.origin_countries = null;
     }
 
     if (values.phone) {
@@ -165,6 +183,54 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Select
             {...roleSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Pays d'origine"
+          name={["origin_countries"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          {/*<SelectCountry />*/}
+          <Select
+            mode="multiple"
+            {...originCountriesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Pays couvert"
+          name={["covered_countries"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          {/*<SelectCountry />*/}
+          <Select
+            mode="multiple"
+            {...coveredCountriesSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"

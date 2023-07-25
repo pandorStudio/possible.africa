@@ -81,7 +81,15 @@ const userSchema = mongoose.Schema(
     created_by: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-    }
+    },
+    origin_countries: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Country",
+    },
+    covered_countries: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Country"
+    },
   },
   {
     timestamps: true,
@@ -97,6 +105,14 @@ userSchema.pre(/^find/, function (next) {
   this.populate({
     path: "created_by",
     select: "username",
+  });
+  this.populate({
+    path: "covered_countries",
+    select: "name idd flag translations",
+  });
+  this.populate({
+    path: "origin_countries",
+    select: "name idd flag translations",
   });
   next();
 });
