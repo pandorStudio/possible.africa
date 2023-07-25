@@ -36,6 +36,7 @@ const opportunityRoutes = require("./endpoints/opportunities/opportunityRoutes")
 const eventTypeRoutes = require("./endpoints/eventsTypes/eventTypeRoutes");
 const eventRoutes = require("./endpoints/events/eventRoutes");
 const postCategorieRoutes = require("./endpoints/postCategories/postCategorieRoutes");
+const postLabelRoutes = require("./endpoints/postLabel/postLabelRoutes");
 const postRoutes = require("./endpoints/posts/postRouter");
 const uploadRoutes = require("./endpoints/uploads/uploadRoutes");
 const searchRoutes = require("./endpoints/search/searchRoutes");
@@ -67,6 +68,7 @@ app.use(API_URL_BASE + "opportunity_types", opportunityTypeRoutes);
 app.use(API_URL_BASE + "opportunities", opportunityRoutes);
 app.use(API_URL_BASE + "event_types", eventTypeRoutes);
 app.use(API_URL_BASE + "events", eventRoutes);
+app.use(API_URL_BASE + "post_labels", postLabelRoutes);
 app.use(API_URL_BASE + "post_categories", postCategorieRoutes);
 app.use(API_URL_BASE + "posts", postRoutes);
 app.use(API_URL_BASE + "upload", uploadRoutes);

@@ -108,8 +108,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   const { selectProps: contactSelectProps } = useSelect({
     resource: "users",
     optionValue: "_id",
-    optionLabel: "username",
-    defaultValue: "",
+    optionLabel: "firstname",
     queryOptions: {},
     filters: [
       {

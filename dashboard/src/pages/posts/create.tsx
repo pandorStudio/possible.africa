@@ -72,10 +72,17 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     }
   }, [imageUrl, editorContent]);
 
-  const { selectProps: userSelectProps } = useSelect({
+  const { selectProps: authorSelectProps } = useSelect({
     resource: "users",
-    optionLabel: "username",
+    optionLabel: "firstname",
     optionValue: "_id",
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contact",
+      },
+    ],
   });
 
   const { selectProps: categorieSelectProps } = useSelect({
@@ -84,7 +91,19 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     optionValue: "_id",
   });
 
+  const { selectProps: labelSelectProps } = useSelect({
+    resource: "post_labels",
+    optionLabel: "name",
+    optionValue: "_id",
+  });
+
   const { selectProps: organisationsSelectProps } = useSelect({
+    resource: "organisations",
+    optionValue: "_id",
+    optionLabel: "name",
+  });
+
+  const { selectProps: editorSelectProps } = useSelect({
     resource: "organisations",
     optionValue: "_id",
     optionLabel: "name",
@@ -131,6 +150,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     //   const url = await imageUploadHandler(base64);
     //   values.image = url;
     // }
+    console.log(values);
     if (values.image) {
       values.image = imageUrl;
     }
@@ -141,11 +161,26 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     if (!values?.organisations) {
       values.organisations = null;
     }
-    if (!values?.country) {
-      values.country = null;
+    if (!values?.editors) {
+      values.editors = null;
     }
-    if (!values?.categorie?._id) {
+    if (!values?.countries) {
+      values.countries = null;
+    }
+    if (!values?.categorie?.id) {
       values.categorie = null;
+    }
+    if (!values?.labels) {
+      values.labels = null;
+    }
+    if (!values?.authors) {
+      values.authors = null;
+    }
+    if (!values?.source) {
+      values.source = null;
+    }
+    if (!values?.publication_language) {
+      values.publication_language = null;
     }
     if (!values?.content) {
       values.content = null;
@@ -191,8 +226,38 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
       // intercept onSubmit to add the editor content to the form data
     >
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
-        <Form.Item label="Auteur" name={["user"]}>
-          <Select {...userSelectProps} />
+        <Form.Item label="Auteur" name={["authors"]}>
+          <Select
+            mode="multiple"
+            {...authorSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Editeurs"
+          name={["editors"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...editorSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item
           label="Organisations"
@@ -209,7 +274,13 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             return toBeReturned;
           }}
         >
-          <Select mode="multiple" {...organisationsSelectProps} />
+          <Select
+            mode="multiple"
+            {...organisationsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item
           label="Titre"
@@ -222,15 +293,39 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Pays" name={["country"]}>
+        <Form.Item
+          label="Pays"
+          name={["countries"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
           {/*<SelectCountry />*/}
           <Select
+            mode="multiple"
             {...countrySelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
         </Form.Item>
+
+        <Form.Item label="Source" name={["source"]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Langue" name={["publication_language"]}>
+          <Input />
+        </Form.Item>
+
         <Form.Item
           label="Contenu"
           name={["content"]}
@@ -323,7 +418,35 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
           </Upload>
         </Form.Item>
         <Form.Item label="Categorie" name={["categorie", "_id"]}>
-          <Select {...categorieSelectProps} />
+          <Select
+            {...categorieSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Etiquette"
+          name={["labels"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...labelSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
       </Form>
     </Create>

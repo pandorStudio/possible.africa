@@ -1,5 +1,5 @@
 import React from "react";
-import { IResourceComponentsProps, useShow } from "@refinedev/core";
+import { IResourceComponentsProps, useMany, useShow } from "@refinedev/core";
 import { EmailField, Show, TextField } from "@refinedev/antd";
 import { Typography } from "antd";
 import Link from "antd/es/typography/Link";
@@ -37,7 +37,16 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
   const { data, isLoading } = queryResult;
 
   const record = data?.data;
-
+  const { data: originCountriesData, isLoading: originCountriesIsLoading } =
+    useMany({
+      resource: "countries",
+      ids: record?.countries?.map((item: any) => item?.origin_countries) ?? [],
+    });
+  const { data: coveredCountriesData, isLoading: coveredCountryIsLoading } =
+    useMany({
+      resource: "countries",
+      ids: record?.countries?.map((item: any) => item?.covered_countries) ?? [],
+    });
   return (
     <Show isLoading={isLoading}>
       <Title level={4}>Nom</Title>
@@ -48,6 +57,46 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       <CustomTextField type="email" size="large" value={record?.email} />
       <Title level={4}>Role</Title>
       <CustomTextField type="text" size="large" value={record?.role?.name} />
+      <Title level={5}>Pays d'origin</Title>
+      {originCountriesIsLoading ? (
+        <>Loading ...</>
+      ) : originCountriesData?.data?.length && record?.countries?.length ? (
+        <>
+          {record?.origin_countries?.map((country: any) => (
+            <Link
+              href={
+                "https://www.google.com/maps/search/" + country?.name?.common
+              }
+              target="_blank"
+              key={country?._id}
+            >
+              {country?.name?.common + " "}
+            </Link>
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+      <Title level={5}>Pays couvert</Title>
+      {coveredCountryIsLoading ? (
+        <>Loading ...</>
+      ) : coveredCountriesData?.data?.length && record?.countries?.length ? (
+        <>
+          {record?.covered_countries?.map((country: any) => (
+            <Link
+              href={
+                "https://www.google.com/maps/search/" + country?.name?.common
+              }
+              target="_blank"
+              key={country?._id}
+            >
+              {country?.name?.common + " "}
+            </Link>
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
       <Title level={4}>Nom d'utilisateur</Title>
       <CustomTextField type="text" size="large" value={record?.username} />
       <Title level={4}>Description</Title>

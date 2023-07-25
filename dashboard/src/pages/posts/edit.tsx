@@ -48,18 +48,18 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     ],
   };
 
-  const { selectProps: userSelectProps } = useSelect({
-    resource: "users",
-    optionLabel: "username",
-    optionValue: "_id",
-    defaultValue: postsData?.user?._id,
-  });
+  // const { selectProps: userSelectProps } = useSelect({
+  //   resource: "users",
+  //   optionLabel: "username",
+  //   optionValue: "_id",
+  //   defaultValue: postsData?.user?._id,
+  // });
 
-  const { selectProps: countrySelectProps } = useSelect({
+  const { selectProps: countriesSelectProps } = useSelect({
     resource: "countries",
     optionValue: "_id",
     optionLabel: "translations.fra.common",
-    defaultValue: postsData?.country?._id,
+    defaultValue: postsData?.countries?._id,
   });
 
   const { selectProps: categorieSelectProps } = useSelect({
@@ -74,6 +74,34 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     optionValue: "_id",
     optionLabel: "name",
     defaultValue: postsData?.organisations?._id,
+  });
+
+  const { selectProps: authorSelectProps } = useSelect({
+    resource: "users",
+    optionLabel: "firstname",
+    optionValue: "_id",
+    defaultValue: postsData?.authors?._id,
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contact",
+      },
+    ],
+  });
+
+  const { selectProps: labelSelectProps } = useSelect({
+    resource: "post_labels",
+    optionLabel: "name",
+    optionValue: "_id",
+    defaultValue: postsData?.labels?._id,
+  });
+
+  const { selectProps: editorSelectProps } = useSelect({
+    resource: "organisations",
+    optionValue: "_id",
+    optionLabel: "name",
+    defaultValue: postsData?.editors?._id,
   });
 
   async function onSubmitCapture(values: any) {
@@ -117,20 +145,32 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
       values.image = "";
     }
 
-    if (!values?.user) {
-      values.user = null;
-    }
+    // if (!values?.user) {
+    //   values.user = null;
+    // }
     if (!values?.organisations) {
       values.organisations = null;
     }
-    if (!values?.country) {
-      values.country = null;
+    if (!values?.authors) {
+      values.authors = null;
+    }
+    if (!values?.editors) {
+      values.editors = null;
+    }
+    if (!values?.labels) {
+      values.labels = null;
+    }
+    if (!values?.countries) {
+      values.countries = null;
     }
     if (!values?.categorie?._id) {
       values.categorie = null;
     }
     if (!editorContent) {
       values.content = null;
+    }
+    if (!values?.publication_language) {
+      values.publication_language = null;
     }
     if (!values?.image) {
       values.image = null;
@@ -169,6 +209,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
   );
 
   useEffect(() => {
+    console.log(postsData);
     if (imageUrl) {
       setUploadLoading(false);
     }
@@ -186,8 +227,55 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
-        <Form.Item label="Auteur" name={["user", "_id"]}>
-          <Select {...userSelectProps} />
+        {/*<Form.Item label="Auteur" name={["user", "_id"]}>*/}
+        {/*  <Select {...userSelectProps} />*/}
+        {/*</Form.Item>*/}
+        <Form.Item
+          label="Titre"
+          name={["title"]}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item label="Slug" name={["slug"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Source" name={["source"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Langue" name={["publication_language"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Pays"
+          name={["countries"]}
+          getValueProps={(value: any[]) => {
+            console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...countriesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item
           label="Organisations"
@@ -210,37 +298,89 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
             mode="multiple"
             key={organisationsSelectProps.value?.toString()}
             {...organisationsSelectProps}
-          />
-        </Form.Item>
-        <Form.Item
-          label="Titre"
-          name={["title"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item label="Pays" name={["country"]}>
-          <Select
-            {...countrySelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
         </Form.Item>
-        <Form.Item label="Slug" name={["slug"]}>
-          <Input />
-        </Form.Item>
-        {/* <Form.Item
-          label="Contenu"
-          name={["content"]}
-           
+        <Form.Item
+          label="Etiquettes"
+          name={["labels"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
         >
-          <Input />
-        </Form.Item> */}
+          <Select
+            mode="multiple"
+            key={labelSelectProps.value?.toString()}
+            {...labelSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Auteurs"
+          name={["authors"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            key={authorSelectProps.value?.toString()}
+            {...authorSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Editeurs"
+          name={["editors"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            key={editorSelectProps.value?.toString()}
+            {...editorSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
         <Form.Item
           label="Contenu"
           name={["content"]}
@@ -297,7 +437,12 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
           </Upload>
         </Form.Item>
         <Form.Item label="Categorie" name={["categorie", "_id"]}>
-          <Select {...categorieSelectProps} />
+          <Select
+            {...categorieSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
       </Form>
     </Edit>

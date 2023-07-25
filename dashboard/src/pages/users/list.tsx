@@ -5,6 +5,7 @@ import {
   useApiUrl,
   useGetIdentity,
   useInvalidate,
+  useMany,
 } from "@refinedev/core";
 import {
   CreateButton,
@@ -13,6 +14,7 @@ import {
   EmailField,
   List,
   ShowButton,
+  TagField,
   useTable,
 } from "@refinedev/antd";
 import {
@@ -239,6 +241,18 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
     });
   };
 
+  const { data: originCountriesData, isLoading: originCountriesIsLoading } =
+    useMany({
+      resource: "countries",
+      ids: tableProps?.dataSource?.map((item) => item?.origin_countries) ?? [],
+    });
+
+  const { data: coveredCountriesData, isLoading: coveredCountriesIsLoading } =
+    useMany({
+      resource: "countries",
+      ids: tableProps?.dataSource?.map((item) => item?.covered_countries) ?? [],
+    });
+
   return (
     <>
       {contextHolder}
@@ -380,6 +394,42 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
                 return "-";
               }
             }}
+          />
+          <Table.Column
+            dataIndex="origin_countries"
+            title="Pays d'origin"
+            render={(value: any[]) =>
+              originCountriesIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField
+                      key={index}
+                      value={item?.translations?.fra?.common}
+                    />
+                  ))}
+                </>
+              )
+            }
+          />
+          <Table.Column
+            dataIndex="covered_countries"
+            title="Pays couvert"
+            render={(value: any[]) =>
+              coveredCountriesIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField
+                      key={index}
+                      value={item?.translations?.fra?.common}
+                    />
+                  ))}
+                </>
+              )
+            }
           />
           <Table.Column
             dataIndex="gender"
