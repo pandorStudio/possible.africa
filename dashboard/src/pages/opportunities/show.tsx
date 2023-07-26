@@ -55,7 +55,7 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
     });
 
   useEffect(() => {
-    console.log(countryData);
+    // console.log(countryData);
   }, [countryData]);
 
   return (
@@ -94,11 +94,11 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
         <Link
           href={
             "https://www.google.com/maps/search/" +
-            countryData?.data?.name?.common
+            countryData?.data?.translations?.fra?.common
           }
           target="_blank"
         >
-          {countryData?.data?.name?.common}
+          {countryData?.data?.translations?.fra?.common}
         </Link>
       ) : (
         "-"

@@ -150,7 +150,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     //   const url = await imageUploadHandler(base64);
     //   values.image = url;
     // }
-    console.log(values);
+    // console.log(values);
     if (values.image) {
       values.image = imageUrl;
     }

@@ -96,12 +96,13 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
           {record?.countries.map((country: any) => (
             <Link
               href={
-                "https://www.google.com/maps/search/" + country?.name?.common
+                "https://www.google.com/maps/search/" +
+                country?.translations?.fra?.common
               }
               target="_blank"
               key={country?._id}
             >
-              {country?.name?.common + " "}
+              {country?.translations?.fra?.common + " "}
             </Link>
           ))}
         </>

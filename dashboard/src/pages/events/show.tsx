@@ -88,11 +88,11 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
         <Link
           href={
             "https://www.google.com/maps/search/" +
-            countryData?.data?.name?.common
+            countryData?.data?.translations?.fra?.common
           }
           target="_blank"
         >
-          {countryData?.data?.name?.common}
+          {countryData?.data?.translations?.fra?.common}
         </Link>
       ) : (
         "-"

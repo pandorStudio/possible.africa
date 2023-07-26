@@ -163,7 +163,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   };
 
   useEffect(() => {
-    console.log(countrySelectProps);
+    // console.log(countrySelectProps);
     if (imageUrl) {
       setUploadLoading(false);
     }
