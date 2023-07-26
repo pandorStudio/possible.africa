@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { file2Base64, IResourceComponentsProps } from "@refinedev/core";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
 import { DatePicker, Form, Input, Select } from "antd";
@@ -62,6 +62,12 @@ export const JobEdit: React.FC<IResourceComponentsProps> = () => {
     }
     onFinish(values);
   }
+
+  useEffect(() => {
+    if (jobsData?.content) {
+      setEditorContent(jobsData?.content);
+    }
+  }, [jobsData]);
 
   return (
     <Edit saveButtonProps={saveButtonProps}>

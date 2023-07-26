@@ -59,6 +59,11 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
     ids: record?.editors?.map((item: any) => item?.editors) ?? [],
   });
 
+  const { data: authorsData, isLoading: authorsIsLoading } = useMany({
+    resource: "users",
+    ids: record?.authors?.map((item: any) => item?.authors) ?? [],
+  });
+
   return (
     <Show
       isLoading={isLoading}
@@ -72,8 +77,8 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
         ),
       }}
     >
-      <Title level={5}>Auteur</Title>
-      <TextField value={record?.user?.username} />
+      <Title level={5}>Contributeur</Title>
+      <TextField value={record?.user?.complete_name} />
       <Title level={5}>Organisations</Title>
       {organisationIsLoading ? (
         <>Loading ...</>
@@ -129,6 +134,19 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
         <>
           {record?.editors.map((editor: any) => (
             <TagField key={editor?._id} value={editor?.name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+
+      <Title level={5}>Auteurs</Title>
+      {authorsIsLoading ? (
+        <>Loading ...</>
+      ) : authorsData?.data?.length && record?.authors?.length ? (
+        <>
+          {record?.authors.map((author: any) => (
+            <TagField key={author?._id} value={author?.complete_name} />
           ))}
         </>
       ) : (

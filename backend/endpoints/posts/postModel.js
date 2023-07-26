@@ -56,11 +56,11 @@ const postSchema = mongoose.Schema(
 postSchema.pre(/^find/, function (next) {
   this.populate({
     path: "user",
-    select: "username firstname lastname email phone role avatar",
+    select: "username firstname lastname email phone role avatar complete_name",
   });
   this.populate({
     path: "authors",
-    select: "username firstname lastname email phone role avatar",
+    select: "username firstname lastname email phone role avatar complete_name",
   });
   this.populate({
     path: "categorie",

@@ -68,7 +68,7 @@ opportunitySchema.pre(/^find/, function (next) {
   });
   this.populate({
     path: "user",
-    select: "username firstname lastname email phone role",
+    select: "username firstname lastname email phone role complete_name",
   });
   this.populate({
     path: "opportunity_type",

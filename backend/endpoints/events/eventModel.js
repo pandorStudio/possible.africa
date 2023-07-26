@@ -78,7 +78,7 @@ eventSchema.pre("find", function (next) {
 eventSchema.pre("find", function (next) {
   this.populate({
     path: "user",
-    select: "username firstname lastname email phone role avatar",
+    select: "username firstname lastname email phone role avatar complete_name",
   });
   next();
 });

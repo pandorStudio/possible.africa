@@ -135,7 +135,7 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Frequence</Title>
       <TextField value={record?.frequence} />
       <Title level={5}>Contributeur</Title>
-      {userIsLoading ? <>Loading...</> : <>{userData?.data?.username}</>}
+      {userIsLoading ? <>Loading...</> : <>{userData?.data?.complete_name}</>}
     </Show>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { file2Base64, IResourceComponentsProps } from "@refinedev/core";
 import { Edit, useForm, useSelect } from "@refinedev/antd";
 import { Checkbox, DatePicker, Form, Input, Select } from "antd";
@@ -31,7 +31,7 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
     resource: "users",
     optionValue: "_id",
     defaultValue: eventsData?.user,
-    optionLabel: "username",
+    optionLabel: "complete_name",
   });
 
   const { selectProps: countrySelectProps } = useSelect({
@@ -88,6 +88,12 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
     }
     onFinish(values);
   }
+
+  useEffect(() => {
+    if (eventsData?.content) {
+      setEditorContent(eventsData?.content);
+    }
+  }, [eventsData]);
 
   return (
     <Edit saveButtonProps={saveButtonProps}>

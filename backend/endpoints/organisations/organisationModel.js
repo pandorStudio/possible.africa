@@ -74,7 +74,11 @@ organisationSchema.pre(/^find/, function (next) {
   });
   this.populate({
     path: "owner",
-    select: "username firstname lastname email phone role avatar",
+    select: "username firstname lastname email phone role avatar complete_name",
+  });
+  this.populate({
+    path: "contributeur",
+    select: "username firstname lastname email phone role avatar complete_name",
   });
   next();
 });

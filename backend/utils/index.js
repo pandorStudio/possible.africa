@@ -12,6 +12,7 @@ class CustomUtils {
     SUCCESS: "Success",
     UNAUTHORIZED: "Unauthorized",
     NOT_LOGGED_IN: "You are not logged in! Please log in to get access.",
+    EXISTING_POST_WITH_SOURCE: "Un article existe avec une source identique",
   };
 
   // Auth static methods

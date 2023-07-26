@@ -74,7 +74,7 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Organisation</Title>
       {record?.organisation ? <>{organisationData?.data?.name || "-"}</> : "-"}
       <Title level={5}>Contributeur</Title>
-      {userIsLoading ? <>Loading...</> : <>{userData?.data?.username}</>}
+      {userIsLoading ? <>Loading...</> : <>{userData?.data?.complete_name}</>}
       <Title level={5}>Titre</Title>
       <TextField value={record?.title} />
       <Title level={5}>Date de début</Title>

@@ -73,24 +73,6 @@ exports.createOrganisation = async (req, res) => {
   const CustomBody = { ...req.body };
   const name = CustomBody.name;
   const slug = CustomUtils.slugify(name) + "-" + CustomUtils.getRandomNbr();
-  // if (CustomBody.logo) {
-  //   const response = await downloadMedia(CustomBody.logo);
-  //   const originalName =
-  //     CustomBody.name + "_logo_" + CustomUtils.getRandomNbr();
-  //   const file = {
-  //     fieldname: "logo",
-  //     originalname: originalName,
-  //   };
-  //   req.file = file;
-  //   const res = await UploadImage.single("logo");
-  //   if (req.file.location) {
-  //     console.log(req.file.location);
-  //   }
-
-  // CustomBody.logo = data.Location;
-  // console.log(CustomBody.logo);
-  // }
-
   try {
     if (req.user) CustomBody.contributeur = req.user._id;
     CustomBody.slug = slug;

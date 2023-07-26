@@ -26,7 +26,7 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
   const { selectProps: userSelectProps } = useSelect({
     resource: "users",
     optionValue: "_id",
-    optionLabel: "username",
+    optionLabel: "complete_name",
   });
 
   const { selectProps: countrySelectProps } = useSelect({

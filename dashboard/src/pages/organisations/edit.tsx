@@ -42,7 +42,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   const { selectProps: contactSelectProps } = useSelect({
     resource: "users",
     optionValue: "_id",
-    optionLabel: "lastname",
+    optionLabel: "complete_name",
     defaultValue: organisationsData?.owner?._id,
     filters: [
       {
@@ -169,6 +169,9 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     if (organisationsData?.country) {
       setCountryFromDB(organisationsData.country);
       // console.log(organisationsData.country._id);
+    }
+    if (organisationsData?.content) {
+      setEditorContent(organisationsData?.content);
     }
     if (imageUrl) {
       setUploadLoading(false);
