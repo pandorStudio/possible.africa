@@ -35,7 +35,7 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Type</Title>
       <TextField value={record?.type?.name} />
       <Title level={5}>Contributeur</Title>
-      <TextField value={record?.contributeur?.username} />
+      <TextField value={record?.contributeur?.complete_name} />
       <Title level={5}>Contact</Title>
       <TextField value={record?.owner} />
       <Title level={5}>Description</Title>

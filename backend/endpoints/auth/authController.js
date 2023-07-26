@@ -38,6 +38,9 @@ exports.signup = async (req, res, next) => {
     const slug =
       CustomUtils.slugify(bodyWR.username) + "-" + CustomUtils.getRandomNbr();
     bodyWR.slug = slug;
+    bodyWR.complete_name = `${bodyWR.lastname ? bodyWR.lastname + " " : ""}${
+      bodyWR.firstname ? bodyWR.firstname : ""
+    }`;
     const newUser = await User.create(bodyWR);
     await User.findByIdAndUpdate(newUser._id, { password: req.body.password });
     newUser.role = role[0];

@@ -88,7 +88,10 @@ const userSchema = mongoose.Schema(
     },
     covered_countries: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: "Country"
+      ref: "Country",
+    },
+    complete_name: {
+      type: String,
     },
   },
   {

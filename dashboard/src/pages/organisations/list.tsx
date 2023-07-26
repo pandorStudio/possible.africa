@@ -352,7 +352,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           /> */}
           <Table.Column dataIndex={["type", "name"]} title="Type" />
           <Table.Column
-            dataIndex={["contributeur", "username"]}
+            dataIndex={["contributeur", "complete_name"]}
             title="Contributeur"
           />
           <Table.Column
@@ -360,7 +360,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             title="Contact"
             render={(value: any) => {
               if (value) {
-                return `${value.lastname} ${value.firstname}`;
+                return value?.complete_name;
               } else {
                 return "-";
               }

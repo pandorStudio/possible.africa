@@ -75,7 +75,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
 
   const { selectProps: authorSelectProps } = useSelect({
     resource: "users",
-    optionLabel: "firstname",
+    optionLabel: "complete_name",
     optionValue: "_id",
     filters: [
       {
@@ -152,7 +152,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     //   values.image = url;
     // }
     // console.log(values);
-    if (values.image) {
+    if (values?.image) {
       values.image = imageUrl;
     }
 
@@ -168,7 +168,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     if (!values?.countries) {
       values.countries = null;
     }
-    if (!values?.categorie?.id) {
+    if (!values?.categorie?._id) {
       values.categorie = null;
     }
     if (!values?.labels) {
@@ -353,44 +353,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             placeholder="Placez votre contenu ici..."
           />
         </Form.Item>
-        {/* <Form.Item
-          label="Slug"
-          name={["slug"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item> */}
-        {/* <Form.Item
-          label="Contenu"
-          name={["content"]}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item> */}
-        <Form.Item
-          label="Couverture"
-          name="image"
-          // valuePropName="fileList"
-          // getValueFromEvent={getValueFromEvent}
-          // noStyle
-        >
-          {/* <Upload.Dragger
-              name="file"
-              action={`${API_URL}/upload/images`}
-              // Define the body of the request
-              listType="picture"
-              maxCount={1}
-            >
-              <p className="ant-upload-text">Drag & drop a file in this area</p>
-            </Upload.Dragger> */}
+        <Form.Item label="Couverture" name="image">
           <Upload
             name="file"
             listType="picture-card"

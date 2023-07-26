@@ -94,10 +94,10 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         number: realPhoneNumber,
       };
     }
-    if (!values?.owner) {
+    if (!values?.owner?._id) {
       values.owner = null;
     }
-    if (!values?.type) {
+    if (!values?.type?._id) {
       values.type = null;
     }
     // console.log(values);
@@ -108,7 +108,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   const { selectProps: contactSelectProps } = useSelect({
     resource: "users",
     optionValue: "_id",
-    optionLabel: "firstname",
+    optionLabel: "complete_name",
     queryOptions: {},
     filters: [
       {

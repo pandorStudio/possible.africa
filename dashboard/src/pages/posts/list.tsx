@@ -35,6 +35,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import {
   Admin,
   AdminOrContributor,
+  AdminOrContributorOrUser,
 } from "../../custom-components/AccessControl";
 
 async function processContent(content: string) {
@@ -457,30 +458,32 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               );
             }}
           />
-          <Table.Column
-            fixed="left"
-            title="Statut"
-            width="4%"
-            dataIndex="actions"
-            render={(_, record: BaseRecord) => (
-              <Space>
-                <Tooltip
-                  title={statusVariables[`${record.status}`].label}
-                  color={statusVariables[`${record.status}`].color}
-                  key={record.id}
-                >
-                  <Button
-                    style={statusVariables[`${record.status}`].styles}
-                    size="small"
-                    shape="circle"
-                    onClick={() => {
-                      confirmStatusChange(record.id, record.status);
-                    }}
-                  ></Button>
-                </Tooltip>
-              </Space>
-            )}
-          />
+          <AdminOrContributorOrUser>
+            <Table.Column
+              fixed="left"
+              title="Statut"
+              width="4%"
+              dataIndex="actions"
+              render={(_, record: BaseRecord) => (
+                <Space>
+                  <Tooltip
+                    title={statusVariables[`${record.status}`].label}
+                    color={statusVariables[`${record.status}`].color}
+                    key={record.id}
+                  >
+                    <Button
+                      style={statusVariables[`${record.status}`].styles}
+                      size="small"
+                      shape="circle"
+                      onClick={() => {
+                        confirmStatusChange(record.id, record.status);
+                      }}
+                    ></Button>
+                  </Tooltip>
+                </Space>
+              )}
+            />
+          </AdminOrContributorOrUser>
           <Table.Column
             width={120}
             dataIndex={["image"]}
@@ -495,7 +498,10 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
           />
           <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
           <Table.Column dataIndex={["categorie", "name"]} title="Categorie" />
-          <Table.Column dataIndex={["user", "username"]} title="Auteur" />
+          <Table.Column
+            dataIndex={["user", "complete_name"]}
+            title="Contributeur"
+          />
           <Table.Column
             dataIndex="organisations"
             title="Organisations"
@@ -521,6 +527,21 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 <>
                   {value?.map((item, index) => (
                     <TagField key={index} value={item?.name} />
+                  ))}
+                </>
+              )
+            }
+          />
+          <Table.Column
+            dataIndex="authors"
+            title="Auteurs"
+            render={(value: any[]) =>
+              authorsIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField key={index} value={item?.complete_name} />
                   ))}
                 </>
               )

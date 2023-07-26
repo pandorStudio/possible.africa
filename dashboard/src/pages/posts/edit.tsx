@@ -79,7 +79,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
 
   const { selectProps: authorSelectProps } = useSelect({
     resource: "users",
-    optionLabel: "firstname",
+    optionLabel: "complete_name",
     optionValue: "_id",
     defaultValue: postsData?.authors?._id,
     filters: [
@@ -167,7 +167,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     if (!values?.categorie?._id) {
       values.categorie = null;
     }
-    if (!editorContent) {
+    if (!(editorContent && values?.content)) {
       values.content = null;
     }
     if (!values?.publication_language) {
@@ -211,14 +211,17 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
 
   useEffect(() => {
     // console.log(postsData);
+    if (queryResult.isFetching) {
+      setUploadLoading(true);
+    }
     if (imageUrl) {
       setUploadLoading(false);
     }
-
-    if (queryResult.isFetching) {
-      setUploadLoading(true);
-    } else {
-      setImageUrlFromDb(postsData.image);
+    if (postsData?.content) {
+      setEditorContent(postsData?.content);
+    }
+    if (postsData?.image) {
+      setImageUrl(postsData?.image);
       setUploadLoading(false);
     }
 
