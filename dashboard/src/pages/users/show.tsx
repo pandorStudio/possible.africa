@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IResourceComponentsProps, useMany, useShow } from "@refinedev/core";
 import { EmailField, Show, TextField } from "@refinedev/antd";
 import { Typography } from "antd";
@@ -40,13 +40,23 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
   const { data: originCountriesData, isLoading: originCountriesIsLoading } =
     useMany({
       resource: "countries",
-      ids: record?.countries?.map((item: any) => item?.origin_countries) ?? [],
+      ids:
+        record?.origin_countries?.map((item: any) => item?.origin_countries) ??
+        [],
     });
   const { data: coveredCountriesData, isLoading: coveredCountryIsLoading } =
     useMany({
       resource: "countries",
-      ids: record?.countries?.map((item: any) => item?.covered_countries) ?? [],
+      ids:
+        record?.covered_countries?.map(
+          (item: any) => item?.covered_countries
+        ) ?? [],
     });
+
+  useEffect(() => {
+    console.log(record);
+  }, [record]);
+
   return (
     <Show isLoading={isLoading}>
       <Title level={4}>Nom</Title>
@@ -60,17 +70,19 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Pays d'origin</Title>
       {originCountriesIsLoading ? (
         <>Loading ...</>
-      ) : originCountriesData?.data?.length && record?.countries?.length ? (
+      ) : originCountriesData?.data?.length &&
+        record?.origin_countries?.length ? (
         <>
           {record?.origin_countries?.map((country: any) => (
             <Link
               href={
-                "https://www.google.com/maps/search/" + country?.name?.common
+                "https://www.google.com/maps/search/" +
+                country?.translations?.fra?.common
               }
               target="_blank"
               key={country?._id}
             >
-              {country?.name?.common + " "}
+              {country?.translations?.fra?.common + " "}
             </Link>
           ))}
         </>
@@ -80,19 +92,24 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Pays couvert</Title>
       {coveredCountryIsLoading ? (
         <>Loading ...</>
-      ) : coveredCountriesData?.data?.length && record?.countries?.length ? (
+      ) : coveredCountriesData?.data?.length &&
+        record?.covered_countries?.length ? (
         <>
-          {record?.covered_countries?.map((country: any) => (
-            <Link
-              href={
-                "https://www.google.com/maps/search/" + country?.name?.common
-              }
-              target="_blank"
-              key={country?._id}
-            >
-              {country?.name?.common + " "}
-            </Link>
-          ))}
+          {record?.covered_countries?.map((country: any) => {
+            console.log(record);
+            return (
+              <Link
+                href={
+                  "https://www.google.com/maps/search/" +
+                  country?.translations?.fra?.common
+                }
+                target="_blank"
+                key={country?._id}
+              >
+                {country?.translations?.fra?.common + " "}
+              </Link>
+            );
+          })}
         </>
       ) : (
         "_"

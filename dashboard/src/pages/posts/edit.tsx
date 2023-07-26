@@ -209,7 +209,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
   );
 
   useEffect(() => {
-    console.log(postsData);
+    // console.log(postsData);
     if (imageUrl) {
       setUploadLoading(false);
     }
@@ -254,7 +254,7 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
           label="Pays"
           name={["countries"]}
           getValueProps={(value: any[]) => {
-            console.log(value);
+            // console.log(value);
             return {
               value: value?.map((item) => {
                 return item._id;

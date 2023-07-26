@@ -436,7 +436,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
             title="Genre"
             render={(value: any) => {
               if (value) {
-                value === "m"
+                return value === "m"
                   ? "Masculin"
                   : value === "f"
                   ? "Féminin"

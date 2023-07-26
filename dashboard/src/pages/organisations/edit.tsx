@@ -168,7 +168,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   useEffect(() => {
     if (organisationsData?.country) {
       setCountryFromDB(organisationsData.country);
-      console.log(organisationsData.country._id);
+      // console.log(organisationsData.country._id);
     }
     if (imageUrl) {
       setUploadLoading(false);

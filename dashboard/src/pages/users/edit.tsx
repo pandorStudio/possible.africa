@@ -207,7 +207,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           label="Pays d'origine"
           name={["origin_countries"]}
           getValueProps={(value: any[]) => {
-            console.log(value);
+            // console.log(value);
             return {
               value: value?.map((item) => {
                 return item._id;
@@ -234,7 +234,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           label="Pays couvert"
           name={["covered_countries"]}
           getValueProps={(value: any[]) => {
-            console.log(value);
+            // console.log(value);
             return {
               value: value?.map((item) => {
                 return item._id;

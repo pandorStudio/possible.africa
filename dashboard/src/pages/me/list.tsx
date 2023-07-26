@@ -7,7 +7,7 @@ import {
   useTranslate,
 } from "@refinedev/core";
 
-import { Title, useTable } from "@refinedev/antd";
+import { TagField, Title, useTable } from "@refinedev/antd";
 import { Avatar, Button, Card, Col, Row, Space, Typography } from "antd";
 import { AdminOrContributor } from "../../custom-components/AccessControl";
 
@@ -114,6 +114,46 @@ export const Profil: React.FC<IResourceComponentsProps> = () => {
                       >
                         {userConnected?.description || "-"}
                       </Text>
+                    </Space>
+                  </Col>
+                  <Col span={24}>
+                    <Space
+                      direction="horizontal"
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "left",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Title level={4}>Pays d'origine :</Title>
+                      {userConnected?.origin_countries?.length
+                        ? userConnected?.origin_countries.map((country) => (
+                            <TagField
+                              value={country?.translations?.fra?.common}
+                            />
+                          ))
+                        : "-"}
+                    </Space>
+                  </Col>
+                  <Col span={24}>
+                    <Space
+                      direction="horizontal"
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "left",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Title level={4}>Pays couvert :</Title>
+                      {userConnected?.covered_countries?.length
+                        ? userConnected?.covered_countries.map((country) => (
+                            <TagField
+                              value={country?.translations?.fra?.common}
+                            />
+                          ))
+                        : "-"}
                     </Space>
                   </Col>
                   <Col span={24}>

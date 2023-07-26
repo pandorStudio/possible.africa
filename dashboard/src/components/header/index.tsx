@@ -129,8 +129,8 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       );
 
       if (response.status === 201) {
-        console.log("Ticket créé avec succès !");
-        console.log(response.data);
+        // console.log("Ticket créé avec succès !");
+        // console.log(response.data);
         setOpen(false);
         setConfirmLoading(false);
         setCaseTitle("");
@@ -160,7 +160,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
+    // console.log("Clicked cancel button");
     setOpen(false);
   };
 

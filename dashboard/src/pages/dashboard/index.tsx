@@ -56,7 +56,7 @@ export default function CustomDashboard() {
           setLoading(true);
           setDashboardData(res.data);
           setLoading(false);
-          console.log(res);
+          // console.log(res);
           // console.log(dashboardData);
         })
         .catch((err) => {
