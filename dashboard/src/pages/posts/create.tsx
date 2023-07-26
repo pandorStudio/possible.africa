@@ -14,6 +14,7 @@ import { axiosInstance } from "../../authProvider";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 import { UploadProps } from "antd/lib/upload";
+import { Option } from "antd/es/mentions";
 
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
@@ -323,7 +324,12 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
 
         <Form.Item label="Langue" name={["publication_language"]}>
-          <Input />
+          <Select>
+            <Option value="Français">Français</Option>
+            <Option value="Anglais">Anglais</Option>
+            <Option value="Arabe">Arabe</Option>
+            <Option value="Chinois">Chinois</Option>
+          </Select>
         </Form.Item>
 
         <Form.Item

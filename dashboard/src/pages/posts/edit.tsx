@@ -15,6 +15,7 @@ import {
   UploadProps,
 } from "antd/es/upload";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { Option } from "antd/es/mentions";
 
 export const PostEdit: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -248,7 +249,12 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
           <Input />
         </Form.Item>
         <Form.Item label="Langue" name={["publication_language"]}>
-          <Input />
+          <Select>
+            <Option value="Français">Français</Option>
+            <Option value="Anglais">Anglais</Option>
+            <Option value="Arabe">Arabe</Option>
+            <Option value="Chinois">Chinois</Option>
+          </Select>
         </Form.Item>
         <Form.Item
           label="Pays"
