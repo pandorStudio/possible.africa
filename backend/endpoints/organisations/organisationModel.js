@@ -11,8 +11,8 @@ const organisationSchema = mongoose.Schema(
       type: String,
       default: "",
     },
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
+    types: {
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "OrganisationType",
       createIndexes: true,
     },
@@ -24,13 +24,13 @@ const organisationSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Country",
     },
+    covered_countries: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Country",
+    },
     slug: {
       type: String,
       default: "",
-    },
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
     },
     description: { type: String },
     email: { type: String },
@@ -45,6 +45,14 @@ const organisationSchema = mongoose.Schema(
     facebook_url: { type: String },
     twitter_url: { type: String },
     adresse: { type: String },
+    activity_areas: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "ActivityArea",
+    },
+    contacts: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+    },
   },
   {
     timestamps: true,
@@ -55,7 +63,6 @@ organisationSchema.index({
   name: "text",
   country: "text",
   slug: "text",
-  owner: "text",
   description: "text",
   email: "text",
   telephone: "text",
@@ -69,16 +76,24 @@ organisationSchema.index({
 // populate response with organisationType
 organisationSchema.pre(/^find/, function (next) {
   this.populate({
-    path: "type",
+    path: "types",
     select: "name slug",
   });
   this.populate({
-    path: "owner",
-    select: "username firstname lastname email phone role avatar complete_name",
+    path: "covered_countries",
+    select: "name idd flag translations",
   });
   this.populate({
     path: "contributeur",
     select: "username firstname lastname email phone role avatar complete_name",
+  });
+  this.populate({
+    path: "contacts",
+    select: "username firstname lastname email phone role avatar complete_name",
+  });
+  this.populate({
+    path: "activity_areas",
+    select: "name slug",
   });
   next();
 });

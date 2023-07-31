@@ -35,10 +35,10 @@ exports.getOpportunityById = async (req, res) => {
 // @access Public
 exports.createOpportunity = async (req, res) => {
   const CustomBody = { ...req.body };
-  const slug =
-    CustomUtils.slugify(CustomBody.title) + "-" + CustomUtils.getRandomNbr();
+  const slug = CustomUtils.slugify(CustomBody.title);
   try {
     CustomBody.slug = slug;
+    if (req.user) CustomBody.user = req.user._id;
     // create new opportunity
     const opportunity = await Opportunity.create(CustomBody);
     res.status(201).json(opportunity);
@@ -56,7 +56,7 @@ exports.updateOpportunity = async (req, res) => {
     if (!opportunity) {
       return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     }
-
+    if (req.user) req.body.user = opportunity.user;
     const updated = await Opportunity.findByIdAndUpdate(
       req.params.id,
       req.body,

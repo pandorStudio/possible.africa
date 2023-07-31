@@ -1,90 +1,106 @@
 import "./init";
-import {Authenticated, Refine} from "@refinedev/core";
-import {RefineKbar, RefineKbarProvider} from "@refinedev/kbar";
+import { Authenticated, Refine } from "@refinedev/core";
+import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
-import {notificationProvider, ThemedLayoutV2} from "@refinedev/antd";
+import { notificationProvider, ThemedLayoutV2 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
-import {Image, theme} from "antd";
+import { Image, theme } from "antd";
 import routerBindings, {
   CatchAllNavigate,
   NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
-import {useTranslation} from "react-i18next";
-import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
-import {authProvider} from "./authProvider";
-import {Header} from "./components/header";
-import {ColorModeContext, ColorModeContextProvider,} from "./contexts/color-mode";
-import {ForgotPassword} from "./pages/forgotPassword";
-import {Login} from "./pages/login";
-import {UserList} from "./pages/users/list";
-import {UserShow} from "./pages/users/show";
-import {UserEdit} from "./pages/users/edit";
-import {UserCreate} from "./pages/users/create";
-import {OrganisationTypeList} from "./pages/organisation_types/list";
-import {OrganisationList} from "./pages/organisations/list";
-import {OrganisationShow} from "./pages/organisations/show";
-import {OrganisationEdit} from "./pages/organisations/edit";
-import {OrganisationCreate} from "./pages/organisations/create";
-import {dataProvider} from "./custom-data-provider/data-provider";
-import {EventList} from "./pages/events/list";
-import {JobList} from "./pages/jobs/list";
-import {JobShow} from "./pages/jobs/show";
-import {JobEdit} from "./pages/jobs/edit";
-import {JobCreate} from "./pages/jobs/create";
-import {OpportunityTypeList} from "./pages/opportunity_types/list";
-import {OpportunityTypeShow} from "./pages/opportunity_types/show";
-import {OpportunityTypeEdit} from "./pages/opportunity_types/edit";
-import {OpportunityTypeCreate} from "./pages/opportunity_types/create";
-import {OpportunityList} from "./pages/opportunities/list";
-import {OpportunityEdit} from "./pages/opportunities/edit";
-import {OpportunityCreate} from "./pages/opportunities/create";
-import {OpportunityShow} from "./pages/opportunities/show";
-import {EventTypeList} from "./pages/event_types/list";
-import {EventTypeEdit} from "./pages/event_types/edit";
-import {EventTypeShow} from "./pages/event_types/show";
-import {EventTypeCreate} from "./pages/event_types/create";
-import {EventEdit} from "./pages/events/edit";
-import {EventCreate} from "./pages/events/create";
-import {EventShow} from "./pages/events/show";
-import {RegisterPage} from "./components/pages/auth/components";
-import {PostList} from "./pages/posts/list";
-import {PostEdit} from "./pages/posts/edit";
-import {PostCreate} from "./pages/posts/create";
-import {PostShow} from "./pages/posts/show";
-import {PostCategoryList} from "./pages/post_categories/list";
-import {PostCategoryEdit} from "./pages/post_categories/edit";
-import {PostCategoryShow} from "./pages/post_categories/show";
-import {PostCategoryCreate} from "./pages/post_categories/create";
-import {DashboardOutlined, UserOutlined} from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { authProvider } from "./authProvider";
+import { Header } from "./components/header";
+import {
+  ColorModeContext,
+  ColorModeContextProvider,
+} from "./contexts/color-mode";
+import { ForgotPassword } from "./pages/forgotPassword";
+import { Login } from "./pages/login";
+import { UserList } from "./pages/users/list";
+import { UserShow } from "./pages/users/show";
+import { UserEdit } from "./pages/users/edit";
+import { UserCreate } from "./pages/users/create";
+import { OrganisationTypeList } from "./pages/organisation_types/list";
+import { OrganisationList } from "./pages/organisations/list";
+import { OrganisationShow } from "./pages/organisations/show";
+import { OrganisationEdit } from "./pages/organisations/edit";
+import { OrganisationCreate } from "./pages/organisations/create";
+import { dataProvider } from "./custom-data-provider/data-provider";
+import { EventList } from "./pages/events/list";
+import { JobList } from "./pages/jobs/list";
+import { JobShow } from "./pages/jobs/show";
+import { JobEdit } from "./pages/jobs/edit";
+import { JobCreate } from "./pages/jobs/create";
+import { OpportunityTypeList } from "./pages/opportunity_types/list";
+import { OpportunityTypeShow } from "./pages/opportunity_types/show";
+import { OpportunityTypeEdit } from "./pages/opportunity_types/edit";
+import { OpportunityTypeCreate } from "./pages/opportunity_types/create";
+import { OpportunityList } from "./pages/opportunities/list";
+import { OpportunityEdit } from "./pages/opportunities/edit";
+import { OpportunityCreate } from "./pages/opportunities/create";
+import { OpportunityShow } from "./pages/opportunities/show";
+import { EventTypeList } from "./pages/event_types/list";
+import { EventTypeEdit } from "./pages/event_types/edit";
+import { EventTypeShow } from "./pages/event_types/show";
+import { EventTypeCreate } from "./pages/event_types/create";
+import { EventEdit } from "./pages/events/edit";
+import { EventCreate } from "./pages/events/create";
+import { EventShow } from "./pages/events/show";
+import { RegisterPage } from "./components/pages/auth/components";
+import { PostList } from "./pages/posts/list";
+import { PostEdit } from "./pages/posts/edit";
+import { PostCreate } from "./pages/posts/create";
+import { PostShow } from "./pages/posts/show";
+import { PostCategoryList } from "./pages/post_categories/list";
+import { PostCategoryEdit } from "./pages/post_categories/edit";
+import { PostCategoryShow } from "./pages/post_categories/show";
+import { PostCategoryCreate } from "./pages/post_categories/create";
+import {
+  DashboardOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import CustomIconJob from "./custom-components/Icons/CustomIconJob";
-import {ThemedTitleV2} from "./components/themedLayout/title";
-import {ThemedSiderV2} from "./components/themedLayout/sider";
+import { ThemedTitleV2 } from "./components/themedLayout/title";
+import { ThemedSiderV2 } from "./components/themedLayout/sider";
 import CustomIconArticle from "./custom-components/Icons/CustomIconArticle";
 import CustomIconOrganisation from "./custom-components/Icons/CustomIconOrganisation";
 import CustomIconEvent from "./custom-components/Icons/CustomIconEvent";
 import CustomIconOpportunity from "./custom-components/Icons/CustomIconOpportunity";
-import {UserRoleCreate} from "./pages/user roles/create";
-import {UserRoleEdit} from "./pages/user roles/edit";
-import {UserRoleList} from "./pages/user roles/list";
-import {UserRoleShow} from "./pages/user roles/show";
-import {useContext, useEffect, useState} from "react";
+import { UserRoleCreate } from "./pages/user roles/create";
+import { UserRoleEdit } from "./pages/user roles/edit";
+import { UserRoleList } from "./pages/user roles/list";
+import { UserRoleShow } from "./pages/user roles/show";
+import { useContext, useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "./store";
-import {Profil} from "./pages/me/list";
-import {ProfilEdit} from "./pages/me/edit";
-import {OrganisationTypeShow} from "./pages/organisation_types/show";
-import {OrganisationTypeEdit} from "./pages/organisation_types/edit";
-import {OrganisationTypeCreate} from "./pages/organisation_types/create";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store";
+import { Profil } from "./pages/me/list";
+import { ProfilEdit } from "./pages/me/edit";
+import { OrganisationTypeShow } from "./pages/organisation_types/show";
+import { OrganisationTypeEdit } from "./pages/organisation_types/edit";
+import { OrganisationTypeCreate } from "./pages/organisation_types/create";
 import CustomDashboard from "./pages/dashboard";
-import {useContextSelector} from "use-context-selector";
-import {userContext} from "./UserContext";
-import {AdminOrContributor, AdminOrContributorOrUser,} from "./custom-components/AccessControl";
-import {PostLabelList} from "./pages/post_labels/list";
-import {PostLabelShow} from "./pages/post_labels/show";
-import {PostLabelEdit} from "./pages/post_labels/edit";
-import {PostLabelCreate} from "./pages/post_labels/create";
+import { useContextSelector } from "use-context-selector";
+import { userContext } from "./UserContext";
+import {
+  AdminOrContributor,
+  AdminOrContributorOrUser,
+} from "./custom-components/AccessControl";
+import { PostLabelList } from "./pages/post_labels/list";
+import { PostLabelShow } from "./pages/post_labels/show";
+import { PostLabelEdit } from "./pages/post_labels/edit";
+import { PostLabelCreate } from "./pages/post_labels/create";
+import { ActivityAreaList } from "./pages/activity_areas/list";
+import Link from "antd/es/typography/Link";
+import { OpportunityTargetList } from "./pages/opportunity_targets/list";
+import { OpportunityTargetShow } from "./pages/opportunity_targets/show";
+import { OpportunityTargetEdit } from "./pages/opportunity_targets/edit";
+import { OpportunityTargetCreate } from "./pages/opportunity_targets/create";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -126,7 +142,7 @@ function ContactsWelcome() {
           right: "10%",
         }}
       >
-        <div
+        {/* <div
           style={{
             marginBottom: "20px",
           }}
@@ -136,7 +152,7 @@ function ContactsWelcome() {
             alt="Logo Possible"
             height="70px"
           />
-        </div>
+        </div> */}
         <h1
           style={{
             color: token.colorPrimary,
@@ -152,10 +168,13 @@ function ContactsWelcome() {
             fontSize: "120%",
           }}
         >
-          Félicitations pour la création de votre compte, pour le moment vous
-          avez un compte basique, veuillez adhérer à l'association Possible pour
-          avoir accès à plus de fonctionnalités et avoir accès à notre riche
-          base de données !
+          Merci pour votre inscription ! Elle est en cours de validation,
+          conditionnée à votre adhésion à Possible Africa. Après cela, notre
+          base de données #Africatech vous sera accessible. Pas encore adhérent
+          de l'association ? 
+          <Link href="https://possible-africa.notion.site/possible-africa/POSSIBLE-AFRICA-ddb414537adf439f9f06c5e63914d1be">
+            Cliquez ici.
+          </Link>
         </main>
       </div>
     </div>
@@ -321,6 +340,18 @@ function App() {
         },
       },
       {
+        name: "opportunity_targets",
+        list: "/opportunity_targets",
+        show: "/opportunity_targets/show/:id",
+        create: "/opportunity_targets/create",
+        edit: "/opportunity_targets/edit/:id",
+        meta: {
+          label: "Cibles",
+          parent: "Opportunités",
+          canDelete: true,
+        },
+      },
+      {
         name: "Offres d'emplois",
         meta: {
           label: "Offres d'emplois",
@@ -398,6 +429,25 @@ function App() {
         meta: {
           label: "Roles",
           parent: "Utilisateurs",
+        },
+      },
+      {
+        name: "Champs & Propriétés",
+        meta: {
+          label: "Champs & Propriétés",
+          icon: <SettingOutlined />,
+        },
+      },
+      {
+        name: "activity_areas",
+        list: "/activity_areas",
+        show: "/activity_areas/show/:id",
+        create: "/activity_areas/create",
+        edit: "/activity_areas/edit/:id",
+        meta: {
+          label: "Secteurs d'activités",
+          parent: "Champs & Propriétés",
+          canDelete: true,
         },
       },
       {
@@ -527,6 +577,18 @@ function App() {
         },
       },
       {
+        name: "opportunity_targets",
+        list: "/opportunity_targets",
+        show: "/opportunity_targets/show/:id",
+        create: "/opportunity_targets/create",
+        edit: "/opportunity_targets/edit/:id",
+        meta: {
+          label: "Cibles",
+          parent: "Opportunités",
+          canDelete: true,
+        },
+      },
+      {
         name: "Offres d'emplois",
         meta: {
           label: "Offres d'emplois",
@@ -604,6 +666,25 @@ function App() {
         meta: {
           label: "Roles",
           parent: "Utilisateurs",
+        },
+      },
+      {
+        name: "Champs & Propriétés",
+        meta: {
+          label: "Champs & Propriétés",
+          icon: <SettingOutlined />,
+        },
+      },
+      {
+        name: "activity_areas",
+        list: "/activity_areas",
+        show: "/activity_areas/show/:id",
+        create: "/activity_areas/create",
+        edit: "/activity_areas/edit/:id",
+        meta: {
+          label: "Secteurs d'activités",
+          parent: "Champs & Propriétés",
+          canDelete: true,
         },
       },
       {
@@ -817,6 +898,27 @@ function App() {
                       }
                     />
                   </Route>
+
+                  <Route path="activity_areas">
+                    <Route index element={<ActivityAreaList />} />
+                    <Route path="show/:id" element={<OrganisationTypeShow />} />
+                    <Route
+                      path="edit/:id"
+                      element={
+                        <AdminOrContributor>
+                          <OrganisationTypeEdit />
+                        </AdminOrContributor>
+                      }
+                    />
+                    <Route
+                      path="create"
+                      element={
+                        <AdminOrContributor>
+                          <OrganisationTypeCreate />
+                        </AdminOrContributor>
+                      }
+                    />
+                  </Route>
                   <Route path="organisations">
                     <Route index element={<OrganisationList />} />
                     <Route path="show/:id" element={<OrganisationShow />} />
@@ -874,6 +976,26 @@ function App() {
                       element={
                         <AdminOrContributor>
                           <OpportunityTypeCreate />
+                        </AdminOrContributor>
+                      }
+                    />
+                  </Route>
+                  <Route path="opportunity_targets">
+                    <Route index element={<OpportunityTargetList />} />
+                    <Route path="show/:id" element={<OpportunityTargetShow />} />
+                    <Route
+                      path="edit/:id"
+                      element={
+                        <AdminOrContributor>
+                          <OpportunityTargetEdit />
+                        </AdminOrContributor>
+                      }
+                    />
+                    <Route
+                      path="create"
+                      element={
+                        <AdminOrContributor>
+                          <OpportunityTargetCreate />
                         </AdminOrContributor>
                       }
                     />

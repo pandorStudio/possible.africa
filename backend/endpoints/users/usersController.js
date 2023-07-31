@@ -98,8 +98,7 @@ exports.createUser = async (req, res) => {
           .status(400)
           .json({ message: CustomUtils.consts.EXISTING_ACCOUNT });
     }
-    const slug =
-      CustomUtils.slugify(bodyWR.title) + "-" + CustomUtils.getRandomNbr();
+    const slug = CustomUtils.slugify(bodyWR.title);
     bodyWR.slug = slug;
     bodyWR.created_by = req.user._id;
     bodyWR.complete_name = `${bodyWR.lastname ? bodyWR.lastname + " " : ""}${

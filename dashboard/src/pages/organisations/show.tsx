@@ -1,6 +1,6 @@
 import React from "react";
-import { IResourceComponentsProps, useShow } from "@refinedev/core";
-import { DeleteButton, EmailField, Show, TextField } from "@refinedev/antd";
+import { IResourceComponentsProps, useMany, useShow } from "@refinedev/core";
+import { DeleteButton, EmailField, Show, TagField, TextField } from "@refinedev/antd";
 import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
@@ -14,6 +14,30 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
   const { data, isLoading } = queryResult;
 
   const record = data?.data;
+
+  const { data: coveredCountriesData, isLoading: coveredCountriesIsLoading } =
+    useMany({
+      resource: "countries",
+      ids:
+        record?.covered_countries?.map(
+          (item: any) => item?.covered_countries
+        ) ?? [],
+    });
+
+  const { data: organisationTypesData, isLoading: organisationTypesIsLoading } = useMany({
+    resource: "organisation_types",
+    ids: record?.types?.map((item: any) => item?.types) ?? [],
+  });
+  const { data: contactsData, isLoading: contactsIsLoading } = useMany({
+    resource: "users",
+    ids: record?.contacts?.map((item: any) => item?.contacts) ?? [],
+  });
+  const { data: activityAreasData, isLoading: activityAreasIsLoading } =
+    useMany({
+      resource: "activity_areas",
+      ids:
+        record?.activity_areas?.map((item: any) => item?.activity_areas) ?? [],
+    });
 
   return (
     <Show
@@ -30,14 +54,70 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
     >
       <Title level={5}>Nom</Title>
       <TextField value={record?.name} />
-      <Title level={5}>Pays</Title>
+      <Title level={5}>Pays d'origine</Title>
       <TextField value={record?.country?.translations?.fra?.common} />
-      <Title level={5}>Type</Title>
-      <TextField value={record?.type?.name} />
+      <Title level={5}>Pays couverts</Title>
+      {coveredCountriesIsLoading ? (
+        <>Loading ...</>
+      ) : coveredCountriesData?.data?.length &&
+        record?.covered_countries?.length ? (
+        <>
+          {record?.covered_countries?.map((covered_country: any) => (
+            <Link
+              href={
+                "https://www.google.com/maps/search/" +
+                covered_country?.translations?.fra?.common
+              }
+              target="_blank"
+              key={covered_country?._id}
+            >
+              {covered_country?.translations?.fra?.common + " "}
+            </Link>
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+      <Title level={5}>Secteur d'activité</Title>
+      {/*<TextField value={record?.activity_area} />*/}
+      {activityAreasIsLoading ? (
+        <>Loading ...</>
+      ) : activityAreasData?.data?.length && record?.activity_areas?.length ? (
+        <>
+          {record?.activity_areas?.map((activityArea: any, index) => (
+            <TagField key={activityArea?._id} value={activityArea?.name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+      <Title level={5}>Types</Title>
+      {organisationTypesIsLoading ? (
+        <>Loading ...</>
+      ) : organisationTypesData?.data?.length && record?.types?.length ? (
+        <>
+          {record?.types?.map((type: any) => (
+            <TagField key={type?._id} value={type?.name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
       <Title level={5}>Contributeur</Title>
       <TextField value={record?.contributeur?.complete_name} />
-      <Title level={5}>Contact</Title>
-      <TextField value={record?.owner} />
+
+      <Title level={5}>Contacts</Title>
+      {contactsIsLoading ? (
+        <>Loading ...</>
+      ) : contactsData?.data?.length && record?.contacts?.length ? (
+        <>
+          {record?.contacts.map((contact: any) => (
+            <TagField key={contact?._id} value={contact?.complete_name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
       <Title level={5}>Description</Title>
       <span>
         {record?.description &&

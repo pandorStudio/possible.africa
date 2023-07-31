@@ -4,6 +4,7 @@ import {
   IResourceComponentsProps,
   useApiUrl,
   useInvalidate,
+  useMany,
 } from "@refinedev/core";
 import {
   BooleanField,
@@ -13,6 +14,7 @@ import {
   EditButton,
   List,
   ShowButton,
+  TagField,
   useTable,
 } from "@refinedev/antd";
 import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
@@ -40,6 +42,33 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
   const [visibleCheckAll, setVisibleCheckAll] = useState(false);
   const invalidate = useInvalidate();
   let checkboxRefs = useRef([]);
+
+  const { data: contactsData, isLoading: contactsIsLoading } = useMany({
+    resource: "users",
+    ids: tableProps?.dataSource?.map((item) => item?.contacts) ?? [],
+  });
+
+  const { data: activityAreasData, isLoading: activityAreasIsLoading } =
+    useMany({
+      resource: "activity_areas",
+      ids: tableProps?.dataSource?.map((item) => item?.activity_areas) ?? [],
+    });
+
+  const { data: targetCountriesData, isLoading: targetCountriesIsLoading } =
+    useMany({
+      resource: "countries",
+      ids: tableProps?.dataSource?.map((item) => item?.target_countries) ?? [],
+    });
+  const { data: organisationsData, isLoading: organisationsIsLoading } =
+    useMany({
+      resource: "organisations",
+      ids: tableProps?.dataSource?.map((item) => item?.organisations) ?? [],
+    });
+    const { data: targetsData, isLoading: targetsIsLoading } =
+      useMany({
+        resource: "opportunity_targets",
+        ids: tableProps?.dataSource?.map((item) => item?.targets) ?? [],
+      });
 
   async function handleImport(e: any) {
     const file = e.target.files[0];
@@ -300,6 +329,51 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
             title="Type d'opportunité"
           />
           <Table.Column
+            dataIndex="contacts"
+            title="Référents"
+            render={(value: any[]) =>
+              contactsIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField key={index} value={item?.complete_name} />
+                  ))}
+                </>
+              )
+            }
+          />
+          <Table.Column
+            dataIndex="organisations"
+            title="Organisations"
+            render={(value: any[]) =>
+              organisationsIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField key={index} value={item?.name} />
+                  ))}
+                </>
+              )
+            }
+          />
+          <Table.Column
+            dataIndex="targets"
+            title="Acteurs Cibles"
+            render={(value: any[]) =>
+              targetsIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField key={index} value={item?.name} />
+                  ))}
+                </>
+              )
+            }
+          />
+          <Table.Column
             dataIndex={["beginning_date"]}
             title="Date de début"
             render={(value: any) => {
@@ -321,20 +395,41 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
               }
             }}
           />
-          <Table.Column dataIndex="target_people" title="Cible" />
+          {/* <Table.Column dataIndex="target_people" title="Cible" /> */}
+
           <Table.Column
-            dataIndex="target_country"
-            title="pays"
-            render={(value: any) => {
-              if (value) {
-                return `${value?.translations?.fra?.common}`;
-                // return "-";
-              } else {
-                return "-";
-              }
-            }}
+            dataIndex="target_countries"
+            title="Pays cibles"
+            render={(value: any[]) =>
+              targetCountriesIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField
+                      key={index}
+                      value={item?.translations?.fra?.common}
+                    />
+                  ))}
+                </>
+              )
+            }
           />
-          <Table.Column dataIndex="activity_area" title="Secteur D'Activité" />
+          <Table.Column
+            dataIndex="activity_areas"
+            title="Secteur d'activité"
+            render={(value: any[]) =>
+              activityAreasIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField key={index} value={item?.name} />
+                  ))}
+                </>
+              )
+            }
+          />
           {/* <Table.Column
             dataIndex="description"
             title="Description"

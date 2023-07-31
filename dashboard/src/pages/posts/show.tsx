@@ -93,12 +93,12 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
       )}
       <Title level={5}>Title</Title>
       <TextField value={record?.title} />
-      <Title level={5}>Country</Title>
+      <Title level={5}>Pays</Title>
       {countryIsLoading ? (
         <>Loading ...</>
       ) : countriesData?.data?.length && record?.countries?.length ? (
         <>
-          {record?.countries.map((country: any) => (
+          {record?.countries?.map((country: any) => (
             <Link
               href={
                 "https://www.google.com/maps/search/" +
@@ -119,7 +119,7 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
         <>Loading ...</>
       ) : labelsData?.data?.length && record?.labels?.length ? (
         <>
-          {record?.labels.map((label: any) => (
+          {record?.labels?.map((label: any) => (
             <TagField key={label?._id} value={label?.name} />
           ))}
         </>
@@ -145,7 +145,7 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
         <>Loading ...</>
       ) : authorsData?.data?.length && record?.authors?.length ? (
         <>
-          {record?.authors.map((author: any) => (
+          {record?.authors?.map((author: any) => (
             <TagField key={author?._id} value={author?.complete_name} />
           ))}
         </>

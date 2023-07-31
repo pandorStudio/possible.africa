@@ -32,8 +32,7 @@ exports.getEventTypeById = async (req, res) => {
 // @access Public
 exports.createEventType = async (req, res) => {
   const CustomBody = { ...req.body };
-  const slug =
-    CustomUtils.slugify(CustomBody.name) + "-" + CustomUtils.getRandomNbr();
+  const slug = CustomUtils.slugify(CustomBody.name);
   try {
     CustomBody.slug = slug;
     const newEventType = await EventType.create(CustomBody);

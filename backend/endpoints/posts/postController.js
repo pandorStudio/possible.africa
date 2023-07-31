@@ -45,40 +45,20 @@ exports.getPostById = async (req, res) => {
 // @access Public
 
 exports.createPost = async (req, res) => {
-  // Extract img tags from content
-  // const content = req.body.content;
-  // const imgTags = content.match(/<img[^>]+src="([^">]+)"/g);
-
-  // // Extract img src value from img tags
-  // const imgSrcs = imgTags.map((imgTag) => {
-  //   return imgTag
-  //     .match(/src="([^">]+)"/g)[0]
-  //     .replace('src="', "")
-  //     .replace('"', "");
-  // });
-
-  // // Upload images with multer by img src value and save file path in variable
-  // const imgPaths = imgSrcs.map((imgSrc) => {
-  //   upload.single(imgSrc);
-  // });
-
-  // imgSrcs.forEach((imgSrc) => {
-  //   upload.single(imgSrc);
-  // });
-
-  // console.log(imgPaths);
-  // res.status(201).json({});
   const CustomBody = { ...req.body };
 
   const title = CustomBody.title;
-  const slug = CustomUtils.slugify(title) + "-" + CustomUtils.getRandomNbr();
+  const slug = CustomUtils.slugify(title);
 
   try {
     if (req.user) CustomBody.user = req.user._id;
     CustomBody.slug = slug;
     if (CustomBody.source) {
       const existantSource = await Post.find({ source: CustomBody.source });
-      if(existantSource.length) return res.status(400).json({message: Custom})
+      if (existantSource.length)
+        return res
+          .status(400)
+          .json({ message: CustomUtils.consts.EXISTING_POST_WITH_SOURCE });
     }
     const post = await Post.create(CustomBody);
     res.status(201).json(post);
@@ -98,6 +78,7 @@ exports.updatePost = async (req, res) => {
       return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     }
 
+    if (req.user) req.body.user = post.user;
     const updated = await Post.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });

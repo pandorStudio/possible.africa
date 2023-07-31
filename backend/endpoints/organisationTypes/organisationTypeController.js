@@ -35,8 +35,7 @@ exports.getOrganisationTypeById = async (req, res) => {
 // @access Public
 exports.createOrganisationType = async (req, res) => {
   const CustomBody = { ...req.body };
-  const slug =
-    CustomUtils.slugify(CustomBody.name) + "-" + CustomUtils.getRandomNbr();
+  const slug = CustomUtils.slugify(CustomBody.name);
   try {
     CustomBody.slug = slug;
     const organisationType = await OrganisationType.create(CustomBody);

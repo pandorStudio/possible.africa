@@ -15,11 +15,11 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
     opportunitiesData?.description
   );
 
-  const { selectProps: organisationSelectProps } = useSelect({
+  const { selectProps: organisationsSelectProps } = useSelect({
     resource: "organisations",
     optionValue: "_id",
     optionLabel: "name",
-    defaultValue: opportunitiesData?.organisation,
+    defaultValue: opportunitiesData?.organisations?._id,
   });
 
   const { selectProps: userSelectProps } = useSelect({
@@ -36,11 +36,39 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "name",
   });
 
-  const { selectProps: countrySelectProps } = useSelect({
+  const { selectProps: countriesSelectProps } = useSelect({
     resource: "countries",
     optionValue: "_id",
     optionLabel: "translations.fra.common",
-    defaultValue: opportunitiesData?.target_country?._id,
+    defaultValue: opportunitiesData?.target_countries?._id,
+  });
+
+  const { selectProps: contactsSelectProps } = useSelect({
+    resource: "users",
+    optionLabel: "complete_name",
+    optionValue: "_id",
+    defaultValue: opportunitiesData?.contacts?._id,
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contact",
+      },
+    ],
+  });
+
+  const { selectProps: opportunityTargetSelectProps } = useSelect({
+    resource: "opportunity_targets",
+    optionLabel: "name",
+    optionValue: "_id",
+    defaultValue: opportunitiesData?.targets,
+  });
+  
+  const { selectProps: activityAreasSelectProps } = useSelect({
+    resource: "activity_areas",
+    optionValue: "_id",
+    optionLabel: "name",
+    defaultValue: opportunitiesData?.activity_areas,
   });
 
   async function onSubmitCapture(values: any) {
@@ -79,14 +107,26 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
       const url = await imageUploadHandler(base64);
       values.image = url;
     }
-    if (!values?.organisation) {
-      values.organisation = null;
+    if (!values?.organisations) {
+      values.organisations = null;
+    }
+    if (!values?.targets) {
+      values.targets = null;
+    }
+    if (!values?.target_countries) {
+      values.target_countries = null;
+    }
+    if (!values?.activity_areas) {
+      values.activity_areas = null;
     }
     if (!values?.user) {
       values.user = null;
     }
     if (!values?.opportunity_type) {
       values.opportunity_type = null;
+    }
+    if (!values?.contacts) {
+      values.contacts = null;
     }
     onFinish(values);
   }
@@ -100,11 +140,109 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
-        <Form.Item label="Organisation" name={["organisation", "_id"]}>
-          <Select {...organisationSelectProps} />
+        <Form.Item
+          label="Organisations"
+          name={["organisations"]}
+          getValueProps={(value: any[]) => {
+            // console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...organisationsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
-        <Form.Item label="Contributeur" name={["user", "_id"]}>
-          <Select {...userSelectProps} />
+        <Form.Item
+          label="Référents"
+          name={["contacts"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...contactsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Acteurs Cible"
+          name={["targets"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...opportunityTargetSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Secteurs d'activité"
+          name={["activity_areas"]}
+          getValueProps={(value: any[]) => {
+            // console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...activityAreasSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item
           label="Type d'opportunité"
@@ -136,16 +274,32 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Acteur Cible" name={["target_people"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Pays Cible" name={["target_country"]}>
+        <Form.Item
+          label="Pays Cibles"
+          name={["target_countries"]}
+          getValueProps={(value: any[]) => {
+            // console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
           <Select
-            {...countrySelectProps}
+            mode="multiple"
+            {...countriesSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item label="Secteur d'activité" name={["activity_area"]}>
-          <Input />
         </Form.Item>
         <Form.Item
           label="Description"

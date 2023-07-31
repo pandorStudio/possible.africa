@@ -87,43 +87,56 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     if (values.logo) {
       values.logo = imageUrl;
     }
-    if (values.telephone) {
-      // console.log(values.telephone);
-      values.telephone = {
-        indicatif: indicatif,
-        number: realPhoneNumber,
-      };
-    }
+      if (values.telephone) {
+        // console.log(values.telephone);
+        values.telephone = {
+          indicatif: indicatif,
+          number: realPhoneNumber,
+        };
+      }
     if (!values?.owner?._id) {
       values.owner = null;
     }
-    if (!values?.type?._id) {
-      values.type = null;
+    if (!values?.contacts) {
+      values.contacts = null;
+    }
+    if (!values?.activity_areas) {
+      values.activity_areas = null;
+    }
+    if (!values?.covered_countries) {
+      values.covered_countries = null;
+    }
+    if (!values?.types) {
+      values.types = null;
     }
     // console.log(values);
 
     onFinish(values);
   }
 
-  const { selectProps: contactSelectProps } = useSelect({
-    resource: "users",
-    optionValue: "_id",
-    optionLabel: "complete_name",
-    queryOptions: {},
-    filters: [
-      {
-        field: "role",
-        operator: "eq",
-        value: "contact",
-      },
-    ],
-  });
+ const { selectProps: contactsSelectProps } = useSelect({
+   resource: "users",
+   optionValue: "_id",
+   optionLabel: "complete_name",
+   filters: [
+     {
+       field: "role",
+       operator: "eq",
+       value: "contact",
+     },
+   ],
+ });
 
-  const { selectProps: organisationTypeSelectProps } = useSelect({
+ const { selectProps: activityAreasSelectProps } = useSelect({
+   resource: "activity_areas",
+   optionValue: "_id",
+   optionLabel: "name",
+ });
+
+  const { selectProps: organisationTypesSelectProps } = useSelect({
     resource: "organisation_types",
     optionValue: "_id",
     optionLabel: "name",
-    defaultValue: "",
   });
 
   const { selectProps: countrySelectProps } = useSelect({
@@ -138,6 +151,13 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     optionValue: "_id",
     optionLabel: "translations.fra.common",
     // defaultValue: "",
+  });
+
+  
+  const { selectProps: coveredCountriesSelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "translations.fra.common",
   });
 
   const uploadButton = (
@@ -211,10 +231,34 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Pays" name={["country"]}>
+        <Form.Item label="Pays d'origine" name={["country"]}>
           {/*<SelectCountry />*/}
           <Select
             {...countrySelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Pays couverts"
+          name={["covered_countries"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          {/*<SelectCountry />*/}
+          <Select
+            mode="multiple"
+            {...coveredCountriesSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
@@ -255,17 +299,70 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
           </Upload>
           {/* </Form.Item> */}
         </Form.Item>
-        <Form.Item label="Type" name={["type", "_id"]}>
+        <Form.Item
+          label="Type"
+          name={["type"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
           <Select
-            {...organisationTypeSelectProps}
+            mode="multiple"
+            {...organisationTypesSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
         </Form.Item>
-        <Form.Item label="Contact" name={["owner", "_id"]}>
+        <Form.Item
+          label="Contacts"
+          name={["contacts"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
           <Select
-            {...contactSelectProps}
+            mode="multiple"
+            {...contactsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Secteur d'activité"
+          name={["activity_areas"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...activityAreasSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"

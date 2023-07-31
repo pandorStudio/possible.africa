@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const opportunitySchema = mongoose.Schema(
   {
-    organisation: {
-      type: mongoose.Schema.Types.ObjectId,
+    organisations: {
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Organisation",
     },
     user: {
@@ -27,24 +27,13 @@ const opportunitySchema = mongoose.Schema(
         "support_structure",
       ],
     },
-    target_country: {
-      type: mongoose.Schema.Types.ObjectId,
+    target_countries: {
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Country",
     },
-    activity_area: {
-      type: String,
-      enum: [
-        "agriculture",
-        "industry",
-        "services",
-        "commerce",
-        "construction",
-        "transport",
-        "health",
-        "education",
-        "administration",
-        "other",
-      ],
+    activity_areas: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "ActivityArea",
     },
     description: { type: String },
     slug: { type: String, default: "" },
@@ -54,6 +43,14 @@ const opportunitySchema = mongoose.Schema(
     registration_link: { type: String },
     isRecurrent: { type: Boolean, default: false },
     frequency: { type: String },
+    targets: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "OpportunityTarget",
+    },
+    contacts: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+    },
   },
   {
     timestamps: true,
@@ -63,7 +60,7 @@ const opportunitySchema = mongoose.Schema(
 // populate organisation
 opportunitySchema.pre(/^find/, function (next) {
   this.populate({
-    path: "organisation",
+    path: "organisations",
     select: "name type contributeur",
   });
   this.populate({
@@ -71,20 +68,28 @@ opportunitySchema.pre(/^find/, function (next) {
     select: "username firstname lastname email phone role complete_name",
   });
   this.populate({
+    path: "contacts",
+    select: "username firstname lastname email phone role complete_name",
+  });
+  this.populate({
     path: "opportunity_type",
     select: "name slug",
   });
-  next();
-});
-
-// populate target_country
-opportunitySchema.pre("find", function (next) {
   this.populate({
-    path: "target_country",
+    path: "activity_areas",
+    select: "name slug",
+  });
+  this.populate({
+    path: "targets",
+    select: "name slug",
+  });
+  this.populate({
+    path: "target_countries",
     select: "name idd flag translations",
   });
   next();
 });
+
 
 const Opportunity = mongoose.model("Opportunity", opportunitySchema);
 module.exports = Opportunity;

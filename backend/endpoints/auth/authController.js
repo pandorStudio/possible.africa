@@ -35,8 +35,7 @@ exports.signup = async (req, res, next) => {
         usernameExist = false;
       }
     }
-    const slug =
-      CustomUtils.slugify(bodyWR.username) + "-" + CustomUtils.getRandomNbr();
+    const slug = CustomUtils.slugify(bodyWR.username);
     bodyWR.slug = slug;
     bodyWR.complete_name = `${bodyWR.lastname ? bodyWR.lastname + " " : ""}${
       bodyWR.firstname ? bodyWR.firstname : ""

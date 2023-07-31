@@ -4,7 +4,7 @@ import {
   DataProvider,
   HttpError,
 } from "@refinedev/core";
-import axios, { AxiosRequestConfig, AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { stringify } from "query-string";
 
 export const TOKEN_KEY = "refine-auth";
@@ -12,21 +12,26 @@ export const TOKEN_KEY = "refine-auth";
 // export const axiosInstance = axios.create();
 // Map refine operators to API operators
 
-// axiosInstance.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     const customError: HttpError = {
-//       ...error,
-//       message: error.response?.data?.message,
-//       statusCode: error.response?.status,
-//     };
+const axiosInstance: AxiosInstance = axios.create({
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+  },
+});
 
-//     return Promise.reject(customError);
-//   }
-// );
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    const customError: HttpError = {
+      ...error,
+      message: error.response?.data?.message,
+      statusCode: error.response?.status,
+    };
 
+    return Promise.reject(customError);
+  }
+);
 
 const mapOperator = (operator: CrudOperators): string => {
   switch (operator) {
@@ -69,11 +74,6 @@ const generateFilters = (filters?: CrudFilters) => {
 //     },
 //   });
 // } else {
-  const axiosInstance: AxiosInstance = axios.create({
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
 // }
 
 axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
@@ -95,9 +95,7 @@ axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
   return request;
 });
 
-export const dataProvider = (
-  apiUrl: string,
-): DataProvider => ({
+export const dataProvider = (apiUrl: string): DataProvider => ({
   // Implement methods
 
   // getList method
