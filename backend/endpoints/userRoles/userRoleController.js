@@ -37,8 +37,7 @@ exports.getUserRoleById = async (req, res) => {
 
 exports.createUserRole = async (req, res) => {
   const CustomBody = { ...req.body };
-  const slug =
-    CustomUtils.slugify(CustomBody.name) + "-" + CustomUtils.getRandomNbr();
+  const slug = CustomUtils.slugify(CustomBody.name);
   try {
     CustomBody.slug = slug;
     const userRole = await UserRole.create(CustomBody);

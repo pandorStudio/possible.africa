@@ -43,7 +43,7 @@ exports.getCountryById = async (req, res) => {
 exports.createCountry = async (req, res) => {
   // const CustomBody = { ...req.body };
   // const slug =
-  //   CustomUtils.slugify(CustomBody.name) + "-" + CustomUtils.getRandomNbr();
+  //   CustomUtils.slugify(CustomBody.name);
   try {
     // CustomBody.slug = slug;
     const country = await Country.create(req.body);

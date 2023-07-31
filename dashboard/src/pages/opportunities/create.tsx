@@ -10,7 +10,7 @@ import ReactQuill from "react-quill";
 export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
   const [editorContent, setEditorContent] = useState("");
-  const { selectProps: organisationSelectProps } = useSelect({
+  const { selectProps: organisationsSelectProps } = useSelect({
     resource: "organisations",
     optionValue: "_id",
     optionLabel: "name",
@@ -28,10 +28,35 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "name",
   });
 
-  const { selectProps: countrySelectProps } = useSelect({
+  const { selectProps: countriesSelectProps } = useSelect({
     resource: "countries",
     optionValue: "_id",
     optionLabel: "translations.fra.common",
+  });
+
+  const { selectProps: opportunityTargetSelectProps } = useSelect({
+    resource: "opportunity_targets",
+    optionLabel: "name",
+    optionValue: "_id",
+  });
+
+  const { selectProps: activityAreasSelectProps } = useSelect({
+    resource: "activity_areas",
+    optionValue: "_id",
+    optionLabel: "name",
+  });
+
+  const { selectProps: contactsSelectProps } = useSelect({
+    resource: "users",
+    optionLabel: "complete_name",
+    optionValue: "_id",
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contact",
+      },
+    ],
   });
 
   async function onSubmitCapture(values: any) {
@@ -69,11 +94,23 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
       const url = await imageUploadHandler(base64);
       values.logo = url;
     }
-    if (!values?.organisation) {
-      values.organisation = null;
+    if (!values?.organisations) {
+      values.organisations = null;
     }
     if (!values?.user) {
       values.user = null;
+    }
+    if (!values?.targets) {
+      values.targets = null;
+    }
+    if (!values?.target_countries) {
+      values.target_countries = null;
+    }
+    if (!values?.activity_areas) {
+      values.activity_areas = null;
+    }
+    if (!values?.contacts) {
+      values.contacts = null;
     }
     if (!values?.opportunity_type) {
       values.opportunity_type = null;
@@ -113,39 +150,98 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <DatePicker />
         </Form.Item>
-        <Form.Item label="Acteurs Cible" name={["target_people"]}>
-          <Select defaultValue="">
-            <Option value="">Selectionner</Option>
-            <Option value="project_holder">Porteur de projet</Option>
-            <Option value="startup">Starup</Option>
-            <Option value="scaleup">Scaleup</Option>
-            <Option value="pme-eti">PME - ETI</Option>
-            <Option value="support_structure">Structure de support</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item label="Pays Cible" name={["target_country"]}>
-          {/*<SelectCountry />*/}
+        <Form.Item
+          label="Secteur d'activité"
+          name={["activity_areas"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
           <Select
-            {...countrySelectProps}
+            mode="multiple"
+            {...activityAreasSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
         </Form.Item>
-        <Form.Item label="Secteur d'activité" name={["activity_area"]}>
-          <Select defaultValue="">
-            <Option value="">Selectionner</Option>
-            <Option value="agriculture">Agriculture</Option>
-            <Option value="industry">Industry</Option>
-            <Option value="services">Services</Option>
-            <Option value="commerce">Commerce</Option>
-            <Option value="construction">Construction</Option>
-            <Option value="transport">Transport</Option>
-            <Option value="health">Santé</Option>
-            <Option value="education">Éducation</Option>
-            <Option value="administration">Administration</Option>
-            <Option value="other">Autres</Option>
-          </Select>
+        <Form.Item
+          label="Acteurs Cible"
+          name={["targets"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...opportunityTargetSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Référents"
+          name={["contacts"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...contactsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Pays Cibles"
+          name={["target_countries"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          {/*<SelectCountry />*/}
+          <Select
+            mode="multiple"
+            {...countriesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item
           label="Description"
@@ -189,11 +285,28 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Fréquence" name={["frequency"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Contributeur" name={["user", "_id"]}>
-          <Select {...userSelectProps} />
-        </Form.Item>
-        <Form.Item label="Organisation" name={["organisation", "_id"]}>
-          <Select {...organisationSelectProps} />
+        <Form.Item
+          label="Organisations"
+          name={["organisations"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...organisationsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item label="Opportunity Type" name={["opportunity_type", "_id"]}>
           <Select {...opportunityTypeSelectProps} />

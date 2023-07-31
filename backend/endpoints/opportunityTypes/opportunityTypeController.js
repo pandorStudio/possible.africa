@@ -35,8 +35,7 @@ exports.getOpportunityTypeById = async (req, res) => {
 // @Access: Private
 exports.createOpportunityType = async (req, res) => {
   const CustomBody = { ...req.body };
-  const slug =
-    CustomUtils.slugify(CustomBody.name) + "-" + CustomUtils.getRandomNbr();
+  const slug = CustomUtils.slugify(CustomBody.name);
   try {
     CustomBody.slug = slug;
     // create new opportunity type

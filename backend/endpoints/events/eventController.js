@@ -40,7 +40,7 @@ const transformJson = async () => {
       }
     );
     console.log(newCountry);
-    if(countriesReducted[i].translations.fra) nbFr++;
+    if (countriesReducted[i].translations.fra) nbFr++;
   }
 
   console.log(nbFr);
@@ -78,9 +78,9 @@ exports.getEventById = async (req, res, next) => {
 // @access Public
 exports.createEvent = async (req, res, next) => {
   const CustomBody = { ...req.body };
-  const slug =
-    CustomUtils.slugify(CustomBody.title) + "-" + CustomUtils.getRandomNbr();
+  const slug = CustomUtils.slugify(CustomBody.title);
   try {
+    if (req.user) CustomBody.user = req.user._id;
     CustomBody.slug = slug;
     const event = await Event.create(CustomBody);
     res.status(201).json(event);
@@ -98,7 +98,7 @@ exports.updateEvent = async (req, res, next) => {
     if (!event) {
       return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     }
-
+    if(req.user) req.body.user = event.user;
     const updated = await Event.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });

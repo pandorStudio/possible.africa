@@ -1,10 +1,11 @@
-import React from "react";
-import { IResourceComponentsProps, useOne, useShow } from "@refinedev/core";
+import React, { useEffect } from "react";
+import { IResourceComponentsProps, useMany, useShow } from "@refinedev/core";
 import {
   BooleanField,
   DateField,
   DeleteButton,
   Show,
+  TagField,
   TextField,
 } from "@refinedev/antd";
 import { Space, Typography } from "antd";
@@ -21,37 +22,32 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
 
   const record = data?.data;
 
-  const { data: organisationData, isLoading: organisationIsLoading } = useOne({
-    resource: "organisations",
-    id: record?.organisation || "",
-    queryOptions: {
-      enabled: !!record,
-    },
-  });
-
-  const { data: countryData, isLoading: countryIsLoading } = useOne({
+  const { data: countriesData, isLoading: countryIsLoading } = useMany({
     resource: "countries",
-    id: record?.target_country || "",
-    queryOptions: {
-      enabled: !!record,
-    },
+    ids:
+      record?.target_countries?.map((item: any) => item?.target_countries) ??
+      [],
   });
 
-  const { data: eventTypeData, isLoading: eventTypeIsLoading } = useOne({
-    resource: "event_types",
-    id: record?.event_type || "",
-    queryOptions: {
-      enabled: !!record,
-    },
+  const { data: organisationsData, isLoading: organisationIsLoading } = useMany({
+    resource: "organisations",
+    ids: record?.organisations?.map((item: any) => item?.organisations) ?? [],
   });
 
-  const { data: userData, isLoading: userIsLoading } = useOne({
+  const { data: contactsData, isLoading: contactsIsLoading } = useMany({
     resource: "users",
-    id: record?.user || "",
-    queryOptions: {
-      enabled: !!record,
-    },
+    ids: record?.contacts?.map((item: any) => item?.contacts) ?? [],
   });
+  const { data: activityAreasData, isLoading: activityAreasIsLoading } =
+    useMany({
+      resource: "activity_areas",
+      ids:
+        record?.activity_areas?.map((item: any) => item?.activity_areas) ?? [],
+    });
+
+  useEffect(() => {
+    // console.log(record);
+  }, [record]);
 
   return (
     <Show
@@ -66,13 +62,30 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
         ),
       }}
     >
-      <Title level={5}>Organisation</Title>
-      {record?.organisation ? <>{organisationData?.data?.name || "-"}</> : "-"}
-      {/* {organisationIsLoading ? (
-        <>Loading...</>
+      <Title level={5}>Organisations</Title>
+      {organisationIsLoading ? (
+        <>Loading ...</>
+      ) : organisationsData?.data?.length && record?.organisations?.length ? (
+        <>
+          {record?.organisations.map((organisation: any) => (
+            <TagField key={organisation?._id} value={organisation?.name} />
+          ))}
+        </>
       ) : (
-        <>{organisationData?.data?.name}</>
-      )} */}
+        "_"
+      )}
+      <Title level={5}>Contacts</Title>
+      {contactsIsLoading ? (
+        <>Loading ...</>
+      ) : contactsData?.data?.length && record?.contacts?.length ? (
+        <>
+          {record?.contacts.map((contact: any) => (
+            <TagField key={contact?._id} value={contact?.complete_name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
       <Title level={5}>Titre</Title>
       <TextField value={record?.title} />
       <Title level={5}>Date de début</Title>
@@ -80,27 +93,53 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Date de fin</Title>
       <DateField value={record?.endingDate} />
       <Title level={5}>Type d'evenement</Title>
-      {eventTypeIsLoading ? <>Loading...</> : <>{eventTypeData?.data?.name}</>}
+      <TextField value={record?.event_type?.name} />
       <Title level={5}>Format</Title>
       <TextField value={record?.format} />
-      <Title level={5}>Pays cible</Title>
-      {countryData?.data ? (
-        <Link
-          href={
-            "https://www.google.com/maps/search/" +
-            countryData?.data?.translations?.fra?.common
-          }
-          target="_blank"
-        >
-          {countryData?.data?.translations?.fra?.common}
-        </Link>
+      <Title level={5}>Pays cibles</Title>
+      {countryIsLoading ? (
+        <>Loading ...</>
+      ) : countriesData?.data?.length && record?.target_countries?.length ? (
+        <>
+          {record?.target_countries?.map((country: any) => (
+            <Link
+              href={
+                "https://www.google.com/maps/search/" +
+                country?.translations?.fra?.common
+              }
+              target="_blank"
+              key={country?._id}
+            >
+              {country?.translations?.fra?.common + " "}
+            </Link>
+          ))}
+        </>
       ) : (
-        "-"
+        "_"
       )}
       <Title level={5}>Secteur d'activité</Title>
-      <TextField value={record?.activity_area} />
+      {/*<TextField value={record?.activity_area} />*/}
+      {activityAreasIsLoading ? (
+        <>Loading ...</>
+      ) : activityAreasData?.data?.length && record?.activity_areas?.length ? (
+        <>
+          {record?.activity_areas?.map((activityArea: any, index) => (
+            <TagField key={activityArea?._id} value={activityArea?.name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
       <Title level={5}>Description</Title>
-      <span>
+      <span
+      // style={{
+      //   display: "block",
+      //   boxShadow: "0 0 5px 3Opx rgba(0,0,0,1)",
+      //   borderLeft: "3px solid rgba(0,0,0,0.2)",
+      //   borderRadius: "10px",
+      //   padding: "10px",
+      // }}
+      >
         {record?.description &&
           parse(
             record?.description.replace(/\\n/g, "<br />"),
@@ -135,7 +174,7 @@ export const EventShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Frequence</Title>
       <TextField value={record?.frequence} />
       <Title level={5}>Contributeur</Title>
-      {userIsLoading ? <>Loading...</> : <>{userData?.data?.complete_name}</>}
+      <TextField value={record?.user?.complete_name} />
     </Show>
   );
 };

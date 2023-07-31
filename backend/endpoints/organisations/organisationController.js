@@ -72,7 +72,7 @@ exports.getOrganisationById = async (req, res) => {
 exports.createOrganisation = async (req, res) => {
   const CustomBody = { ...req.body };
   const name = CustomBody.name;
-  const slug = CustomUtils.slugify(name) + "-" + CustomUtils.getRandomNbr();
+  const slug = CustomUtils.slugify(name);
   try {
     if (req.user) CustomBody.contributeur = req.user._id;
     CustomBody.slug = slug;

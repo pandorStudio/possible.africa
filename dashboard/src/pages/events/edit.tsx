@@ -13,11 +13,11 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
 
   const [editorContent, setEditorContent] = useState(eventsData?.description);
 
-  const { selectProps: organisationSelectProps } = useSelect({
+  const { selectProps: organisationsSelectProps } = useSelect({
     resource: "organisations",
     optionLabel: "name",
     optionValue: "_id",
-    defaultValue: eventsData?.organisation?.name,
+    defaultValue: eventsData?.organisations?._id,
   });
 
   const { selectProps: eventTypeSelectProps } = useSelect({
@@ -25,6 +25,25 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
     optionValue: "_id",
     defaultValue: eventsData?.event_type,
     optionLabel: "name",
+  });
+  const { selectProps: contactsSelectProps } = useSelect({
+    resource: "users",
+    optionLabel: "complete_name",
+    optionValue: "_id",
+    defaultValue: eventsData?.contacts?._id,
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contact",
+      },
+    ],
+  });
+  const { selectProps: activityAreasSelectProps } = useSelect({
+    resource: "activity_areas",
+    optionValue: "_id",
+    optionLabel: "name",
+    defaultValue: eventsData?.activity_areas,
   });
 
   const { selectProps: userSelectProps } = useSelect({
@@ -38,7 +57,7 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
     resource: "countries",
     optionValue: "_id",
     optionLabel: "translations.fra.common",
-    defaultValue: eventsData?.target_country?._id,
+    defaultValue: eventsData?.target_countries?._id,
   });
 
   async function onSubmitCapture(values: any) {
@@ -77,11 +96,20 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
       const url = await imageUploadHandler(base64);
       values.image = url;
     }
-    if (!values?.organisation) {
-      values.organisation = null;
+    if (!values?.organisations) {
+      values.organisations = null;
     }
     if (!values?.user) {
       values.user = null;
+    }
+    if (!values?.contacts) {
+      values.contacts = null;
+    }
+    if (!values?.activity_areas) {
+      values.activity_areas = null;
+    }
+    if (!values?.target_countries) {
+      values.target_countries = null;
     }
     if (!values?.event_type) {
       values.event_type = null;
@@ -98,9 +126,6 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
-        <Form.Item label="Organisation" name={"organisation"}>
-          <Select {...organisationSelectProps} />
-        </Form.Item>
         <Form.Item
           label="Titre"
           name={["title"]}
@@ -110,6 +135,12 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
             },
           ]}
         >
+          <Input />
+        </Form.Item>
+        <Form.Item label="Type d'événement" name={"event_type"}>
+          <Select {...eventTypeSelectProps} />
+        </Form.Item>
+        <Form.Item label="Format" name={["format"]}>
           <Input />
         </Form.Item>
         <Form.Item
@@ -130,22 +161,71 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <DatePicker />
         </Form.Item>
-        <Form.Item label="Type d'événement" name={"event_type"}>
-          <Select {...eventTypeSelectProps} />
+        <Form.Item
+          label="Est récurrent"
+          valuePropName="checked"
+          name={["is_recurrent"]}
+        >
+          <Checkbox>Is Recurrent</Checkbox>
         </Form.Item>
-        <Form.Item label="Format" name={["format"]}>
+        <Form.Item label="Frequence" name={["frequence"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Pays cible" name={["target_country"]}>
+        <Form.Item label="Localisation" name={["location"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Lien d'inscription" name={["registration_link"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Contacts"
+          name={["contacts"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
           <Select
-            {...countrySelectProps}
+            mode="multiple"
+            {...contactsSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
         </Form.Item>
-        <Form.Item label="Secteur d'activité" name={["activity_area"]}>
-          <Input />
+        <Form.Item
+          label="Organisations"
+          name={["organisations"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...organisationsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item
           label="Description"
@@ -168,24 +248,59 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
             placeholder="Placez votre contenu ici..."
           />
         </Form.Item>
-        <Form.Item label="Lien d'inscription" name={["registration_link"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Emplacement" name={["location"]}>
-          <Input />
+        <Form.Item
+          label="Pays cible"
+          name={["target_countries"]}
+          getValueProps={(value: any[]) => {
+            // console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...countrySelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         <Form.Item
-          label="Est récurrent"
-          valuePropName="checked"
-          name={["is_recurrent"]}
+          label="Secteur d'activité"
+          name={["activity_areas"]}
+          getValueProps={(value: any[]) => {
+            // console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
         >
-          <Checkbox>Is Recurrent</Checkbox>
-        </Form.Item>
-        <Form.Item label="Frequence" name={["frequence"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Contributeur" name={"user"}>
-          <Select {...userSelectProps} />
+          <Select
+            mode="multiple"
+            {...activityAreasSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
       </Form>
     </Edit>

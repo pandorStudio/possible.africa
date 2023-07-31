@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { IResourceComponentsProps, useOne, useShow } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  useMany,
+  useOne,
+  useShow,
+} from "@refinedev/core";
 import {
   BooleanField,
   DateField,
@@ -21,21 +26,28 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
 
   const record = data?.data;
 
-  const { data: organisationData, isLoading: organisationIsLoading } = useOne({
-    resource: "organisations",
-    id: record?.organisation || "",
-    queryOptions: {
-      enabled: !!record,
-    },
-  });
+  const { data: organisationsData, isLoading: organisationsIsLoading } =
+    useMany({
+      resource: "organisations",
+      ids: record?.organisations?.map((item: any) => item?.organisations) ?? [],
+    });
 
-  const { data: countryData, isLoading: countryIsLoading } = useOne({
-    resource: "countries",
-    id: record?.target_country || "",
-    queryOptions: {
-      enabled: !!record,
-    },
+  const { data: contactsData, isLoading: contactsIsLoading } = useMany({
+    resource: "users",
+    ids: record?.contacts?.map((item: any) => item?.contacts) ?? [],
   });
+  const { data: targetsData, isLoading: targetsIsLoading } = useMany({
+    resource: "users",
+    ids: record?.targets?.map((item: any) => item?.targets) ?? [],
+  });
+  const { data: coveredCountriesData, isLoading: coveredCountryIsLoading } =
+    useMany({
+      resource: "countries",
+      ids:
+        record?.covered_countries?.map(
+          (item: any) => item?.covered_countries
+        ) ?? [],
+    });
 
   const { data: userData, isLoading: userIsLoading } = useOne({
     resource: "users",
@@ -53,10 +65,6 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
         enabled: !!record,
       },
     });
-
-  useEffect(() => {
-    // console.log(countryData);
-  }, [countryData]);
 
   return (
     <Show

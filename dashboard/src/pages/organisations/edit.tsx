@@ -32,11 +32,11 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   const [imageUrl, setImageUrl] = useState<string>(organisationsData?.logo);
   const [uploadLoading, setUploadLoading] = useState(false);
 
-  const { selectProps: typeSelectProps } = useSelect({
+  const { selectProps: typesSelectProps } = useSelect({
     resource: "organisation_types",
     optionValue: "_id",
     optionLabel: "name",
-    defaultValue: organisationsData?.type?._id,
+    defaultValue: organisationsData?.types?._id,
   });
 
   const { selectProps: contactSelectProps } = useSelect({
@@ -58,6 +58,33 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     optionValue: "_id",
     optionLabel: "translations.fra.common",
     defaultValue: organisationsData?.country?._id,
+  });
+
+    
+  const { selectProps: coveredCountriesSelectProps } = useSelect({
+    resource: "countries",
+    optionValue: "_id",
+    optionLabel: "translations.fra.common",
+    defaultValue: organisationsData?.covered_countries?._id,
+  });
+  const { selectProps: contactsSelectProps } = useSelect({
+    resource: "users",
+    optionLabel: "complete_name",
+    optionValue: "_id",
+    defaultValue: organisationsData?.contacts?._id,
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contact",
+      },
+    ],
+  });
+  const { selectProps: activityAreasSelectProps } = useSelect({
+    resource: "activity_areas",
+    optionValue: "_id",
+    optionLabel: "name",
+    defaultValue: organisationsData?.activity_areas,
   });
 
   const { Text } = Typography;
@@ -103,8 +130,11 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     } else {
       values.logo = "";
     }
-    if (!values?.owner) {
-      values.owner = null;
+    if (!values?.contacts) {
+      values.contacts = null;
+    }
+    if (!values?.activity_areas) {
+      values.activity_areas = null;
     }
     if (values.telephone) {
       // console.log(values.telephone);
@@ -113,8 +143,11 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         number: realPhoneNumber,
       };
     }
-    if (!values?.type) {
-      values.type = null;
+    if (!values?.types) {
+      values.types = null;
+    }
+    if (!values?.covered_countries) {
+      values.covered_countries = null;
     }
     // console.log(values);
 
@@ -236,6 +269,33 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
           />
           {/*<SelectCountry country={countryFromDB} />*/}
         </Form.Item>
+        <Form.Item
+          label="Pays couverts"
+          name={["covered_countries"]}
+          getValueProps={(value: any[]) => {
+            // console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...coveredCountriesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
         <Form.Item label="Logo" name="logo">
           <Upload
             name="file"
@@ -271,21 +331,90 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
           </Upload>
           {/* </Form.Item> */}
         </Form.Item>
-        <Form.Item label="Type" name={["type", "_id"]}>
-          <Select {...typeSelectProps} />
+        <Form.Item
+          label="Types"
+          name={["types"]}
+          getValueProps={(value: any[]) => {
+            // console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...typesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
         </Form.Item>
         {/* <Form.Item label="Contributeur" name={["contributeur", "_id"]}>
           <Select {...contributorSelectProps} />
         </Form.Item> */}
-        <Form.Item label="Contact" name={["owner", "_id"]}>
+        
+        <Form.Item
+          label="Contacts"
+          name={["contacts"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
           <Select
-            {...contactSelectProps}
+            mode="multiple"
+            {...contactsSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
         </Form.Item>
 
+        <Form.Item
+          label="Secteur d'activité"
+          name={["activity_areas"]}
+          getValueProps={(value: any[]) => {
+            // console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...activityAreasSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
         <Form.Item
           label="Description"
           name={["description"]}

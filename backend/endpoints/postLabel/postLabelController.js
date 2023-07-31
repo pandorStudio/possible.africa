@@ -1,7 +1,6 @@
 const PostLabel = require("./postLabelModel.js");
 const CustomUtils = require("../../utils/index.js");
 
-
 // @Get all postLabels
 // @route GET /api/v1/postLabels
 // @access Public
@@ -38,8 +37,7 @@ exports.getPostLabelById = async (req, res) => {
 
 exports.createPostLabel = async (req, res) => {
   const CustomBody = { ...req.body };
-  const slug =
-    CustomUtils.slugify(CustomBody.name) + "-" + CustomUtils.getRandomNbr();
+  const slug = CustomUtils.slugify(CustomBody.name);
   try {
     CustomBody.slug = slug;
     const postLabel = await PostLabel.create(CustomBody);
@@ -59,11 +57,9 @@ exports.updatePostLabel = async (req, res) => {
     if (!postLabel) {
       return res.status(404).json({ message: CustomUtils.consts.NOT_FOUND });
     }
-    const updated = await PostLabel.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const updated = await PostLabel.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     return res.status(200).json(updated);
   } catch (error) {
     res.status(500).json({ message: error.message });

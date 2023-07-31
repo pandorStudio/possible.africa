@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const eventSchema = mongoose.Schema(
   {
-    organisation: {
-      type: mongoose.Schema.Types.ObjectId,
+    organisations: {
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Organisation",
     },
     user: {
@@ -22,24 +22,13 @@ const eventSchema = mongoose.Schema(
       type: String,
       default: "",
     },
-    target_country: {
-      type: mongoose.Schema.Types.ObjectId,
+    target_countries: {
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Country",
     },
-    activity_area: {
-      type: String,
-      enum: [
-        "agriculture",
-        "industry",
-        "services",
-        "commerce",
-        "construction",
-        "transport",
-        "health",
-        "education",
-        "administration",
-        "other",
-      ],
+    activity_areas: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "ActivityArea",
     },
     description: { type: String },
     slug: {
@@ -59,44 +48,41 @@ const eventSchema = mongoose.Schema(
       enum: ["published", "draft", "deleted", "archived"],
       default: "draft",
     },
+    contacts: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+    },
   },
   {
     timestamps: true,
   }
 );
 
-// populate the event with the organisation name and type
-eventSchema.pre("find", function (next) {
+eventSchema.pre(/^find/, function (next) {
   this.populate({
-    path: "organisation",
+    path: "organisations",
     select: "name type logo",
   });
-  next();
-});
-
-// populate the event with the contributeur username, firstname, lastname, email, phone and role
-eventSchema.pre("find", function (next) {
   this.populate({
     path: "user",
     select: "username firstname lastname email phone role avatar complete_name",
   });
-  next();
-});
-
-// populate the event with the event type name and slug
-eventSchema.pre("find", function (next) {
+  this.populate({
+    path: "contacts",
+    select: "username firstname lastname email phone role avatar complete_name",
+  });
   this.populate({
     path: "event_type",
     select: "name slug",
   });
-  next();
-});
 
-// populate target_country
-eventSchema.pre("find", function (next) {
   this.populate({
-    path: "target_country",
+    path: "target_countries",
     select: "name idd flag translations",
+  });
+  this.populate({
+    path: "activity_areas",
+    select: "name slug",
   });
   next();
 });

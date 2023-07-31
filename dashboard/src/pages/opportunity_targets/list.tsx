@@ -4,57 +4,30 @@ import {
   IResourceComponentsProps,
   useApiUrl,
   useInvalidate,
-  useMany,
 } from "@refinedev/core";
 import {
-  BooleanField,
   CreateButton,
-  DateField,
   DeleteButton,
   EditButton,
-  ImageField,
   List,
   ShowButton,
-  TagField,
   useTable,
 } from "@refinedev/antd";
 import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
-import { axiosInstance } from "@refinedev/simple-rest";
 import papa from "papaparse";
-import { downloadMedia } from "../organisations/list";
-import { imageUploadHandler } from "../posts/create";
-import Link from "antd/es/typography/Link";
+import { axiosInstance } from "../../authProvider";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import {
   Admin,
   AdminOrContributor,
 } from "../../custom-components/AccessControl";
 
-export const EventList: React.FC<IResourceComponentsProps> = () => {
+export const OpportunityTargetList: React.FC<IResourceComponentsProps> = () => {
+  const [importLoading, setImportLoading] = useState(false);
+  const fileImportInput = useRef(null);
   const { tableProps } = useTable({
     syncWithLocation: true,
   });
-  const { data: countriesData, isLoading: countriesIsLoading } = useMany({
-    resource: "countries",
-    ids: tableProps?.dataSource?.map((item) => item?.target_countries) ?? [],
-  });
-  const { data: organisationsData, isLoading: organisationsIsLoading } =
-    useMany({
-      resource: "organisations",
-      ids: tableProps?.dataSource?.map((item) => item?.organisations) ?? [],
-    });
-  const { data: contactsData, isLoading: contactsIsLoading } = useMany({
-    resource: "users",
-    ids: tableProps?.dataSource?.map((item) => item?.contacts) ?? [],
-  });
-  const { data: activityAreasData, isLoading: activityAreasIsLoading } =
-    useMany({
-      resource: "activity_areas",
-      ids: tableProps?.dataSource?.map((item) => item?.activity_areas) ?? [],
-    });
-
-  const [importLoading, setImportLoading] = useState(false);
-  const fileImportInput = useRef(null);
   const apiUrl = useApiUrl();
   const [checkedArray, setCheckedArray] = useState([]);
   const [allCheckedOnPage, setAllCheckedOnPage] = useState(false);
@@ -76,24 +49,14 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           if (i === 0) {
             headers.push(...el);
           } else {
-            const blobImage = await downloadMedia(el[16]);
-            const imageUrl = await imageUploadHandler(blobImage.data.dataUrl);
             const ob: any = {
-              title: el[1],
-              beginning_date: el[11],
-              ending_date: el[12],
-              target_country: el[10],
-              description: el[8],
-              registration_link: el[15],
-              location: el[10],
-              cover: imageUrl ? imageUrl : "",
-              format: el[7],
+              name: el[0],
+              slug: el[1],
             };
             body.push({ ...ob });
-            // await axios.post(apiUrl + "/organisations", el);
-            await axiosInstance
+            axiosInstance
               .post(
-                apiUrl + "/events",
+                apiUrl + "/opportunity_targets",
                 {
                   ...ob,
                 },
@@ -129,7 +92,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
     if (!importLoading) {
       messageApi.destroy();
       invalidate({
-        resource: "events",
+        resource: "opportunity_targets",
         invalidates: ["list"],
       });
     }
@@ -193,7 +156,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
       async onOk(...args) {
         if (checkedArray.length) {
           const results = checkedArray.map(async (ob) => {
-            return axiosInstance.delete(apiUrl + `/events/${ob}`, {
+            return axiosInstance.delete(apiUrl + `/opportunity_targets/${ob}`, {
               headers: {
                 "Content-Type": "application/json",
               },
@@ -203,7 +166,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           await Promise.all(results);
           // console.log(results);
           invalidate({
-            resource: "events",
+            resource: "opportunity_targets",
             invalidates: ["list"],
           });
           setCheckedArray([]);
@@ -215,6 +178,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
   return (
     <>
       {contextHolder}
+      {modalContextHolder}
       <List
         headerProps={{
           extra: (
@@ -240,15 +204,8 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                     if (tableProps?.dataSource) {
                       const data = tableProps?.dataSource.map((el: any) => {
                         return {
-                          title: el.title,
-                          beginning_date: el.beginning_date,
-                          ending_date: el.ending_date,
-                          target_country: el.target_country,
-                          description: el.description,
-                          registration_link: el.registration_link,
-                          location: el.location,
-                          cover: el.cover,
-                          format: el.format,
+                          name: el.name,
+                          slug: el.slug,
                         };
                       });
                       if (data) {
@@ -260,7 +217,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                         a.setAttribute("href", url);
                         a.setAttribute(
                           "download",
-                          `events-${new Date()}-${Math.round(
+                          `opportunity_targets-${new Date()}-${Math.round(
                             Math.random() * 99999999
                           )}.csv`
                         );
@@ -279,8 +236,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           ),
         }}
       >
-        {modalContextHolder}
-        <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
+        <Table {...tableProps} rowKey="id">
           <Table.Column
             fixed="left"
             width={68}
@@ -308,160 +264,8 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
               );
             }}
           />
-          <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
-
-          <Table.Column
-            dataIndex={["event_type", "name"]}
-            title="Type d'évenement"
-          />
-          <Table.Column dataIndex="format" title="Format" />
-          <Table.Column
-            dataIndex={["beginningDate"]}
-            title="Date de début"
-            render={(value: any) => {
-              if (value) {
-                return <DateField value={value} />;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex={["endingDate"]}
-            title="Date de fin"
-            render={(value: any) => {
-              if (value) {
-                return <DateField value={value} />;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex={["is_recurrent"]}
-            title="Est Récurrent"
-            render={(value: any) => {
-              if (value) {
-                return <BooleanField value={value} />;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column dataIndex="frequence" title="Frequence" />
-          <Table.Column dataIndex={["user", "username"]} title="Contributeur" />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="location"
-            title="Emplacement"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link
-                    href={"https://www.google.com/maps/search/" + value}
-                    target="_blank"
-                  >
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="registration_link"
-            title="Lien d'inscription"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex="contacts"
-            title="Contacts"
-            render={(value: any[]) =>
-              contactsIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField key={index} value={item?.complete_name} />
-                  ))}
-                </>
-              )
-            }
-          />
-          <Table.Column
-            dataIndex="organisations"
-            title="Organisations"
-            render={(value: any[]) =>
-              organisationsIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField key={index} value={item?.name} />
-                  ))}
-                </>
-              )
-            }
-          />
-          <Table.Column
-            dataIndex="target_countries"
-            title="Pays Cible"
-            render={(value: any[]) =>
-              countriesIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField
-                      key={index}
-                      value={item?.translations?.fra?.common}
-                    />
-                  ))}
-                </>
-              )
-            }
-          />
-          <Table.Column
-            dataIndex={["activity_areas"]}
-            title="Secteur d'activité"
-            render={(value: any[]) =>
-              activityAreasIsLoading ? (
-                <>Chargement...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField key={index} value={item?.name} />
-                  ))}
-                </>
-              )
-            }
-          />
-          {/* <Table.Column
-            dataIndex="description"
-            title="Description"
-            render={(value: any) => {
-              if (value && value.length > 100) {
-                return value.substring(0, 100) + "...";
-              } else if (value) {
-                return value;
-              } else {
-                return "-";
-              }
-            }}
-          /> */}
-
+          <Table.Column dataIndex="name" title="Nom" />
+          <Table.Column dataIndex="slug" title="Slug" />
           <Table.Column
             fixed="right"
             title="Actions"
@@ -483,7 +287,6 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             )}
           />
         </Table>
-
         <AdminOrContributor>
           <Space>
             {checkedArray.length ? (

@@ -1,4 +1,4 @@
-import { AuthBindings } from "@refinedev/core";
+import { AuthBindings, HttpError } from "@refinedev/core";
 // import jwt from "jsonwebtoken";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
@@ -14,6 +14,21 @@ export const axiosInstance = axios.create({
     "Access-Control-Allow-Origin": "*",
   },
 });
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    const customError: HttpError = {
+      ...error,
+      message: error.response?.data?.message,
+      statusCode: error.response?.status,
+    };
+
+    return Promise.reject(customError);
+  }
+);
 
 export const TOKEN_KEY = "refine-auth";
 
@@ -31,8 +46,8 @@ export const authProvider: AuthBindings = {
       // if ((username || email) && password) {
       //   localStorage.setItem(TOKEN_KEY, username);
       /*axiosInstance.defaults.headers.common = {
-                                Authorization: `Bearer ${token}`,
-                              };*/
+                                            Authorization: `Bearer ${token}`,
+                                          };*/
       return {
         success: true,
         redirectTo: "/",
@@ -81,8 +96,8 @@ export const authProvider: AuthBindings = {
     ) {
       localStorage.setItem(TOKEN_KEY, token);
       /*axiosInstance.defaults.headers.common = {
-                                Authorization: `Bearer ${token}`,
-                              };*/
+                                            Authorization: `Bearer ${token}`,
+                                          };*/
       return {
         success: true,
         redirectTo: "/",

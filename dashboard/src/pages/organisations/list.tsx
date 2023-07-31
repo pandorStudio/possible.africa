@@ -4,6 +4,7 @@ import {
   IResourceComponentsProps,
   useApiUrl,
   useInvalidate,
+  useMany,
 } from "@refinedev/core";
 import {
   CreateButton,
@@ -12,6 +13,7 @@ import {
   EmailField,
   ImageField,
   List,
+  TagField,
   useTable,
 } from "@refinedev/antd";
 import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
@@ -65,6 +67,26 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   const [visibleCheckAll, setVisibleCheckAll] = useState(false);
   const invalidate = useInvalidate();
   let checkboxRefs = useRef([]);
+
+  const { data: coveredCountriesData, isLoading: coveredCountriesIsLoading } =
+    useMany({
+      resource: "countries",
+      ids: tableProps?.dataSource?.map((item) => item?.covered_countries) ?? [],
+    });
+
+  const { data: organisationTypesData, isLoading: organisationTypesIsLoading } = useMany({
+    resource: "organisation_types",
+    ids: tableProps?.dataSource?.map((item) => item?.types) ?? [],
+  });
+   const { data: contactsData, isLoading: contactsIsLoading } = useMany({
+     resource: "users",
+     ids: tableProps?.dataSource?.map((item) => item?.contacts) ?? [],
+   });
+   const { data: activityAreasData, isLoading: activityAreasIsLoading } =
+     useMany({
+       resource: "activity_areas",
+       ids: tableProps?.dataSource?.map((item) => item?.activity_areas) ?? [],
+     });
 
   async function handleImport(e: any) {
     const file = e.target.files[0];
@@ -326,7 +348,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             width="7%"
             dataIndex="country"
-            title="Pays"
+            title="Pays d'origine"
             render={(value: any) => {
               if (value) {
                 return `${value?.translations?.fra.common}`;
@@ -335,6 +357,24 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 return "-";
               }
             }}
+          />
+          <Table.Column
+            dataIndex="covered_countries"
+            title="Pays couverts"
+            render={(value: any[]) =>
+              coveredCountriesIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField
+                      key={index}
+                      value={item?.translations?.fra?.common}
+                    />
+                  ))}
+                </>
+              )
+            }
           />
           {/* <Table.Column
             width="10%"
@@ -350,21 +390,55 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               }
             }}
           /> */}
-          <Table.Column dataIndex={["type", "name"]} title="Type" />
+          <Table.Column
+            dataIndex="types"
+            title="Types"
+            render={(value: any[]) =>
+              organisationTypesIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField key={index} value={item?.name} />
+                  ))}
+                </>
+              )
+            }
+          />
+
+          <Table.Column
+            dataIndex="contacts"
+            title="Contacts"
+            render={(value: any[]) =>
+              contactsIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField key={index} value={item?.complete_name} />
+                  ))}
+                </>
+              )
+            }
+          />
+          <Table.Column
+            dataIndex={["activity_areas"]}
+            title="Secteur d'activité"
+            render={(value: any[]) =>
+              activityAreasIsLoading ? (
+                <>Chargement...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField key={index} value={item?.name} />
+                  ))}
+                </>
+              )
+            }
+          />
           <Table.Column
             dataIndex={["contributeur", "complete_name"]}
             title="Contributeur"
-          />
-          <Table.Column
-            dataIndex={"owner"}
-            title="Contact"
-            render={(value: any) => {
-              if (value) {
-                return value?.complete_name;
-              } else {
-                return "-";
-              }
-            }}
           />
           {/* <Table.Column
             dataIndex="description"
