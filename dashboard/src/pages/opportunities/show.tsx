@@ -80,7 +80,7 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
       }}
     >
       <Title level={5}>Organisation</Title>
-      {record?.organisation ? <>{organisationData?.data?.name || "-"}</> : "-"}
+      {/* {record?.organisation ? <>{organisationData?.data?.name || "-"}</> : "-"} */}
       <Title level={5}>Contributeur</Title>
       {userIsLoading ? <>Loading...</> : <>{userData?.data?.complete_name}</>}
       <Title level={5}>Titre</Title>
@@ -98,7 +98,7 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
       <Title level={5}>Acteur Cible</Title>
       <TextField value={record?.target_people} />
       <Title level={5}>Pays cible</Title>
-      {countryData?.data ? (
+      {/* {countryData?.data ? (
         <Link
           href={
             "https://www.google.com/maps/search/" +
@@ -110,7 +110,7 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
         </Link>
       ) : (
         "-"
-      )}
+      )} */}
       <Title level={5}>Secteur d'activité</Title>
       <TextField value={record?.activity_area} />
       <Title level={5}>Description</Title>
