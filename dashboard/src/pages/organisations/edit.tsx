@@ -12,6 +12,7 @@ import {
   UploadProps,
 } from "antd/es/upload";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import CustomFormDivider from "../../custom-components/FormDivider";
 
 export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -249,6 +250,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
+        <CustomFormDivider text="Informations générales" />
         <Form.Item
           label="Name"
           name={["name"]}
@@ -358,36 +360,9 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
             optionFilterProp="label"
           />
         </Form.Item>
-        {/* <Form.Item label="Contributeur" name={["contributeur", "_id"]}>
-          <Select {...contributorSelectProps} />
-        </Form.Item> */}
-        
-        <Form.Item
-          label="Contacts"
-          name={["contacts"]}
-          getValueProps={(value: any[]) => {
-            return {
-              value: value?.map((item) => {
-                return item._id;
-              }),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReteurned = args[1].map((item: any) => {
-              return { _id: item.value, name: item.label };
-            });
-            return toBeReteurned;
-          }}
-        >
-          <Select
-            mode="multiple"
-            {...contactsSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
-        </Form.Item>
-
+        <Form.Item label="Année de creation" name={["creation_year"]}>
+          <Input />
+        </Form.Item>{" "}
         <Form.Item
           label="Secteur d'activité"
           name={["activity_areas"]}
@@ -435,6 +410,34 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
             theme="snow"
             placeholder="Placez votre contenu ici..."
           />
+        </Form.Item>
+        <Form.Item
+          label="Contacts"
+          name={["contacts"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...contactsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item label="Site Web" name={["site_web"]}>
+          <Input />
         </Form.Item>
         <Form.Item label="Email" name={["email"]}>
           <Input />
@@ -501,19 +504,16 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
             />
           </Space.Compact>
         </Form.Item>
-        <Form.Item label="Site Web" name={["site_web"]}>
+        <Form.Item label="Adresse" name={["adresse"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Url Linkedin" name={["linkedin_url"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Url Facebook" name={["facebook_url"]}>
-          <Input />
-        </Form.Item>
         <Form.Item label="Url Twitter" name={["twitter_url"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Adresse" name={["adresse"]}>
+        <Form.Item label="Url Facebook" name={["facebook_url"]}>
           <Input />
         </Form.Item>
       </Form>

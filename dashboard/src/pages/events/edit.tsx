@@ -5,6 +5,7 @@ import { Checkbox, DatePicker, Form, Input, Select } from "antd";
 import dayjs from "dayjs";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import ReactQuill from "react-quill";
+import CustomFormDivider from "../../custom-components/FormDivider";
 
 export const EventEdit: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -111,7 +112,7 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
     if (!values?.target_countries) {
       values.target_countries = null;
     }
-    if (!values?.event_type) {
+    if (!values?.event_type?._id) {
       values.event_type = null;
     }
     onFinish(values);
@@ -126,6 +127,7 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
+        <CustomFormDivider text="Informations générales" />
         <Form.Item
           label="Titre"
           name={["title"]}
@@ -171,6 +173,7 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Frequence" name={["frequence"]}>
           <Input />
         </Form.Item>
+        <CustomFormDivider text="Coordonnées" />
         <Form.Item label="Localisation" name={["location"]}>
           <Input />
         </Form.Item>
@@ -227,6 +230,7 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
             optionFilterProp="label"
           />
         </Form.Item>
+        <CustomFormDivider text="Détails & Caractéristiques" />
         <Form.Item
           label="Description"
           name={["description"]}

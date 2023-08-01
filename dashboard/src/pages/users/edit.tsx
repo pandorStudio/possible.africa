@@ -12,6 +12,7 @@ import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { imageUploadHandler } from "../posts/create";
 import { axiosInstance } from "../../authProvider";
+import CustomFormDivider from "../../custom-components/FormDivider";
 
 const { Option } = Select;
 
@@ -133,6 +134,13 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
     defaultValue: usersData?.covered_countries?._id,
   });
 
+  const { selectProps: userTypesSelectProps } = useSelect({
+    resource: "user_types",
+    optionValue: "_id",
+    optionLabel: "name",
+    defaultValue: usersData?.categories?._id,
+  });
+
   async function onSubmitCapture(values: any) {
     if (values.avatar) {
       values.avatar = imageUrl;
@@ -151,6 +159,9 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
     }
     if (!values?.origin_countries) {
       values.origin_countries = null;
+    }
+    if (!values?.categories) {
+      values.categories = null;
     }
     onFinish(values);
   }
@@ -173,6 +184,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
+        <CustomFormDivider text="Informations de connexion" />
         <Form.Item label="Role" name={["role", "_id"]}>
           {/* <Select defaultValue="user" style={{ width: 120 }}>
             <Option value="admin">Administrateur</Option>
@@ -193,15 +205,83 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        {/*<Form.Item label="Nom D'Utilisateur" name={["username"]}>*/}
-        {/*  <Input />*/}
-        {/*</Form.Item>*/}
-
+        <CustomFormDivider text="Informations générales" />
         <Form.Item label="Prénom" name={["firstname"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Nom" name={["lastname"]}>
           <Input />
+        </Form.Item>
+        <Form.Item label="Photo de profil" name={["avatar"]}>
+          <Upload
+            name="avatar"
+            listType="picture-card"
+            className="avatar-uploader"
+            showUploadList={false}
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+          >
+            {uploadLoading || (!imageUrl && !imageUrlFromDb) ? (
+              uploadButton
+            ) : (
+              <div style={{ position: "relative" }}>
+                <img
+                  src={imageUrl || imageUrlFromDb}
+                  alt="avatar"
+                  style={{ width: "100%", borderRadius: "8px" }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    left: "0",
+                    right: "0",
+                    bottom: "0",
+                    color: "GrayText",
+                    backgroundColor: "white",
+                  }}
+                >
+                  Modifier
+                </span>
+              </div>
+            )}
+          </Upload>
+        </Form.Item>
+        <Form.Item
+          label="Categories"
+          name={["categories"]}
+          getValueProps={(value: any[]) => {
+            // console.log(value);
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              // console.log(...args);
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...userTypesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item label="Description" name={["description"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Genre" name={["gender"]}>
+          <Select defaultValue="f" style={{ width: 120 }}>
+            <Option value="f">Féminin</Option>
+            <Option value="m">Masculin</Option>
+            <Option value="o">Autres</Option>
+          </Select>
         </Form.Item>
         <Form.Item
           label="Pays d'origine"
@@ -257,50 +337,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
             optionFilterProp="label"
           />
         </Form.Item>
-        <Form.Item label="Photo de profil" name={["avatar"]}>
-          <Upload
-            name="avatar"
-            listType="picture-card"
-            className="avatar-uploader"
-            showUploadList={false}
-            beforeUpload={beforeUpload}
-            onChange={handleChange}
-          >
-            {uploadLoading || (!imageUrl && !imageUrlFromDb) ? (
-              uploadButton
-            ) : (
-              <div style={{ position: "relative" }}>
-                <img
-                  src={imageUrl || imageUrlFromDb}
-                  alt="avatar"
-                  style={{ width: "100%", borderRadius: "8px" }}
-                />
-                <span
-                  style={{
-                    position: "absolute",
-                    left: "0",
-                    right: "0",
-                    bottom: "0",
-                    color: "GrayText",
-                    backgroundColor: "white",
-                  }}
-                >
-                  Modifier
-                </span>
-              </div>
-            )}
-          </Upload>
-        </Form.Item>
-        <Form.Item label="Description" name={["description"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Genre" name={["gender"]}>
-          <Select defaultValue="f" style={{ width: 120 }}>
-            <Option value="f">Féminin</Option>
-            <Option value="m">Masculin</Option>
-            <Option value="o">Autres</Option>
-          </Select>
-        </Form.Item>
+        <CustomFormDivider text="Coordonnées" />
         <Form.Item label="Téléphone" name={["phone"]}>
           <Space.Compact style={{ width: "100%" }}>
             <Select

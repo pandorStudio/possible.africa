@@ -5,6 +5,7 @@ import { Checkbox, DatePicker, Form, Input, Select } from "antd";
 import dayjs from "dayjs";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import ReactQuill from "react-quill";
+import CustomFormDivider from "../../custom-components/FormDivider";
 
 export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -140,6 +141,79 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
+        <CustomFormDivider text="Informations générales" />
+        {/* Titre */}
+        <Form.Item label="Titre" name={["title"]}>
+          <Input />
+        </Form.Item>
+        {/* Type d'opportunités */}
+        <Form.Item
+          label="Type d'opportunité"
+          name={["opportunity_type", "_id"]}
+        >
+          <Select {...opportunityTypeSelectProps} />
+        </Form.Item>
+        {/* Date de début */}
+        <Form.Item
+          label="Date de début"
+          name={["beginning_date"]}
+          getValueProps={(value) => ({
+            value: value ? dayjs(value) : undefined,
+          })}
+        >
+          <DatePicker />
+        </Form.Item>
+        {/* Date de fin */}
+        <Form.Item
+          label="Date de fin"
+          name={["ending_date"]}
+          getValueProps={(value) => ({
+            value: value ? dayjs(value) : undefined,
+          })}
+        >
+          <DatePicker />
+        </Form.Item>
+        <Form.Item
+          label="Est récurrent"
+          valuePropName="checked"
+          name={["isRecurrent"]}
+        >
+          <Checkbox>Est récurent</Checkbox>
+        </Form.Item>
+        <Form.Item label="Fréquemce" name={["frequency"]}>
+          <Input />
+        </Form.Item>
+        <CustomFormDivider text="Coordonnées" />
+        <Form.Item label="Lien d'inscription" name={["registration_link"]}>
+          <Input />
+        </Form.Item>
+        {/* Référents */}
+        <Form.Item
+          label="Référents"
+          name={["contacts"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => {
+                return item._id;
+              }),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReteurned = args[1].map((item: any) => {
+              return { _id: item.value, name: item.label };
+            });
+            return toBeReteurned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...contactsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        {/* Organisations */}
         <Form.Item
           label="Organisations"
           name={["organisations"]}
@@ -167,31 +241,30 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
             optionFilterProp="label"
           />
         </Form.Item>
+        <CustomFormDivider text="Détails & Caractéristiques" />
+        {/* Description */}
         <Form.Item
-          label="Référents"
-          name={["contacts"]}
-          getValueProps={(value: any[]) => {
-            return {
-              value: value?.map((item) => {
-                return item._id;
-              }),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReteurned = args[1].map((item: any) => {
-              return { _id: item.value, name: item.label };
-            });
-            return toBeReteurned;
+          label="Description"
+          name={["description"]}
+          className="advancedEditor"
+          style={{
+            height: "600px",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            width: "100%",
           }}
         >
-          <Select
-            mode="multiple"
-            {...contactsSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
+          <ReactQuill
+            style={{ height: "500px", width: "100%" }}
+            modules={reactQuillModules}
+            onChange={setEditorContent}
+            value={editorContent}
+            theme="snow"
+            placeholder="Placez votre contenu ici..."
           />
         </Form.Item>
+        {/* Acteurs cible */}
         <Form.Item
           label="Acteurs Cible"
           name={["targets"]}
@@ -217,6 +290,7 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
             optionFilterProp="label"
           />
         </Form.Item>
+        {/* Secteurs d'activités */}
         <Form.Item
           label="Secteurs d'activité"
           name={["activity_areas"]}
@@ -243,106 +317,6 @@ export const OpportunityEdit: React.FC<IResourceComponentsProps> = () => {
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item
-          label="Type d'opportunité"
-          name={["opportunity_type", "_id"]}
-        >
-          <Select {...opportunityTypeSelectProps} />
-        </Form.Item>
-        <Form.Item label="Titre" name={["title"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Date de début"
-          name={["beginning_date"]}
-          getValueProps={(value) => ({
-            value: value ? dayjs(value) : undefined,
-          })}
-        >
-          <DatePicker />
-        </Form.Item>
-        <Form.Item
-          label="Date de fin"
-          name={["ending_date"]}
-          getValueProps={(value) => ({
-            value: value ? dayjs(value) : undefined,
-          })}
-        >
-          <DatePicker />
-        </Form.Item>
-        <Form.Item label="Acteur Cible" name={["target_people"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Pays Cibles"
-          name={["target_countries"]}
-          getValueProps={(value: any[]) => {
-            // console.log(value);
-            return {
-              value: value?.map((item) => {
-                return item._id;
-              }),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReteurned = args[1].map((item: any) => {
-              // console.log(...args);
-              return { _id: item.value, name: item.label };
-            });
-            return toBeReteurned;
-          }}
-        >
-          <Select
-            mode="multiple"
-            {...countriesSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
-        </Form.Item>
-        <Form.Item
-          label="Description"
-          name={["description"]}
-          className="advancedEditor"
-          style={{
-            height: "600px",
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            width: "100%",
-          }}
-        >
-          <ReactQuill
-            style={{ height: "500px", width: "100%" }}
-            modules={reactQuillModules}
-            onChange={setEditorContent}
-            value={editorContent}
-            theme="snow"
-            placeholder="Placez votre contenu ici..."
-          />
-        </Form.Item>
-        <Form.Item label="Eligibilité" name={["eligibility"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Processus" name={["processus"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Bénéfices" name={["beneficies"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Lien d'inscription" name={["registration_link"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Est récurrent"
-          valuePropName="checked"
-          name={["isRecurrent"]}
-        >
-          <Checkbox>Est récurent</Checkbox>
-        </Form.Item>
-        <Form.Item label="Fréquemce" name={["frequency"]}>
-          <Input />
         </Form.Item>
       </Form>
     </Edit>

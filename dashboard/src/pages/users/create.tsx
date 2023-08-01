@@ -13,6 +13,7 @@ import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { imageUploadHandler } from "../posts/create";
 import { axiosInstance } from "../../authProvider";
+import CustomFormDivider from "../../custom-components/FormDivider";
 
 const { Option } = Select;
 
@@ -135,6 +136,12 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "translations.fra.common",
   });
 
+  const { selectProps: userTypesSelectProps } = useSelect({
+    resource: "user_types",
+    optionValue: "_id",
+    optionLabel: "name",
+  });
+
   async function onSubmitCapture(values: any) {
     if (values.avatar) {
       values.avatar = imageUrl;
@@ -146,6 +153,9 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
     }
     if (!values?.origin_countries) {
       values.origin_countries = null;
+    }
+    if (!values?.categories) {
+      values.categories = null;
     }
 
     if (values.phone) {
@@ -171,6 +181,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
+        <CustomFormDivider text="Informations de connexion" />
         <Form.Item
           label="Role"
           name={["role", "_id"]}
@@ -183,54 +194,6 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Select
             {...roleSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
-        </Form.Item>
-        <Form.Item
-          label="Pays d'origine"
-          name={["origin_countries"]}
-          getValueProps={(value: any[]) => {
-            return {
-              value: value?.map((item) => item),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReturned = args[1].map((item: any) => {
-              return item.value;
-            });
-            return toBeReturned;
-          }}
-        >
-          {/*<SelectCountry />*/}
-          <Select
-            mode="multiple"
-            {...originCountriesSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
-        </Form.Item>
-        <Form.Item
-          label="Pays couvert"
-          name={["covered_countries"]}
-          getValueProps={(value: any[]) => {
-            return {
-              value: value?.map((item) => item),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReturned = args[1].map((item: any) => {
-              return item.value;
-            });
-            return toBeReturned;
-          }}
-        >
-          {/*<SelectCountry />*/}
-          <Select
-            mode="multiple"
-            {...coveredCountriesSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
@@ -253,6 +216,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input.Password placeholder="●●●●●●●●" />
         </Form.Item>
+        <CustomFormDivider text="Informations personnelles" />
         <Form.Item
           label="Prénom"
           name={["firstname"]}
@@ -303,9 +267,30 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
             )}
           </Upload>
         </Form.Item>
-        {/*<Form.Item label="Nom d'Utilisateur" name={["username"]}>*/}
-        {/*  <Input />*/}
-        {/*</Form.Item>*/}
+        <Form.Item
+          label="Catégories"
+          name={["categories"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          {/*<SelectCountry />*/}
+          <Select
+            mode="multiple"
+            {...userTypesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
         <Form.Item label="Description" name={["description"]}>
           <Input />
         </Form.Item>
@@ -316,7 +301,56 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
             <Option value="o">Autres</Option>
           </Select>
         </Form.Item>
-        <Form.Item label="Tèl." name={["phone"]}>
+        <Form.Item
+          label="Pays d'origine"
+          name={["origin_countries"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          {/*<SelectCountry />*/}
+          <Select
+            mode="multiple"
+            {...originCountriesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Pays couvert"
+          name={["covered_countries"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          {/*<SelectCountry />*/}
+          <Select
+            mode="multiple"
+            {...coveredCountriesSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <CustomFormDivider text="Coordonnées" />
+        <Form.Item label="Numéro de téléphone" name={["phone"]}>
           <Space.Compact style={{ width: "100%" }}>
             <Select
               style={{ width: "25%" }}

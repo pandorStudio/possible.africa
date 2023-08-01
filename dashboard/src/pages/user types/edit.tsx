@@ -1,16 +1,18 @@
 import React from "react";
 import { IResourceComponentsProps } from "@refinedev/core";
-import { Create, useForm } from "@refinedev/antd";
-import { Form, Input } from "antd";
-import CustomFormDivider from "../../custom-components/FormDivider";
+import { Edit, useForm } from "@refinedev/antd";
+import { Form, Input, Select } from "antd";
+// import dayjs from "dayjs";
 
-export const OrganisationTypeCreate: React.FC<
-  IResourceComponentsProps
-> = () => {
+const { Option } = Select;
+
+export const UserTypeEdit: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult } = useForm();
 
+  // const usersData = queryResult?.data?.data;
+
   return (
-    <Create saveButtonProps={saveButtonProps}>
+    <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
           label="Nom"
@@ -27,6 +29,6 @@ export const OrganisationTypeCreate: React.FC<
           <Input />
         </Form.Item>
       </Form>
-    </Create>
+    </Edit>
   );
 };

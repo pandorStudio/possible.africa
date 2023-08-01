@@ -1,13 +1,12 @@
 import React from "react";
 import { IResourceComponentsProps } from "@refinedev/core";
 import { Create, useForm } from "@refinedev/antd";
-import { Form, Input } from "antd";
-import CustomFormDivider from "../../custom-components/FormDivider";
+import { Form, Input, Select } from "antd";
 
-export const OrganisationTypeCreate: React.FC<
-  IResourceComponentsProps
-> = () => {
-  const { formProps, saveButtonProps, queryResult } = useForm();
+const { Option } = Select;
+
+export const UserTypeCreate: React.FC<IResourceComponentsProps> = () => {
+  const { formProps, saveButtonProps } = useForm();
 
   return (
     <Create saveButtonProps={saveButtonProps}>
@@ -23,7 +22,10 @@ export const OrganisationTypeCreate: React.FC<
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Slug" name={["slug"]}>
+        <Form.Item
+          label="Slug"
+          name={["slug"]}
+        >
           <Input />
         </Form.Item>
       </Form>

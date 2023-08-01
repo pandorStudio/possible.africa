@@ -64,11 +64,10 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
       resource: "organisations",
       ids: tableProps?.dataSource?.map((item) => item?.organisations) ?? [],
     });
-    const { data: targetsData, isLoading: targetsIsLoading } =
-      useMany({
-        resource: "opportunity_targets",
-        ids: tableProps?.dataSource?.map((item) => item?.targets) ?? [],
-      });
+  const { data: targetsData, isLoading: targetsIsLoading } = useMany({
+    resource: "opportunity_targets",
+    ids: tableProps?.dataSource?.map((item) => item?.targets) ?? [],
+  });
 
   async function handleImport(e: any) {
     const file = e.target.files[0];
@@ -323,10 +322,60 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
           <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
-          <Table.Column dataIndex={["user", "username"]} title="Contributeur" />
           <Table.Column
             dataIndex={["opportunity_type", "name"]}
             title="Type d'opportunité"
+          />
+          <Table.Column
+            dataIndex={["beginning_date"]}
+            title="Date de début"
+            render={(value: any) => {
+              if (value) {
+                return <DateField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            dataIndex={["ending_date"]}
+            title="Date de fin"
+            render={(value: any) => {
+              if (value) {
+                return <DateField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column
+            dataIndex={["isRecurrent"]}
+            title="Est Récurrent"
+            render={(value: any) => {
+              if (value) {
+                return <BooleanField value={value} />;
+              } else {
+                return "-";
+              }
+            }}
+          />
+          <Table.Column dataIndex="frequency" title="Fréquence" />
+          <Table.Column dataIndex={["user", "username"]} title="Contributeur" />
+          <Table.Column
+            ellipsis={true}
+            dataIndex="registration_link"
+            render={(value: any) => {
+              if (value) {
+                return (
+                  <Link href={value} target="_blank">
+                    {value}
+                  </Link>
+                );
+              } else {
+                return "-";
+              }
+            }}
+            title="Lien d'inscription"
           />
           <Table.Column
             dataIndex="contacts"
@@ -373,28 +422,6 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
               )
             }
           />
-          <Table.Column
-            dataIndex={["beginning_date"]}
-            title="Date de début"
-            render={(value: any) => {
-              if (value) {
-                return <DateField value={value} />;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex={["ending_date"]}
-            title="Date de fin"
-            render={(value: any) => {
-              if (value) {
-                return <DateField value={value} />;
-              } else {
-                return "-";
-              }
-            }}
-          />
           {/* <Table.Column dataIndex="target_people" title="Cible" /> */}
 
           <Table.Column
@@ -430,89 +457,6 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
               )
             }
           />
-          {/* <Table.Column
-            dataIndex="description"
-            title="Description"
-            render={(value: any) => {
-              if (value && value.length > 100) {
-                return value.substring(0, 100) + "...";
-              } else if (value) {
-                return value;
-              } else {
-                return "-";
-              }
-            }}
-          /> */}
-          <Table.Column
-            ellipsis={true}
-            dataIndex="eligibility"
-            title="Éligibilité"
-            render={(value: any) => {
-              if (value && value.length > 100) {
-                return value.substring(0, 100) + "...";
-              } else if (value) {
-                return value;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="processus"
-            title="Processus"
-            render={(value: any) => {
-              if (value && value.length > 100) {
-                return value.substring(0, 100) + "...";
-              } else if (value) {
-                return value;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="beneficies"
-            title="Bénéfices"
-            render={(value: any) => {
-              if (value && value.length > 100) {
-                return value.substring(0, 100) + "...";
-              } else if (value) {
-                return value;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="registration_link"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-            title="Lien d'inscription"
-          />
-          <Table.Column
-            dataIndex={["isRecurrent"]}
-            title="Est Récurrent"
-            render={(value: any) => {
-              if (value) {
-                return <BooleanField value={value} />;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column dataIndex="frequency" title="Fréquence" />
           <Table.Column
             fixed="right"
             title="Actions"

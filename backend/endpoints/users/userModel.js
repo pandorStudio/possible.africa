@@ -93,6 +93,10 @@ const userSchema = mongoose.Schema(
     complete_name: {
       type: String,
     },
+    categories: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "UserType",
+    },
   },
   {
     timestamps: true,
@@ -103,6 +107,10 @@ const userSchema = mongoose.Schema(
 userSchema.pre(/^find/, function (next) {
   this.populate({
     path: "role",
+    select: "name slug",
+  });
+  this.populate({
+    path: "categories",
     select: "name slug",
   });
   this.populate({

@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import ReactQuill from "react-quill";
+import CustomFormDivider from "../../custom-components/FormDivider";
 
 export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -112,7 +113,7 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
     if (!values?.contacts) {
       values.contacts = null;
     }
-    if (!values?.opportunity_type) {
+    if (!values?.opportunity_type?._id) {
       values.opportunity_type = null;
     }
     onFinish(values);
@@ -121,6 +122,7 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
+        <CustomFormDivider text="Informations générales" />
         <Form.Item
           label="Titre"
           name={["title"]}
@@ -131,6 +133,9 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
           ]}
         >
           <Input />
+        </Form.Item>
+        <Form.Item label="Opportunity Type" name={["opportunity_type", "_id"]}>
+          <Select {...opportunityTypeSelectProps} />
         </Form.Item>
         <Form.Item
           label="Date de début"
@@ -151,8 +156,22 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
           <DatePicker />
         </Form.Item>
         <Form.Item
-          label="Secteur d'activité"
-          name={["activity_areas"]}
+          label="Est récurent"
+          valuePropName="checked"
+          name={["isRecurrent"]}
+        >
+          <Checkbox>Is Recurrent</Checkbox>
+        </Form.Item>
+        <Form.Item label="Fréquence" name={["frequency"]}>
+          <Input />
+        </Form.Item>
+        <CustomFormDivider text="Coordonnées" />
+        <Form.Item label="Lien d'inscription" name={["registration_link"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Référents"
+          name={["contacts"]}
           getValueProps={(value: any[]) => {
             return {
               value: value?.map((item) => item),
@@ -167,10 +186,54 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Select
             mode="multiple"
-            {...activityAreasSelectProps}
+            {...contactsSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Organisations"
+          name={["organisations"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...organisationsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <CustomFormDivider text="Détails & Caractéristiques" />
+        <Form.Item
+          label="Description"
+          name={["description"]}
+          style={{
+            height: "600px",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            width: "100%",
+          }}
+        >
+          <ReactQuill
+            style={{ height: "500px", width: "100%" }}
+            modules={reactQuillModules}
+            value={editorContent}
+            onChange={setEditorContent}
+            theme="snow"
+            placeholder="Placez votre contenu ici..."
           />
         </Form.Item>
         <Form.Item
@@ -191,29 +254,6 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
           <Select
             mode="multiple"
             {...opportunityTargetSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
-        </Form.Item>
-        <Form.Item
-          label="Référents"
-          name={["contacts"]}
-          getValueProps={(value: any[]) => {
-            return {
-              value: value?.map((item) => item),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReturned = args[1].map((item: any) => {
-              return item.value;
-            });
-            return toBeReturned;
-          }}
-        >
-          <Select
-            mode="multiple"
-            {...contactsSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
@@ -244,50 +284,8 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
           />
         </Form.Item>
         <Form.Item
-          label="Description"
-          name={["description"]}
-          style={{
-            height: "600px",
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            width: "100%",
-          }}
-        >
-          <ReactQuill
-            style={{ height: "500px", width: "100%" }}
-            modules={reactQuillModules}
-            value={editorContent}
-            onChange={setEditorContent}
-            theme="snow"
-            placeholder="Placez votre contenu ici..."
-          />
-        </Form.Item>
-        <Form.Item label="Eligibilité" name={["eligibility"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Processus" name={["processus"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Bénefices" name={["beneficies"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Lien d'inscription" name={["registration_link"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Est récurent"
-          valuePropName="checked"
-          name={["isRecurrent"]}
-        >
-          <Checkbox>Is Recurrent</Checkbox>
-        </Form.Item>
-        <Form.Item label="Fréquence" name={["frequency"]}>
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Organisations"
-          name={["organisations"]}
+          label="Secteur d'activité"
+          name={["activity_areas"]}
           getValueProps={(value: any[]) => {
             return {
               value: value?.map((item) => item),
@@ -302,14 +300,11 @@ export const OpportunityCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Select
             mode="multiple"
-            {...organisationsSelectProps}
+            {...activityAreasSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item label="Opportunity Type" name={["opportunity_type", "_id"]}>
-          <Select {...opportunityTypeSelectProps} />
         </Form.Item>
       </Form>
     </Create>
