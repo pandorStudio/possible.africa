@@ -12,6 +12,7 @@ import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import type { UploadChangeParam } from "antd/es/upload";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import CustomFormDivider from "../../custom-components/FormDivider";
 
 export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -87,13 +88,13 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     if (values.logo) {
       values.logo = imageUrl;
     }
-      if (values.telephone) {
-        // console.log(values.telephone);
-        values.telephone = {
-          indicatif: indicatif,
-          number: realPhoneNumber,
-        };
-      }
+    if (values.telephone) {
+      // console.log(values.telephone);
+      values.telephone = {
+        indicatif: indicatif,
+        number: realPhoneNumber,
+      };
+    }
     if (!values?.owner?._id) {
       values.owner = null;
     }
@@ -114,24 +115,24 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     onFinish(values);
   }
 
- const { selectProps: contactsSelectProps } = useSelect({
-   resource: "users",
-   optionValue: "_id",
-   optionLabel: "complete_name",
-   filters: [
-     {
-       field: "role",
-       operator: "eq",
-       value: "contact",
-     },
-   ],
- });
+  const { selectProps: contactsSelectProps } = useSelect({
+    resource: "users",
+    optionValue: "_id",
+    optionLabel: "complete_name",
+    filters: [
+      {
+        field: "role",
+        operator: "eq",
+        value: "contact",
+      },
+    ],
+  });
 
- const { selectProps: activityAreasSelectProps } = useSelect({
-   resource: "activity_areas",
-   optionValue: "_id",
-   optionLabel: "name",
- });
+  const { selectProps: activityAreasSelectProps } = useSelect({
+    resource: "activity_areas",
+    optionValue: "_id",
+    optionLabel: "name",
+  });
 
   const { selectProps: organisationTypesSelectProps } = useSelect({
     resource: "organisation_types",
@@ -153,7 +154,6 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     // defaultValue: "",
   });
 
-  
   const { selectProps: coveredCountriesSelectProps } = useSelect({
     resource: "countries",
     optionValue: "_id",
@@ -220,6 +220,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
+        <CustomFormDivider text="Informations générales" />
         <Form.Item
           label="Nom"
           name={["name"]}
@@ -322,28 +323,8 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
             optionFilterProp="label"
           />
         </Form.Item>
-        <Form.Item
-          label="Contacts"
-          name={["contacts"]}
-          getValueProps={(value: any[]) => {
-            return {
-              value: value?.map((item) => item),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReturned = args[1].map((item: any) => {
-              return item.value;
-            });
-            return toBeReturned;
-          }}
-        >
-          <Select
-            mode="multiple"
-            {...contactsSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
+        <Form.Item label="Année de creation" name={["creation_year"]}>
+          <Input />
         </Form.Item>
         <Form.Item
           label="Secteur d'activité"
@@ -387,6 +368,33 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
             theme="snow"
             placeholder="Placez votre contenu ici..."
           />
+        </Form.Item>
+        <CustomFormDivider text="Coordonnées" />
+        <Form.Item
+          label="Contacts"
+          name={["contacts"]}
+          getValueProps={(value: any[]) => {
+            return {
+              value: value?.map((item) => item),
+            };
+          }}
+          getValueFromEvent={(...args: any) => {
+            const toBeReturned = args[1].map((item: any) => {
+              return item.value;
+            });
+            return toBeReturned;
+          }}
+        >
+          <Select
+            mode="multiple"
+            {...contactsSelectProps}
+            onSearch={undefined}
+            filterOption={true}
+            optionFilterProp="label"
+          />
+        </Form.Item>
+        <Form.Item label="Site Web" name={["site_web"]}>
+          <Input />
         </Form.Item>
         <Form.Item label="Email" name={["email"]}>
           <Input />
@@ -453,19 +461,16 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
             />
           </Space.Compact>
         </Form.Item>
-        <Form.Item label="Site Web" name={["site_web"]}>
+        <Form.Item label="Adresse" name={["adresse"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Url LinkeDin" name={["linkedin_url"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Url Facebook" name={["facebook_url"]}>
-          <Input />
-        </Form.Item>
         <Form.Item label="Url Twitter" name={["twitter_url"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Adresse" name={["adresse"]}>
+        <Form.Item label="Url Facebook" name={["facebook_url"]}>
           <Input />
         </Form.Item>
       </Form>

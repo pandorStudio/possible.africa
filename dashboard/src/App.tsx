@@ -101,6 +101,10 @@ import { OpportunityTargetList } from "./pages/opportunity_targets/list";
 import { OpportunityTargetShow } from "./pages/opportunity_targets/show";
 import { OpportunityTargetEdit } from "./pages/opportunity_targets/edit";
 import { OpportunityTargetCreate } from "./pages/opportunity_targets/create";
+import { UserTypeList } from "./pages/user types/list";
+import { UserTypeShow } from "./pages/user types/show";
+import { UserTypeEdit } from "./pages/user types/edit";
+import { UserTypeCreate } from "./pages/user types/create";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -432,6 +436,17 @@ function App() {
         },
       },
       {
+        name: "user_types",
+        list: "/user_types",
+        show: "/user_types/show/:id",
+        create: "/user_types/create",
+        edit: "/user_types/edit/:id",
+        meta: {
+          label: "Catégories",
+          parent: "Utilisateurs",
+        },
+      },
+      {
         name: "Champs & Propriétés",
         meta: {
           label: "Champs & Propriétés",
@@ -665,6 +680,17 @@ function App() {
         edit: "/user_roles/edit/:id",
         meta: {
           label: "Roles",
+          parent: "Utilisateurs",
+        },
+      },
+      {
+        name: "user_types",
+        list: "/user_types",
+        show: "/user_types/show/:id",
+        create: "/user_types/create",
+        edit: "/user_types/edit/:id",
+        meta: {
+          label: "Catégories",
           parent: "Utilisateurs",
         },
       },
@@ -982,7 +1008,10 @@ function App() {
                   </Route>
                   <Route path="opportunity_targets">
                     <Route index element={<OpportunityTargetList />} />
-                    <Route path="show/:id" element={<OpportunityTargetShow />} />
+                    <Route
+                      path="show/:id"
+                      element={<OpportunityTargetShow />}
+                    />
                     <Route
                       path="edit/:id"
                       element={
@@ -1136,6 +1165,26 @@ function App() {
                       element={
                         <AdminOrContributor>
                           <UserRoleCreate />
+                        </AdminOrContributor>
+                      }
+                    />
+                  </Route>
+                  <Route path="user_types">
+                    <Route index element={<UserTypeList />} />
+                    <Route path="show/:id" element={<UserTypeShow />} />
+                    <Route
+                      path="edit/:id"
+                      element={
+                        <AdminOrContributor>
+                          <UserTypeEdit />
+                        </AdminOrContributor>
+                      }
+                    />
+                    <Route
+                      path="create"
+                      element={
+                        <AdminOrContributor>
+                          <UserTypeCreate />
                         </AdminOrContributor>
                       }
                     />

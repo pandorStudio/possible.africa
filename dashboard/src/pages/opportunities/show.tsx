@@ -10,6 +10,7 @@ import {
   DateField,
   DeleteButton,
   Show,
+  TagField,
   TextField,
 } from "@refinedev/antd";
 import { Space, Typography } from "antd";
@@ -40,30 +41,20 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
     resource: "users",
     ids: record?.targets?.map((item: any) => item?.targets) ?? [],
   });
-  const { data: coveredCountriesData, isLoading: coveredCountryIsLoading } =
+  const { data: targetCountriesData, isLoading: targetCountriesIsLoading } =
+    useMany({
+      resource: "countries",
+      ids:
+        record?.target_countries?.map((item: any) => item?.target_countries) ??
+        [],
+    });
+  const { data: activityAreasData, isLoading: activityAreasIsLoading } =
     useMany({
       resource: "countries",
       ids:
         record?.covered_countries?.map(
           (item: any) => item?.covered_countries
         ) ?? [],
-    });
-
-  const { data: userData, isLoading: userIsLoading } = useOne({
-    resource: "users",
-    id: record?.user || "",
-    queryOptions: {
-      enabled: !!record,
-    },
-  });
-
-  const { data: opportunityTypeData, isLoading: opportunityTypeIsLoading } =
-    useOne({
-      resource: "opportunity_types",
-      id: record?.opportunity_type || "",
-      queryOptions: {
-        enabled: !!record,
-      },
     });
 
   return (
@@ -79,54 +70,20 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
         ),
       }}
     >
-      <Title level={5}>Organisation</Title>
-      {/* {record?.organisation ? <>{organisationData?.data?.name || "-"}</> : "-"} */}
-      <Title level={5}>Contributeur</Title>
-      {userIsLoading ? <>Loading...</> : <>{userData?.data?.complete_name}</>}
       <Title level={5}>Titre</Title>
       <TextField value={record?.title} />
+      <Title level={5}>Type d'opportunité</Title>
+      <TextField value={record?.opportunity_type?.name} />
       <Title level={5}>Date de début</Title>
       <DateField value={record?.beginning_date} />
       <Title level={5}>Date de fin</Title>
       <DateField value={record?.ending_date} />
-      <Title level={5}>Type d'opportunité</Title>
-      {opportunityTypeIsLoading ? (
-        <>Loading...</>
-      ) : (
-        <>{opportunityTypeData?.data?.name}</>
-      )}
-      <Title level={5}>Acteur Cible</Title>
-      <TextField value={record?.target_people} />
-      <Title level={5}>Pays cible</Title>
-      {/* {countryData?.data ? (
-        <Link
-          href={
-            "https://www.google.com/maps/search/" +
-            countryData?.data?.translations?.fra?.common
-          }
-          target="_blank"
-        >
-          {countryData?.data?.translations?.fra?.common}
-        </Link>
-      ) : (
-        "-"
-      )} */}
-      <Title level={5}>Secteur d'activité</Title>
-      <TextField value={record?.activity_area} />
-      <Title level={5}>Description</Title>
-      <span>
-        {record?.description &&
-          parse(
-            record?.description.replace(/\\n/g, "<br />"),
-            htmlParseOptions
-          )}
-      </span>
-      <Title level={5}>Éligibilité</Title>
-      <TextField value={record?.eligibility} />
-      <Title level={5}>Processus</Title>
-      <TextField value={record?.processus} />
-      <Title level={5}>Bénefices</Title>
-      <TextField value={record?.beneficies} />
+      <Title level={5}>Est Récurrent</Title>
+      <BooleanField value={record?.isRecurrent} />
+      <Title level={5}>Fréquence</Title>
+      <TextField value={record?.frequency} />
+      <Title level={5}>Contributeur</Title>
+      <TextField value={record?.user?.complete_name} />
       <Title level={5}>Lien d'inscription</Title>
       {record?.registration_link ? (
         <Link
@@ -139,10 +96,80 @@ export const OpportunityShow: React.FC<IResourceComponentsProps> = () => {
       ) : (
         "-"
       )}
-      <Title level={5}>Est Récurrent</Title>
-      <BooleanField value={record?.isRecurrent} />
-      <Title level={5}>Fréquence</Title>
-      <TextField value={record?.frequency} />
+      <Title level={5}>Référents</Title>
+      {contactsIsLoading ? (
+        <>Loading ...</>
+      ) : contactsData?.data?.length && record?.contacts?.length ? (
+        <>
+          {record?.contacts.map((contact: any) => (
+            <TagField key={contact?._id} value={contact?.complete_name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+      <Title level={5}>Organisations</Title>
+      {organisationsIsLoading ? (
+        <>Loading ...</>
+      ) : organisationsData?.data?.length && record?.organisations?.length ? (
+        <>
+          {record?.organisations.map((organisation: any) => (
+            <TagField key={organisation?._id} value={organisation?.name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+      <Title level={5}>Description</Title>
+      <span>
+        {record?.description &&
+          parse(
+            record?.description.replace(/\\n/g, "<br />"),
+            htmlParseOptions
+          )}
+      </span>
+
+      <Title level={5}>Cibles</Title>
+      {targetsIsLoading ? (
+        <>Loading ...</>
+      ) : targetsData?.data?.length && record?.targets?.length ? (
+        <>
+          {record?.targets.map((target: any) => (
+            <TagField key={target?._id} value={target?.name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+
+      <Title level={5}>Pays Cibles</Title>
+      {targetCountriesIsLoading ? (
+        <>Loading ...</>
+      ) : targetCountriesData?.data?.length &&
+        record?.target_countries?.length ? (
+        <>
+          {record?.target_countries.map((country: any) => (
+            <TagField
+              key={country?._id}
+              value={country?.translations?.fra?.common}
+            />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
+      <Title level={5}>Secteurs d'activités</Title>
+      {activityAreasIsLoading ? (
+        <>Loading ...</>
+      ) : activityAreasData?.data?.length && record?.activity_areas?.length ? (
+        <>
+          {record?.activity_areas.map((activity_area: any) => (
+            <TagField key={activity_area?._id} value={activity_area?.name} />
+          ))}
+        </>
+      ) : (
+        "_"
+      )}
     </Show>
   );
 };

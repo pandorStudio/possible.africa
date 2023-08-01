@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { file2Base64, IResourceComponentsProps } from "@refinedev/core";
 import { Create, useForm, useSelect } from "@refinedev/antd";
-import { Checkbox, DatePicker, Form, Input, Select } from "antd";
+import { Checkbox, DatePicker, Divider, Form, Input, Select } from "antd";
 import dayjs from "dayjs";
 import { Option } from "antd/es/mentions";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import ReactQuill from "react-quill";
+import CustomFormDivider from "../../custom-components/FormDivider";
 
 export const EventCreate: React.FC<IResourceComponentsProps> = () => {
   const { formProps, saveButtonProps, queryResult, onFinish } = useForm();
@@ -103,7 +104,7 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
     if (!values?.target_countries) {
       values.target_countries = null;
     }
-    if (!values?.event_type) {
+    if (!values?.event_type?._id) {
       values.event_type = null;
     }
     onFinish(values);
@@ -112,6 +113,7 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
+        <CustomFormDivider text="Informations générales" />
         <Form.Item
           label="Title"
           name={["title"]}
@@ -135,7 +137,7 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
           </Select>
         </Form.Item>
         <Form.Item
-          label="Beginning Date"
+          label="Date de début"
           name={["beginningDate"]}
           getValueProps={(value) => ({
             value: value ? dayjs(value) : undefined,
@@ -144,7 +146,7 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
           <DatePicker />
         </Form.Item>
         <Form.Item
-          label="Ending Date"
+          label="Date de fin"
           name={["endingDate"]}
           getValueProps={(value) => ({
             value: value ? dayjs(value) : undefined,
@@ -162,6 +164,7 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
         <Form.Item label="Frequence" name={["frequence"]}>
           <Input />
         </Form.Item>
+        <CustomFormDivider text="Coordonnées" />
         <Form.Item label="Localisation" name={["location"]}>
           <Input />
         </Form.Item>
@@ -214,6 +217,7 @@ export const EventCreate: React.FC<IResourceComponentsProps> = () => {
             optionFilterProp="label"
           />
         </Form.Item>
+        <CustomFormDivider text="Détails & Caractéristiques" />
         <Form.Item
           label="Description"
           name={["description"]}

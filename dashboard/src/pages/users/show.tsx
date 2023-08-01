@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { IResourceComponentsProps, useMany, useShow } from "@refinedev/core";
-import { EmailField, Show, TextField } from "@refinedev/antd";
+import { EmailField, Show, TagField, TextField } from "@refinedev/antd";
 import { Typography } from "antd";
 import Link from "antd/es/typography/Link";
 
@@ -52,6 +52,14 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
           (item: any) => item?.covered_countries
         ) ?? [],
     });
+  const { data: userTypesData, isLoading: userTypesIsLoading } =
+    useMany({
+      resource: "user_types",
+      ids:
+        record?.categories?.map(
+          (item: any) => item?.categories
+        ) ?? [],
+    });
 
   useEffect(() => {
     console.log(record);
@@ -59,15 +67,29 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <Show isLoading={isLoading}>
-      <Title level={4}>Nom</Title>
+      <Title level={5}>Nom</Title>
       <CustomTextField type="text" size="large" value={record?.lastname} />
-      <Title level={4}>Prénom(s)</Title>
+      <Title level={5}>Prénom(s)</Title>
       <CustomTextField type="text" size="large" value={record?.firstname} />
-      <Title level={4}>Email</Title>
+      <Title level={5}>Categories</Title>
+      {userTypesIsLoading ? (
+        <>Loading ...</>
+      ) : userTypesData?.data?.length &&
+        record?.categories?.length ? (
+        <>
+          {record?.categories?.map((categorie: any) => {
+            console.log(record);
+            return <TagField key={categorie?._id} value={categorie?.name} />;
+          })}
+        </>
+      ) : (
+        "_"
+      )}
+      <Title level={5}>Email</Title>
       <CustomTextField type="email" size="large" value={record?.email} />
-      <Title level={4}>Role</Title>
+      <Title level={5}>Role</Title>
       <CustomTextField type="text" size="large" value={record?.role?.name} />
-      <Title level={5}>Pays d'origin</Title>
+      <Title level={5}>Pays d'origine</Title>
       {originCountriesIsLoading ? (
         <>Loading ...</>
       ) : originCountriesData?.data?.length &&
@@ -89,7 +111,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       ) : (
         "_"
       )}
-      <Title level={5}>Pays couvert</Title>
+      <Title level={5}>Pays couverts</Title>
       {coveredCountryIsLoading ? (
         <>Loading ...</>
       ) : coveredCountriesData?.data?.length &&
@@ -114,13 +136,13 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       ) : (
         "_"
       )}
-      <Title level={4}>Nom d'utilisateur</Title>
+      <Title level={5}>Nom d'utilisateur</Title>
       <CustomTextField type="text" size="large" value={record?.username} />
-      <Title level={4}>Description</Title>
+      <Title level={5}>Description</Title>
       <CustomTextField type="text" size="large" value={record?.description} />
-      <Title level={4}>Genre</Title>
+      <Title level={5}>Genre</Title>
       <CustomTextField type="text" size="large" value={record?.gender} />
-      <Title level={4}>Télephone</Title>
+      <Title level={5}>Télephone</Title>
       {record?.phone ? (
         <Link
           href={
@@ -136,7 +158,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       ) : (
         "-"
       )}
-      <Title level={4}>Email de contact</Title>
+      <Title level={5}>Email de contact</Title>
 
       <CustomTextField type="email" size="large" value={record?.address} />
       {/*{record?.address ? (*/}
@@ -151,7 +173,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       {/*  "-"*/}
       {/*)}*/}
 
-      <Title level={4}>Linkedin (URL)</Title>
+      <Title level={5}>Linkedin (URL)</Title>
       {record?.linkedin_url ? (
         <Link
           // href={"https://www.google.com/search?q=" + value}
@@ -164,7 +186,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
         "-"
       )}
 
-      <Title level={4}>Twitter (URL)</Title>
+      <Title level={5}>Twitter (URL)</Title>
       {record?.twitter_url ? (
         <Link
           // href={"https://www.google.com/search?q=" + value}
@@ -177,7 +199,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
         "-"
       )}
 
-      <Title level={4}>Facebook (URL)</Title>
+      <Title level={5}>Facebook (URL)</Title>
       {record?.facebook_url ? (
         <Link
           // href={"https://www.google.com/search?q=" + value}

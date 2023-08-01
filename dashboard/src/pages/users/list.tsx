@@ -252,6 +252,12 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
       resource: "countries",
       ids: tableProps?.dataSource?.map((item) => item?.covered_countries) ?? [],
     });
+  
+  const { data: userTypesData, isLoading: userTypesIsLoading } =
+    useMany({
+      resource: "user_types",
+      ids: tableProps?.dataSource?.map((item) => item?.categories) ?? [],
+    });
 
   return (
     <>
@@ -382,6 +388,24 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
                 return "-";
               }
             }}
+          />
+          <Table.Column
+            dataIndex="categories"
+            title="Categories"
+            render={(value: any[]) =>
+              userTypesIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <TagField
+                      key={index}
+                      value={item?.name}
+                    />
+                  ))}
+                </>
+              )
+            }
           />
           <Table.Column dataIndex="description" title="Description" />
           <Table.Column

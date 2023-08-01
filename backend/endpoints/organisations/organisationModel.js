@@ -53,6 +53,9 @@ const organisationSchema = mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",
     },
+    creation_year: {
+      type: String, 
+    }
   },
   {
     timestamps: true,

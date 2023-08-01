@@ -12,7 +12,7 @@ const eventSchema = mongoose.Schema(
     },
     title: { type: String, required: true },
     cover: { type: String, default: "" },
-    beginingDate: { type: Date },
+    beginningDate: { type: Date },
     endingDate: { type: Date },
     event_type: {
       type: mongoose.Schema.Types.ObjectId,
