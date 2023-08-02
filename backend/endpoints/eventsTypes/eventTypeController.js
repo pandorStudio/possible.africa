@@ -6,7 +6,7 @@ const CustomUtils = require("../../utils/index.js");
 // @access Public
 exports.getAllEventTypes = async (req, res) => {
   try {
-    const eventTypes = await EventType.find();
+    const eventTypes = await EventType.find().sort({ createdAt: -1 });
     res.status(200).json(eventTypes);
   } catch (error) {
     res.status(404).json({ message: error.message });

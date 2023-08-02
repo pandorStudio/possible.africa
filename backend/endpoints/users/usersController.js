@@ -36,7 +36,7 @@ exports.getAllUsers = async (req, res) => {
     // console.log(roleId);
     const users = await User.find(queryObj)
       .limit(limit * 1)
-      .sort(sort)
+      .sort({ createdAt: -1, ...sort })
       .select(fields);
     res.status(200).json(users);
   } catch (error) {

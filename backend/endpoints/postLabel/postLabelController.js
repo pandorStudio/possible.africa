@@ -8,7 +8,7 @@ const CustomUtils = require("../../utils/index.js");
 exports.getAllPostLabels = async (req, res) => {
   const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const postLabels = await PostLabel.find(queryObj);
+    const postLabels = await PostLabel.find(queryObj).sort({ createdAt: -1 });
     res.status(200).json(postLabels);
   } catch (error) {
     res.status(404).json({ message: error.message });

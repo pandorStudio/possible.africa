@@ -11,7 +11,7 @@ const transformJson = async () => {
   const countries = JSON.parse(data);
   console.log(countries);
 
-  const countryFromDb = await Country.find();
+  const countryFromDb = await Country.find().sort({ createdAt: -1 });
 
   const countriesReducted = countries.map((country) => {
     const {
@@ -52,7 +52,7 @@ const transformJson = async () => {
 exports.getAllEvents = async (req, res, next) => {
   // transformJson();
   try {
-    const events = await Event.find();
+    const events = await Event.find().sort({ createdAt: -1 });
     res.status(200).json(events);
   } catch (error) {
     res.status(404).json({ message: error.message });

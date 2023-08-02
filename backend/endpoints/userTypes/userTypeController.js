@@ -6,7 +6,7 @@ const CustomUtils = require("../../utils/index.js");
 // @access Public
 exports.getAllUserTypes = async (req, res) => {
   try {
-    const userTypes = await UserType.find();
+    const userTypes = await UserType.find().sort({ createdAt: -1 });
     res.status(200).json(userTypes);
   } catch (error) {
     res.status(404).json({ message: error.message });

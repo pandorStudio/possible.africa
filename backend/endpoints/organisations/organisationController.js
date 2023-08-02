@@ -41,7 +41,7 @@ exports.getAllOrganisations = async (req, res) => {
   try {
     const organisations = await Organisation.find(queryObj)
       .limit(limit * 1)
-      .sort(sort)
+      .sort({ createdAt: -1, ...sort })
       .select(fields);
     res.status(200).json(organisations);
   } catch (error) {
