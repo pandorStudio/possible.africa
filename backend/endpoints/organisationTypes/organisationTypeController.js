@@ -6,7 +6,9 @@ const CustomUtils = require("../../utils/index.js");
 // @access Public
 exports.getAllOrganisationTypes = async (req, res) => {
   try {
-    const organisationTypes = await OrganisationType.find();
+    const organisationTypes = await OrganisationType.find().sort({
+      createdAt: -1,
+    });
     res.status(200).json(organisationTypes);
   } catch (error) {
     res.status(404).json({ message: error.message });

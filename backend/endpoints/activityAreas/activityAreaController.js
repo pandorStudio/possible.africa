@@ -6,7 +6,7 @@ const CustomUtils = require("../../utils/index.js");
 // @Access: Public
 exports.getAllActivityAreas = async (req, res, next) => {
   try {
-    const activityAreas = await ActivityArea.find();
+    const activityAreas = await ActivityArea.find().sort({ createdAt: -1 });
     res.status(200).json(activityAreas);
   } catch (error) {
     res.status(404).json({ message: error.message });

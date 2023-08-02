@@ -8,7 +8,7 @@ const CustomUtils = require("../../utils/index.js");
 exports.getAllCountries = async (req, res) => {
   const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const countries = await Country.find(queryObj);
+    const countries = await Country.find(queryObj).sort({ createdAt: -1 });
 
     res.status(200).json(
       countries.sort((a, b) => {

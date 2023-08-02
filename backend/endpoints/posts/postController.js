@@ -16,7 +16,7 @@ exports.getAllPosts = async (req, res) => {
     //   .select(fields);
     const posts = await Post.find(queryObj)
       .limit(limit * 1)
-      .sort(sort)
+      .sort({ createdAt: -1, ...sort })
       .select(fields);
     res.status(200).json(posts);
   } catch (error) {

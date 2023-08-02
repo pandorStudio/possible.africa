@@ -6,7 +6,9 @@ const CustomUtils = require("../../utils/index.js");
 // @Access: Public
 exports.getAllOpportunityTargets = async (req, res, next) => {
   try {
-    const opportunityTargets = await OpportunityTarget.find();
+    const opportunityTargets = await OpportunityTarget.find().sort({
+      createdAt: -1,
+    });
     res.status(200).json(opportunityTargets);
   } catch (error) {
     res.status(404).json({ message: error.message });

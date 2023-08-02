@@ -4,7 +4,7 @@ const CustomUtils = require("../../utils/index.js");
 // GET ALL JOBS
 exports.getAllJobs = async (req, res, next) => {
   try {
-    const jobs = await Job.find();
+    const jobs = await Job.find().sort({ createdAt: -1 });
     res.status(200).json(jobs);
   } catch (error) {
     res.status(404).json({ message: error.message });
