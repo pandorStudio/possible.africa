@@ -122,6 +122,23 @@ export const authProvider: AuthBindings = {
   check: async () => {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
+      const key = import.meta.env.VITE_JWT_SECRET;
+      const decoded: { user: any; iat: number; exp: number } = jwt_decode(
+        token,
+        key
+      );
+
+      // test if token is malformed
+      if (!decoded.user) {
+        localStorage.removeItem(TOKEN_KEY);
+        return null;
+      }
+
+      // test if expired
+      if (decoded.exp * 1000 < new Date().getTime()) {
+        localStorage.removeItem(TOKEN_KEY);
+        return null;
+      }
       return {
         authenticated: true,
       };
@@ -154,6 +171,18 @@ export const authProvider: AuthBindings = {
         token,
         key
       );
+
+      // test if token is malformed
+      if (!decoded.user) { 
+        localStorage.removeItem(TOKEN_KEY);
+        return null;
+      }
+
+      // test if expired
+      if (decoded.exp * 1000 < new Date().getTime()) {
+        localStorage.removeItem(TOKEN_KEY);
+        return null;
+      }
       // const { data } = await axiosInstance.get(
       //   `${API_URL}/users/${decoded.user.id}`
       // );

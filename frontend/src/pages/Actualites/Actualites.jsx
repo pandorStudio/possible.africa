@@ -14,8 +14,7 @@ import CenteredContainer from "../../utils/CenteredContainer.jsx";
 
 function Actualites() {
   const [page, setPage] = useState(1);
-  const [infiniteScrollIsFetching] =
-    useState(false);
+  const [infiniteScrollIsFetching] = useState(false);
   const { data: interviewCategories = [] } = useGetPostCategoriesQuery({
     limit: 10,
     page: page,
@@ -34,22 +33,26 @@ function Actualites() {
     limit: 10 * page,
     page: page,
     fields: [],
-    eq: [{ field: "categorie", value: `${interviewCategories[0]?._id}` }, { field: "status", value: "published" }],
+    eq: [
+      { field: "categorie", value: `${interviewCategories[0]?._id}` },
+      { field: "status", value: "published" },
+    ],
   });
   let content;
-
 
   let isLoaded = true;
 
   if (allNews?.length === 0) {
-    return (
-    <NoData/>
-    );
+    return <NoData />;
   }
 
-  if (isLoading ) {
-    return <CenteredContainer><Spinner/></CenteredContainer>
-}
+  if (isLoading) {
+    return (
+      <CenteredContainer>
+        <Spinner />
+      </CenteredContainer>
+    );
+  }
 
   if (allNews.length) {
     content = (
@@ -67,35 +70,47 @@ function Actualites() {
             <Spinner as="div" mx="45%" mt={10} />
           </Box>
         }
-       
       >
-        {allNews && allNews.map((news, index) => {
-          const instanceCard = (
-            <CardComponent
-              postType="Actualités"
-              key={news?._id}
-              title={news?.title}
-              description={ParseSlice(news?.content || "Pas de contenu")}
-              imgUrl={news?.image}
-              isLoaded={isLoaded}
-              link={"/actualites/" + news?.slug}
-              country={news.country?.translations?.fra?.common || ""}
-              hideMeBellow="md"
-            />
-          );
+        {allNews &&
+          allNews.map((news, index) => {
+            const createdAt = new Date(news?.createdAt);
+            // transform date to french format
+            const date =
+              createdAt.getDate() +
+              "/" +
+              (createdAt.getMonth() + 1) +
+              "/" +
+              createdAt.getFullYear();
+            const instanceCard = (
+              <CardComponent
+                postType="Actualités"
+                key={news?._id}
+                title={news?.title}
+                description={ParseSlice(news?.content || "Pas de contenu")}
+                imgUrl={news?.image}
+                isLoaded={isLoaded}
+                link={"/actualites/" + news?.slug}
+                countries={news?.countries?.length > 0 ? news?.countries : []}
+                hideMeBellow="md"
+                organisations={
+                  news?.organisations?.length > 0 ? news?.organisations : []
+                }
+                labels={news?.labels?.length > 0 ? news?.labels : []}
+                createdAt={date}
+              />
+            );
 
-          return (
-            <>
-              {instanceCard}
-              {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
-               <CustomContainer>
-                 <Spinner />
-               </CustomContainer>
-
-              )}
-            </>
-          );
-        })}
+            return (
+              <>
+                {instanceCard}
+                {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
+                  <CustomContainer>
+                    <Spinner />
+                  </CustomContainer>
+                )}
+              </>
+            );
+          })}
       </InfiniteScroll>
     );
   }

@@ -125,9 +125,13 @@ export const dataProvider = (apiUrl: string): DataProvider => ({
     //   "Access-Control-Allow-Origin": "*",
     // };
 
+    console.log("ici");
+
     const { data, headers } = await axiosInstance.get(
       `${url}?${stringify(query)}&${stringify(queryFilters)}`
     );
+
+    console.log(data, "ici");
 
     const total = +headers["x-total-count"];
 
