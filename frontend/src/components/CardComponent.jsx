@@ -764,8 +764,9 @@ function CardComponent({
           borderColor="red.50"
           // backgroundColor="red.300"
           w={{ base: "85vw", md: "2xl" }}
-          h={{ base: "150px" }}
+          // h={{ base: "150px" }}
           padding={{ base: "0px" }}
+          paddingBottom={{ base: "0px", md: "5px" }}
           marginY={{ base: "10px" }}
           borderRadius="10px"
           overflow="hidden"
@@ -803,9 +804,7 @@ function CardComponent({
             ) : null}
             <Box
               as="div"
-              mt={
-                organisations?.length > 1 ? { base: "5px" } : { base: "5px" }
-              }
+              mt={organisations?.length > 1 ? { base: "5px" } : { base: "5px" }}
               mr={
                 organisations?.length > 1 ? { base: "18px" } : { base: "13px" }
               }
@@ -863,7 +862,7 @@ function CardComponent({
             </Box>
           </CardHeader>
           <CardBody paddingY={{ base: "0" }}>
-            <Text
+            {/* <Text
               as="h1"
               fontWeight="bold"
               color="#2BB19C"
@@ -880,35 +879,29 @@ function CardComponent({
               ) : (
                 title
               )}
-            </Text>
+            </Text> */}
             <Text
               as="h1"
               fontWeight="bold"
               color="#2BB19C"
-              lineHeight="15px"
+              lineHeight={{ base: "25px", md: "20px" }}
               fontSize="xl"
               paddingBottom={{ base: 1 }}
-              display={{ base: "none", md: "block" }}
+              // display={{ base: "none", md: "block" }}
             >
-              {link ? (
-                <Link to={link}>
-                  {title.length >= 60 ? title.slice(0, 60) + "..." : title}
-                </Link>
-              ) : title.length >= 60 ? (
-                title.slice(0, 60) + "..."
-              ) : (
-                title
-              )}
+              {link ? <Link to={link}>{title}</Link> : { title }}
             </Text>
-            <Text
-              fontSize="90%"
-              fontWeight="400"
-              noOfLines={[2]}
-              color="#0B4138"
-              // lineHeight="15px"
-            >
-              {description}
-            </Text>
+            {description.length ? (
+              <Text
+                fontSize="90%"
+                fontWeight="400"
+                noOfLines={[2]}
+                color="#0B4138"
+                // lineHeight="15px"
+              >
+                {description}
+              </Text>
+            ) : null}
           </CardBody>
           {labels?.length > 0 || countries?.length > 0 ? (
             <CardFooter
