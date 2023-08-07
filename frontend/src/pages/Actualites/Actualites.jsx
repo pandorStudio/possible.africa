@@ -91,6 +91,12 @@ function Actualites() {
                 isLoaded={isLoaded}
                 link={"/actualites/" + news?.slug}
                 countries={news?.countries?.length > 0 ? news?.countries : []}
+                authors={
+                  news?.authors?.length > 0 ? news?.authors : []
+                }
+                editors={
+                  news?.editors?.length > 0 ? news?.editors : []
+                }
                 hideMeBellow="md"
                 organisations={
                   news?.organisations?.length > 0 ? news?.organisations : []

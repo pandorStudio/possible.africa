@@ -54,17 +54,39 @@ function Interviews() {
     );
   } else if (isSuccess) {
     content = interviews.map((interview) => {
+      const createdAt = new Date(interview?.createdAt);
+      // transform date to french format
+      const date =
+        createdAt.getDate() +
+        "/" +
+        (createdAt.getMonth() + 1) +
+        "/" +
+        createdAt.getFullYear();
       return (
         <CardComponent
           postType="Interview"
           key={interview?._id}
           title={interview?.title}
-          description={ParseSlice(interview?.content ?? "Pas de contenu")}
+          description={interview?.content ? ParseSlice(interview?.content) : ""}
           imgUrl={interview?.image}
           isLoaded={isLoaded}
           link={"/interviews/" + interview?.slug}
-          country={interview?.country?.translations?.fra?.common || ""}
+          countries={
+            interview?.countries?.length > 0 ? interview?.countries : []
+          }
+          authors={
+            interview?.authors?.length > 0 ? interview?.authors : []
+          }
+          editors={
+            interview?.editors?.length > 0 ? interview?.editors : []
+          }
           hideMeBellow="md"
+          organisations={
+            interview?.organisations?.length > 0 ? interview?.organisations : []
+          }
+          labels={interview?.labels?.length > 0 ? interview?.labels : []}
+          createdAt={date}
+          source={interview?.source}
         />
       );
     });

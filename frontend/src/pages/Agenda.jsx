@@ -40,6 +40,14 @@ function Agenda() {
     );
   } else if (isSuccess) {
     content = events.map((event) => {
+      const createdAt = new Date(event?.createdAt);
+      // transform date to french format
+      const date =
+        createdAt.getDate() +
+        "/" +
+        (createdAt.getMonth() + 1) +
+        "/" +
+        createdAt.getFullYear();
       return (
         <CardComponent
           postType="Agenda"
@@ -49,8 +57,19 @@ function Agenda() {
           imgUrl={event?.cover}
           isLoaded={isLoaded}
           link={"/agenda/" + event?.id}
-          country={event?.target_country?.translations?.fra?.common || ""}
+          countries={
+            event?.target_countries?.length > 0 ? event?.target_countries : []
+          }
+          organisations={
+            event?.organisations?.length > 0 ? event?.organisations : []
+          }
+          contacts={event?.contacts?.length > 0 ? event?.contacts : []}
+          activity_areas={
+            event?.activity_areas?.length > 0 ? event?.activity_areas : []
+          }
           type={event?.event_type?.name}
+          createdAt={date}
+          source={event?.source}
         />
       );
     });

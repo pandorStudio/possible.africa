@@ -60,18 +60,33 @@ function Organisations() {
         endMessage={<Text>Yay! You have seen it all</Text>}
       >
         {organisations.map((organisation, index) => {
+          const createdAt = new Date(organisation?.createdAt);
+          // transform date to french format
+          const date =
+            createdAt.getDate() +
+            "/" +
+            (createdAt.getMonth() + 1) +
+            "/" +
+            createdAt.getFullYear();
           const instanceCard = (
             <CardComponent
               postType="Organisation"
               key={organisation?._id}
               title={organisation?.name}
-              description={ParseSlice(
-                organisation?.description || "Pas de Description"
-              )}
+              description={ParseSlice(organisation?.description || "")}
               imgUrl={organisation?.logo}
               isLoaded={isLoaded}
               link={"/organisations/" + organisation?.id}
               type={organisation?.type?.name}
+              organisation_types={
+                organisation?.types?.length > 0 ? organisation?.types : []
+              }
+              activity_areas={
+                organisation?.activity_areas?.length > 0
+                  ? organisation?.activity_areas
+                  : []
+              }
+              createdAt={date}
               country={organisation?.country?.translations?.fra?.common || ""}
             />
           );
