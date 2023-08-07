@@ -27,6 +27,7 @@ import {
   EarthIcon,
   EditorIcon,
   ReturnIcon,
+  SearchIcon,
   TagIcon,
 } from "./CustomIcons/CustomIcons";
 
@@ -1086,7 +1087,7 @@ function CardComponent({
                     borderLeftRadius="10px"
                     px="5px"
                   >
-                    <TagIcon boxSize="18px" mr="5px" />
+                    <SearchIcon boxSize="18px" mr="5px" />
                     <Box as="div">{activity_areas[0]?.name}</Box>
                   </Box>
                   <Box
@@ -1117,7 +1118,7 @@ function CardComponent({
                     borderRadius="10px"
                     px="5px"
                   >
-                    <TagIcon boxSize="18px" mr="5px" />
+                    <SearchIcon boxSize="18px" mr="5px" />
                     <Box as="div">{activity_areas[0]?.name}</Box>
                   </Box>
                 </Box>
@@ -1422,7 +1423,7 @@ function CardComponent({
                     borderLeftRadius="10px"
                     px="5px"
                   >
-                    <TagIcon boxSize="18px" mr="5px" />
+                    <SearchIcon boxSize="18px" mr="5px" />
                     <Box as="div">{activity_areas[0]?.name}</Box>
                   </Box>
                   <Box
@@ -1453,7 +1454,7 @@ function CardComponent({
                     borderRadius="10px"
                     px="5px"
                   >
-                    <TagIcon boxSize="18px" mr="5px" />
+                    <SearchIcon boxSize="18px" mr="5px" />
                     <Box as="div">{activity_areas[0]?.name}</Box>
                   </Box>
                 </Box>
@@ -1733,7 +1734,7 @@ function CardComponent({
                     borderLeftRadius="10px"
                     px="5px"
                   >
-                    <TagIcon boxSize="18px" mr="5px" />
+                    <SearchIcon boxSize="18px" mr="5px" />
                     <Box as="div">{activity_areas[0]?.name}</Box>
                   </Box>
                   <Box
@@ -1764,7 +1765,7 @@ function CardComponent({
                     borderRadius="10px"
                     px="5px"
                   >
-                    <TagIcon boxSize="18px" mr="5px" />
+                    <SearchIcon boxSize="18px" mr="5px" />
                     <Box as="div">{activity_areas[0]?.name}</Box>
                   </Box>
                 </Box>
@@ -1973,7 +1974,7 @@ function CardComponent({
                     borderLeftRadius="10px"
                     px="5px"
                   >
-                    <TagIcon boxSize="18px" mr="5px" />
+                    <SearchIcon boxSize="18px" mr="5px" />
                     <Box as="div">{activity_areas[0]?.name}</Box>
                   </Box>
                   <Box
@@ -2004,7 +2005,7 @@ function CardComponent({
                     borderRadius="10px"
                     px="5px"
                   >
-                    <TagIcon boxSize="18px" mr="5px" />
+                    <SearchIcon boxSize="18px" mr="5px" />
                     <Box as="div">{activity_areas[0]?.name}</Box>
                   </Box>
                 </Box>
