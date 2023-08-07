@@ -34,6 +34,9 @@ const jobSchema = new mongoose.Schema(
     },
     slug: {
       type: String,
+    },
+    source: {
+      type: String,
     }
   },
   {
