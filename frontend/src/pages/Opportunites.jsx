@@ -25,26 +25,44 @@ function Opportunites() {
   let isLoaded = true;
 
   if (opportunities?.length === 0) {
+    if (isLoading || isFetching) {
+      return (
+        <Box
+          as="div"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          p={15}
+        >
+          <Spinner />
+        </Box>
+      );
+    }
     return <NoData />;
   }
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
-      <CenteredContainer>
+      <Box
+        as="div"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        p={15}
+      >
         <Spinner />
-      </CenteredContainer>
+      </Box>
     );
   } else if (isSuccess) {
-      content = opportunities.map((opportunity) => {
-        
-            const createdAt = new Date(opportunity?.createdAt);
-            // transform date to french format
-            const date =
-              createdAt.getDate() +
-              "/" +
-              (createdAt.getMonth() + 1) +
-              "/" +
-              createdAt.getFullYear();
+    content = opportunities.map((opportunity) => {
+      const createdAt = new Date(opportunity?.createdAt);
+      // transform date to french format
+      const date =
+        createdAt.getDate() +
+        "/" +
+        (createdAt.getMonth() + 1) +
+        "/" +
+        createdAt.getFullYear();
       return (
         <CardComponent
           postType="Opportunités"
@@ -75,7 +93,7 @@ function Opportunites() {
           contacts={
             opportunity?.contacts?.length > 0 ? opportunity?.contacts : []
           }
-                createdAt={date}
+          createdAt={date}
           targets={opportunity?.targets?.length > 0 ? opportunity?.targets : []}
           source={opportunity?.registration_link || ""}
         />

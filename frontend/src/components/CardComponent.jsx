@@ -24,6 +24,7 @@ import {
 } from "../assets/icons";
 import {
   AuthorIcon,
+  BusinessIcon,
   EarthIcon,
   EditorIcon,
   ReturnIcon,
@@ -55,6 +56,7 @@ function CardComponent({
   authors,
   contacts,
   activity_areas,
+  organisation_types,
 }) {
   let card = <></>;
 
@@ -1885,9 +1887,11 @@ function CardComponent({
           </CardBody>
           {labels?.length > 0 ||
           countries?.length > 0 ||
+          countries?.length > 0 ||
           editors?.length > 0 ||
-          authors?.length > 0 ||
-          activity_areas?.length > 0 ? (
+          contacts?.length > 0 ||
+          activity_areas?.length > 0 ||
+          organisation_types?.length > 0 ? (
             <CardFooter
               paddingY={{ base: 2 }}
               color="#50625F"
@@ -1952,6 +1956,115 @@ function CardComponent({
                     <Box as="div">
                       {countries[0]?.translations?.fra?.common}
                     </Box>
+                  </Box>
+                </Box>
+              ) : null}
+
+              {contacts?.length > 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderLeftRadius="10px"
+                    px="5px"
+                  >
+                    <AuthorIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{contacts[0]?.complete_name}</Box>
+                  </Box>
+                  <Box
+                    as="div"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    transform="translate(-1px, 0px)"
+                    borderRightRadius="10px"
+                    px="3px"
+                  >
+                    +{contacts?.length - 1}
+                  </Box>
+                </Box>
+              ) : contacts?.length === 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderRadius="10px"
+                    px="5px"
+                  >
+                    <AuthorIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{contacts[0]?.complete_name}</Box>
+                  </Box>
+                </Box>
+              ) : null}
+              {organisation_types?.length > 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderLeftRadius="10px"
+                    px="5px"
+                  >
+                    <BusinessIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{organisation_types[0]?.name}</Box>
+                  </Box>
+                  <Box
+                    as="div"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    transform="translate(-1px, 0px)"
+                    borderRightRadius="10px"
+                    px="3px"
+                  >
+                    +{organisation_types?.length - 1}
+                  </Box>
+                </Box>
+              ) : organisation_types?.length === 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderRadius="10px"
+                    px="5px"
+                  >
+                    <BusinessIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{organisation_types[0]?.name}</Box>
                   </Box>
                 </Box>
               ) : null}
