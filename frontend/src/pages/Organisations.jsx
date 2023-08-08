@@ -30,15 +30,20 @@ function Organisations() {
   let isLoaded = true;
 
   if (organisations?.length === 0) {
+    if (isLoading || isFetching) {
+      return (
+        <Box
+          as="div"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          p={15}
+        >
+          <Spinner />
+        </Box>
+      );
+    }
     return <NoData />;
-  }
-
-  if (isLoading) {
-    return (
-      <CenteredContainer>
-        <Spinner />
-      </CenteredContainer>
-    );
   }
   if (organisations.length) {
     content = (
@@ -80,6 +85,11 @@ function Organisations() {
               type={organisation?.type?.name}
               organisation_types={
                 organisation?.types?.length > 0 ? organisation?.types : []
+              }
+              countries={
+                organisation?.covered_countries?.length > 0
+                  ? organisation?.covered_countries
+                  : []
               }
               activity_areas={
                 organisation?.activity_areas?.length > 0

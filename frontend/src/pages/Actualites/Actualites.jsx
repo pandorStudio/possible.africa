@@ -43,15 +43,20 @@ function Actualites() {
   let isLoaded = true;
 
   if (allNews?.length === 0) {
+    if (isLoading || isFetching) {
+      return (
+        <Box
+          as="div"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          p={15}
+        >
+          <Spinner />
+        </Box>
+      );
+    }
     return <NoData />;
-  }
-
-  if (isLoading) {
-    return (
-      <CenteredContainer>
-        <Spinner />
-      </CenteredContainer>
-    );
   }
 
   if (allNews.length) {
@@ -91,12 +96,8 @@ function Actualites() {
                 isLoaded={isLoaded}
                 link={"/actualites/" + news?.slug}
                 countries={news?.countries?.length > 0 ? news?.countries : []}
-                authors={
-                  news?.authors?.length > 0 ? news?.authors : []
-                }
-                editors={
-                  news?.editors?.length > 0 ? news?.editors : []
-                }
+                authors={news?.authors?.length > 0 ? news?.authors : []}
+                editors={news?.editors?.length > 0 ? news?.editors : []}
                 hideMeBellow="md"
                 organisations={
                   news?.organisations?.length > 0 ? news?.organisations : []
@@ -111,9 +112,15 @@ function Actualites() {
               <>
                 {instanceCard}
                 {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
-                  <CustomContainer>
+                  <Box
+                    as="div"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    p={15}
+                  >
                     <Spinner />
-                  </CustomContainer>
+                  </Box>
                 )}
               </>
             );

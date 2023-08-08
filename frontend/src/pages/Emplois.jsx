@@ -25,14 +25,33 @@ function Emplois() {
   // }, 1000);
 
   if (jobs?.length === 0) {
+    if (isLoading || isFetching) {
+      return (
+        <Box
+          as="div"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          p={15}
+        >
+          <Spinner />
+        </Box>
+      );
+    }
     return <NoData />;
   }
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
-      <CenteredContainer>
+      <Box
+        as="div"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        p={15}
+      >
         <Spinner />
-      </CenteredContainer>
+      </Box>
     );
   } else if (isSuccess) {
     content = jobs.map((job) => {
