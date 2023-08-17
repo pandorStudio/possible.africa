@@ -30,15 +30,25 @@ const transformJson = async () => {
   // });
 
   // console.log(countriesReducted);
-  for (let i = 0; i < countryFromDb.length; i++) {
-    const country = countryFromDb[i];
-    const newCountry = await Country.findByIdAndUpdate(
-      country._id,
-      countriesReducted[i],
-      {
-        new: true,
-      }
-    );
+  //   for (let i = 0; i < countryFromDb.length; i++) {
+  //     const country = countryFromDb[i];
+  //     const newCountry = await Country.findByIdAndUpdate(
+  //       country._id,
+  //       countriesReducted[i],
+  //       {
+  //         new: true,
+  //       }
+  //     );
+  //     console.log(newCountry);
+  //     if (countriesReducted[i].translations.fra) nbFr++;
+  //   }
+
+  //   console.log(nbFr);
+  // };
+
+  for (let i = 0; i < countriesReducted.length; i++) {
+    // const country = countryFromDb[i];
+    const newCountry = await Country.create(countriesReducted[i]);
     console.log(newCountry);
     if (countriesReducted[i].translations.fra) nbFr++;
   }
@@ -50,7 +60,7 @@ const transformJson = async () => {
 // @route GET /api/v1/events
 // @access Public
 exports.getAllEvents = async (req, res, next) => {
-  // transformJson();
+  transformJson();
   try {
     const events = await Event.find().sort({ createdAt: -1 });
     res.status(200).json(events);
@@ -98,7 +108,7 @@ exports.updateEvent = async (req, res, next) => {
     if (!event) {
       return res.status(404).json({ message: CustomUtils.consts.NOT_EXIST });
     }
-    if(req.user) req.body.user = event.user;
+    if (req.user) req.body.user = event.user;
     const updated = await Event.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
