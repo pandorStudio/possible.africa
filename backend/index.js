@@ -59,7 +59,7 @@ app.use(express.static("public"));
 
 //protections
 app.use(API_URL_BASE, authRoutes);
-app.use(protect);
+// app.use(protect);
 app.use(API_URL_BASE + "users", userRoutes);
 app.use(API_URL_BASE + "user_types", userTypesRoutes);
 app.use(API_URL_BASE + "profil", profilRoutes);
@@ -91,3 +91,26 @@ app.get(API_URL_BASE, (req, res) => {
 // Start server
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 connection(URL_CONNECT_DEV);
+// db = connection(URL_CONNECT_DEV);
+
+// var oplogEntries = db.oplog.rs.find({
+//   ts: { $gt: Timestamp(yourTimestampHere, 0) },
+// });
+// oplogEntries.forEach(function (entry) {
+//   var ns = entry.ns;
+//   var coll = ns.split(".")[1];
+//   var op = entry.op;
+//   var doc = entry.o;
+
+//   if (op === "i") {
+//     // Insert operation, apply doc to collection
+//     db[coll].insert(doc);
+//   } else if (op === "u") {
+//     // Update operation, apply doc to collection
+//     db[coll].update({ _id: doc._id }, doc);
+//   } else if (op === "d") {
+//     // Delete operation, restore doc to collection if needed
+//     // Note: Recovery from delete operations might be more complex
+//   }
+// });
+
