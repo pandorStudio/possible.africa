@@ -421,7 +421,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           />
           <Table.Column
             dataIndex="origin_countries"
-            title="Pays d'origin"
+            title="Pays d'origine"
             render={(value: any[]) =>
               originCountriesIsLoading ? (
                 <>Loading ...</>

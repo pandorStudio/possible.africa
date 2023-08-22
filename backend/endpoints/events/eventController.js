@@ -61,8 +61,13 @@ const transformJson = async () => {
 // @access Public
 exports.getAllEvents = async (req, res, next) => {
   // transformJson();
+  const { limit, page, sort, fields } = req.query;
+  const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const events = await Event.find().sort({ createdAt: -1 });
+    const events = await Event.find(queryObj)
+      .limit(limit * 1)
+      .sort({ createdAt: -1, ...sort })
+      .select(fields);
     res.status(200).json(events);
   } catch (error) {
     res.status(404).json({ message: error.message });

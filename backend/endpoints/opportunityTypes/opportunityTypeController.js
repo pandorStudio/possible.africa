@@ -5,10 +5,16 @@ const CustomUtils = require("../../utils/index.js");
 // @Route: /api/v1/opportunityTypes
 // @Access: Public
 exports.getAllOpportunityTypes = async (req, res, next) => {
+  const { limit, page, sort, fields } = req.query;
+  const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const opportunityTypes = await OpportunityType.find().sort({
-      createdAt: -1,
-    });
+    const opportunityTypes = await OpportunityType.find(queryObj)
+      .limit(limit * 1)
+      .sort({
+        createdAt: -1,
+        ...sort,
+      })
+      .select(fields);
     res.status(200).json(opportunityTypes);
   } catch (error) {
     res.status(404).json({ message: error.message });

@@ -218,7 +218,7 @@ function App() {
         ...s,
         user: { ...decoded.user },
       }));
-      console.info("App.tsx");
+      // console.info("App.tsx");
       // setUserConnected({ ...decoded.user });
     }
 

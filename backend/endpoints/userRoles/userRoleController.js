@@ -6,9 +6,16 @@ const CustomUtils = require("../../utils/index.js");
 // @access Public
 
 exports.getAllUserRoles = async (req, res) => {
+  const { limit, page, sort, fields } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const userRoles = await UserRole.find(queryObj).sort({ createdAt: -1 });
+    const userRoles = await UserRole.find(queryObj)
+      .limit(limit * 1)
+      .sort({
+        createdAt: -1,
+        ...sort,
+      })
+      .select(fields);
     res.status(200).json(userRoles);
   } catch (error) {
     res.status(404).json({ message: error.message });

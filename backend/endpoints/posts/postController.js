@@ -9,11 +9,6 @@ exports.getAllPosts = async (req, res) => {
   const { limit, page, sort, fields } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    // const posts = await Post.find(queryObj)
-    //   .limit(limit * 1)
-    //   .skip((page - 1) * limit)
-    //   .sort(sort)
-    //   .select(fields);
     const posts = await Post.find(queryObj)
       .limit(limit * 1)
       .sort({ createdAt: -1, ...sort })

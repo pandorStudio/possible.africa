@@ -5,10 +5,16 @@ const CustomUtils = require("../../utils/index.js");
 // @route GET /api/v1/organisationTypes
 // @access Public
 exports.getAllOrganisationTypes = async (req, res) => {
+  const { limit, page, sort, fields } = req.query;
+  const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const organisationTypes = await OrganisationType.find().sort({
-      createdAt: -1,
-    });
+    const organisationTypes = await OrganisationType.find(queryObj)
+      .limit(limit * 1)
+      .sort({
+        createdAt: -1,
+        ...sort,
+      })
+      .select(fields);
     res.status(200).json(organisationTypes);
   } catch (error) {
     res.status(404).json({ message: error.message });
