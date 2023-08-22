@@ -360,7 +360,10 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
           <Table.Column dataIndex="frequency" title="Fréquence" />
-          <Table.Column dataIndex={["user", "username"]} title="Contributeur" />
+          <Table.Column
+            dataIndex={["user", "complete_name"]}
+            title="Contributeur"
+          />
           <Table.Column
             ellipsis={true}
             dataIndex="registration_link"
