@@ -56,7 +56,7 @@ export const PostLabelList: React.FC<IResourceComponentsProps> = () => {
             body.push({ ...ob });
             axiosInstance
               .post(
-                apiUrl + "/post_categories",
+                apiUrl + "/post_labels",
                 {
                   ...ob,
                 },
@@ -92,7 +92,7 @@ export const PostLabelList: React.FC<IResourceComponentsProps> = () => {
     if (!importLoading) {
       messageApi.destroy();
       invalidate({
-        resource: "post_categories",
+        resource: "post_labels",
         invalidates: ["list"],
       });
     }
@@ -156,7 +156,7 @@ export const PostLabelList: React.FC<IResourceComponentsProps> = () => {
       async onOk(...args) {
         if (checkedArray.length) {
           const results = checkedArray.map(async (ob) => {
-            return axiosInstance.delete(apiUrl + `/post_categories/${ob}`, {
+            return axiosInstance.delete(apiUrl + `/post_labels/${ob}`, {
               headers: {
                 "Content-Type": "application/json",
               },
@@ -166,7 +166,7 @@ export const PostLabelList: React.FC<IResourceComponentsProps> = () => {
           await Promise.all(results);
           // console.log(results);
           invalidate({
-            resource: "post_categories",
+            resource: "post_labels",
             invalidates: ["list"],
           });
           setCheckedArray([]);
@@ -217,7 +217,7 @@ export const PostLabelList: React.FC<IResourceComponentsProps> = () => {
                         a.setAttribute("href", url);
                         a.setAttribute(
                           "download",
-                          `post_categories-${new Date()}-${Math.round(
+                          `post_labels-${new Date()}-${Math.round(
                             Math.random() * 99999999
                           )}.csv`
                         );

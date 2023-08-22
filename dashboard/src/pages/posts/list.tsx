@@ -122,19 +122,21 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
           if (i === 0) {
             headers.push(...el);
           } else {
-            const content = await processContent(el[3]);
-            const imageBase64 = await downloadMedia(el[9]);
+            const imageBase64 = await downloadMedia(el[5]);
             const image = await imageUploadHandler(imageBase64.data.dataUrl);
+            const country = await axiosInstance.get(
+              apiUrl + `/countries?translations.fra.common=${el[3]}`
+            );
             // console.log(image);
             const ob: any = {
-              title: el[1],
-              content: el[3],
+              title: el[0],
+              content: el[1],
               categorie:
-                el[4] === "Portraits"
+                el[2] === "Portraits"
                   ? "6474bac3de440360d8a0a917"
                   : "6474bad3de440360d8a0a91b",
-              country: el[10],
-              slug: el[2],
+              country: country?.data?.data[0]?._id,
+              slug: el[4],
               image: image ? image : "",
             };
             body.push({ ...ob });

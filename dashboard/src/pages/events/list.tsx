@@ -76,18 +76,140 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           if (i === 0) {
             headers.push(...el);
           } else {
-            const blobImage = await downloadMedia(el[16]);
+            const blobImage = await downloadMedia(el[7]);
             const imageUrl = await imageUploadHandler(blobImage.data.dataUrl);
+            const countriesArray = el[3].split(";").map(async (item) => {
+              const result = await axiosInstance.get(
+                apiUrl + `/countries?translations.fra.common=${item}`
+              );
+              return result.data.data[0].id;
+            });
+            let eventType = null;
+            if (el[9]) {
+              // try to get the event type
+              eventType = await axiosInstance.get(
+                apiUrl + `/event_types?name=${el[9]}`
+              );
+              console.log(eventType);
+              if (!eventType?.data?.length) { 
+                // create the event type
+                const result = await axiosInstance.post(
+                  apiUrl + "/event_types",
+                  {
+                    name: el[9],
+                  },
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  }
+                );
+                eventType = result?.data?.id;
+              } else {
+                eventType = eventType?.data[0]?.id;
+              }
+            }
+
+            let activityAreas = [];
+            if (el[10]) { 
+              activityAreas = el[10].split(";").map(async (item) => {
+                const result = await axiosInstance.get(
+                  apiUrl + `/activity_areas?name=${item}`
+                );
+                if (!result?.data?.length) {
+                  // create the activity area
+                  const result = await axiosInstance.post(
+                    apiUrl + "/activity_areas",
+                    {
+                      name: item,
+                    },
+                    {
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                    }
+                  );
+                  return result?.data?.id;
+                } else {
+                  return result?.data[0]?.id;
+                }
+              });
+            }
+            
+
+            let contacts = [];
+            if (el[13]) { 
+              // try to get the contacts
+              contacts = el[13].split(";").map(async (item) => {
+                const result = await axiosInstance.get(
+                  apiUrl + `/users?email=${item}`
+                );
+                if (!result?.data?.length) { 
+                  // create the contact
+                  const result = await axiosInstance.post(
+                    apiUrl + "/users",
+                    {
+                      email: item,
+                      firstname: item.split("@")[0],
+                    },
+                    {
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                    }
+                  );
+                  return result?.data?.id;
+                } else {
+                  return result?.data[0]?.id;
+                }
+              });
+            }
+
+            let organisations = [];
+
+            if (el[15]) { 
+              // try to get the organisations
+              organisations = el[15].split(";").map(async (item) => {
+                const result = await axiosInstance.get(
+                  apiUrl + `/organisations?name=${item}`
+                );
+                if (!result?.data?.length) { 
+                  // create the organisation
+                  const result = await axiosInstance.post(
+                    apiUrl + "/organisations",
+                    {
+                      name: item,
+                    },
+                    {
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                    }
+                  );
+                  return result?.data?.id;
+                } else {
+                  return result?.data[0]?.id;
+                }
+              });
+            }
+
             const ob: any = {
-              title: el[1],
-              beginning_date: el[11],
-              ending_date: el[12],
-              target_country: el[10],
-              description: el[8],
-              registration_link: el[15],
-              location: el[10],
+              title: el[0],
+              beginningDate: el[1],
+              endingDate: el[2],
+              target_countries: countriesArray,
+              description: el[4],
+              registration_link: el[5],
+              location: el[6],
               cover: imageUrl ? imageUrl : "",
-              format: el[7],
+              format: el[8],
+              event_type: eventType,
+              activity_areas: activityAreas,
+              is_recurrent: el[11] === "Oui" ? true : false,
+              frequence: el[12],
+              contacts: contacts,
+              source: el[14],
+
             };
             body.push({ ...ob });
             // await axios.post(apiUrl + "/organisations", el);
