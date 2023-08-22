@@ -5,8 +5,16 @@ const CustomUtils = require("../../utils/index.js");
 // @route Get /api/v1/userTypes
 // @access Public
 exports.getAllUserTypes = async (req, res) => {
+  const { limit, page, sort, fields } = req.query;
+  const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const userTypes = await UserType.find().sort({ createdAt: -1 });
+    const userTypes = await UserType.find(queryObj)
+      .limit(limit * 1)
+      .sort({
+        createdAt: -1,
+        ...sort,
+      })
+      .select(fields);
     res.status(200).json(userTypes);
   } catch (error) {
     res.status(404).json({ message: error.message });

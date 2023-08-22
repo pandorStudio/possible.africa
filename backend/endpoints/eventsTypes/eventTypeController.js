@@ -5,8 +5,13 @@ const CustomUtils = require("../../utils/index.js");
 // @route Get /api/v1/eventTypes
 // @access Public
 exports.getAllEventTypes = async (req, res) => {
+  const { limit, page, sort, fields } = req.query;
+  const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const eventTypes = await EventType.find().sort({ createdAt: -1 });
+    const eventTypes = await EventType.find(queryObj)
+      .sort({ createdAt: -1, ...sort })
+      .limit(limit * 1)
+      .select(fields);
     res.status(200).json(eventTypes);
   } catch (error) {
     res.status(404).json({ message: error.message });

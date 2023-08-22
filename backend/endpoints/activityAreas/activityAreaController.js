@@ -5,8 +5,13 @@ const CustomUtils = require("../../utils/index.js");
 // @Route: /api/v1/activityAreas
 // @Access: Public
 exports.getAllActivityAreas = async (req, res, next) => {
+  const { limit, page, sort, fields } = req.query;
+  const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const activityAreas = await ActivityArea.find().sort({ createdAt: -1 });
+    const activityAreas = await ActivityArea.find(queryObj)
+      .limit(limit * 1)
+      .sort({ createdAt: -1, ...sort })
+      .select(fields);
     res.status(200).json(activityAreas);
   } catch (error) {
     res.status(404).json({ message: error.message });

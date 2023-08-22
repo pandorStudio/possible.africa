@@ -6,11 +6,16 @@ const CustomUtils = require("../../utils/index.js");
 // @access Public
 
 exports.getAllPostCategories = async (req, res) => {
+  const { limit, page, sort, fields } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
   try {
-    const postCategories = await PostCategorie.find(queryObj).sort({
-      createdAt: -1,
-    });
+    const postCategories = await PostCategorie.find(queryObj)
+      .limit(limit * 1)
+      .sort({
+        createdAt: -1,
+        ...sort,
+      })
+      .select(fields);
     res.status(200).json(postCategories);
   } catch (error) {
     res.status(404).json({ message: error.message });

@@ -78,19 +78,25 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           } else {
             const blobImage = await downloadMedia(el[7]);
             const imageUrl = await imageUploadHandler(blobImage.data.dataUrl);
-            const countriesArray = el[3].split(";").map(async (item) => {
-              const result = await axiosInstance.get(
-                apiUrl + `/countries?translations.fra.common=${item}`
-              );
-              return result.data.data[0].id;
-            });
+            let countriesArray = null;
+            // if (el[3]) {
+            //   countriesArray = el[3].split(";").map(async (item) => {
+            //     const result = await axiosInstance.get(
+            //       apiUrl + `/countries?translations.fra.common=${item}`
+            //     );
+            //     console.log(result, "countries");
+            //     return result.data[0].id;
+            //   });
+            // }
+
+
             let eventType = null;
             if (el[9]) {
               // try to get the event type
               eventType = await axiosInstance.get(
                 apiUrl + `/event_types?name=${el[9]}`
               );
-              console.log(eventType);
+              console.log(eventType, "event type");
               if (!eventType?.data?.length) { 
                 // create the event type
                 const result = await axiosInstance.post(
@@ -111,87 +117,90 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             }
 
             let activityAreas = [];
-            if (el[10]) { 
-              activityAreas = el[10].split(";").map(async (item) => {
-                const result = await axiosInstance.get(
-                  apiUrl + `/activity_areas?name=${item}`
-                );
-                if (!result?.data?.length) {
-                  // create the activity area
-                  const result = await axiosInstance.post(
-                    apiUrl + "/activity_areas",
-                    {
-                      name: item,
-                    },
-                    {
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                    }
-                  );
-                  return result?.data?.id;
-                } else {
-                  return result?.data[0]?.id;
-                }
-              });
-            }
+            // if (el[10]) { 
+            //   activityAreas = el[10].split(";").map(async (item) => {
+            //     const result = await axiosInstance.get(
+            //       apiUrl + `/activity_areas?name=${item}`
+            //     );
+            //     console.log(result, "activity area");
+            //     if (!result?.data?.length) {
+            //       // create the activity area
+            //       const result = await axiosInstance.post(
+            //         apiUrl + "/activity_areas",
+            //         {
+            //           name: item,
+            //         },
+            //         {
+            //           headers: {
+            //             "Content-Type": "application/json",
+            //           },
+            //         }
+            //       );
+            //       return result?.data?.id;
+            //     } else {
+            //       return result?.data[0]?.id;
+            //     }
+            //   });
+            // }
             
 
             let contacts = [];
-            if (el[13]) { 
-              // try to get the contacts
-              contacts = el[13].split(";").map(async (item) => {
-                const result = await axiosInstance.get(
-                  apiUrl + `/users?email=${item}`
-                );
-                if (!result?.data?.length) { 
-                  // create the contact
-                  const result = await axiosInstance.post(
-                    apiUrl + "/users",
-                    {
-                      email: item,
-                      firstname: item.split("@")[0],
-                    },
-                    {
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                    }
-                  );
-                  return result?.data?.id;
-                } else {
-                  return result?.data[0]?.id;
-                }
-              });
-            }
+            // if (el[13]) { 
+            //   // try to get the contacts
+            //   contacts = el[13].split(";").map(async (item) => {
+            //     const result = await axiosInstance.get(
+            //       apiUrl + `/users?email=${item}`
+            //     );
+            //     console.log(result, "contacts")
+            //     if (!result?.data?.length) { 
+            //       // create the contact
+            //       const result = await axiosInstance.post(
+            //         apiUrl + "/users",
+            //         {
+            //           email: item,
+            //           firstname: item.split("@")[0],
+            //         },
+            //         {
+            //           headers: {
+            //             "Content-Type": "application/json",
+            //           },
+            //         }
+            //       );
+            //       return result?.data?.id;
+            //     } else {
+            //       return result?.data[0]?.id;
+            //     }
+            //   });
+            // }
 
             let organisations = [];
 
-            if (el[15]) { 
-              // try to get the organisations
-              organisations = el[15].split(";").map(async (item) => {
-                const result = await axiosInstance.get(
-                  apiUrl + `/organisations?name=${item}`
-                );
-                if (!result?.data?.length) { 
-                  // create the organisation
-                  const result = await axiosInstance.post(
-                    apiUrl + "/organisations",
-                    {
-                      name: item,
-                    },
-                    {
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                    }
-                  );
-                  return result?.data?.id;
-                } else {
-                  return result?.data[0]?.id;
-                }
-              });
-            }
+            // if (el[15]) { 
+            //   // try to get the organisations
+            //   organisations = el[15].split(";").map(async (item) => {
+            //     const result = await axiosInstance.get(
+            //       apiUrl + `/organisations?name=${item}`
+            //     );
+            //     console.log(result, "organisations")
+            //     if (!result?.data?.length) { 
+            //       // create the organisation
+            //       const result = await axiosInstance.post(
+            //         apiUrl + "/organisations",
+            //         {
+            //           name: item,
+            //         },
+            //         {
+            //           headers: {
+            //             "Content-Type": "application/json",
+            //           },
+            //         }
+            //       );
+            //       return result?.data?.id;
+            //     } else {
+            //       return result?.data[0]?.id;
+            //     }
+            //   });
+            // }
 
             const ob: any = {
               title: el[0],
@@ -471,7 +480,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
           <Table.Column dataIndex="frequence" title="Frequence" />
-          <Table.Column dataIndex={["user", "username"]} title="Contributeur" />
+          <Table.Column dataIndex={["user", "complete_name"]} title="Contributeur" />
           <Table.Column
             ellipsis={true}
             dataIndex="location"
