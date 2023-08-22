@@ -82,7 +82,7 @@ function CardComponent({
             h={{ base: "40%" }}
           >
             {/* Badge */}
-            {organisations?.length > 1 ? (
+            {editors?.length > 1 ? (
               <Box
                 as="span"
                 zIndex={1}
@@ -100,16 +100,14 @@ function CardComponent({
                   color="white"
                   textAlign="center"
                 >
-                  +{organisations?.length - 1}
+                  +{editors?.length - 1}
                 </Text>
               </Box>
             ) : null}
             <Box
               as="div"
-              mt={organisations?.length > 1 ? { base: "5px" } : { base: "5px" }}
-              mr={
-                organisations?.length > 1 ? { base: "18px" } : { base: "13px" }
-              }
+              mt={editors?.length > 1 ? { base: "5px" } : { base: "5px" }}
+              mr={editors?.length > 1 ? { base: "18px" } : { base: "13px" }}
               h={{ base: "35px" }}
               w={{ base: "35px" }}
               border="1px solid rgba(217, 217, 217, 0.5)"
@@ -118,9 +116,9 @@ function CardComponent({
               overflow="hidden"
             >
               <Image
-                key={organisations?.length > 0 ? organisations[0]._id : ""}
-                src={organisations?.length > 0 ? organisations[0].logo : ""}
-                alt={organisations?.length > 0 ? organisations[0].logo : ""}
+                key={editors?.length > 0 ? editors[0]._id : ""}
+                src={editors?.length > 0 ? editors[0].logo : ""}
+                alt={editors?.length > 0 ? editors[0].logo : ""}
                 fallbackSrc="/placeholder_org.jpeg"
                 fit="contain"
                 w={{ base: "35px" }}
@@ -143,9 +141,7 @@ function CardComponent({
                 justifyContent="flex-start"
               >
                 <Box>
-                  {organisations?.length > 0
-                    ? organisations[0].name
-                    : "Possible.Africa"}
+                  {editors?.length > 0 ? editors[0].name : "Possible.Africa"}
                 </Box>
                 {source ? (
                   <Link target="_blank" to={source}>
@@ -172,7 +168,14 @@ function CardComponent({
               fontSize="xl"
               paddingBottom={{ base: 1 }}
             >
-              {link ? <Link to={link}>{title}</Link> : { title }}
+              {/* {link ? <Link to={link}>{title}</Link> : { title }} */}
+              {source ? (
+                <Link target="_blank" to={source}>
+                  {title}
+                </Link>
+              ) : (
+                <Link to={link}>{title}</Link>
+              )}
             </Text>
             {description.length ? (
               <Text
@@ -313,7 +316,7 @@ function CardComponent({
                 </Box>
               ) : null}
 
-              {editors?.length > 1 ? (
+              {organisations?.length > 1 ? (
                 <Box
                   as="div"
                   display="flex"
@@ -331,8 +334,8 @@ function CardComponent({
                     borderLeftRadius="10px"
                     px="5px"
                   >
-                    <EditorIcon boxSize="18px" mr="5px" />
-                    <Box as="div">{editors[0]?.name}</Box>
+                    <OrganisationsIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{organisations[0]?.name}</Box>
                   </Box>
                   <Box
                     as="div"
@@ -341,10 +344,10 @@ function CardComponent({
                     borderRightRadius="10px"
                     px="3px"
                   >
-                    +{editors?.length - 1}
+                    +{organisations?.length - 1}
                   </Box>
                 </Box>
-              ) : editors?.length === 1 ? (
+              ) : organisations?.length === 1 ? (
                 <Box
                   as="div"
                   display="flex"
@@ -362,8 +365,8 @@ function CardComponent({
                     borderRadius="10px"
                     px="5px"
                   >
-                    <EditorIcon boxSize="18px" mr="5px" />
-                    <Box as="div">{editors[0]?.name}</Box>
+                    <OrganisationsIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{organisations[0]?.name}</Box>
                   </Box>
                 </Box>
               ) : null}
@@ -448,7 +451,7 @@ function CardComponent({
             h={{ base: "40%" }}
           >
             {/* Badge */}
-            {organisations?.length > 1 ? (
+            {editors?.length > 1 ? (
               <Box
                 as="span"
                 zIndex={1}
@@ -466,16 +469,14 @@ function CardComponent({
                   color="white"
                   textAlign="center"
                 >
-                  +{organisations?.length - 1}
+                  +{editors?.length - 1}
                 </Text>
               </Box>
             ) : null}
             <Box
               as="div"
-              mt={organisations?.length > 1 ? { base: "5px" } : { base: "5px" }}
-              mr={
-                organisations?.length > 1 ? { base: "18px" } : { base: "13px" }
-              }
+              mt={editors?.length > 1 ? { base: "5px" } : { base: "5px" }}
+              mr={editors?.length > 1 ? { base: "18px" } : { base: "13px" }}
               h={{ base: "35px" }}
               w={{ base: "35px" }}
               border="1px solid rgba(217, 217, 217, 0.5)"
@@ -484,9 +485,9 @@ function CardComponent({
               overflow="hidden"
             >
               <Image
-                key={organisations?.length > 0 ? organisations[0]._id : ""}
-                src={organisations?.length > 0 ? organisations[0].logo : ""}
-                alt={organisations?.length > 0 ? organisations[0].logo : ""}
+                key={editors?.length > 0 ? editors[0]._id : ""}
+                src={editors?.length > 0 ? editors[0].logo : ""}
+                alt={editors?.length > 0 ? editors[0].logo : ""}
                 fallbackSrc="/placeholder_org.jpeg"
                 fit="contain"
                 w={{ base: "35px" }}
@@ -509,9 +510,7 @@ function CardComponent({
                 justifyContent="flex-start"
               >
                 <Box>
-                  {organisations?.length > 0
-                    ? organisations[0].name
-                    : "Possible.Africa"}
+                  {editors?.length > 0 ? editors[0].name : "Possible.Africa"}
                 </Box>
                 {source ? (
                   <Link target="_blank" to={source}>
@@ -539,6 +538,11 @@ function CardComponent({
               paddingBottom={{ base: 1 }}
             >
               {link ? <Link to={link}>{title}</Link> : { title }}
+              {source ? (
+                <Link to={source}>{title}</Link>
+              ) : (
+                <Link to={link}>{title}</Link>
+              )}
             </Text>
             {description.length ? (
               <Text
@@ -554,7 +558,7 @@ function CardComponent({
           </CardBody>
           {labels?.length > 0 ||
           countries?.length > 0 ||
-          editors?.length > 0 ||
+          organisations?.length > 0 ||
           authors?.length > 0 ? (
             <CardFooter
               paddingY={{ base: 2 }}
@@ -679,7 +683,7 @@ function CardComponent({
                 </Box>
               ) : null}
 
-              {editors?.length > 1 ? (
+              {organisations?.length > 1 ? (
                 <Box
                   as="div"
                   display="flex"
@@ -697,8 +701,8 @@ function CardComponent({
                     borderLeftRadius="10px"
                     px="5px"
                   >
-                    <EditorIcon boxSize="18px" mr="5px" />
-                    <Box as="div">{editors[0]?.name}</Box>
+                    <OrganisationsIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{organisations[0]?.name}</Box>
                   </Box>
                   <Box
                     as="div"
@@ -707,10 +711,10 @@ function CardComponent({
                     borderRightRadius="10px"
                     px="3px"
                   >
-                    +{editors?.length - 1}
+                    +{organisations?.length - 1}
                   </Box>
                 </Box>
-              ) : editors?.length === 1 ? (
+              ) : organisations?.length === 1 ? (
                 <Box
                   as="div"
                   display="flex"
@@ -728,8 +732,8 @@ function CardComponent({
                     borderRadius="10px"
                     px="5px"
                   >
-                    <EditorIcon boxSize="18px" mr="5px" />
-                    <Box as="div">{editors[0]?.name}</Box>
+                    <OrganisationsIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{organisations[0]?.name}</Box>
                   </Box>
                 </Box>
               ) : null}

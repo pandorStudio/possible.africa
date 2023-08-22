@@ -76,7 +76,7 @@ postSchema.pre(/^find/, function (next) {
   });
   this.populate({
     path: "editors",
-    select: "name contributeur",
+    select: "name contributeur logo",
   });
   this.populate({
     path: "countries",
