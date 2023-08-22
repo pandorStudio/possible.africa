@@ -60,7 +60,7 @@ const transformJson = async () => {
 // @route GET /api/v1/events
 // @access Public
 exports.getAllEvents = async (req, res, next) => {
-  transformJson();
+  // transformJson();
   try {
     const events = await Event.find().sort({ createdAt: -1 });
     res.status(200).json(events);

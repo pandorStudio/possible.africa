@@ -84,12 +84,12 @@ app.use(API_URL_BASE + "dashboard", dashboardRoutes);
 // Routes
 app.get(API_URL_BASE, (req, res) => {
   res.json({
-    message: "Welcome to the API! This is the official API of Possible.Africa",
+    message: "Bienvenue sur l'API de l'application Possible.Africa",
   });
 });
 
 // Start server
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
 connection(URL_CONNECT_DEV);
 // db = connection(URL_CONNECT_DEV);
 
