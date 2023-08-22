@@ -82,13 +82,13 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     optionLabel: "complete_name",
     optionValue: "_id",
     defaultValue: postsData?.authors?._id,
-    filters: [
-      {
-        field: "role",
-        operator: "eq",
-        value: "contact",
-      },
-    ],
+    // filters: [
+    //   {
+    //     field: "role",
+    //     operator: "eq",
+    //     value: "contact",
+    //   },
+    // ],
   });
 
   const { selectProps: labelSelectProps } = useSelect({

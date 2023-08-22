@@ -77,13 +77,13 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
     resource: "users",
     optionLabel: "complete_name",
     optionValue: "_id",
-    filters: [
-      {
-        field: "role",
-        operator: "eq",
-        value: "contact",
-      },
-    ],
+    // filters: [
+    //   {
+    //     field: "role",
+    //     operator: "eq",
+    //     value: "contact",
+    //   },
+    // ],
   });
 
   const { selectProps: categorieSelectProps } = useSelect({
