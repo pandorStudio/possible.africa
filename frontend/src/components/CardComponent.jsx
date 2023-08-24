@@ -57,6 +57,7 @@ function CardComponent({
   contacts,
   activity_areas,
   organisation_types,
+  language
 }) {
   let card = <></>;
 
@@ -155,7 +156,8 @@ function CardComponent({
                 fontSize="70%"
                 fontStyle="italic"
               >
-                En ligne depuis le {createdAt}
+                En ligne depuis le {createdAt}, langue :{" "}
+                <Box as="span" color="#2BB19C">{language}</Box>
               </Box>
             </Box>
           </CardHeader>
@@ -524,7 +526,10 @@ function CardComponent({
                 fontSize="70%"
                 fontStyle="italic"
               >
-                En ligne depuis le {createdAt}
+                En ligne depuis le {createdAt}, langue :{" "}
+                <Box as="span" color="#2BB19C">
+                  {language}
+                </Box>
               </Box>
             </Box>
           </CardHeader>

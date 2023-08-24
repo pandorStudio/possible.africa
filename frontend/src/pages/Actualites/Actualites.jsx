@@ -105,6 +105,7 @@ function Actualites() {
                 labels={news?.labels?.length > 0 ? news?.labels : []}
                 createdAt={date}
                 source={news?.source}
+                language={news?.publication_language || "Français"}
               />
             );
 

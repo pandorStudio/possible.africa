@@ -131,6 +131,7 @@ function Interviews() {
               labels={interview?.labels?.length > 0 ? interview?.labels : []}
               createdAt={date}
               source={interview?.source}
+              language={interview?.publication_language || "Français"}
             />
           );
           return <>{instanceCard}</>;
