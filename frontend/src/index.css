@@ -12,15 +12,14 @@
   z-index: 1;
 }
 
-
 .scrollContainer::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollContainer {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .input {
@@ -73,13 +72,10 @@
   border-bottom: none;
 }
 
-
 input:focus + .search-results-container,
-input:not(:placeholder-shown) + .search-results-container 
-{
+input:not(:placeholder-shown) + .search-results-container {
   display: block;
 }
-
 
 .highlight {
   font-weight: bold;
@@ -162,7 +158,6 @@ button:focus-visible {
 }
 */
 
-
 .tooltip::before {
   content: "";
   position: absolute;
@@ -174,4 +169,10 @@ button:focus-visible {
   border-color: black transparent transparent transparent;
 }
 
-
+.cardFooter::-webkit-scrollbar {
+  display: none;
+}
+.cardFooter {
+  -ms-overflow-style: none; /* IE and Edge */
+  overflow: -moz-scrollbars-none; /* Firefox */
+}
