@@ -195,7 +195,7 @@ function CardComponent({
           countries?.length > 0 ||
           editors?.length > 0 ||
           authors?.length > 0 ? (
-            <CardFooter
+            <CardFooter className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
@@ -565,7 +565,7 @@ function CardComponent({
           countries?.length > 0 ||
           organisations?.length > 0 ||
           authors?.length > 0 ? (
-            <CardFooter
+            <CardFooter className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
@@ -933,7 +933,7 @@ function CardComponent({
           countries?.length > 0 ||
           contacts?.length > 0 ||
           activity_areas?.length > 0 ? (
-            <CardFooter
+            <CardFooter className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
@@ -1269,7 +1269,7 @@ function CardComponent({
           activity_areas?.length > 0 ||
           countries?.length > 0 ||
           type ? (
-            <CardFooter
+            <CardFooter className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
@@ -1580,7 +1580,7 @@ function CardComponent({
           activity_areas?.length > 0 ||
           countries?.length > 0 ||
           type ? (
-            <CardFooter
+            <CardFooter className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
@@ -1901,7 +1901,7 @@ function CardComponent({
           contacts?.length > 0 ||
           activity_areas?.length > 0 ||
           organisation_types?.length > 0 ? (
-            <CardFooter
+            <CardFooter className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
@@ -2615,7 +2615,7 @@ export default CardComponent;
 //         </Text>
 //       </CardBody>
 //       {labels?.length > 0 || countries?.length > 0 ? (
-//         <CardFooter
+//         <CardFooter className="cardFooter"
 //           paddingY={{ base: 2 }}
 //           color="#50625F"
 //           display="flex"
@@ -3541,7 +3541,7 @@ export default CardComponent;
 //       </Box>
 //     </CardBody>
 //     {labels?.length > 0 || countries?.length > 0 ? (
-//       <CardFooter
+//       <CardFooter className="cardFooter"
 //         paddingY={{ base: 2 }}
 //         color="#50625F"
 //         display="flex"
