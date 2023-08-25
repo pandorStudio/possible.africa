@@ -542,9 +542,11 @@ function CardComponent({
               fontSize="xl"
               paddingBottom={{ base: 1 }}
             >
-              {link ? <Link to={link}>{title}</Link> : { title }}
+              {/* {link ? <Link to={link}>{title}</Link> : { title }} */}
               {source ? (
-                <Link to={source}>{title}</Link>
+                <Link target="_blank" to={source}>
+                  {title}
+                </Link>
               ) : (
                 <Link to={link}>{title}</Link>
               )}
