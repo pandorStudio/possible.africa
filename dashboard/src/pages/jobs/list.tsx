@@ -314,7 +314,7 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
           /> */}
           <Table.Column dataIndex="type" title="Type" />
           
-          <Table.Column dataIndex="title" title="Titre" render={(value: any) => {
+          <Table.Column dataIndex="source" title="Source" render={(value: any) => {
             if (value) {
               <Link href={value}>value</Link>;
             } else {
