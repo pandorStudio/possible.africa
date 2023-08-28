@@ -57,7 +57,8 @@ function CardComponent({
   contacts,
   activity_areas,
   organisation_types,
-  language
+  language,
+  sitWebLink
 }) {
   let card = <></>;
 
@@ -915,7 +916,13 @@ function CardComponent({
               fontSize="xl"
               paddingBottom={{ base: 1 }}
             >
-              {link ? <Link to={link}>{title}</Link> : { title }}
+              {source ? (
+                <Link target="_blank" to={source}>
+                  {title}
+                </Link>
+              ) : (
+                <Link to={link}>{title}</Link>
+              )}
             </Text>
             {description.length ? (
               <Text
@@ -1252,7 +1259,13 @@ function CardComponent({
               fontSize="xl"
               paddingBottom={{ base: 1 }}
             >
-              {link ? <Link to={link}>{title}</Link> : { title }}
+              {source ? (
+                <Link target="_blank" to={source}>
+                  {title}
+                </Link>
+              ) : (
+                <Link to={link}>{title}</Link>
+              )}
             </Text>
             {description.length ? (
               <Text
@@ -1563,7 +1576,13 @@ function CardComponent({
               fontSize="xl"
               paddingBottom={{ base: 1 }}
             >
-              {source ? <Link to={source}>{title}</Link> : <Link to={link}>{title}</Link>}
+              {source ? (
+                <Link target="_blank" to={source}>
+                  {title}
+                </Link>
+              ) : (
+                <Link to={link}>{title}</Link>
+              )}
             </Text>
             {description.length ? (
               <Text
@@ -1857,8 +1876,8 @@ function CardComponent({
                     {link ? <Link to={link}>{title}</Link> : { title }}
                   </Text>
                 </Box>
-                {source ? (
-                  <Link target="_blank" to={source}>
+                {source || sitWebLink ? (
+                  <Link target="_blank" to={source || sitWebLink}>
                     <ReturnIcon boxSize="18px" ml="5px" />
                   </Link>
                 ) : null}

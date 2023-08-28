@@ -313,14 +313,18 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
             }}
           /> */}
           <Table.Column dataIndex="type" title="Type" />
-          
-          <Table.Column dataIndex="source" title="Source" render={(value: any) => {
-            if (value) {
-              <Link href={value}>value</Link>;
-            } else {
-              return "-";
-            }
-          }} />
+
+          <Table.Column
+            dataIndex="source"
+            title="Source"
+            render={(value: any) => {
+              if (value) {
+                return <Link href={value}>value</Link>;
+              } else {
+                return "-";
+              }
+            }}
+          />
           <Table.Column dataIndex="salary" title="Salaire" />
           <Table.Column
             dataIndex={["beginning_date"]}
