@@ -56,6 +56,9 @@ export const JobCreate: React.FC<IResourceComponentsProps> = () => {
     if (!values?.organisation) {
       values.organisation = null;
     }
+    if (!values?.source) {
+      values.source = null;
+    }
     onFinish(values);
   }
 
@@ -100,6 +103,9 @@ export const JobCreate: React.FC<IResourceComponentsProps> = () => {
           >
             <option value="">Selectionner</option>
           </Select>
+        </Form.Item>
+        <Form.Item label="Source" name={["source"]}>
+          <Input />
         </Form.Item>
         <Form.Item label="Type" name={["type"]}>
           <Select defaultValue="">

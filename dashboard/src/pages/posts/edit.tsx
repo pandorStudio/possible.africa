@@ -176,6 +176,9 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
     if (!values?.image) {
       values.image = null;
     }
+    if (!values?.source) {
+      values.source = null;
+    }
 
     onFinish(values);
   }

@@ -1536,7 +1536,7 @@ function CardComponent({
                 justifyContent="flex-start"
               >
                 <Box>
-                  {company?.name > 0 ? company?.name : "Possible.Africa"}
+                  {company?.name ? company?.name : "Possible.Africa"}
                 </Box>
                 {source ? (
                   <Link target="_blank" to={source}>
@@ -1563,7 +1563,7 @@ function CardComponent({
               fontSize="xl"
               paddingBottom={{ base: 1 }}
             >
-              {link ? <Link to={link}>{title}</Link> : { title }}
+              {source ? <Link to={source}>{title}</Link> : <Link to={link}>{title}</Link>}
             </Text>
             {description.length ? (
               <Text

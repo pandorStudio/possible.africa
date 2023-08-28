@@ -11,6 +11,7 @@ import { Space, Typography } from "antd";
 import parse from "html-react-parser";
 import { htmlParseOptions } from "../posts/show";
 import { Admin } from "../../custom-components/AccessControl";
+import Link from "antd/es/typography/Link";
 
 const { Title } = Typography;
 
@@ -45,6 +46,13 @@ export const JobShow: React.FC<IResourceComponentsProps> = () => {
             htmlParseOptions
           )}
       </span>
+      <Title level={5}>Source</Title>
+      {/*<TextField value={record?.source} />*/}
+      {record?.source ? (
+        <Link href={record?.source}>{record?.source}</Link>
+      ) : (
+        "-"
+      )}
       <Title level={5}>Type</Title>
       <TextField value={record?.type} />
       <Title level={5}>Salaire</Title>
