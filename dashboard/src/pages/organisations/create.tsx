@@ -302,7 +302,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item
           label="Type"
-          name={["type"]}
+          name={["types"]}
           getValueProps={(value: any[]) => {
             return {
               value: value?.map((item) => item),

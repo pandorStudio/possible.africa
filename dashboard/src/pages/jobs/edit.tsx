@@ -60,6 +60,9 @@ export const JobEdit: React.FC<IResourceComponentsProps> = () => {
     if (!values?.organisation) {
       values.organisation = null;
     }
+    if (!values?.source) {
+      values.source = null;
+    }
     onFinish(values);
   }
 
@@ -106,6 +109,9 @@ export const JobEdit: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item label="Organisation" name={["organisation", "_id"]}>
           <Select {...organisationSelectProps} />
+        </Form.Item>
+        <Form.Item label="Source" name={["source"]}>
+          <Input />
         </Form.Item>
         <Form.Item label="Type" name={["type"]}>
           <Select defaultValue={jobsData?.type}>
