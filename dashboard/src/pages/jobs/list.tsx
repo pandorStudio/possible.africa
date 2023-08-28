@@ -317,6 +317,7 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
           <Table.Column
             dataIndex="source"
             title="Source"
+            ellipsis
             render={(value: any) => {
               if (value) {
                 return <Link href={value}>{value}</Link>;
