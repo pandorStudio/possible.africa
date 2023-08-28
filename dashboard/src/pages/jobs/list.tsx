@@ -319,7 +319,7 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
             title="Source"
             render={(value: any) => {
               if (value) {
-                return <Link href={value}>value</Link>;
+                return <Link href={value}>{value}</Link>;
               } else {
                 return "-";
               }
