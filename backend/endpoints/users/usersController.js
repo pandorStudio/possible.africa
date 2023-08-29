@@ -67,11 +67,13 @@ exports.getUserById = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const bodyWR = { ...req.body };
-
+    // console.log(bodyWR);
     const contactRole = await UserRole.find({ slug: "contact" });
+    const adminRole = await UserRole.find({ slug: bodyWR.role });
     // if (role.length) bodyWR.role = role[0]._id;
     switch (req.user.role.slug) {
       case "admin":
+        if (adminRole.length) bodyWR.role = adminRole[0]._id;
         break;
       case "contributor":
         if (contactRole.length) bodyWR.role = contactRole[0]._id;

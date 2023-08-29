@@ -16,10 +16,19 @@ import {
   List,
   ShowButton,
   TagField,
+  useEditableTable,
   useTable,
 } from "@refinedev/antd";
-import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
-import { axiosInstance } from "@refinedev/simple-rest";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  message,
+  Modal,
+  Space,
+  Table,
+} from "antd";
 import papa from "papaparse";
 import { downloadMedia } from "../organisations/list";
 import { imageUploadHandler } from "../posts/create";
@@ -29,9 +38,20 @@ import {
   Admin,
   AdminOrContributor,
 } from "../../custom-components/AccessControl";
+import { TOKEN_KEY } from "../../custom-data-provider/data-provider";
+import { useCreate } from "@refinedev/core";
+import axios from "axios";
+
+// interface IEvent {
+//   title: string;
+//   type: {
+//     id: string;
+//   };
+
+// }
 
 export const EventList: React.FC<IResourceComponentsProps> = () => {
-  const { tableProps } = useTable({
+  const { tableProps, formProps } = useEditableTable({
     syncWithLocation: true,
   });
   const { data: countriesData, isLoading: countriesIsLoading } = useMany({
@@ -64,6 +84,15 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
   const [visibleCheckAll, setVisibleCheckAll] = useState(false);
   const invalidate = useInvalidate();
   let checkboxRefs = useRef([]);
+  const { mutate } = useCreate();
+  const token = localStorage.getItem(TOKEN_KEY);
+  const axiosInstance = axios.create({
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   async function handleImport(e: any) {
     const file = e.target.files[0];
@@ -76,171 +105,160 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           if (i === 0) {
             headers.push(...el);
           } else {
-            const blobImage = await downloadMedia(el[7]);
-            const imageUrl = await imageUploadHandler(blobImage.data.dataUrl);
-            let countriesArray = null;
-            // if (el[3]) {
-            //   countriesArray = el[3].split(";").map(async (item) => {
-            //     const result = await axiosInstance.get(
-            //       apiUrl + `/countries?translations.fra.common=${item}`
-            //     );
-            //     console.log(result, "countries");
-            //     return result.data[0].id;
-            //   });
-            // }
-
-
+            let promisesToBeResolved = [];
             let eventType = null;
-            if (el[9]) {
+            if (el[0] || el[9] || el[7] || el[3] || el[13] || el[15]) {
+              // const blobImage = await downloadMedia(el[7]);
+              // const imageUrl = await imageUploadHandler(blobImage.data.dataUrl);
               // try to get the event type
               eventType = await axiosInstance.get(
                 apiUrl + `/event_types?name=${el[9]}`
               );
-              console.log(eventType, "event type");
-              if (!eventType?.data?.length) { 
+              // console.log(eventType, "event type");
+              if (!eventType?.data?.length) {
                 // create the event type
                 const result = await axiosInstance.post(
                   apiUrl + "/event_types",
                   {
                     name: el[9],
-                  },
-                  {
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
                   }
                 );
                 eventType = result?.data?.id;
               } else {
                 eventType = eventType?.data[0]?.id;
               }
-            }
 
-            let activityAreas = [];
-            // if (el[10]) { 
-            //   activityAreas = el[10].split(";").map(async (item) => {
-            //     const result = await axiosInstance.get(
-            //       apiUrl + `/activity_areas?name=${item}`
-            //     );
-            //     console.log(result, "activity area");
-            //     if (!result?.data?.length) {
-            //       // create the activity area
-            //       const result = await axiosInstance.post(
-            //         apiUrl + "/activity_areas",
-            //         {
-            //           name: item,
-            //         },
-            //         {
-            //           headers: {
-            //             "Content-Type": "application/json",
-            //           },
-            //         }
-            //       );
-            //       return result?.data?.id;
-            //     } else {
-            //       return result?.data[0]?.id;
-            //     }
-            //   });
-            // }
-            
+              let countriesArray = [];
 
-            let contacts = [];
-            // if (el[13]) { 
-            //   // try to get the contacts
-            //   contacts = el[13].split(";").map(async (item) => {
-            //     const result = await axiosInstance.get(
-            //       apiUrl + `/users?email=${item}`
-            //     );
-            //     console.log(result, "contacts")
-            //     if (!result?.data?.length) { 
-            //       // create the contact
-            //       const result = await axiosInstance.post(
-            //         apiUrl + "/users",
-            //         {
-            //           email: item,
-            //           firstname: item.split("@")[0],
-            //         },
-            //         {
-            //           headers: {
-            //             "Content-Type": "application/json",
-            //           },
-            //         }
-            //       );
-            //       return result?.data?.id;
-            //     } else {
-            //       return result?.data[0]?.id;
-            //     }
-            //   });
-            // }
-
-            let organisations = [];
-
-            // if (el[15]) { 
-            //   // try to get the organisations
-            //   organisations = el[15].split(";").map(async (item) => {
-            //     const result = await axiosInstance.get(
-            //       apiUrl + `/organisations?name=${item}`
-            //     );
-            //     console.log(result, "organisations")
-            //     if (!result?.data?.length) { 
-            //       // create the organisation
-            //       const result = await axiosInstance.post(
-            //         apiUrl + "/organisations",
-            //         {
-            //           name: item,
-            //         },
-            //         {
-            //           headers: {
-            //             "Content-Type": "application/json",
-            //           },
-            //         }
-            //       );
-            //       return result?.data?.id;
-            //     } else {
-            //       return result?.data[0]?.id;
-            //     }
-            //   });
-            // }
-
-            const ob: any = {
-              title: el[0],
-              beginningDate: el[1],
-              endingDate: el[2],
-              target_countries: countriesArray,
-              description: el[4],
-              registration_link: el[5],
-              location: el[6],
-              cover: imageUrl ? imageUrl : "",
-              format: el[8],
-              event_type: eventType,
-              activity_areas: activityAreas,
-              is_recurrent: el[11] === "Oui" ? true : false,
-              frequence: el[12],
-              contacts: contacts,
-              source: el[14],
-
-            };
-            body.push({ ...ob });
-            // await axios.post(apiUrl + "/organisations", el);
-            await axiosInstance
-              .post(
-                apiUrl + "/events",
-                {
-                  ...ob,
-                },
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                }
-              )
-              .then((response) => {
-                // console.log(response);
-                setImportLoading(false);
-              })
-              .catch(function (error) {
-                console.log(error);
+              const array = [];
+              const countriesToBeImported = el[3].split(";");
+              // console.log(countriesToBeImported, "To be imported");
+              countriesArray = await countriesToBeImported.map((item: any) => {
+                return axiosInstance
+                  .get(apiUrl + `/countries?translations.fra.common=${item}`)
+                  .then((result) => {
+                    // console.log(result);
+                    return result?.data[0]?.id;
+                  });
+                // return result?.data[0].id;
               });
+
+              let activityAreas = [];
+              activityAreas = el[10].split(";").map(async (item) => {
+                const result = await axiosInstance.get(
+                  apiUrl + `/activity_areas?name=${item}`
+                );
+                // console.log(result, "activity area");
+                if (!result?.data?.length) {
+                  // create the activity area
+                  const result = await axiosInstance.post(
+                    apiUrl + "/activity_areas",
+                    {
+                      name: item,
+                    }
+                  );
+                  return result?.data?.id;
+                } else {
+                  return result?.data[0]?.id;
+                }
+              });
+              // console.log(activityAreas, "activity areas");
+
+              let contacts = [];
+              // try to get the contacts
+              contacts = el[13].split(";").map(async (item) => {
+                const result = await axiosInstance.get(
+                  apiUrl + `/users?email=${item}`
+                );
+                // console.log(result, "contacts");
+                if (!result?.data?.length) {
+                  // create the contact
+                  const result = await axiosInstance.post(apiUrl + "/users", {
+                    email: item,
+                    firstname: item.split("@")[0],
+                    role: "contact",
+                  });
+                  return result?.data?.id;
+                } else {
+                  return result?.data[0]?.id;
+                }
+              });
+
+              let organisations = [];
+
+              // try to get the organisations
+              organisations = el[15].split(";").map(async (item) => {
+                const result = await axiosInstance.get(
+                  apiUrl + `/organisations?name=${item}`
+                );
+                // console.log(result, "organisations");
+                if (!result?.data?.length) {
+                  // create the organisation
+                  const result = await axiosInstance.post(
+                    apiUrl + "/organisations",
+                    {
+                      name: item,
+                    }
+                  );
+                  return result?.data?.id;
+                } else {
+                  return result?.data[0]?.id;
+                }
+              });
+
+              Promise.all(countriesArray).then((values) => {
+                countriesArray = values;
+                Promise.all(activityAreas).then((values) => {
+                  activityAreas = values;
+                  Promise.all(contacts).then((values) => {
+                    contacts = values;
+                    Promise.all(organisations).then((values) => {
+                      organisations = values;
+
+                      const ob: any = {
+                        title: el[0],
+                        beginningDate: el[1],
+                        endingDate: el[2],
+                        target_countries: countriesArray,
+                        description: el[4],
+                        registration_link: el[5],
+                        location: el[6],
+                        // cover: imageUrl ? imageUrl : "",
+                        format: el[8],
+                        event_type: eventType,
+                        activity_areas: activityAreas,
+                        is_recurrent: el[11] === "Oui" ? true : false,
+                        frequence: el[12],
+                        contacts,
+                        source: el[14],
+                        organisations,
+                      };
+                      body.push({ ...ob });
+                      // await axios.post(apiUrl + "/organisations", el);
+                      axiosInstance
+                        .post(
+                          apiUrl + "/events",
+                          {
+                            ...ob,
+                          },
+                          {
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                          }
+                        )
+                        .then((response) => {
+                          // console.log(response);
+                          setImportLoading(false);
+                        })
+                        .catch(function (error) {
+                          // console.log(error);
+                        });
+                    });
+                  });
+                });
+              });
+            }
           }
         });
       },
@@ -411,175 +429,181 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
         }}
       >
         {modalContextHolder}
-        <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
-          <Table.Column
-            fixed="left"
-            width={68}
-            dataIndex=""
-            title={
-              visibleCheckAll ? (
-                <Checkbox
-                  checked={allCheckedOnPage}
-                  defaultChecked={false}
-                  onChange={handleCheckBoxAll}
-                />
-              ) : (
-                "#"
-              )
-            }
-            render={(_, record: BaseRecord) => {
-              return (
-                <Checkbox
-                  key={record.id}
-                  checked={checkedArray.includes(record.id)}
-                  ref={(input) => (checkboxRefs.current[record.id] = record.id)}
-                  className="ant-table-row-checkbox"
-                  onChange={() => handleCheckBox(event, record.id)}
-                />
-              );
-            }}
-          />
-          <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
+        <Form {...formProps}>
+          <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
+            <Table.Column
+              fixed="left"
+              width={68}
+              dataIndex=""
+              title={
+                visibleCheckAll ? (
+                  <Checkbox
+                    checked={allCheckedOnPage}
+                    defaultChecked={false}
+                    onChange={handleCheckBoxAll}
+                  />
+                ) : (
+                  "#"
+                )
+              }
+              render={(_, record: BaseRecord) => {
+                return (
+                  <Checkbox
+                    key={record.id}
+                    checked={checkedArray.includes(record.id)}
+                    ref={(input) =>
+                      (checkboxRefs.current[record.id] = record.id)
+                    }
+                    className="ant-table-row-checkbox"
+                    onChange={() => handleCheckBox(event, record.id)}
+                  />
+                );
+              }}
+            />
+            <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
 
-          <Table.Column
-            dataIndex={["event_type", "name"]}
-            title="Type d'évenement"
-          />
-          <Table.Column dataIndex="format" title="Format" />
-          <Table.Column
-            dataIndex={["beginningDate"]}
-            title="Date de début"
-            render={(value: any) => {
-              if (value) {
-                return <DateField value={value} />;
-              } else {
-                return "-";
+            <Table.Column
+              dataIndex={["event_type", "name"]}
+              title="Type d'évenement"
+            />
+            <Table.Column dataIndex="format" title="Format" />
+            <Table.Column
+              dataIndex={["beginningDate"]}
+              title="Date de début"
+              render={(value: any) => {
+                if (value) {
+                  return <DateField value={value} />;
+                } else {
+                  return "-";
+                }
+              }}
+            />
+            <Table.Column
+              dataIndex={["endingDate"]}
+              title="Date de fin"
+              render={(value: any) => {
+                if (value) {
+                  return <DateField value={value} />;
+                } else {
+                  return "-";
+                }
+              }}
+            />
+            <Table.Column
+              dataIndex={["is_recurrent"]}
+              title="Est Récurrent"
+              render={(value: any) => {
+                if (value) {
+                  return <BooleanField value={value} />;
+                } else {
+                  return "-";
+                }
+              }}
+            />
+            <Table.Column dataIndex="frequence" title="Frequence" />
+            <Table.Column
+              dataIndex={["user", "complete_name"]}
+              title="Contributeur"
+            />
+            <Table.Column
+              ellipsis={true}
+              dataIndex="location"
+              title="Emplacement"
+              render={(value: any) => {
+                if (value) {
+                  return (
+                    <Link
+                      href={"https://www.google.com/maps/search/" + value}
+                      target="_blank"
+                    >
+                      {value}
+                    </Link>
+                  );
+                } else {
+                  return "-";
+                }
+              }}
+            />
+            <Table.Column
+              ellipsis={true}
+              dataIndex="registration_link"
+              title="Lien d'inscription"
+              render={(value: any) => {
+                if (value) {
+                  return (
+                    <Link href={value} target="_blank">
+                      {value}
+                    </Link>
+                  );
+                } else {
+                  return "-";
+                }
+              }}
+            />
+            <Table.Column
+              dataIndex="contacts"
+              title="Contacts"
+              render={(value: any[]) =>
+                contactsIsLoading ? (
+                  <>Loading ...</>
+                ) : (
+                  <>
+                    {value?.map((item, index) => (
+                      <TagField key={index} value={item?.complete_name} />
+                    ))}
+                  </>
+                )
               }
-            }}
-          />
-          <Table.Column
-            dataIndex={["endingDate"]}
-            title="Date de fin"
-            render={(value: any) => {
-              if (value) {
-                return <DateField value={value} />;
-              } else {
-                return "-";
+            />
+            <Table.Column
+              dataIndex="organisations"
+              title="Organisations"
+              render={(value: any[]) =>
+                organisationsIsLoading ? (
+                  <>Loading ...</>
+                ) : (
+                  <>
+                    {value?.map((item, index) => (
+                      <TagField key={index} value={item?.name} />
+                    ))}
+                  </>
+                )
               }
-            }}
-          />
-          <Table.Column
-            dataIndex={["is_recurrent"]}
-            title="Est Récurrent"
-            render={(value: any) => {
-              if (value) {
-                return <BooleanField value={value} />;
-              } else {
-                return "-";
+            />
+            <Table.Column
+              dataIndex="target_countries"
+              title="Pays Cible"
+              render={(value: any[]) =>
+                countriesIsLoading ? (
+                  <>Loading ...</>
+                ) : (
+                  <>
+                    {value?.map((item, index) => (
+                      <TagField
+                        key={index}
+                        value={item?.translations?.fra?.common}
+                      />
+                    ))}
+                  </>
+                )
               }
-            }}
-          />
-          <Table.Column dataIndex="frequence" title="Frequence" />
-          <Table.Column dataIndex={["user", "complete_name"]} title="Contributeur" />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="location"
-            title="Emplacement"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link
-                    href={"https://www.google.com/maps/search/" + value}
-                    target="_blank"
-                  >
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
+            />
+            <Table.Column
+              dataIndex={["activity_areas"]}
+              title="Secteur d'activité"
+              render={(value: any[]) =>
+                activityAreasIsLoading ? (
+                  <>Chargement...</>
+                ) : (
+                  <>
+                    {value?.map((item, index) => (
+                      <TagField key={index} value={item?.name} />
+                    ))}
+                  </>
+                )
               }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="registration_link"
-            title="Lien d'inscription"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex="contacts"
-            title="Contacts"
-            render={(value: any[]) =>
-              contactsIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField key={index} value={item?.complete_name} />
-                  ))}
-                </>
-              )
-            }
-          />
-          <Table.Column
-            dataIndex="organisations"
-            title="Organisations"
-            render={(value: any[]) =>
-              organisationsIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField key={index} value={item?.name} />
-                  ))}
-                </>
-              )
-            }
-          />
-          <Table.Column
-            dataIndex="target_countries"
-            title="Pays Cible"
-            render={(value: any[]) =>
-              countriesIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField
-                      key={index}
-                      value={item?.translations?.fra?.common}
-                    />
-                  ))}
-                </>
-              )
-            }
-          />
-          <Table.Column
-            dataIndex={["activity_areas"]}
-            title="Secteur d'activité"
-            render={(value: any[]) =>
-              activityAreasIsLoading ? (
-                <>Chargement...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField key={index} value={item?.name} />
-                  ))}
-                </>
-              )
-            }
-          />
-          {/* <Table.Column
+            />
+            {/* <Table.Column
             dataIndex="description"
             title="Description"
             render={(value: any) => {
@@ -593,27 +617,32 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             }}
           /> */}
 
-          <Table.Column
-            fixed="right"
-            title="Actions"
-            dataIndex="actions"
-            render={(_, record: BaseRecord) => (
-              <Space>
-                <AdminOrContributor>
-                  <EditButton hideText size="small" recordItemId={record.id} />
-                </AdminOrContributor>
-                <ShowButton hideText size="small" recordItemId={record.id} />
-                <Admin>
-                  <DeleteButton
-                    hideText
-                    size="small"
-                    recordItemId={record.id}
-                  />
-                </Admin>
-              </Space>
-            )}
-          />
-        </Table>
+            <Table.Column
+              fixed="right"
+              title="Actions"
+              dataIndex="actions"
+              render={(_, record: BaseRecord) => (
+                <Space>
+                  <AdminOrContributor>
+                    <EditButton
+                      hideText
+                      size="small"
+                      recordItemId={record.id}
+                    />
+                  </AdminOrContributor>
+                  <ShowButton hideText size="small" recordItemId={record.id} />
+                  <Admin>
+                    <DeleteButton
+                      hideText
+                      size="small"
+                      recordItemId={record.id}
+                    />
+                  </Admin>
+                </Space>
+              )}
+            />
+          </Table>
+        </Form>
 
         <AdminOrContributor>
           <Space>

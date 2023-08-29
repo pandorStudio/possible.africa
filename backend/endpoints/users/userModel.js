@@ -13,12 +13,10 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      // required: true,
       select: false,
     },
     confirmPassword: {
       type: String,
-      // required: true,
       validate: {
         validator: function (el) {
           return el === this.password;

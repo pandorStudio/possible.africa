@@ -139,7 +139,7 @@ export const EventEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Type d'événement" name={"event_type"}>
+        <Form.Item label="Type d'événement" name={["event_type", "_id"]}>
           <Select {...eventTypeSelectProps} />
         </Form.Item>
         <Form.Item label="Format" name={["format"]}>
