@@ -3,8 +3,12 @@ import {
   BaseRecord,
   IResourceComponentsProps,
   useApiUrl,
+  useCustomMutation,
   useInvalidate,
+  useLink,
   useMany,
+  useRouterContext,
+  useRouterType,
 } from "@refinedev/core";
 import {
   BooleanField,
@@ -41,6 +45,7 @@ import {
 import { TOKEN_KEY } from "../../custom-data-provider/data-provider";
 import { useCreate } from "@refinedev/core";
 import axios from "axios";
+import { start } from "repl";
 
 // interface IEvent {
 //   title: string;
@@ -74,6 +79,10 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
     });
 
   const [importLoading, setImportLoading] = useState(false);
+  const [importationDatas, setImportationDatas] = useState({
+    total: 0,
+    action: "",
+  });
   const fileImportInput = useRef(null);
   const apiUrl = useApiUrl();
   const [checkedArray, setCheckedArray] = useState([]);
@@ -82,9 +91,9 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
   const [modal, modalContextHolder] = Modal.useModal();
   const [pageCheckboxes, setPageCheckboxes] = useState([]);
   const [visibleCheckAll, setVisibleCheckAll] = useState(false);
+  const { mutate } = useCustomMutation();
   const invalidate = useInvalidate();
   let checkboxRefs = useRef([]);
-  const { mutate } = useCreate();
   const token = localStorage.getItem(TOKEN_KEY);
   const axiosInstance = axios.create({
     headers: {
@@ -94,6 +103,11 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
     },
   });
 
+    const routerType = useRouterType();
+    const NewLink = useLink();
+    const { Link: LegacyLink } = useRouterContext();
+    const CustomLink = routerType === "legacy" ? LegacyLink : NewLink;
+
   async function handleImport(e: any) {
     const file = e.target.files[0];
     let headers: any[] = [];
@@ -101,6 +115,9 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
     setImportLoading(true);
     papa.parse(file, {
       complete: async function (results) {
+        setImportationDatas((s) => {
+          return { ...s, total: results.data.length - 1 };
+        });
         results.data.map(async (el: any, i) => {
           if (i === 0) {
             headers.push(...el);
@@ -108,156 +125,231 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             let promisesToBeResolved = [];
             let eventType = null;
             if (el[0] || el[9] || el[7] || el[3] || el[13] || el[15]) {
-              // const blobImage = await downloadMedia(el[7]);
-              // const imageUrl = await imageUploadHandler(blobImage.data.dataUrl);
-              // try to get the event type
-              eventType = await axiosInstance.get(
-                apiUrl + `/event_types?name=${el[9]}`
+              const eventName = await axiosInstance.get(
+                apiUrl + `/events?title=${el[0]}`
               );
-              // console.log(eventType, "event type");
-              if (!eventType?.data?.length) {
-                // create the event type
-                const result = await axiosInstance.post(
-                  apiUrl + "/event_types",
-                  {
-                    name: el[9],
+              if (!eventName?.data?.length) {
+                const blobImage = await downloadMedia(el[7]);
+                const imageUrl = await imageUploadHandler(
+                  blobImage.data.dataUrl
+                );
+                // try to get the event type
+                setImportationDatas((s) => {
+                  return { ...s, action: "Recherche du type d'évènement..." };
+                });
+                eventType = await axiosInstance.get(
+                  apiUrl + `/event_types?name=${el[9]}`
+                );
+                // console.log(eventType, "event type");
+                if (!eventType?.data?.length) {
+                  setImportationDatas((s) => {
+                    return {
+                      ...s,
+                      action:
+                        "Type d'évènement non trouvé, Creation en cours ...",
+                    };
+                  });
+                  // create the event type
+                  const result = await axiosInstance.post(
+                    apiUrl + "/event_types",
+                    {
+                      name: el[9],
+                    }
+                  );
+                  eventType = result?.data?.id;
+                } else {
+                  eventType = eventType?.data[0]?.id;
+                }
+
+                let countriesArray = [];
+
+                const array = [];
+                const countriesToBeImported = el[3].split(";");
+                // console.log(countriesToBeImported, "To be imported");
+                setImportationDatas((s) => {
+                  return { ...s, action: "Recherche et ajout des pays..." };
+                });
+                countriesArray = await countriesToBeImported.map(
+                  (item: any) => {
+                    return axiosInstance
+                      .get(
+                        apiUrl + `/countries?translations.fra.common=${item}`
+                      )
+                      .then((result) => {
+                        // console.log(result);
+                        return result?.data[0]?.id;
+                      });
+                    // return result?.data[0].id;
                   }
                 );
-                eventType = result?.data?.id;
-              } else {
-                eventType = eventType?.data[0]?.id;
-              }
 
-              let countriesArray = [];
-
-              const array = [];
-              const countriesToBeImported = el[3].split(";");
-              // console.log(countriesToBeImported, "To be imported");
-              countriesArray = await countriesToBeImported.map((item: any) => {
-                return axiosInstance
-                  .get(apiUrl + `/countries?translations.fra.common=${item}`)
-                  .then((result) => {
-                    // console.log(result);
-                    return result?.data[0]?.id;
+                let activityAreas = [];
+                activityAreas = el[10].split(";").map(async (item) => {
+                  setImportationDatas((s) => {
+                    return {
+                      ...s,
+                      action: "Recherche des secteurs d'activités ...",
+                    };
                   });
-                // return result?.data[0].id;
-              });
-
-              let activityAreas = [];
-              activityAreas = el[10].split(";").map(async (item) => {
-                const result = await axiosInstance.get(
-                  apiUrl + `/activity_areas?name=${item}`
-                );
-                // console.log(result, "activity area");
-                if (!result?.data?.length) {
-                  // create the activity area
-                  const result = await axiosInstance.post(
-                    apiUrl + "/activity_areas",
-                    {
-                      name: item,
-                    }
+                  const result = await axiosInstance.get(
+                    apiUrl + `/activity_areas?name=${item}`
                   );
-                  return result?.data?.id;
-                } else {
-                  return result?.data[0]?.id;
-                }
-              });
-              // console.log(activityAreas, "activity areas");
-
-              let contacts = [];
-              // try to get the contacts
-              contacts = el[13].split(";").map(async (item) => {
-                const result = await axiosInstance.get(
-                  apiUrl + `/users?email=${item}`
-                );
-                // console.log(result, "contacts");
-                if (!result?.data?.length) {
-                  // create the contact
-                  const result = await axiosInstance.post(apiUrl + "/users", {
-                    email: item,
-                    firstname: item.split("@")[0],
-                    role: "contact",
-                  });
-                  return result?.data?.id;
-                } else {
-                  return result?.data[0]?.id;
-                }
-              });
-
-              let organisations = [];
-
-              // try to get the organisations
-              organisations = el[15].split(";").map(async (item) => {
-                const result = await axiosInstance.get(
-                  apiUrl + `/organisations?name=${item}`
-                );
-                // console.log(result, "organisations");
-                if (!result?.data?.length) {
-                  // create the organisation
-                  const result = await axiosInstance.post(
-                    apiUrl + "/organisations",
-                    {
-                      name: item,
-                    }
-                  );
-                  return result?.data?.id;
-                } else {
-                  return result?.data[0]?.id;
-                }
-              });
-
-              Promise.all(countriesArray).then((values) => {
-                countriesArray = values;
-                Promise.all(activityAreas).then((values) => {
-                  activityAreas = values;
-                  Promise.all(contacts).then((values) => {
-                    contacts = values;
-                    Promise.all(organisations).then((values) => {
-                      organisations = values;
-
-                      const ob: any = {
-                        title: el[0],
-                        beginningDate: el[1],
-                        endingDate: el[2],
-                        target_countries: countriesArray,
-                        description: el[4],
-                        registration_link: el[5],
-                        location: el[6],
-                        // cover: imageUrl ? imageUrl : "",
-                        format: el[8],
-                        event_type: eventType,
-                        activity_areas: activityAreas,
-                        is_recurrent: el[11] === "Oui" ? true : false,
-                        frequence: el[12],
-                        contacts,
-                        source: el[14],
-                        organisations,
+                  // console.log(result, "activity area");
+                  if (!result?.data?.length) {
+                    // create the activity area
+                    setImportationDatas((s) => {
+                      return {
+                        ...s,
+                        action:
+                          "Secteurs d'activités non trouvés, Création en cours...",
                       };
-                      body.push({ ...ob });
-                      // await axios.post(apiUrl + "/organisations", el);
-                      axiosInstance
-                        .post(
-                          apiUrl + "/events",
-                          {
-                            ...ob,
-                          },
-                          {
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                          }
-                        )
-                        .then((response) => {
-                          // console.log(response);
-                          setImportLoading(false);
-                        })
-                        .catch(function (error) {
-                          // console.log(error);
+                    });
+                    const result = await axiosInstance.post(
+                      apiUrl + "/activity_areas",
+                      {
+                        name: item,
+                      }
+                    );
+                    return result?.data?.id;
+                  } else {
+                    return result?.data[0]?.id;
+                  }
+                });
+                // console.log(activityAreas, "activity areas");
+
+                let contacts = [];
+                // try to get the contacts
+                contacts = el[13].split(";").map(async (item) => {
+                  setImportationDatas((s) => {
+                    return {
+                      ...s,
+                      action: "Recherche des contacts associés ...",
+                    };
+                  });
+                  const result = await axiosInstance.get(
+                    apiUrl + `/users?email=${item}`
+                  );
+                  // console.log(result, "contacts");
+                  if (!result?.data?.length) {
+                    // create the contact
+                    setImportationDatas((s) => {
+                      return {
+                        ...s,
+                        action: "Contacts non trouvés, Creation en cours...",
+                      };
+                    });
+                    const result = await axiosInstance.post(apiUrl + "/users", {
+                      email: item,
+                      firstname: item.split("@")[0],
+                      role: "contact",
+                    });
+                    return result?.data?.id;
+                  } else {
+                    return result?.data[0]?.id;
+                  }
+                });
+
+                let organisations = [];
+
+                // try to get the organisations
+                organisations = el[15].split(";").map(async (item) => {
+                  setImportationDatas((s) => {
+                    return { ...s, action: "Recherche des organisations ..." };
+                  });
+                  const result = await axiosInstance.get(
+                    apiUrl + `/organisations?name=${item}`
+                  );
+                  // console.log(result, "organisations");
+                  if (!result?.data?.length) {
+                    setImportationDatas((s) => {
+                      return {
+                        ...s,
+                        action:
+                          "Organisations non trouvés, Creation en cours ...",
+                      };
+                    });
+                    // create the organisation
+                    const result = await axiosInstance.post(
+                      apiUrl + "/organisations",
+                      {
+                        name: item,
+                      }
+                    );
+                    return result?.data?.id;
+                  } else {
+                    return result?.data[0]?.id;
+                  }
+                });
+
+                Promise.all(countriesArray).then((values) => {
+                  countriesArray = values;
+                  Promise.all(activityAreas).then((values) => {
+                    activityAreas = values;
+                    Promise.all(contacts).then((values) => {
+                      contacts = values;
+                      Promise.all(organisations).then((values) => {
+                        organisations = values;
+
+                        const ob: any = {
+                          title: el[0],
+                          beginningDate: el[1],
+                          endingDate: el[2],
+                          target_countries: countriesArray,
+                          description: el[4],
+                          registration_link: el[5],
+                          location: el[6],
+                          // cover: imageUrl ? imageUrl : "",
+                          format: el[8],
+                          event_type: eventType,
+                          activity_areas: activityAreas,
+                          is_recurrent: el[11] === "Oui" ? true : false,
+                          frequence: el[12],
+                          contacts,
+                          source: el[14],
+                          organisations,
+                        };
+                        setImportationDatas((s) => {
+                          return {
+                            ...s,
+                            action: `Combinaison, Création de l'évènement 0${i} en cours ...`,
+                          };
                         });
+                        body.push({ ...ob });
+                        // await axios.post(apiUrl + "/organisations", el);
+                        axiosInstance
+                          .post(
+                            apiUrl + "/events",
+                            {
+                              ...ob,
+                            },
+                            {
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                            }
+                          )
+                          .then((response) => {
+                            // console.log(response);
+                            setImportLoading(false);
+                          })
+                          .catch(function (error) {
+                            // console.log(error);
+                            // Show an error notification using ant design api of refine
+
+                            message.error(
+                              "Echec de l'importation des données !"
+                            );
+                            setImportLoading(false);
+                          });
+                      });
                     });
                   });
                 });
-              });
+              } else {
+                message.destroy();
+                // setImportLoading(false);
+                message.error(`L'évènement "${el[0]}" existe déjà !`);
+              }
             }
           }
         });
@@ -269,18 +361,29 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
 
   useEffect(() => {
     if (importLoading) {
+      messageApi.destroy();
       messageApi.open({
         type: "loading",
-        content: "Veuillez patienter pendant que nous importons les données.",
+        content: (
+          <p
+            style={{
+              textAlign: "start",
+            }}
+          >
+            Veuillez patienter pendant que nous importons les données : 0
+            {importationDatas.total} élements à être importer <br /> Action en
+            cours: {importationDatas.action}
+          </p>
+        ),
         duration: 10000000,
       });
     }
     if (!importLoading) {
-      messageApi.destroy();
       invalidate({
         resource: "events",
         invalidates: ["list"],
       });
+      messageApi.destroy();
     }
     if (checkedArray.length >= pageCheckboxes.length) {
       setAllCheckedOnPage(true);
@@ -293,7 +396,13 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
         fileImportInput.current!.value! = "";
       }
     };
-  }, [importLoading, checkedArray, deleteLoading, allCheckedOnPage]);
+  }, [
+    importLoading,
+    checkedArray,
+    deleteLoading,
+    allCheckedOnPage,
+    importationDatas,
+  ]);
 
   function handleCheckBoxAll(e: any) {
     const checked = e.target.checked;
@@ -549,7 +658,9 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                 ) : (
                   <>
                     {value?.map((item, index) => (
-                      <TagField key={index} value={item?.complete_name} />
+                      <CustomLink target="blanc" to={`/users/show/${item._id}`}>
+                        <TagField key={index} value={item?.complete_name} />
+                      </CustomLink>
                     ))}
                   </>
                 )
@@ -564,7 +675,12 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                 ) : (
                   <>
                     {value?.map((item, index) => (
-                      <TagField key={index} value={item?.name} />
+                      <CustomLink
+                        target="blanc"
+                        to={`/organisations/show/${item._id}`}
+                      >
+                        <TagField key={index} value={item?.name} />
+                      </CustomLink>
                     ))}
                   </>
                 )
@@ -597,7 +713,12 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                 ) : (
                   <>
                     {value?.map((item, index) => (
-                      <TagField key={index} value={item?.name} />
+                      <CustomLink
+                        target="blanc"
+                        to={`/activity_areas/show/${item._id}`}
+                      >
+                        <TagField key={index} value={item?.name} />
+                      </CustomLink>
                     ))}
                   </>
                 )
