@@ -81,7 +81,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
   const [importationDatas, setImportationDatas] = useState({
     total: 0,
-    action: "",
+    action: "Initialisation de l'import ...",
   });
   const fileImportInput = useRef(null);
   const apiUrl = useApiUrl();
@@ -103,10 +103,10 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
     },
   });
 
-    const routerType = useRouterType();
-    const NewLink = useLink();
-    const { Link: LegacyLink } = useRouterContext();
-    const CustomLink = routerType === "legacy" ? LegacyLink : NewLink;
+  const routerType = useRouterType();
+  const NewLink = useLink();
+  const { Link: LegacyLink } = useRouterContext();
+  const CustomLink = routerType === "legacy" ? LegacyLink : NewLink;
 
   async function handleImport(e: any) {
     const file = e.target.files[0];
@@ -116,7 +116,11 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
     papa.parse(file, {
       complete: async function (results) {
         setImportationDatas((s) => {
-          return { ...s, total: results.data.length - 1 };
+          return {
+            ...s,
+            total: results.data.length - 1,
+            action: "Test d'existence...",
+          };
         });
         results.data.map(async (el: any, i) => {
           if (i === 0) {
@@ -333,7 +337,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                             setImportLoading(false);
                           })
                           .catch(function (error) {
-                            // console.log(error);
+                            console.log(error);
                             // Show an error notification using ant design api of refine
 
                             message.error(
@@ -349,6 +353,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                 message.destroy();
                 // setImportLoading(false);
                 message.error(`L'évènement "${el[0]}" existe déjà !`);
+                setImportLoading(false);
               }
             }
           }
@@ -574,6 +579,20 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             <Table.Column
               dataIndex={["event_type", "name"]}
               title="Type d'évenement"
+              render={(value) => {
+                if (value) {
+                  return (
+                    <CustomLink
+                      target="_blank"
+                      to={`/event_types/show/${value._id}`}
+                    >
+                      {value.name}
+                    </CustomLink>
+                  );
+                } else {
+                  return "";
+                }
+              }}
             />
             <Table.Column dataIndex="format" title="Format" />
             <Table.Column
@@ -658,7 +677,10 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                 ) : (
                   <>
                     {value?.map((item, index) => (
-                      <CustomLink target="blanc" to={`/users/show/${item._id}`}>
+                      <CustomLink
+                        target="_blank"
+                        to={`/users/show/${item._id}`}
+                      >
                         <TagField key={index} value={item?.complete_name} />
                       </CustomLink>
                     ))}
@@ -676,7 +698,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                   <>
                     {value?.map((item, index) => (
                       <CustomLink
-                        target="blanc"
+                        target="_blank"
                         to={`/organisations/show/${item._id}`}
                       >
                         <TagField key={index} value={item?.name} />
@@ -714,7 +736,7 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                   <>
                     {value?.map((item, index) => (
                       <CustomLink
-                        target="blanc"
+                        target="_blank"
                         to={`/activity_areas/show/${item._id}`}
                       >
                         <TagField key={index} value={item?.name} />

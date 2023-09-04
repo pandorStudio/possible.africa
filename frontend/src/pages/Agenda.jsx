@@ -1,4 +1,4 @@
-import { Spinner, VStack } from "@chakra-ui/react";
+import { Box, Spinner, VStack } from "@chakra-ui/react";
 import CardComponent from "../components/CardComponent.jsx";
 import { useGetEventsQuery } from "../features/api/apiSlice.js";
 import CustomContainer from "../utils/CustomContainer.jsx";
@@ -72,7 +72,9 @@ function Agenda() {
           postType="Agenda"
           key={event?._id}
           title={event?.title}
-          description={ParseSlice(event?.description || "Pas de contenu")}
+          description={ParseSlice(
+            events?.description ? ParseSlice(events?.description) : null
+          )}
           imgUrl={event?.cover}
           isLoaded={isLoaded}
           link={"/agenda/" + event?.id}

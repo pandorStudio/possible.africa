@@ -73,12 +73,15 @@ function Organisations() {
             (createdAt.getMonth() + 1) +
             "/" +
             createdAt.getFullYear();
+          console.log(organisation.description)
           const instanceCard = (
             <CardComponent
               postType="Organisation"
               key={organisation?._id}
               title={organisation?.name}
-              description={ParseSlice(organisation?.description || "")}
+              description={organisation.description ? ParseSlice(
+                organisation?.description
+              ) : null}
               imgUrl={organisation?.logo}
               isLoaded={isLoaded}
               link={"/organisations/" + organisation?.id}

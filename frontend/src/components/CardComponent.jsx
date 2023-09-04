@@ -34,6 +34,7 @@ import {
 
 // eslint-disable-next-line react/prop-types
 function CardComponent({
+  key,
   title,
   description,
   imgUrl,
@@ -66,6 +67,7 @@ function CardComponent({
     case "Actualités":
       card = (
         <Card
+          key={key}
           variant="outline"
           border="1px solid"
           borderColor="red.50"
@@ -180,7 +182,7 @@ function CardComponent({
                 <Link to={link}>{title}</Link>
               )}
             </Text>
-            {description.length ? (
+            {/* {description ? (
               <Text
                 fontSize="90%"
                 fontWeight="400"
@@ -190,7 +192,7 @@ function CardComponent({
               >
                 {description}
               </Text>
-            ) : null}
+            ) : null} */}
           </CardBody>
           {labels?.length > 0 ||
           countries?.length > 0 ||
@@ -436,6 +438,7 @@ function CardComponent({
     case "Interview":
       card = (
         <Card
+          key={key}
           variant="outline"
           border="1px solid"
           borderColor="red.50"
@@ -552,7 +555,7 @@ function CardComponent({
                 <Link to={link}>{title}</Link>
               )}
             </Text>
-            {description.length ? (
+            {/* {description ? (
               <Text
                 fontSize="90%"
                 fontWeight="400"
@@ -562,7 +565,7 @@ function CardComponent({
               >
                 {description}
               </Text>
-            ) : null}
+            ) : null} */}
           </CardBody>
           {labels?.length > 0 ||
           countries?.length > 0 ||
@@ -924,7 +927,7 @@ function CardComponent({
                 <Link to={link}>{title}</Link>
               )}
             </Text>
-            {description.length ? (
+            {description ? (
               <Text
                 fontSize="90%"
                 fontWeight="400"
@@ -1267,7 +1270,7 @@ function CardComponent({
                 <Link to={link}>{title}</Link>
               )}
             </Text>
-            {description.length ? (
+            {description ? (
               <Text
                 fontSize="90%"
                 fontWeight="400"
@@ -1584,7 +1587,7 @@ function CardComponent({
                 <Link to={link}>{title}</Link>
               )}
             </Text>
-            {description.length ? (
+            {description ? (
               <Text
                 fontSize="90%"
                 fontWeight="400"
@@ -1903,7 +1906,7 @@ function CardComponent({
             >
               {link ? <Link to={link}>{title}</Link> : { title }}
             </Text> */}
-            {description.length ? (
+            {description ? (
               <Text
                 fontSize="90%"
                 fontWeight="400"

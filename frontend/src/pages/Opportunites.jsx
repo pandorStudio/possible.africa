@@ -1,4 +1,4 @@
-import { Spinner, VStack } from "@chakra-ui/react";
+import { Spinner, VStack, Box } from "@chakra-ui/react";
 import CardComponent from "../components/CardComponent.jsx";
 import { useGetOpportunitiesQuery } from "../features/api/apiSlice.js";
 import CustomContainer from "../utils/CustomContainer.jsx";
@@ -68,9 +68,9 @@ function Opportunites() {
           postType="Opportunités"
           key={opportunity._id}
           title={opportunity?.title}
-          description={ParseSlice(
-            opportunity?.description || "Pas de description"
-          )}
+          description={opportunity?.description ? ParseSlice(
+            opportunity?.description
+          ) : null}
           imgUrl={opportunity?.organisation?.logo}
           isLoaded={isLoaded}
           link={"/opportunites/" + opportunity?.id}

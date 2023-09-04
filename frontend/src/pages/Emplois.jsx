@@ -68,7 +68,7 @@ function Emplois() {
           postType="Emplois"
           key={job?._id}
           title={job?.title}
-          description={ParseSlice(job?.description || "Pas de description")}
+          description={job?.description ? ParseSlice(job?.description) : null}
           imgUrl={job?.organisation?.logo}
           isLoaded={isLoaded}
           link={"/emplois/" + job?.id}

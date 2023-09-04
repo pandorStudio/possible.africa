@@ -83,14 +83,14 @@ export const OpportunityList: React.FC<IResourceComponentsProps> = () => {
               title: el[0],
               beginning_date: el[1],
               ending_date: el[2],
-              target_country: el[3],
-              description: el[4],
-              eligibility: el[5],
-              processus: el[6],
-              beneficies: el[7],
-              registration_link: el[8],
-              isRecurrent: el[9],
-              frequency: el[10],
+              // target_country: el[3],
+              description: el[3],
+              // eligibility: el[4],
+              // processus: el[5],
+              // beneficies: el[6],
+              registration_link: el[4],
+              isRecurrent: el[5],
+              frequency: el[6],
             };
             body.push({ ...ob });
             // await axios.post(apiUrl + "/organisations", el);
