@@ -103,14 +103,14 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             const imageUrl = await imageUploadHandler(blobImage.data.dataUrl);
             const ob: any = {
               name: el[0],
-              country: el[1],
-              description: el[2],
-              site_web: el[3],
-              linkedin_url: el[4],
-              facebook_url: el[5],
-              twitter_url: el[6],
+              // country: el[1],
+              description: el[1],
+              site_web: el[2],
+              linkedin_url: el[3],
+              facebook_url: el[4],
+              twitter_url: el[5],
               logo: imageUrl ? imageUrl : "",
-              type: el[8] === "Entreprise" ? "64511bd16054c5412224616b" : "",
+              // type: el[7] === "Entreprise" ? "64511bd16054c5412224616b" : "",
             };
             body.push({ ...ob });
             axiosInstance

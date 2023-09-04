@@ -10,6 +10,7 @@ import NoData from "../utils/NoData.jsx";
 import CenteredContainer from "../utils/CenteredContainer.jsx";
 import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { NoMoreDataToLoad } from "../components/noMoreDataToLoad.jsx";
 
 function Interviews() {
   const [page, setPage] = useState(1);
@@ -29,8 +30,16 @@ function Interviews() {
     isSuccess,
     error,
   } = useGetPostsQuery({
-    limit: 10,
-    page: 1,
+    limit: 10 * page,
+    page: page,
+    fields: [],
+    eq: [
+      { field: "categorie", value: `${interviewCategories[0]?._id}` },
+      { field: "status", value: "published" },
+    ],
+  });
+
+  const { data: interviewsLength = [] } = useGetPostsQuery({
     fields: [],
     eq: [
       { field: "categorie", value: `${interviewCategories[0]?._id}` },
@@ -64,28 +73,27 @@ function Interviews() {
     return <NoData />;
   }
 
-  if (isLoading || isFetching) {
-    return (
-      <Box
-        as="div"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        p={15}
-      >
-        <Spinner />
-      </Box>
-    );
-  }
+  // if (isLoading || isFetching) {
+  //   return (
+  //     <Box
+  //       as="div"
+  //       display="flex"
+  //       justifyContent="center"
+  //       alignItems="center"
+  //       p={15}
+  //     >
+  //       <Spinner />
+  //     </Box>
+  //   );
+  // }
 
-  if (isSuccess) {
+  if (interviews.length) {
     content = (
       <InfiniteScroll
         dataLength={interviews.length}
         next={() => setPage((prevPage) => prevPage + 1)}
-        hasMore={true}
+        hasMore={interviews.length === interviewsLength.length ? false : true}
         loader={
-          // eslint-disable-next-line react/no-unknown-property
           <Box
             styles={{
               display: "flex",
@@ -95,9 +103,9 @@ function Interviews() {
             <Spinner as="div" mx="45%" mt={10} />
           </Box>
         }
-        endMessage={<Text>Yay! You have seen it all</Text>}
+        endMessage={<NoMoreDataToLoad />}
       >
-        {interviews.map((interview) => {
+        {interviews && interviews.map((interview) => {
           const createdAt = new Date(interview?.createdAt);
           // transform date to french format
           const date =
@@ -112,7 +120,7 @@ function Interviews() {
               key={interview?._id}
               title={interview?.title}
               description={
-                interview?.content ? ParseSlice(interview?.content) : ""
+                interview?.content ? ParseSlice(interview?.content) : null
               }
               imgUrl={interview?.image}
               isLoaded={isLoaded}
@@ -143,7 +151,7 @@ function Interviews() {
     return <div>{error.status}</div>;
   }
 
-  return <CustomContainer content={content ?? ""} />;
+  return <CustomContainer content={content} />;
 }
 
 export default Interviews;

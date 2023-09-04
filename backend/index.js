@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const connection = require("./db");
+const http = require("http");
 const multer = require("multer");
 // import dotenv
 require("dotenv").config();
@@ -20,9 +21,13 @@ require("dotenv").config();
 // Initialiser l'upload de Multer
 
 const app = express();
-const PORT = process.env.PORT || 4534;
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+
+const PORT = process.env.SERVER_PORT || 4534;
 const API_URL_BASE = process.env.API_URL_BASE ? process.env.API_URL_BASE : "/";
 const URL_CONNECT_DEV = process.env.URL_CONNECT;
+
 const userRoutes = require("./endpoints/users/userRoutes");
 const profilRoutes = require("./endpoints/profil/profilRoutes");
 const userRolesRoutes = require("./endpoints/userRoles/userRoleRoutes");
@@ -88,29 +93,21 @@ app.get(API_URL_BASE, (req, res) => {
   });
 });
 
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
+// io.use
+
+io.on("connection", (socket) => {
+  // console.log("Connexion temps réel établie !");
+  socket.on("disconnect", () => {
+    // console.log("Utilisateur déconnecté");
+  });
+});
+
 // Start server
-app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
+server.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
 connection(URL_CONNECT_DEV);
-// db = connection(URL_CONNECT_DEV);
-
-// var oplogEntries = db.oplog.rs.find({
-//   ts: { $gt: Timestamp(yourTimestampHere, 0) },
-// });
-// oplogEntries.forEach(function (entry) {
-//   var ns = entry.ns;
-//   var coll = ns.split(".")[1];
-//   var op = entry.op;
-//   var doc = entry.o;
-
-//   if (op === "i") {
-//     // Insert operation, apply doc to collection
-//     db[coll].insert(doc);
-//   } else if (op === "u") {
-//     // Update operation, apply doc to collection
-//     db[coll].update({ _id: doc._id }, doc);
-//   } else if (op === "d") {
-//     // Delete operation, restore doc to collection if needed
-//     // Note: Recovery from delete operations might be more complex
-//   }
-// });
-
+module.exports.io = io;

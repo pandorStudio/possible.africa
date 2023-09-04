@@ -4,7 +4,10 @@ import {
   IResourceComponentsProps,
   useApiUrl,
   useInvalidate,
+  useLink,
   useMany,
+  useRouterContext,
+  useRouterType,
 } from "@refinedev/core";
 import {
   CreateButton,
@@ -28,7 +31,6 @@ import {
   Tooltip,
 } from "antd";
 import papa from "papaparse";
-import { axiosInstance } from "../../authProvider";
 import { downloadMedia } from "../organisations/list";
 import { imageUploadHandler } from "./create";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
@@ -37,6 +39,16 @@ import {
   AdminOrContributor,
   AdminOrContributorOrUser,
 } from "../../custom-components/AccessControl";
+import { TOKEN_KEY } from "../../authProvider";
+import axios from "axios";
+const token = localStorage.getItem(TOKEN_KEY);
+const axiosInstance = axios.create({
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+});
 
 async function processContent(content: string) {
   let imgTags = content.match(/<img[^>]+src="([^">]+)"/g);
@@ -99,7 +111,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
   });
 
   const [importLoading, setImportLoading] = useState(false);
-  const fileImportInput = useRef(null);
+  let fileImportInput = useRef(null);
   const apiUrl = useApiUrl();
   const [checkedArray, setCheckedArray] = useState([]);
   const [allCheckedOnPage, setAllCheckedOnPage] = useState(false);
@@ -108,58 +120,283 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
   const [pageCheckboxes, setPageCheckboxes] = useState([]);
   const [visibleCheckAll, setVisibleCheckAll] = useState(false);
   const [postStatus, setPostStatus] = useState("");
+  const [importationDatas, setImportationDatas] = useState({
+    total: 0,
+    action: "Initialisation de l'import ...",
+  });
   const invalidate = useInvalidate();
   let checkboxRefs = useRef([]);
 
+  const routerType = useRouterType();
+  const NewLink = useLink();
+  const { Link: LegacyLink } = useRouterContext();
+  const CustomLink = routerType === "legacy" ? LegacyLink : NewLink;
+
   async function handleImport(e: any) {
-    const file = e.target.files[0];
+    let file = e.target.files[0];
     let headers: any[] = [];
     let body: any[] = [];
     setImportLoading(true);
     papa.parse(file, {
       complete: async function (results) {
+        setImportationDatas((s) => {
+          return {
+            ...s,
+            total: results.data.length - 1,
+            action: "Test d'existence...",
+          };
+        });
         results.data.map(async (el: any, i) => {
           if (i === 0) {
             headers.push(...el);
           } else {
-            const imageBase64 = await downloadMedia(el[5]);
-            const image = await imageUploadHandler(imageBase64.data.dataUrl);
-            const country = await axiosInstance.get(
-              apiUrl + `/countries?translations.fra.common=${el[3]}`
-            );
-            // console.log(image);
-            const ob: any = {
-              title: el[0],
-              content: el[1],
-              categorie:
-                el[2] === "Portraits"
-                  ? "6474bac3de440360d8a0a917"
-                  : "6474bad3de440360d8a0a91b",
-              country: country?.data?.data[0]?._id,
-              slug: el[4],
-              image: image ? image : "",
-            };
-            body.push({ ...ob });
-            // await axios.post(apiUrl + "/organisations", el);
-            await axiosInstance
-              .post(
-                apiUrl + "/posts",
-                {
-                  ...ob,
-                },
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
+            if (el[0]) {
+              const postTitle = await axiosInstance.get(
+                apiUrl + `/posts?title=${el[0]}`
+              );
+              if (!postTitle?.data?.length) {
+                const imageBase64 = await downloadMedia(el[5]);
+                const image = await imageUploadHandler(
+                  imageBase64.data.dataUrl
+                );
+
+                setImportationDatas((s) => {
+                  return {
+                    ...s,
+                    action: "Recherche de la catégorie du post...",
+                  };
+                });
+                let postCategorie = await axiosInstance.get(
+                  apiUrl + `/post_categories?name=${el[1]}`
+                );
+
+                if (!postCategorie?.data?.length) {
+                  setImportationDatas((s) => {
+                    return {
+                      ...s,
+                      action: "Catégories non trouvé, Creation en cours ...",
+                    };
+                  });
+                  // create the event type
+                  const result = await axiosInstance.post(
+                    apiUrl + "/post_categories",
+                    {
+                      name: el[1],
+                    }
+                  );
+                  postCategorie = result?.data?.id;
+                } else {
+                  postCategorie = postCategorie?.data[0]?.id;
                 }
-              )
-              .then((response) => {
-                // console.log(response);
+
+                setImportationDatas((s) => {
+                  return { ...s, action: "Recherche et ajout des pays..." };
+                });
+                const countriesToBeImported = el[3].split(";");
+                let countriesArray = await countriesToBeImported.map(
+                  async (item: any) => {
+                    const result = await axiosInstance.get(
+                      apiUrl + `/countries?translations.fra.common=${item}`
+                    );
+                    return result?.data[0]?.id;
+                    // return result?.data[0].id;
+                  }
+                );
+
+                let postEditors = [];
+
+                postEditors = el[6].split(";").map(async (item) => {
+                  setImportationDatas((s) => {
+                    return {
+                      ...s,
+                      action: "Recherche des éditeurs liés au post ...",
+                    };
+                  });
+                  const result = await axiosInstance.get(
+                    apiUrl + `/organisations?name=${item}`
+                  );
+                  // console.log(result, "organisations");
+                  if (!result?.data?.length) {
+                    setImportationDatas((s) => {
+                      return {
+                        ...s,
+                        action: "Editeurs non trouvés, Creation en cours ...",
+                      };
+                    });
+                    // create the organisation
+                    const result = await axiosInstance.post(
+                      apiUrl + "/organisations",
+                      {
+                        name: item,
+                      }
+                    );
+                    return result?.data?.id;
+                  } else {
+                    return result?.data[0]?.id;
+                  }
+                });
+
+                let organisations = [];
+
+                // try to get the organisations
+                organisations = el[7].split(";").map(async (item) => {
+                  setImportationDatas((s) => {
+                    return { ...s, action: "Recherche des organisations ..." };
+                  });
+                  const result = await axiosInstance.get(
+                    apiUrl + `/organisations?name=${item}`
+                  );
+                  // console.log(result, "organisations");
+                  if (!result?.data?.length) {
+                    setImportationDatas((s) => {
+                      return {
+                        ...s,
+                        action:
+                          "Organisations non trouvés, Creation en cours ...",
+                      };
+                    });
+                    // create the organisation
+                    const result = await axiosInstance.post(
+                      apiUrl + "/organisations",
+                      {
+                        name: item,
+                      }
+                    );
+                    return result?.data?.id;
+                  } else {
+                    return result?.data[0]?.id;
+                  }
+                });
+
+                let postLabels = [];
+
+                // try to get the postLabels
+                postLabels = el[10].split(";").map(async (item) => {
+                  setImportationDatas((s) => {
+                    return { ...s, action: "Recherche des Etiquettes ..." };
+                  });
+                  const result = await axiosInstance.get(
+                    apiUrl + `/post_labels?name=${item}`
+                  );
+                  // console.log(result, "postLabels");
+                  if (!result?.data?.length) {
+                    setImportationDatas((s) => {
+                      return {
+                        ...s,
+                        action: "Etiquettes non trouvés, Creation en cours ...",
+                      };
+                    });
+                    // create the organisation
+                    const result = await axiosInstance.post(
+                      apiUrl + "/post_labels",
+                      {
+                        name: item,
+                      }
+                    );
+                    return result?.data?.id;
+                  } else {
+                    return result?.data[0]?.id;
+                  }
+                });
+
+                let authors = [];
+                // try to get the contacts
+                authors = el[11].split(";").map(async (item) => {
+                  setImportationDatas((s) => {
+                    return {
+                      ...s,
+                      action: "Recherche des Auteurs associés ...",
+                    };
+                  });
+                  const result = await axiosInstance.get(
+                    apiUrl + `/users?email=${item}`
+                  );
+                  // console.log(result, "contacts");
+                  if (!result?.data?.length) {
+                    // create the contact
+                    setImportationDatas((s) => {
+                      return {
+                        ...s,
+                        action: "Auteurs non trouvés, Creation en cours...",
+                      };
+                    });
+                    const result = await axiosInstance.post(apiUrl + "/users", {
+                      email: item,
+                      firstname: item.split("@")[0],
+                      role: "contact",
+                    });
+                    return result?.data?.id;
+                  } else {
+                    return result?.data[0]?.id;
+                  }
+                });
+
+                Promise.all(countriesArray).then((values) => {
+                  countriesArray = values;
+                  Promise.all(postEditors).then((values) => {
+                    postEditors = values;
+                    Promise.all(organisations).then((values) => {
+                      organisations = values;
+                      Promise.all(authors).then((values) => {
+                        authors = values;
+                        Promise.all(postLabels).then((values) => {
+                          postLabels = values;
+
+                          const ob: any = {
+                            title: el[0],
+                            categorie: postCategorie,
+                            content: el[2],
+                            countries: countriesArray,
+                            slug: el[4],
+                            image: image ? image : "",
+                            authors: authors,
+                            editors: postEditors,
+                            organisations,
+                            source: el[8],
+                            publication_language: el[9],
+                            labels: postLabels,
+                          };
+                          body.push({ ...ob });
+                          // await axios.post(apiUrl + "/organisations", el);
+                          axiosInstance
+                            .post(
+                              apiUrl + "/posts",
+                              {
+                                ...ob,
+                              },
+                              {
+                                headers: {
+                                  "Content-Type": "application/json",
+                                },
+                              }
+                            )
+                            .then((response) => {
+                              // console.log(response);
+                              setImportLoading(false);
+                            })
+                            .catch(function (error) {
+                              console.log(error);
+                              message.error(
+                                "Echec de l'importation des données !"
+                              );
+                              setImportLoading(false);
+                            });
+                        });
+                      });
+                    });
+                  });
+                });
+              } else {
+                message.destroy();
+                // setImportLoading(false);
+                message.error(`Le post "${el[0]}" existe déjà !`);
                 setImportLoading(false);
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
+                console.log(fileImportInput);
+                fileImportInput = null;
+                console.log(fileImportInput);
+                // fileImportInput.current.files = [];
+              }
+            }
           }
         });
       },
@@ -171,18 +408,29 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
   useEffect(() => {
     // console.log(postStatus);
     if (importLoading) {
+      messageApi.destroy();
       messageApi.open({
         type: "loading",
-        content: "Veuillez patienter pendant que nous importons les données.",
+        content: (
+          <p
+            style={{
+              textAlign: "start",
+            }}
+          >
+            Veuillez patienter pendant que nous importons les données : 0
+            {importationDatas.total} élements à être importer <br /> Action en
+            cours: {importationDatas.action}
+          </p>
+        ),
         duration: 10000000,
       });
     }
     if (!importLoading) {
-      messageApi.destroy();
       invalidate({
-        resource: "organisations",
+        resource: "posts",
         invalidates: ["list"],
       });
+      messageApi.destroy();
     }
     if (checkedArray.length >= pageCheckboxes.length) {
       setAllCheckedOnPage(true);
@@ -499,7 +747,24 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             }}
           />
           <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
-          <Table.Column dataIndex={["categorie", "name"]} title="Categorie" />
+          <Table.Column
+            dataIndex={["categorie"]}
+            title="Categorie"
+            render={(value) => {
+              if (value) {
+                return (
+                  <CustomLink
+                    target="_blank"
+                    to={`/post_categories/show/${value._id}`}
+                  >
+                    {value.name}
+                  </CustomLink>
+                );
+              } else {
+                return "";
+              }
+            }}
+          />
           <Table.Column
             dataIndex={["user", "complete_name"]}
             title="Contributeur"
@@ -513,7 +778,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               ) : (
                 <>
                   {value?.map((item, index) => (
-                    <TagField key={index} value={item?.name} />
+                    <CustomLink
+                      target="_blank"
+                      to={`/organisations/show/${item._id}`}
+                    >
+                      <TagField key={index} value={item?.name} />
+                    </CustomLink>
                   ))}
                 </>
               )
@@ -528,7 +798,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               ) : (
                 <>
                   {value?.map((item, index) => (
-                    <TagField key={index} value={item?.name} />
+                    <CustomLink
+                      target="_blank"
+                      to={`/organisations/show/${item._id}`}
+                    >
+                      <TagField key={index} value={item?.name} />
+                    </CustomLink>
                   ))}
                 </>
               )
@@ -543,7 +818,9 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               ) : (
                 <>
                   {value?.map((item, index) => (
-                    <TagField key={index} value={item?.complete_name} />
+                    <CustomLink target="_blank" to={`/users/show/${item._id}`}>
+                      <TagField key={index} value={item?.complete_name} />
+                    </CustomLink>
                   ))}
                 </>
               )
@@ -559,7 +836,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               ) : (
                 <>
                   {value?.map((item, index) => (
-                    <TagField key={index} value={item?.name} />
+                    <CustomLink
+                      target="_blank"
+                      to={`/post_labels/show/${item._id}`}
+                    >
+                      <TagField key={index} value={item?.name} />
+                    </CustomLink>
                   ))}
                 </>
               )
