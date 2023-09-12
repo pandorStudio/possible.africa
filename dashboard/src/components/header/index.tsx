@@ -294,7 +294,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
           <Space style={{ marginLeft: "8px" }} size="middle">
             {userD?.lastname && (
               <Link to="profil">
-                <Text strong>
+                <Text ellipsis={true} strong>
                   {userD.lastname} {userD.firstname}
                 </Text>
               </Link>

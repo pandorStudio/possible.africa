@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   BaseRecord,
+  CrudFilters,
+  HttpError,
   IResourceComponentsProps,
   useApiUrl,
   useInvalidate,
@@ -16,23 +18,63 @@ import {
   TagField,
   useTable,
 } from "@refinedev/antd";
-import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
+import {
+  Button,
+  Checkbox,
+  Input,
+  message,
+  Form,
+  Row,
+  Col,
+  DatePicker,
+  Modal,
+  Space,
+  Table,
+} from "antd";
 import papa from "papaparse";
 import { axiosInstance } from "../../authProvider";
 import Link from "antd/es/typography/Link";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined, SearchOutlined } from "@ant-design/icons";
 import { imageUploadHandler } from "../posts/create";
 import { ShowButton } from "../../components/buttons/show";
 import {
   Admin,
   AdminOrContributor,
 } from "../../custom-components/AccessControl";
+import { Dayjs } from "dayjs";
 
+const { RangePicker } = DatePicker;
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
   ENV === "developement"
     ? import.meta.env.VITE_BACKEND_DEV
     : import.meta.env.VITE_BACKEND_PROD;
+
+interface IOrganisation {
+  name: string;
+  logo: string;
+  couverture: string;
+  types: any;
+  contributeur: any;
+  country: any;
+  covered_countries: any;
+  slug: any;
+  description: any;
+  email: any;
+  telephone: {
+    indicatif: string;
+    number: string;
+  };
+  site_web: string;
+  linkedin_url: string;
+  facebook_url: string;
+  twitter_url: string;
+  adresse: string;
+  activity_areas: any;
+  contacts: any;
+  creation_year: any;
+  createdAt: string;
+}
 
 export async function downloadMedia(mediaUrl) {
   try {
@@ -55,8 +97,36 @@ export async function downloadMedia(mediaUrl) {
 export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
   const fileImportInput = useRef(null);
-  const { tableProps } = useTable({
+  const { tableProps, searchFormProps } = useTable<
+    IOrganisation,
+    HttpError,
+    { name: string; createdAt: [Dayjs, Dayjs] }
+  >({
     syncWithLocation: true,
+    onSearch: (params) => {
+      const filters: CrudFilters = [];
+      const { name, createdAt } = params;
+
+      filters.push(
+        {
+          field: "name",
+          operator: "eq",
+          value: name,
+        },
+        {
+          field: "createdAt",
+          operator: "gte",
+          value: createdAt ? createdAt[0].toISOString() : undefined,
+        },
+        {
+          field: "createdAt",
+          operator: "lte",
+          value: createdAt ? createdAt[1].toISOString() : undefined,
+        }
+      );
+
+      return filters;
+    },
   });
   const apiUrl = useApiUrl();
   const [checkedArray, setCheckedArray] = useState([]);
@@ -74,19 +144,20 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
       ids: tableProps?.dataSource?.map((item) => item?.covered_countries) ?? [],
     });
 
-  const { data: organisationTypesData, isLoading: organisationTypesIsLoading } = useMany({
-    resource: "organisation_types",
-    ids: tableProps?.dataSource?.map((item) => item?.types) ?? [],
+  const { data: organisationTypesData, isLoading: organisationTypesIsLoading } =
+    useMany({
+      resource: "organisation_types",
+      ids: tableProps?.dataSource?.map((item) => item?.types) ?? [],
+    });
+  const { data: contactsData, isLoading: contactsIsLoading } = useMany({
+    resource: "users",
+    ids: tableProps?.dataSource?.map((item) => item?.contacts) ?? [],
   });
-   const { data: contactsData, isLoading: contactsIsLoading } = useMany({
-     resource: "users",
-     ids: tableProps?.dataSource?.map((item) => item?.contacts) ?? [],
-   });
-   const { data: activityAreasData, isLoading: activityAreasIsLoading } =
-     useMany({
-       resource: "activity_areas",
-       ids: tableProps?.dataSource?.map((item) => item?.activity_areas) ?? [],
-     });
+  const { data: activityAreasData, isLoading: activityAreasIsLoading } =
+    useMany({
+      resource: "activity_areas",
+      ids: tableProps?.dataSource?.map((item) => item?.activity_areas) ?? [],
+    });
 
   async function handleImport(e: any) {
     const file = e.target.files[0];
@@ -238,145 +309,175 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
     <>
       {contextHolder}
       {modalContextHolder}
-      <List
-        headerProps={{
-          extra: (
-            <AdminOrContributor>
-              <Space>
-                {checkedArray.length ? (
-                  <Button
-                    onClick={confirmDelete}
-                    style={{ backgroundColor: "#ff4d4f", color: "white" }}
-                  >
-                    {`${checkedArray.length}`} Effacer Selection
-                  </Button>
-                ) : null}
+      <Row gutter={[16, 16]}>
+        <Col lg={24} xs={24}>
+          <Form layout="horizontal" {...searchFormProps}>
+            <Space>
+              <Form.Item name="name">
                 <Input
-                  type="file"
-                  ref={fileImportInput}
-                  onChange={handleImport}
+                  placeholder="Recherche avec le nom ..."
+                  prefix={<SearchOutlined />}
                 />
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    // log datas
-                    if (tableProps?.dataSource) {
-                      const data = tableProps?.dataSource.map((el: any) => {
-                        return {
-                          name: el.name,
-                          country: el.country,
-                          description: el.description,
-                          site_web: el.site_web,
-                          linkedin_url: el.linkedin_url,
-                          facebook_url: el.facebook_url,
-                          twitter_url: el.twitter_url,
-                          logo: el.logo,
-                        };
-                      });
-                      if (data) {
-                        const csv = papa.unparse(data);
-                        const blob = new Blob([csv], { type: "text/csv" });
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement("a");
-                        a.setAttribute("hidden", "");
-                        a.setAttribute("href", url);
-                        a.setAttribute(
-                          "download",
-                          `organisations-${new Date()}-${Math.round(
-                            Math.random() * 99999999
-                          )}.csv`
-                        );
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                      }
-                    }
-                  }}
-                >
-                  Exporter les données
+              </Form.Item>
+              {/* <Form.Item label="Date de création" name="createdAt">
+                <RangePicker placeholder={["Date de début", "Date de fin"]} />
+              </Form.Item> */}
+              <Form.Item>
+                <Button htmlType="submit" type="primary">
+                  Filtrer
                 </Button>
-                <CreateButton />
-              </Space>
-            </AdminOrContributor>
-          ),
-        }}
-      >
-        <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
-          <Table.Column
-            fixed="left"
-            width={68}
-            dataIndex=""
-            title={
-              visibleCheckAll ? (
-                <Checkbox
-                  checked={allCheckedOnPage}
-                  defaultChecked={false}
-                  onChange={handleCheckBoxAll}
-                />
-              ) : (
-                "#"
-              )
-            }
-            render={(_, record: BaseRecord) => {
-              return (
-                <Checkbox
-                  key={record.id}
-                  checked={checkedArray.includes(record.id)}
-                  ref={(input) => (checkboxRefs.current[record.id] = record.id)}
-                  className="ant-table-row-checkbox"
-                  onChange={() => handleCheckBox(event, record.id)}
-                />
-              );
-            }}
-          />
-          <Table.Column
-            fixed="left"
-            width="3%"
-            dataIndex="logo"
-            title="Logo"
-            render={(value: any) => {
-              if (value && !(value.split(".").pop() === "html")) {
-                return (
-                  <ImageField style={{ maxWidth: "50px" }} value={value} />
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column fixed="left" width="8%" dataIndex="name" title="Nom" />
-          <Table.Column
-            width="7%"
-            dataIndex="country"
-            title="Pays d'origine"
-            render={(value: any) => {
-              if (value) {
-                return `${value?.translations?.fra.common}`;
-                // return "-";
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            dataIndex="covered_countries"
-            title="Pays couverts"
-            render={(value: any[]) =>
-              coveredCountriesIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField
-                      key={index}
-                      value={item?.translations?.fra?.common}
+              </Form.Item>
+            </Space>
+          </Form>
+        </Col>
+
+        <Col lg={24} xs={24}>
+          <List
+            headerProps={{
+              extra: (
+                <AdminOrContributor>
+                  <Space>
+                    {checkedArray.length ? (
+                      <Button
+                        onClick={confirmDelete}
+                        style={{ backgroundColor: "#ff4d4f", color: "white" }}
+                      >
+                        {`${checkedArray.length}`} Effacer Selection
+                      </Button>
+                    ) : null}
+                    <Input
+                      type="file"
+                      ref={fileImportInput}
+                      onChange={handleImport}
                     />
-                  ))}
-                </>
-              )
-            }
-          />
-          {/* <Table.Column
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        // log datas
+                        if (tableProps?.dataSource) {
+                          const data = tableProps?.dataSource.map((el: any) => {
+                            return {
+                              name: el.name,
+                              country: el.country,
+                              description: el.description,
+                              site_web: el.site_web,
+                              linkedin_url: el.linkedin_url,
+                              facebook_url: el.facebook_url,
+                              twitter_url: el.twitter_url,
+                              logo: el.logo,
+                            };
+                          });
+                          if (data) {
+                            const csv = papa.unparse(data);
+                            const blob = new Blob([csv], { type: "text/csv" });
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement("a");
+                            a.setAttribute("hidden", "");
+                            a.setAttribute("href", url);
+                            a.setAttribute(
+                              "download",
+                              `organisations-${new Date()}-${Math.round(
+                                Math.random() * 99999999
+                              )}.csv`
+                            );
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                          }
+                        }
+                      }}
+                    >
+                      Exporter les données
+                    </Button>
+                    <CreateButton />
+                  </Space>
+                </AdminOrContributor>
+              ),
+            }}
+          >
+            <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
+              <Table.Column
+                fixed="left"
+                width={68}
+                dataIndex=""
+                title={
+                  visibleCheckAll ? (
+                    <Checkbox
+                      checked={allCheckedOnPage}
+                      defaultChecked={false}
+                      onChange={handleCheckBoxAll}
+                    />
+                  ) : (
+                    "#"
+                  )
+                }
+                render={(_, record: BaseRecord) => {
+                  return (
+                    <Checkbox
+                      key={record.id}
+                      checked={checkedArray.includes(record.id)}
+                      ref={(input) =>
+                        (checkboxRefs.current[record.id] = record.id)
+                      }
+                      className="ant-table-row-checkbox"
+                      onChange={() => handleCheckBox(event, record.id)}
+                    />
+                  );
+                }}
+              />
+              <Table.Column
+                fixed="left"
+                width="3%"
+                dataIndex="logo"
+                title="Logo"
+                render={(value: any) => {
+                  if (value && !(value.split(".").pop() === "html")) {
+                    return (
+                      <ImageField style={{ maxWidth: "50px" }} value={value} />
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                fixed="left"
+                width="8%"
+                dataIndex="name"
+                title="Nom"
+              />
+              <Table.Column
+                width="7%"
+                dataIndex="country"
+                title="Pays d'origine"
+                render={(value: any) => {
+                  if (value) {
+                    return `${value?.translations?.fra.common}`;
+                    // return "-";
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                dataIndex="covered_countries"
+                title="Pays couverts"
+                render={(value: any[]) =>
+                  coveredCountriesIsLoading ? (
+                    <>Loading ...</>
+                  ) : (
+                    <>
+                      {value?.map((item, index) => (
+                        <TagField
+                          key={index}
+                          value={item?.translations?.fra?.common}
+                        />
+                      ))}
+                    </>
+                  )
+                }
+              />
+              {/* <Table.Column
             width="10%"
             dataIndex="couverture"
             title="Couverture de l'organisation"
@@ -390,57 +491,57 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               }
             }}
           /> */}
-          <Table.Column
-            dataIndex="types"
-            title="Types"
-            render={(value: any[]) =>
-              organisationTypesIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField key={index} value={item?.name} />
-                  ))}
-                </>
-              )
-            }
-          />
+              <Table.Column
+                dataIndex="types"
+                title="Types"
+                render={(value: any[]) =>
+                  organisationTypesIsLoading ? (
+                    <>Loading ...</>
+                  ) : (
+                    <>
+                      {value?.map((item, index) => (
+                        <TagField key={index} value={item?.name} />
+                      ))}
+                    </>
+                  )
+                }
+              />
 
-          <Table.Column
-            dataIndex="contacts"
-            title="Contacts"
-            render={(value: any[]) =>
-              contactsIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField key={index} value={item?.complete_name} />
-                  ))}
-                </>
-              )
-            }
-          />
-          <Table.Column
-            dataIndex={["activity_areas"]}
-            title="Secteur d'activité"
-            render={(value: any[]) =>
-              activityAreasIsLoading ? (
-                <>Chargement...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <TagField key={index} value={item?.name} />
-                  ))}
-                </>
-              )
-            }
-          />
-          <Table.Column
-            dataIndex={["contributeur", "complete_name"]}
-            title="Contributeur"
-          />
-          {/* <Table.Column
+              <Table.Column
+                dataIndex="contacts"
+                title="Contacts"
+                render={(value: any[]) =>
+                  contactsIsLoading ? (
+                    <>Loading ...</>
+                  ) : (
+                    <>
+                      {value?.map((item, index) => (
+                        <TagField key={index} value={item?.complete_name} />
+                      ))}
+                    </>
+                  )
+                }
+              />
+              <Table.Column
+                dataIndex={["activity_areas"]}
+                title="Secteur d'activité"
+                render={(value: any[]) =>
+                  activityAreasIsLoading ? (
+                    <>Chargement...</>
+                  ) : (
+                    <>
+                      {value?.map((item, index) => (
+                        <TagField key={index} value={item?.name} />
+                      ))}
+                    </>
+                  )
+                }
+              />
+              <Table.Column
+                dataIndex={["contributeur", "complete_name"]}
+                title="Contributeur"
+              />
+              {/* <Table.Column
             dataIndex="description"
             title="Description"
             render={(value: any) => {
@@ -453,161 +554,171 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               }
             }}
           /> */}
-          <Table.Column
-            ellipsis={true}
-            dataIndex={["email"]}
-            title="Email"
-            render={(value: any) => {
-              if (value) {
-                return <EmailField value={value} />;
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="telephone"
-            title="Telephone"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link
-                    href={
-                      "https://www.google.com/search?q=" +
-                      value.indicatif +
-                      " " +
-                      value.number
-                    }
-                    target="_blank"
-                  >
-                    {value.indicatif} {value.number}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="site_web"
-            title="Site Web"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="linkedin_url"
-            title="Url Linkedin "
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="facebook_url"
-            title="Url Facebook"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="twitter_url"
-            title="Url Twitter"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link href={value} target="_blank">
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            ellipsis={true}
-            dataIndex="adresse"
-            title="Adresse"
-            render={(value: any) => {
-              if (value) {
-                return (
-                  <Link
-                    // href={"https://www.google.com/search?q=" + value}
-                    href={"https://www.google.com/maps/search/" + value}
-                    target="_blank"
-                  >
-                    {value}
-                  </Link>
-                );
-              } else {
-                return "-";
-              }
-            }}
-          />
-          <Table.Column
-            fixed="right"
-            title="Actions"
-            dataIndex="actions"
-            render={(_, record: BaseRecord) => (
-              <Space>
-                <AdminOrContributor>
-                  <EditButton hideText size="small" recordItemId={record.id} />
-                </AdminOrContributor>
-                <ShowButton hideText size="small" recordItemId={record.id} />
-                <Admin>
-                  <DeleteButton
-                    hideText
-                    size="small"
-                    recordItemId={record.id}
-                  />
-                </Admin>
-              </Space>
-            )}
-          />
-        </Table>
+              <Table.Column
+                ellipsis={true}
+                dataIndex={["email"]}
+                title="Email"
+                render={(value: any) => {
+                  if (value) {
+                    return <EmailField value={value} />;
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="telephone"
+                title="Telephone"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link
+                        href={
+                          "https://www.google.com/search?q=" +
+                          value.indicatif +
+                          " " +
+                          value.number
+                        }
+                        target="_blank"
+                      >
+                        {value.indicatif} {value.number}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="site_web"
+                title="Site Web"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="linkedin_url"
+                title="Url Linkedin "
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="facebook_url"
+                title="Url Facebook"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="twitter_url"
+                title="Url Twitter"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                ellipsis={true}
+                dataIndex="adresse"
+                title="Adresse"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link
+                        // href={"https://www.google.com/search?q=" + value}
+                        href={"https://www.google.com/maps/search/" + value}
+                        target="_blank"
+                      >
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+              />
+              <Table.Column
+                fixed="right"
+                title="Actions"
+                dataIndex="actions"
+                render={(_, record: BaseRecord) => (
+                  <Space>
+                    <AdminOrContributor>
+                      <EditButton
+                        hideText
+                        size="small"
+                        recordItemId={record.id}
+                      />
+                    </AdminOrContributor>
+                    <ShowButton
+                      hideText
+                      size="small"
+                      recordItemId={record.id}
+                    />
+                    <Admin>
+                      <DeleteButton
+                        hideText
+                        size="small"
+                        recordItemId={record.id}
+                      />
+                    </Admin>
+                  </Space>
+                )}
+              />
+            </Table>
 
-        <AdminOrContributor>
-          <Space>
-            {checkedArray.length ? (
-              <Button
-                onClick={confirmDelete}
-                style={{ backgroundColor: "#ff4d4f", color: "white" }}
-              >
-                {`${checkedArray.length}`} Effacer Selection
-              </Button>
-            ) : null}
-          </Space>
-        </AdminOrContributor>
-      </List>
+            <AdminOrContributor>
+              <Space>
+                {checkedArray.length ? (
+                  <Button
+                    onClick={confirmDelete}
+                    style={{ backgroundColor: "#ff4d4f", color: "white" }}
+                  >
+                    {`${checkedArray.length}`} Effacer Selection
+                  </Button>
+                ) : null}
+              </Space>
+            </AdminOrContributor>
+          </List>
+        </Col>
+      </Row>
     </>
   );
 };
