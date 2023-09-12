@@ -72,6 +72,12 @@ class CustomUtils {
     //   delete queryObj.name_like;
     // }
     // console.log(queryObj);
+    const queryObjKeys = Object.keys(queryObj);
+    queryObjKeys.map((item) => {
+      const regex = new RegExp(queryObj[item], "i");
+      // console.log(regex);
+      queryObj[item] = { $regex: regex };
+    });
     return queryObj;
   };
 
