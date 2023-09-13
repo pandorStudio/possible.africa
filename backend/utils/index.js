@@ -67,16 +67,14 @@ class CustomUtils {
     excludedFields.forEach((element) => {
       delete queryObj[element];
     });
-    // if (queryObj.name_like) {
-    //   queryObj["role.name"] = queryObj.name_like;
-    //   delete queryObj.name_like;
-    // }
-    // console.log(queryObj);
+
     const queryObjKeys = Object.keys(queryObj);
     queryObjKeys.map((item) => {
-      const regex = new RegExp(queryObj[item], "i");
-      // console.log(regex);
-      queryObj[item] = { $regex: regex };
+      if (!(queryObj[item].length === 24 && queryObj[item].includes("64"))) {
+        const regex = new RegExp(queryObj[item], "i");
+        // console.log(regex);
+        queryObj[item] = { $regex: regex };
+      }
     });
     return queryObj;
   };
