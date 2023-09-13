@@ -72,9 +72,9 @@ function Agenda() {
           postType="Agenda"
           key={event?._id}
           title={event?.title}
-          description={ParseSlice(
+          description={
             events?.description ? ParseSlice(events?.description) : null
-          )}
+          }
           imgUrl={event?.cover}
           isLoaded={isLoaded}
           link={"/agenda/" + event?.id}
