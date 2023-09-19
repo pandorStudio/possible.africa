@@ -29,7 +29,7 @@ import {
   Space,
   Table,
   Tooltip,
-  Spin
+  Spin,
 } from "antd";
 import papa from "papaparse";
 import { downloadMedia } from "../organisations/list";
@@ -125,7 +125,10 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
     total: 0,
     action: "Initialisation de l'import ...",
   });
-  const [StatusInChange, setStatusInChange] = useState<{id: string | number, state: boolean}>();
+  const [StatusInChange, setStatusInChange] = useState<{
+    id: string | number;
+    state: boolean;
+  }>();
   const invalidate = useInvalidate();
   let checkboxRefs = useRef([]);
 
@@ -561,25 +564,28 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
         if (statusSelected) {
           setStatusInChange({ id: id, state: true });
           // const results = checkedArray.map(async (ob) => {
-          await axiosInstance.put(
-            apiUrl + `/posts/${id}`,
-            {
-              status: statusSelected,
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
+          await axiosInstance
+            .put(
+              apiUrl + `/posts/${id}`,
+              {
+                status: statusSelected,
               },
-            }
-          );
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+            .then(() => {
+              invalidate({
+                resource: "posts",
+                invalidates: ["list"],
+              });
+              setStatusInChange({ id: null, state: false });
+            });
           // });
 
           // console.log(results);
-          invalidate({
-            resource: "posts",
-            invalidates: ["list"],
-          });
-          setStatusInChange({ id: null, state: false });
         }
       },
     });
