@@ -26,6 +26,10 @@ const { Server } = require("socket.io");
 
 const PORT = process.env.SERVER_PORT || 4534;
 const API_URL_BASE = process.env.API_URL_BASE ? process.env.API_URL_BASE : "/";
+const DASH_URL =
+  process.env.ENV === "dev"
+    ? process.env.DASH_URL_DEV
+    : process.env.DASH_URL_PROD;
 const URL_CONNECT_DEV = process.env.URL_CONNECT;
 
 const userRoutes = require("./endpoints/users/userRoutes");
@@ -95,7 +99,7 @@ app.get(API_URL_BASE, (req, res) => {
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: DASH_URL,
   },
 });
 // io.use
