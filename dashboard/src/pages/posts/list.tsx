@@ -29,6 +29,7 @@ import {
   Space,
   Table,
   Tooltip,
+  Spin
 } from "antd";
 import papa from "papaparse";
 import { downloadMedia } from "../organisations/list";
@@ -124,6 +125,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
     total: 0,
     action: "Initialisation de l'import ...",
   });
+  const [StatusInChange, setStatusInChange] = useState<{id: string | number, state: boolean}>();
   const invalidate = useInvalidate();
   let checkboxRefs = useRef([]);
 
@@ -557,6 +559,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
       async onOk(...args) {
         // console.log(id, statusSelected);
         if (statusSelected) {
+          setStatusInChange({ id: id, state: true });
           // const results = checkedArray.map(async (ob) => {
           await axiosInstance.put(
             apiUrl + `/posts/${id}`,
@@ -576,6 +579,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             resource: "posts",
             invalidates: ["list"],
           });
+          setStatusInChange({ id: null, state: false });
         }
       },
     });
@@ -721,14 +725,20 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                     color={statusVariables[`${record.status}`].color}
                     key={record.id}
                   >
-                    <Button
-                      style={statusVariables[`${record.status}`].styles}
-                      size="small"
-                      shape="circle"
-                      onClick={() => {
-                        confirmStatusChange(record.id, record.status);
-                      }}
-                    ></Button>
+                    {StatusInChange &&
+                    StatusInChange.id == record.id &&
+                    StatusInChange.state == true ? (
+                      <Spin />
+                    ) : (
+                      <Button
+                        style={statusVariables[`${record.status}`].styles}
+                        size="small"
+                        shape="circle"
+                        onClick={() => {
+                          confirmStatusChange(record.id, record.status);
+                        }}
+                      ></Button>
+                    )}
                   </Tooltip>
                 </Space>
               )}
