@@ -581,7 +581,9 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 resource: "posts",
                 invalidates: ["list"],
               });
-              setStatusInChange({ id: null, state: false });
+              setTimeout(() => {
+                setStatusInChange({ id: null, state: false });
+              }, 2500);
             });
           // });
 
