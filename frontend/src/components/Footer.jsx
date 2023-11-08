@@ -14,24 +14,35 @@ import {
   Image,
 } from "@chakra-ui/react";
 import CustomLink from "./CustomLink";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 
 export const Footer = () => {
   const [open, setOpen] = useState(false);
+  const [newsletterModalOpen, setNewsletterModalOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState("Content of the modal");
   const [editorContent, setEditorContent] = useState("");
   const [caseTitle, setCaseTitle] = useState("");
+  const [emailForNewsletter, setEmailForNewsletter] = useState("");
   const [api, contextHolder] = notification.useNotification();
+  // const [modal, modalContextHolder] = Modal.useModal();
 
   const isDesktop = useBreakpointValue({
     base: false,
     lg: true,
   });
 
+  const newsletterInputRef = useRef(null);
+
   const showModal = () => {
     setOpen(true);
+  };
+
+  // const { confirm } = Modal;
+
+  const showNewsletterModal = () => {
+    setNewsletterModalOpen(true);
   };
 
   const createAsanaTicket = async (title, description) => {
@@ -83,18 +94,28 @@ export const Footer = () => {
   };
 
   const handleOk = () => {
-    setModalText("The modal will be closed after two seconds");
+    setModalText("Le modal se détruira dans 2 minutes !");
     setConfirmLoading(true);
     createAsanaTicket(caseTitle, editorContent);
-    // setTimeout(() => {
-    //   setOpen(false);
-    //   setConfirmLoading(false);
-    // }, 2000);
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
+  };
+
+  const handleCancelNewsletterModal = async () => {
+    console.log("Clicked cancel button");
+    newsletterInputRef.current.value = "";
+    newsletterInputRef.current.input.defaultValue = "";
+    document.getElementById("newsletterForm").value = "";
+    console.log(document.getElementById("newsletterForm"));
+    console.log(newsletterInputRef?.current?.value, "current");
+    console.log(newsletterInputRef);
+    setNewsletterModalOpen(false);
+  };
+
+  const handleOkNewsletterModal = () => {
+    console.log("Ok clicked in suscribing to Newsletters !");
   };
 
   const openNotification = () => {
@@ -107,9 +128,10 @@ export const Footer = () => {
   };
 
   useEffect(() => {
-    console.log(editorContent);
-    console.log(caseTitle);
-  }, [editorContent, caseTitle]);
+    // console.log(editorContent);
+    console.log(newsletterInputRef?.current?.value, "Loaded");
+    console.log(emailForNewsletter);
+  }, [editorContent, caseTitle, newsletterInputRef?.current?.value]);
 
   const reactQuillModules = {
     toolbar: {
@@ -138,13 +160,14 @@ export const Footer = () => {
         width="80vw"
         title="Reporter un bug, sur l'utilisation de l'application"
         open={open}
+        okText="Envoyer"
+        cancelText="Annuler"
         onOk={editorContent && caseTitle ? handleOk : null}
         okButtonProps={{ size: "large" }}
         cancelButtonProps={{ size: "large" }}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
-        {/* Markdown Editor Editor */}
         <Form layout="vertical">
           <Form.Item
             label="Titre"
@@ -174,6 +197,53 @@ export const Footer = () => {
           </Form.Item>
         </Form>
       </Modal>
+
+      <Modal
+        style={{
+          height: "30vh",
+        }}
+        bodyStyle={{
+          textAlign: "center!",
+        }}
+        centered={true}
+        width="50vw"
+        title={
+          <h1 style={{ textAlign: "center" }}>
+            Abonnez vous à notre newsletter
+          </h1>
+        }
+        open={newsletterModalOpen}
+        okText="Envoyer"
+        cancelText="Annuler"
+        onOk={emailForNewsletter ? handleOkNewsletterModal : null}
+        okButtonProps={{ size: "large", title: "Envoyer" }}
+        cancelButtonProps={{ size: "large", title: "Annuler" }}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancelNewsletterModal}
+      >
+        {/* Markdown Editor Editor */}
+        <Form layout="vertical" onSubmit={handleOkNewsletterModal}>
+          <Form.Item
+            // label="Votre Email"
+            name="email"
+            rules={[
+              { required: true, message: "Veuillez entrer votre email" },
+              {
+                type: "email",
+                message: "Veuillez entrer un email valide !",
+              },
+            ]}
+          >
+            <Input
+              id="newsletterForm"
+              type="email"
+              placeholder="Veuillez entrer votre email pour poursuivre ..."
+              ref={newsletterInputRef}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
+
       <Container
         py={{
           base: "4",
@@ -199,13 +269,8 @@ export const Footer = () => {
           justifyContent={{ base: "center", md: "space-between" }}
         >
           <Box as="a" href="/" w="100px">
-
-<Image src={Logo} fit ='contain'
-w="100%"
-h="100%"
-/>
-</Box>
-         
+            <Image src={Logo} fit="contain" w="100%" h="100%" />
+          </Box>
 
           <Flex
             justifyContent={{ base: "center", md: "flex-end" }}
@@ -232,13 +297,27 @@ h="100%"
                 </CustomLink>
               ))} */}
               <CustomLink
+                key="S'abonnez à notre newsletter"
+                as={ReachLink}
+                // to="#"
+                target="_blank"
+                onClick={(e) => {
+                  e.preventDefault();
+                  showNewsletterModal();
+                }}
+              >
+                <Heading size="sm" fontWeight="500">
+                  <strong>S'abonnez à notre newsletter</strong>
+                </Heading>
+              </CustomLink>
+              <CustomLink
                 key="Tableau de bord"
                 as={ReachLink}
                 to="https://app.possible.africa"
                 target="_blank"
               >
                 <Heading size="sm" fontWeight="500">
-                  Tableau de bord
+                  <strong>Tableau de bord</strong>
                 </Heading>
               </CustomLink>
               <CustomLink
@@ -252,7 +331,7 @@ h="100%"
                 }}
               >
                 <Heading size="sm" fontWeight="500">
-                  Reporter un bug
+                  <strong>Reporter un bug</strong>
                 </Heading>
               </CustomLink>
             </ButtonGroup>

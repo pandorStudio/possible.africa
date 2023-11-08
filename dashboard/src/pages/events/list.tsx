@@ -126,7 +126,6 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
           if (i === 0) {
             headers.push(...el);
           } else {
-            let promisesToBeResolved = [];
             let eventType = null;
             if (el[0] || el[9] || el[7] || el[3] || el[13] || el[15]) {
               const eventName = await axiosInstance.get(

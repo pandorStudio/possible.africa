@@ -96,6 +96,10 @@ export async function downloadMedia(mediaUrl) {
 
 export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
+  const [importationDatas, setImportationDatas] = useState({
+    total: 0,
+    action: "Initialisation de l'import ...",
+  });
   const fileImportInput = useRef(null);
   const { tableProps, searchFormProps } = useTable<
     IOrganisation,
@@ -166,43 +170,248 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
     setImportLoading(true);
     papa.parse(file, {
       complete: async function (results) {
+        setImportationDatas((s) => {
+          return {
+            ...s,
+            total: results.data.length - 1,
+            action: "Test d'existence...",
+          };
+        });
         results.data.map(async (el: any, i) => {
           if (i === 0) {
             headers.push(...el);
           } else {
-            const blobImage = await downloadMedia(el[7]);
-            const imageUrl = await imageUploadHandler(blobImage.data.dataUrl);
-            const ob: any = {
-              name: el[0],
-              // country: el[1],
-              description: el[1],
-              site_web: el[2],
-              linkedin_url: el[3],
-              facebook_url: el[4],
-              twitter_url: el[5],
-              logo: imageUrl ? imageUrl : "",
-              // type: el[7] === "Entreprise" ? "64511bd16054c5412224616b" : "",
-            };
-            body.push({ ...ob });
-            axiosInstance
-              .post(
-                apiUrl + "/organisations",
-                {
-                  ...ob,
-                },
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
+            let organisationType = null;
+            let imageUrl = null;
+            let urlDomain = "";
+            if (el[0]) {
+              const organisationName = await axiosInstance.get(
+                apiUrl + `/organisations?name=${el[0]}`
+              );
+              const organisationSiteWeb = await axiosInstance.get(
+                apiUrl + `/organisations?site_web=${el[10]}`
+              );
+
+              if (
+                !organisationName?.data?.length &&
+                !organisationSiteWeb?.data?.length
+              ) {
+                if (el[10]) {
+                  const regex = /https?:\/\/([^/]+)\//;
+                  const match = el[10].match(regex);
+
+                  if (match) {
+                    urlDomain = match[1];
+                    // console.log(domain);
+
+                    if (
+                      !urlDomain.includes("linkedin") &&
+                      !urlDomain.includes("google") &&
+                      !urlDomain.includes("facebook") &&
+                      !urlDomain.includes("fb")
+                    ) {
+                      const blobImage = await downloadMedia(
+                        "https://logo.clearbit.com/" + urlDomain
+                      );
+                      imageUrl = await imageUploadHandler(
+                        blobImage.data.dataUrl
+                      );
+                    }
+                  }
                 }
-              )
-              .then((response) => {
-                // console.log(response);
+
+                // try to get the organisation type
+                setImportationDatas((s) => {
+                  return {
+                    ...s,
+                    action: "Recherche des types de l'organisation...",
+                  };
+                });
+                let organisationTypes = [];
+                organisationTypes = el[4].split(";").map(async (item) => {
+                  setImportationDatas((s) => {
+                    return {
+                      ...s,
+                      action: "Recherche des types d'organisations ...",
+                    };
+                  });
+                  const result = await axiosInstance.get(
+                    apiUrl + `/organisation_types?name=${item}`
+                  );
+                  // console.log(result, "activity area");
+                  if (!result?.data?.length) {
+                    // create the activity area
+                    setImportationDatas((s) => {
+                      return {
+                        ...s,
+                        action:
+                          "types d'organisations non trouvés, Création en cours...",
+                      };
+                    });
+                    const result = await axiosInstance.post(
+                      apiUrl + "/organisation_types",
+                      {
+                        name: item,
+                      }
+                    );
+                    return result?.data?.id;
+                  } else {
+                    return result?.data[0]?.id;
+                  }
+                });
+
+                let coveredCountriesArray = [];
+
+                const coveredCountries = el[3].split(";");
+                // console.log(countriesToBeImported, "To be imported");
+                setImportationDatas((s) => {
+                  return {
+                    ...s,
+                    action: "Recherche et ajout des pays couverts...",
+                  };
+                });
+                coveredCountriesArray = await coveredCountries.map(
+                  async (item: any) => {
+                    const result = await axiosInstance.get(
+                      apiUrl + `/countries?translations.fra.common=${item}`
+                    );
+                    return result?.data[0]?.id;
+                    // return result?.data[0].id;
+                  }
+                );
+
+                setImportationDatas((s) => {
+                  return {
+                    ...s,
+                    action: "Recherche et ajout du pays d'origine...",
+                  };
+                });
+                const origineCountry = await axiosInstance
+                  .get(apiUrl + `/countries?translations.fra.common=${el[1]}`)
+                  .then((result) => {
+                    console.log(result);
+                    return result?.data[0]?.id;
+                  });
+
+                let contacts = [];
+                // try to get the contacts
+                if (el[5]) {
+                  contacts = el[5].split(";").map(async (item) => {
+                    setImportationDatas((s) => {
+                      return {
+                        ...s,
+                        action: "Recherche des contacts associés ...",
+                      };
+                    });
+                    const result = await axiosInstance.get(
+                      apiUrl + `/users?email=${item}`
+                    );
+                    // console.log(result, "contacts");
+                    if (!result?.data?.length) {
+                      // create the contact
+                      setImportationDatas((s) => {
+                        return {
+                          ...s,
+                          action: "Contacts non trouvés, Creation en cours...",
+                        };
+                      });
+                      const result = await axiosInstance.post(
+                        apiUrl + "/users",
+                        {
+                          email: item,
+                          firstname: item.split("@")[0],
+                          role: "contact",
+                        }
+                      );
+                      return result?.data?.id;
+                    } else {
+                      return result?.data[0]?.id;
+                    }
+                  });
+                }
+
+                let description = "";
+
+                const page = await axiosInstance
+                  .get(
+                    apiUrl +
+                      `/organisations/getMetaDesc?url=${"https://" + urlDomain}`
+                  )
+                  .then((html) => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html?.data, "text/html");
+                    const metaDescription = doc.querySelector(
+                      'meta[name="description"]'
+                    );
+                    if (metaDescription) {
+                      description = metaDescription.getAttribute("content");
+                    } else {
+                      description = "";
+                    }
+                  });
+
+                Promise.all(organisationTypes).then((values) => {
+                  organisationTypes = values;
+                  Promise.all(coveredCountriesArray).then((values) => {
+                    coveredCountriesArray = values;
+                    Promise.all(contacts).then((values) => {
+                      contacts = values;
+
+                      const ob: any = {
+                        name: el[0],
+                        country: origineCountry,
+                        description: description,
+                        site_web: el[10],
+                        linkedin_url: el[11],
+                        facebook_url: el[12],
+                        twitter_url: el[13],
+                        adresse: el[14],
+                        types: organisationTypes,
+                        logo: imageUrl ? imageUrl : "",
+                        contacts: contacts,
+                        covered_countries: coveredCountriesArray,
+                        // type: el[7] === "Entreprise" ? "64511bd16054c5412224616b" : "",
+                      };
+                      setImportationDatas((s) => {
+                        return {
+                          ...s,
+                          action: `Combinaison, Création de l'organisation 0${i} en cours ...`,
+                        };
+                      });
+                      body.push({ ...ob });
+                      axiosInstance
+                        .post(
+                          apiUrl + "/organisations",
+                          {
+                            ...ob,
+                          },
+                          {
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                          }
+                        )
+                        .then((response) => {
+                          // console.log(response);
+                          setImportLoading(false);
+                        })
+                        .catch(function (error) {
+                          console.log(error);
+                          // Show an error notification using ant design api of refine
+
+                          message.error("Echec de l'importation des données !");
+                          setImportLoading(false);
+                        });
+                    });
+                  });
+                });
+              } else {
+                message.destroy();
+                // setImportLoading(false);
+                message.error(`L'organisation "${el[0]}" existe déjà !`);
                 setImportLoading(false);
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
+              }
+            }
           }
         });
       },
@@ -215,16 +424,26 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
     if (importLoading) {
       messageApi.open({
         type: "loading",
-        content: "Veuillez patienter pendant que nous importons les données.",
+        content: (
+          <p
+            style={{
+              textAlign: "start",
+            }}
+          >
+            Veuillez patienter pendant que nous importons les données : 0
+            {importationDatas.total} élements à être importer <br /> Action en
+            cours: {importationDatas.action}
+          </p>
+        ),
         duration: 10000000,
       });
     }
     if (!importLoading) {
-      messageApi.destroy();
       invalidate({
         resource: "organisations",
         invalidates: ["list"],
       });
+      messageApi.destroy();
     }
     if (checkedArray.length >= pageCheckboxes.length) {
       setAllCheckedOnPage(true);
@@ -237,7 +456,13 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
         fileImportInput.current!.value! = "";
       }
     };
-  }, [importLoading, checkedArray, deleteLoading, allCheckedOnPage]);
+  }, [
+    importLoading,
+    checkedArray,
+    deleteLoading,
+    allCheckedOnPage,
+    importationDatas,
+  ]);
 
   function handleCheckBoxAll(e: any) {
     const checked = e.target.checked;

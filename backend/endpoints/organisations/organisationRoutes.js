@@ -6,10 +6,12 @@ const {
   updateOrganisation,
   deleteOrganisation,
   getWpImageBuffer,
+  getMetaData
 } = require("./organisationController");
 const { UploadImage } = require("../uploads/uploadsController.js");
 
 router.route("/getBuff").post(getWpImageBuffer);
+router.route("/getMetaDesc").get(getMetaData);
 
 router
   .route("/")
