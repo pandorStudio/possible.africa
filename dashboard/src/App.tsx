@@ -105,7 +105,7 @@ import { UserTypeList } from "./pages/user types/list";
 import { UserTypeShow } from "./pages/user types/show";
 import { UserTypeEdit } from "./pages/user types/edit";
 import { UserTypeCreate } from "./pages/user types/create";
-import { socket } from "./socket";
+// import { socket } from "./socket";
 
 // const prodapi = import.meta.env.VITE_BACKEND_PROD;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -205,16 +205,16 @@ function App() {
     getLocale: () => i18n.language,
   };
   
-  const [realTimeIsConnected, setRealTimeIsConnected] = useState(socket.connected);
+  // const [realTimeIsConnected, setRealTimeIsConnected] = useState(socket.connected);
 
   useEffect(() => {
-    function onConnect() {
-      setRealTimeIsConnected(true);
-    }
+    // function onConnect() {
+    //   setRealTimeIsConnected(true);
+    // }
 
-    function onDisconnect() {
-      setRealTimeIsConnected(false);
-    }
+    // function onDisconnect() {
+    //   setRealTimeIsConnected(false);
+    // }
     if (token) {
       if (token != localStorage.getItem("refine-auth")) {
         window.location.reload();
@@ -236,12 +236,12 @@ function App() {
       setTime(true);
     }, 5000);
 
-    return () => {
-      clearTimeout(ttime);
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-    };
-  }, [token, time]);
+    // return () => {
+    //   clearTimeout(ttime);
+    //   socket.off("connect", onConnect);
+    //   socket.off("disconnect", onDisconnect);
+    // };
+  }, [time]);
 
   const resources = {
     admin: [

@@ -26,10 +26,10 @@ const { Server } = require("socket.io");
 
 const PORT = process.env.SERVER_PORT || 4534;
 const API_URL_BASE = process.env.API_URL_BASE ? process.env.API_URL_BASE : "/";
-const DASH_URL =
-  process.env.ENV === "dev"
-    ? process.env.DASH_URL_DEV
-    : process.env.DASH_URL_PROD;
+// const DASH_URL =
+//   process.env.ENV === "dev"
+//     ? process.env.DASH_URL_DEV
+//     : process.env.DASH_URL_PROD;
 const URL_CONNECT_DEV = process.env.URL_CONNECT;
 
 const userRoutes = require("./endpoints/users/userRoutes");
@@ -53,6 +53,7 @@ const uploadRoutes = require("./endpoints/uploads/uploadRoutes");
 const searchRoutes = require("./endpoints/search/searchRoutes");
 const countryRoutes = require("./endpoints/countries/countryRoutes");
 const dashboardRoutes = require("./endpoints/tableauDeBord/dashboardRoutes");
+const newsletterSuscriberRoutes = require("./endpoints/newslettersSuscriber/newsletterSuscriberRoutes");
 
 // Middleware
 //
@@ -88,6 +89,7 @@ app.use(API_URL_BASE + "posts", postRoutes);
 app.use(API_URL_BASE + "upload", uploadRoutes);
 app.use(API_URL_BASE + "search", searchRoutes);
 app.use(API_URL_BASE + "countries", countryRoutes);
+app.use(API_URL_BASE + "newsletterSuscribers", newsletterSuscriberRoutes);
 app.use(API_URL_BASE + "dashboard", dashboardRoutes);
 
 // Routes
@@ -97,21 +99,21 @@ app.get(API_URL_BASE, (req, res) => {
   });
 });
 
-const io = new Server(server, {
-  cors: {
-    origin: DASH_URL,
-  },
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: DASH_URL,
+//   },
+// });
 // io.use
 
-io.on("connection", (socket) => {
-  // console.log("Connexion temps réel établie !");
-  socket.on("disconnect", () => {
-    // console.log("Utilisateur déconnecté");
-  });
-});
+// io.on("connection", (socket) => {
+//   // console.log("Connexion temps réel établie !");
+//   socket.on("disconnect", () => {
+//     // console.log("Utilisateur déconnecté");
+//   });
+// });
 
 // Start server
 server.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
 connection(URL_CONNECT_DEV);
-module.exports.io = io;
+// module.exports.io = io;

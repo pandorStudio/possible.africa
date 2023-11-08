@@ -26,6 +26,18 @@ async function downloadMedia(mediaUrl) {
   }
 }
 
+exports.getMetaData = async (req, res) => {
+  try {
+    const response = await axios.get(req.query.url);
+    // Traitez la réponse selon vos besoins, par exemple, extrayez la méta-description.
+    // Vous pouvez ensuite renvoyer ces données au frontend.
+    res.json(response.data);
+  } catch (error) {
+    console.error('Une erreur s\'est produite :', error);
+    res.status(500).send('Erreur lors de la récupération des données.');
+  }
+}
+
 exports.getWpImageBuffer = async (req, res) => {
   const dataUrl = await downloadMedia(req.body.url);
   return res.status(200).json({ dataUrl });
