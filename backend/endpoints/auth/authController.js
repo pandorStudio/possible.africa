@@ -10,6 +10,10 @@ function signToken(user) {
   });
 }
 
+function isObjectNotEmpty(obj) {
+  return obj && Object.keys(obj).length > 0;
+}
+
 exports.signup = async (req, res, next) => {
   try {
     const bodyWR = { ...req.body };
@@ -127,6 +131,11 @@ exports.protect = async (req, res, next) => {
         currentKey = await ApiKey.find({
           key: `${token}`,
         });
+        if (!currentKey.length) {
+          return res.status(401).json({
+            message: CustomUtils.consts.UNAUTHORIZED,
+          });
+        }
         // 3) Check if user still exists
         // currentApiKey = await User.findById(decoded.user.id);
         break;
@@ -134,7 +143,7 @@ exports.protect = async (req, res, next) => {
 
     // console.log(currentKey[0]);
 
-    if (!currentUser && !currentKey) {
+    if (isObjectNotEmpty(currentUser) && isObjectNotEmpty(currentKey[0])) {
       return res.status(401).json({
         message: CustomUtils.consts.UNAUTHORIZED,
       });
@@ -143,7 +152,8 @@ exports.protect = async (req, res, next) => {
 
     // GRANT ACCESS TO PROTECTED ROUTE
     way === jwt ? (req.user = currentUser) : (req.app_user = currentKey);
-    // console.log("token found", currentUser);
+
+    // console.log("token found", currentKey);
     next();
   } catch (error) {
     res.status(500).json({ message: error.message });
