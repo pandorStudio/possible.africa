@@ -1,33 +1,40 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const token = import.meta.env.VITE_BACKEND_TOKEN;
+const api_key = import.meta.env.VITE_POSSIBLE_API_KEY;
+console.log(api_key);
 const baseUrl = import.meta.env.VITE_API_URL_BASE;
 
-const baseQueryArgs = { limit: 10, page: 1, fields: [], eq: []};
+const baseQueryArgs = { limit: 10, page: 1, fields: [], eq: [] };
 function queryTransformer(query, resource) {
   let baseQueryString = "/" + resource;
-    const { limit, page, fields= ['alo', 'ala'], eq } = query;
-    baseQueryString += `?page=${page}&limit=${limit}`;
-    if (fields.length) {
-      baseQueryString += `&select=${fields.forEach((item) => item + ",")}`;
-    }
-    if (eq.length) {
-        eq.forEach((item) => {
-            baseQueryString += `&${item.field}=${item.value}`;
-        });
-    }
+  const { limit, page, fields = ["alo", "ala"], eq } = query;
+  baseQueryString += `?page=${page}&limit=${limit}`;
+  if (fields.length) {
+    baseQueryString += `&select=${fields.forEach((item) => item + ",")}`;
+  }
+  if (eq.length) {
+    eq.forEach((item) => {
+      baseQueryString += `&${item.field}=${item.value}`;
+    });
+  }
   return baseQueryString;
 }
 
 export const apiSlice = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: baseUrl }),
-  prepareHeaders: (headers) => {
-    headers.set("authorization", `Bearer ${token}`);
-    headers.set("content-type", "application/json");
-    headers.set("access-control-allow-origin", "*");
-    return headers;
-  },
+  baseQuery: fetchBaseQuery({
+    baseUrl: baseUrl,
+    prepareHeaders: (headers, { getState }) => {
+      headers.set(
+        "authorization",
+        `ApiKey ${api_key}`
+      );
+      headers.set("content-type", "application/json");
+      headers.set("access-control-allow-origin", "*");
+      return headers;
+    },
+  }),
   tagTypes: ["Organisations"],
   endpoints: (builder) => ({
     getPostCategories: builder.query({
@@ -238,5 +245,5 @@ export const {
   useGetOpportunityQuery,
   useAddOpportunityMutation,
   useDeleteOpportunityMutation,
-  useUpdateOpportunityMutation
+  useUpdateOpportunityMutation,
 } = apiSlice;

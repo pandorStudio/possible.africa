@@ -1,5 +1,6 @@
 const User = require("../users/userModel");
 const UserRole = require("../userRoles/userRoleModel");
+const ApiKey = require("../apiKeys/apiKeysModel");
 const jwt = require("jsonwebtoken");
 const CustomUtils = require("../../utils/index.js");
 
@@ -84,38 +85,64 @@ exports.protect = async (req, res, next) => {
   try {
     // 1) Getting token and check if it's there
     let token;
+    let way;
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
+      way = "jwt";
       // console.log("token found", token);
+    }
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("ApiKey")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+      way = "api_key";
     }
 
     // console.log("token found", token);
 
     if (!token) {
-      // return res.status(401).json({
-      //   message: CustomUtils.consts.NOT_LOGGED_IN,
-      // });
-      return next();
+      return res.status(401).json({
+        message: CustomUtils.consts.NOT_LOGGED_IN,
+      });
+      // return next();
     }
 
-    // 2) Verification token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log(decoded);
+    let decoded;
+    let currentUser;
+    let currentKey;
 
-    // 3) Check if user still exists
-    const currentUser = await User.findById(decoded.user.id);
-    if (!currentUser) {
-      // return res.status(401).json({
-      //   message: CustomUtils.consts.UNAUTHORIZED,
-      // });
-      return next();
+    switch (way) {
+      case "jwt":
+        // 2) Verification token
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // 3) Check if user still exists
+        currentUser = await User.findById(decoded.user.id);
+        break;
+      case "api_key":
+        // 2) Verification token
+        currentKey = await ApiKey.find({
+          key: `${token}`,
+        });
+        // 3) Check if user still exists
+        // currentApiKey = await User.findById(decoded.user.id);
+        break;
+    }
+
+    // console.log(currentKey[0]);
+
+    if (!currentUser && !currentKey) {
+      return res.status(401).json({
+        message: CustomUtils.consts.UNAUTHORIZED,
+      });
+      // return next();
     }
 
     // GRANT ACCESS TO PROTECTED ROUTE
-    req.user = currentUser;
+    way === jwt ? (req.user = currentUser) : (req.app_user = currentKey);
     // console.log("token found", currentUser);
     next();
   } catch (error) {

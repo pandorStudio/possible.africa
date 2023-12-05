@@ -33,6 +33,8 @@ const API_URL_BASE = process.env.API_URL_BASE ? process.env.API_URL_BASE : "/";
 const URL_CONNECT_DEV = process.env.URL_CONNECT;
 
 const userRoutes = require("./endpoints/users/userRoutes");
+const permissionRoutes = require("./endpoints/permissions/permissionsRoutes");
+const apiKeyRoutes = require("./endpoints/apiKeys/apiKeysRoutes");
 const profilRoutes = require("./endpoints/profil/profilRoutes");
 const userRolesRoutes = require("./endpoints/userRoles/userRoleRoutes");
 const userTypesRoutes = require("./endpoints/userTypes/userTypeRoutes");
@@ -71,6 +73,8 @@ app.use(express.static("public"));
 app.use(API_URL_BASE, authRoutes);
 app.use(protect);
 app.use(API_URL_BASE + "users", userRoutes);
+app.use(API_URL_BASE + "permissions", permissionRoutes);
+app.use(API_URL_BASE + "api_keys", apiKeyRoutes);
 app.use(API_URL_BASE + "user_types", userTypesRoutes);
 app.use(API_URL_BASE + "profil", profilRoutes);
 app.use(API_URL_BASE + "user_roles", userRolesRoutes);
