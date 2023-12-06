@@ -151,7 +151,7 @@ exports.protect = async (req, res, next) => {
     }
 
     // GRANT ACCESS TO PROTECTED ROUTE
-    way === jwt ? (req.user = currentUser) : (req.app_user = currentKey);
+    req.user = currentUser;
 
     // console.log("token found", currentKey);
     next();
