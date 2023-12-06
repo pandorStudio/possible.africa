@@ -16,7 +16,7 @@ import {
 } from "@refinedev/antd";
 import { Button, Checkbox, Input, message, Modal, Space, Table } from "antd";
 import papa from "papaparse";
-import { axiosInstance } from "../../authProvider";
+import { axiosInstance } from "../../custom-data-provider/data-provider";
 import Link from "antd/es/typography/Link";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import {

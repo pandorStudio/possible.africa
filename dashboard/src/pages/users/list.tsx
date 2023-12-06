@@ -30,7 +30,7 @@ import {
 } from "antd";
 import Link from "antd/es/typography/Link";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { axiosInstance } from "../../authProvider";
+import { axiosInstance } from "../../custom-data-provider/data-provider";
 import { downloadMedia } from "../organisations/list";
 import { imageUploadHandler } from "../posts/create";
 import papa from "papaparse";
@@ -252,12 +252,11 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
       resource: "countries",
       ids: tableProps?.dataSource?.map((item) => item?.covered_countries) ?? [],
     });
-  
-  const { data: userTypesData, isLoading: userTypesIsLoading } =
-    useMany({
-      resource: "user_types",
-      ids: tableProps?.dataSource?.map((item) => item?.categories) ?? [],
-    });
+
+  const { data: userTypesData, isLoading: userTypesIsLoading } = useMany({
+    resource: "user_types",
+    ids: tableProps?.dataSource?.map((item) => item?.categories) ?? [],
+  });
 
   return (
     <>
@@ -398,10 +397,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
               ) : (
                 <>
                   {value?.map((item, index) => (
-                    <TagField
-                      key={index}
-                      value={item?.name}
-                    />
+                    <TagField key={index} value={item?.name} />
                   ))}
                 </>
               )

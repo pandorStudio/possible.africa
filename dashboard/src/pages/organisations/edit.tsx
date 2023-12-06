@@ -4,7 +4,7 @@ import { Edit, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, message, Select, Space, Typography, Upload } from "antd";
 import ReactQuill from "react-quill";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
-import { axiosInstance } from "../../authProvider";
+import { axiosInstance } from "../../custom-data-provider/data-provider";
 import {
   RcFile,
   UploadChangeParam,
@@ -61,7 +61,6 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     defaultValue: organisationsData?.country?._id,
   });
 
-    
   const { selectProps: coveredCountriesSelectProps } = useSelect({
     resource: "countries",
     optionValue: "_id",
@@ -219,31 +218,37 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
     }
     if (!countries.length) {
       // Get all countries from api
-      axiosInstance.get(`https://restcountries.com/v3.1/all`).then((res) => {
-        const countrieDatas = res.data;
+      axiosInstance
+        .get(`https://restcountries.com/v3.1/all`, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((res) => {
+          const countrieDatas = res.data;
 
-        let countrieDatasFiltered = [];
+          let countrieDatasFiltered = [];
 
-        for (let i = 0; i < countrieDatas.length; i++) {
-          const countrieData = countrieDatas[i];
-          if (countrieData.idd.root || countrieData.idd.suffixes) {
-            countrieData.idd.suffixes.map((suffix) => {
-              countrieDatasFiltered.push({
-                ...countrieData,
-                idd: { root: `${countrieData.idd.root}${suffix}` },
+          for (let i = 0; i < countrieDatas.length; i++) {
+            const countrieData = countrieDatas[i];
+            if (countrieData.idd.root || countrieData.idd.suffixes) {
+              countrieData.idd.suffixes.map((suffix) => {
+                countrieDatasFiltered.push({
+                  ...countrieData,
+                  idd: { root: `${countrieData.idd.root}${suffix}` },
+                });
               });
-            });
-            // countrieDatasFiltered.push(countrieData);
+              // countrieDatasFiltered.push(countrieData);
+            }
+            continue;
           }
-          continue;
-        }
 
-        // Filter countries by alphabetic order
-        countrieDatasFiltered.sort((a: any, b: any) =>
-          a?.translations?.fra?.common > b?.translations?.fra?.common ? 1 : -1
-        );
-        setCountries(countrieDatasFiltered);
-      });
+          // Filter countries by alphabetic order
+          countrieDatasFiltered.sort((a: any, b: any) =>
+            a?.translations?.fra?.common > b?.translations?.fra?.common ? 1 : -1
+          );
+          setCountries(countrieDatasFiltered);
+        });
     }
   }, [imageUrl, countries, organisationsData, uploadLoading]);
 

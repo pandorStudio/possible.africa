@@ -129,7 +129,12 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             let eventType = null;
             if (el[0] || el[9] || el[7] || el[3] || el[13] || el[15]) {
               const eventName = await axiosInstance.get(
-                apiUrl + `/events?title=${el[0]}`
+                apiUrl + `/events?title=${el[0]}`,
+                {
+                  headers: {
+                    "Access-Control-Allow-Origin": "*",
+                  },
+                }
               );
               if (!eventName?.data?.length) {
                 const blobImage = await downloadMedia(el[7]);
@@ -141,7 +146,12 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                   return { ...s, action: "Recherche du type d'évènement..." };
                 });
                 eventType = await axiosInstance.get(
-                  apiUrl + `/event_types?name=${el[9]}`
+                  apiUrl + `/event_types?name=${el[9]}`,
+                  {
+                    headers: {
+                      "Access-Control-Allow-Origin": "*",
+                    },
+                  }
                 );
                 // console.log(eventType, "event type");
                 if (!eventType?.data?.length) {
@@ -157,7 +167,12 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                     apiUrl + "/event_types",
                     {
                       name: el[9],
-                    }
+                    },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
                   );
                   eventType = result?.data?.id;
                 } else {
@@ -195,7 +210,12 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                     };
                   });
                   const result = await axiosInstance.get(
-                    apiUrl + `/activity_areas?name=${item}`
+                    apiUrl + `/activity_areas?name=${item}`,
+                    {
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                      },
+                    }
                   );
                   // console.log(result, "activity area");
                   if (!result?.data?.length) {
@@ -211,7 +231,12 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                       apiUrl + "/activity_areas",
                       {
                         name: item,
-                      }
+                      },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
                     );
                     return result?.data?.id;
                   } else {
@@ -230,7 +255,12 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                     };
                   });
                   const result = await axiosInstance.get(
-                    apiUrl + `/users?email=${item}`
+                    apiUrl + `/users?email=${item}`,
+                    {
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                      },
+                    }
                   );
                   // console.log(result, "contacts");
                   if (!result?.data?.length) {
@@ -241,11 +271,19 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                         action: "Contacts non trouvés, Creation en cours...",
                       };
                     });
-                    const result = await axiosInstance.post(apiUrl + "/users", {
-                      email: item,
-                      firstname: item.split("@")[0],
-                      role: "contact",
-                    });
+                    const result = await axiosInstance.post(
+                      apiUrl + "/users",
+                      {
+                        email: item,
+                        firstname: item.split("@")[0],
+                        role: "contact",
+                      },
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
+                      }
+                    );
                     return result?.data?.id;
                   } else {
                     return result?.data[0]?.id;
@@ -260,7 +298,12 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                     return { ...s, action: "Recherche des organisations ..." };
                   });
                   const result = await axiosInstance.get(
-                    apiUrl + `/organisations?name=${item}`
+                    apiUrl + `/organisations?name=${item}`,
+                    {
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                      },
+                    }
                   );
                   // console.log(result, "organisations");
                   if (!result?.data?.length) {
@@ -276,6 +319,11 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                       apiUrl + "/organisations",
                       {
                         name: item,
+                      },
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
                       }
                     );
                     return result?.data?.id;

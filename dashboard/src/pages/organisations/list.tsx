@@ -32,7 +32,7 @@ import {
   Table,
 } from "antd";
 import papa from "papaparse";
-import { axiosInstance } from "../../authProvider";
+import { axiosInstance } from "../../custom-data-provider/data-provider";
 import Link from "antd/es/typography/Link";
 import { ExclamationCircleOutlined, SearchOutlined } from "@ant-design/icons";
 import { imageUploadHandler } from "../posts/create";
@@ -186,10 +186,20 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
             let urlDomain = "";
             if (el[0]) {
               const organisationName = await axiosInstance.get(
-                apiUrl + `/organisations?name=${el[0]}`
+                apiUrl + `/organisations?name=${el[0]}`,
+                {
+                  headers: {
+                    "Access-Control-Allow-Origin": "*",
+                  },
+                }
               );
               const organisationSiteWeb = await axiosInstance.get(
-                apiUrl + `/organisations?site_web=${el[10]}`
+                apiUrl + `/organisations?site_web=${el[10]}`,
+                {
+                  headers: {
+                    "Access-Control-Allow-Origin": "*",
+                  },
+                }
               );
 
               if (
@@ -236,7 +246,12 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                     };
                   });
                   const result = await axiosInstance.get(
-                    apiUrl + `/organisation_types?name=${item}`
+                    apiUrl + `/organisation_types?name=${item}`,
+                    {
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                      },
+                    }
                   );
                   // console.log(result, "activity area");
                   if (!result?.data?.length) {
@@ -252,6 +267,11 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                       apiUrl + "/organisation_types",
                       {
                         name: item,
+                      },
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
                       }
                     );
                     return result?.data?.id;
@@ -273,7 +293,12 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 coveredCountriesArray = await coveredCountries.map(
                   async (item: any) => {
                     const result = await axiosInstance.get(
-                      apiUrl + `/countries?translations.fra.common=${item}`
+                      apiUrl + `/countries?translations.fra.common=${item}`,
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
+                      }
                     );
                     return result?.data[0]?.id;
                     // return result?.data[0].id;
@@ -304,7 +329,12 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                       };
                     });
                     const result = await axiosInstance.get(
-                      apiUrl + `/users?email=${item}`
+                      apiUrl + `/users?email=${item}`,
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
+                      }
                     );
                     // console.log(result, "contacts");
                     if (!result?.data?.length) {
@@ -321,6 +351,11 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                           email: item,
                           firstname: item.split("@")[0],
                           role: "contact",
+                        },
+                        {
+                          headers: {
+                            "Access-Control-Allow-Origin": "*",
+                          },
                         }
                       );
                       return result?.data?.id;

@@ -8,7 +8,7 @@ import {
 } from "@refinedev/core";
 import { Card, Col, Row, Spin, Statistic } from "antd";
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../../authProvider";
+import { axiosInstance } from "../../custom-data-provider/data-provider";
 import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
 import CustomIconOrganisation from "../../custom-components/Icons/CustomIconOrganisation";
 import CustomIconJob from "../../custom-components/Icons/CustomIconJob";

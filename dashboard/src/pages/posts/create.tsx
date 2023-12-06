@@ -10,11 +10,11 @@ import { Form, Input, message, Select, Upload } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../../components/Editors/styles.css";
-import { axiosInstance } from "../../authProvider";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 import { UploadProps } from "antd/lib/upload";
 import { Option } from "antd/es/mentions";
+import { axiosInstance } from "../../custom-data-provider/data-provider";
 
 const ENV = import.meta.env.VITE_NODE_ENV;
 const API_URL =
@@ -33,7 +33,8 @@ export async function imageUploadHandler(image: any) {
   data.append("image", file);
 
   // send post request
-  const response = await axiosInstance.post(`${API_URL}/upload/images`, data);
+  const response = await axiosInstance.post(`${API_URL}/upload/images`, data
+  );
 
   // return the image url
   const imageUrl = response.data.url;
