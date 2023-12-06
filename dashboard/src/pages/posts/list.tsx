@@ -157,7 +157,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
           } else {
             if (el[0]) {
               const postTitle = await axiosInstance.get(
-                apiUrl + `/posts?title=${el[0]}`
+                apiUrl + `/posts?title=${el[0]}`,
+                {
+                  headers: {
+                    "Access-Control-Allow-Origin": "*",
+                  },
+                }
               );
               if (!postTitle?.data?.length) {
                 const imageBase64 = await downloadMedia(el[5]);
@@ -172,7 +177,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                   };
                 });
                 let postCategorie = await axiosInstance.get(
-                  apiUrl + `/post_categories?name=${el[1]}`
+                  apiUrl + `/post_categories?name=${el[1]}`,
+                  {
+                    headers: {
+                      "Access-Control-Allow-Origin": "*",
+                    },
+                  }
                 );
 
                 if (!postCategorie?.data?.length) {
@@ -187,6 +197,11 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                     apiUrl + "/post_categories",
                     {
                       name: el[1],
+                    },
+                    {
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                      },
                     }
                   );
                   postCategorie = result?.data?.id;
@@ -201,7 +216,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 let countriesArray = await countriesToBeImported.map(
                   async (item: any) => {
                     const result = await axiosInstance.get(
-                      apiUrl + `/countries?translations.fra.common=${item}`
+                      apiUrl + `/countries?translations.fra.common=${item}`,
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
+                      }
                     );
                     return result?.data[0]?.id;
                     // return result?.data[0].id;
@@ -218,7 +238,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                     };
                   });
                   const result = await axiosInstance.get(
-                    apiUrl + `/organisations?name=${item}`
+                    apiUrl + `/organisations?name=${item}`,
+                    {
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                      },
+                    }
                   );
                   // console.log(result, "organisations");
                   if (!result?.data?.length) {
@@ -233,6 +258,11 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                       apiUrl + "/organisations",
                       {
                         name: item,
+                      },
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
                       }
                     );
                     return result?.data?.id;
@@ -249,7 +279,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                     return { ...s, action: "Recherche des organisations ..." };
                   });
                   const result = await axiosInstance.get(
-                    apiUrl + `/organisations?name=${item}`
+                    apiUrl + `/organisations?name=${item}`,
+                    {
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                      },
+                    }
                   );
                   // console.log(result, "organisations");
                   if (!result?.data?.length) {
@@ -265,6 +300,11 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                       apiUrl + "/organisations",
                       {
                         name: item,
+                      },
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
                       }
                     );
                     return result?.data?.id;
@@ -281,7 +321,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                     return { ...s, action: "Recherche des Etiquettes ..." };
                   });
                   const result = await axiosInstance.get(
-                    apiUrl + `/post_labels?name=${item}`
+                    apiUrl + `/post_labels?name=${item}`,
+                    {
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                      },
+                    }
                   );
                   // console.log(result, "postLabels");
                   if (!result?.data?.length) {
@@ -296,6 +341,11 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                       apiUrl + "/post_labels",
                       {
                         name: item,
+                      },
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
                       }
                     );
                     return result?.data?.id;
@@ -314,7 +364,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                     };
                   });
                   const result = await axiosInstance.get(
-                    apiUrl + `/users?email=${item}`
+                    apiUrl + `/users?email=${item}`,
+                    {
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                      },
+                    }
                   );
                   // console.log(result, "contacts");
                   if (!result?.data?.length) {
@@ -325,11 +380,19 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                         action: "Auteurs non trouvés, Creation en cours...",
                       };
                     });
-                    const result = await axiosInstance.post(apiUrl + "/users", {
-                      email: item,
-                      firstname: item.split("@")[0],
-                      role: "contact",
-                    });
+                    const result = await axiosInstance.post(
+                      apiUrl + "/users",
+                      {
+                        email: item,
+                        firstname: item.split("@")[0],
+                        role: "contact",
+                      },
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
+                      }
+                    );
                     return result?.data?.id;
                   } else {
                     return result?.data[0]?.id;
@@ -572,7 +635,9 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               },
               {
                 headers: {
+                  "Access-Control-Allow-Origin": "*",
                   "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
                 },
               }
             )
@@ -849,15 +914,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             dataIndex="labels"
             title="Etiquettes"
             render={(value: any[]) =>
-              editorsIsLoading ? (
+              labelsIsLoading ? (
                 <>Loading ...</>
               ) : (
                 <>
                   {value?.map((item, index) => (
-                    <CustomLink
-                      target="_blank"
-                      to={`/post_labels/show/${item._id}`}
-                    >
+                    <CustomLink target="_blank" to={`/post_labels/show/${item._id}`}>
                       <TagField key={index} value={item?.name} />
                     </CustomLink>
                   ))}

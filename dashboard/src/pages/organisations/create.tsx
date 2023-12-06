@@ -6,7 +6,7 @@ import {
 } from "@refinedev/core";
 import { Create, useForm, useSelect } from "@refinedev/antd";
 import { Form, Input, message, Select, Space, Typography, Upload } from "antd";
-import { axiosInstance } from "../../authProvider";
+import { axiosInstance } from "../../custom-data-provider/data-provider";
 import ReactQuill from "react-quill";
 import { imageUploadHandler, reactQuillModules } from "../posts/create";
 import type { UploadChangeParam } from "antd/es/upload";
