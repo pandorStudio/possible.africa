@@ -57,10 +57,13 @@ const countryRoutes = require("./endpoints/countries/countryRoutes");
 const dashboardRoutes = require("./endpoints/tableauDeBord/dashboardRoutes");
 const newsletterSuscriberRoutes = require("./endpoints/newslettersSuscriber/newsletterSuscriberRoutes");
 
-var whitelist = [/^https.*possible\.africa.*/];
+var whitelist = [
+  "https://possible.africa",
+  "https://app.possible.africa",
+];
 var corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
