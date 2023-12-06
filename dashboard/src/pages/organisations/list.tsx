@@ -314,7 +314,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 const origineCountry = await axiosInstance
                   .get(apiUrl + `/countries?translations.fra.common=${el[1]}`)
                   .then((result) => {
-                    console.log(result);
+                    // console.log(result);
                     return result?.data[0]?.id;
                   });
 

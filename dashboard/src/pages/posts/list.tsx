@@ -459,9 +459,9 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 // setImportLoading(false);
                 message.error(`Le post "${el[0]}" existe déjà !`);
                 setImportLoading(false);
-                console.log(fileImportInput);
+                // console.log(fileImportInput);
                 fileImportInput = null;
-                console.log(fileImportInput);
+                // console.log(fileImportInput);
                 // fileImportInput.current.files = [];
               }
             }

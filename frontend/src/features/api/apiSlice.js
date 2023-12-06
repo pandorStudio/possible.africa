@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const token = import.meta.env.VITE_BACKEND_TOKEN;
 const api_key = import.meta.env.VITE_POSSIBLE_API_KEY;
-console.log(api_key);
 const baseUrl = import.meta.env.VITE_API_URL_BASE;
 
 const baseQueryArgs = { limit: 10, page: 1, fields: [], eq: [] };
