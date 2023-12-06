@@ -47,11 +47,7 @@ export default function CustomDashboard() {
   useEffect(() => {
     if (dashboardData === null) {
       axiosInstance
-        .get(`${apiUrl}/dashboard`, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        })
+        .get(`${apiUrl}/dashboard`)
         .then((res) => {
           setLoading(true);
           setDashboardData(res.data);
