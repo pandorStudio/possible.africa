@@ -57,12 +57,7 @@ const countryRoutes = require("./endpoints/countries/countryRoutes");
 const dashboardRoutes = require("./endpoints/tableauDeBord/dashboardRoutes");
 const newsletterSuscriberRoutes = require("./endpoints/newslettersSuscriber/newsletterSuscriberRoutes");
 
-var whitelist = [
-  "https://app.possible.africa",
-  "https://possible.africa",
-  "http://app.possible.africa",
-  "http://possible.africa",
-];
+var whitelist = [/^http.*possible\.africa.*/];
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {

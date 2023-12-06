@@ -62,7 +62,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
     });
 
   useEffect(() => {
-    console.log(record);
+    // console.log(record);
   }, [record]);
 
   return (
@@ -78,7 +78,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
         record?.categories?.length ? (
         <>
           {record?.categories?.map((categorie: any) => {
-            console.log(record);
+            // console.log(record);
             return <TagField key={categorie?._id} value={categorie?.name} />;
           })}
         </>
@@ -118,7 +118,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
         record?.covered_countries?.length ? (
         <>
           {record?.covered_countries?.map((country: any) => {
-            console.log(record);
+            // console.log(record);
             return (
               <Link
                 href={

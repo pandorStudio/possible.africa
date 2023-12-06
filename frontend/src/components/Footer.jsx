@@ -73,7 +73,7 @@ export const Footer = () => {
       );
 
       if (response.status === 201) {
-        console.log("Ticket créé avec succès !");
+        // console.log("Ticket créé avec succès !");
         // console.log(response.data);
         setOpen(false);
         setConfirmLoading(false);
@@ -104,18 +104,18 @@ export const Footer = () => {
   };
 
   const handleCancelNewsletterModal = async () => {
-    console.log("Clicked cancel button");
+    // console.log("Clicked cancel button");
     newsletterInputRef.current.value = "";
     newsletterInputRef.current.input.defaultValue = "";
     document.getElementById("newsletterForm").value = "";
-    console.log(document.getElementById("newsletterForm"));
-    console.log(newsletterInputRef?.current?.value, "current");
-    console.log(newsletterInputRef);
+    // console.log(document.getElementById("newsletterForm"));
+    // console.log(newsletterInputRef?.current?.value, "current");
+    // console.log(newsletterInputRef);
     setNewsletterModalOpen(false);
   };
 
   const handleOkNewsletterModal = () => {
-    console.log("Ok clicked in suscribing to Newsletters !");
+    // console.log("Ok clicked in suscribing to Newsletters !");
   };
 
   const openNotification = () => {
@@ -129,8 +129,8 @@ export const Footer = () => {
 
   useEffect(() => {
     // console.log(editorContent);
-    console.log(newsletterInputRef?.current?.value, "Loaded");
-    console.log(emailForNewsletter);
+    // console.log(newsletterInputRef?.current?.value, "Loaded");
+    // console.log(emailForNewsletter);
   }, [editorContent, caseTitle, newsletterInputRef?.current?.value]);
 
   const reactQuillModules = {
