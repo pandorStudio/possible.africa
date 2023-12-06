@@ -143,7 +143,7 @@ exports.protect = async (req, res, next) => {
 
     // console.log(currentKey[0]);
 
-    if (!currentUser) {
+    if (!currentUser && !currentKey) {
       return res.status(401).json({
         message: CustomUtils.consts.UNAUTHORIZED,
       });
