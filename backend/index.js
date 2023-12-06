@@ -74,7 +74,7 @@ var corsOptions = {
 //
 const { protect } = require("./endpoints/auth/authController.js");
 app.use(cors({
-  origin: true
+  origin: false
 }));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
