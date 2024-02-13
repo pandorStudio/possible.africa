@@ -19,8 +19,11 @@ import {
 } from "@chakra-ui/react";
 import CustomLink from "./CustomLink";
 import MenuLink from "./MenuLink";
+import { useLocation } from "react-router-dom";
 
 export const HomeHeader = () => {
+  const location = useLocation().pathname;
+
   const isDesktop = useBreakpointValue({
     base: false,
     lg: true,
@@ -47,27 +50,42 @@ export const HomeHeader = () => {
             maxW={{ base: "100%", md: "65%" }}
           >
             {isDesktop ? (
-              <Flex justify="evenly" gap="14">
+              <Flex justify="center" gap="10">
                 {[
                   {
                     name: "Actualités",
                     link: "/actualites" || "",
                     icons: <NewspaperIcon />,
                   },
-                  // {name:'Podcast/Interview', link:"/interviews", icons: <PodcastIcon/> },
-                  // {name:'Agenda', link:"/agenda", icons: <CalendarIcon/> },
-                  // {name:'Financement', link:"/opportunites", icons: <LawIcon/> },
-                  // {name:'Emplois', link:"/emplois", icons: <WorkIcon/> },
                   {
                     name: "Organisations",
                     link: "/organisations",
                     icons: <OrganisationsIcon />,
                   },
                 ].map((item) => (
-                  <MenuLink key={item.name} as={ReachLink} to={item.link}>
-                    <Flex flexDir="row" gap={1}>
+                  <MenuLink
+                    key={item.name}
+                    as={ReachLink}
+                    to={item.link}
+                    className={
+                      location == item.link
+                        ? "bg-green-400 py-3 w-40 flex justify-center rounded-xl text-white"
+                        : "py-3 w-40 flex justify-center rounded-xl"
+                    }
+                  >
+                    <Flex
+                      flexDir="row"
+                      gap={1}
+                      className={
+                        location == item.link ? "text-white font-bold" : ""
+                      }
+                    >
                       {item.icons}
-                      <Text fontWeight="400" fontSize="md">
+                      <Text
+                        // fontWeight="400"
+                        fontSize="md"
+                        className={location == item.link ? "font-bold" : ""}
+                      >
                         {item.name}
                       </Text>
                     </Flex>
@@ -89,27 +107,34 @@ export const HomeHeader = () => {
                     icons: <NewspaperIcon />,
                   },
                   {
-                    name: "Podcast/Interview",
-                    link: "/interviews",
-                    icons: <PodcastIcon />,
-                  },
-                  { name: "Agenda", link: "/agenda", icons: <CalendarIcon /> },
-                  {
-                    name: "Financement",
-                    link: "/opportunites",
-                    icons: <LawIcon />,
-                  },
-                  { name: "Emplois", link: "/emplois", icons: <WorkIcon /> },
-                  {
                     name: "Organisations",
                     link: "/organisations",
                     icons: <OrganisationsIcon />,
                   },
                 ].map((item) => (
-                  <CustomLink key={item.name} as={ReachLink} to={item.link}>
-                    <Flex flexDir="row" gap={1}>
+                  <CustomLink
+                    key={item.name}
+                    as={ReachLink}
+                    to={item.link}
+                    className={
+                      location == item.link
+                        ? "bg-green-400 py-3 w-40 flex justify-center rounded-xl text-white"
+                        : "py-3 w-40 flex justify-center rounded-xl"
+                    }
+                  >
+                    <Flex
+                      flexDir="row"
+                      gap={1}
+                      className={
+                        location == item.link ? "text-white font-bold" : ""
+                      }
+                    >
                       {item.icons}
-                      <Text fontWeight="400" fontSize="md">
+                      <Text
+                        // fontWeight="400"
+                        fontSize="md"
+                        className={location == item.link ? "font-bold" : ""}
+                      >
                         {item.name}
                       </Text>
                     </Flex>

@@ -467,7 +467,7 @@ function ActualitesCopy() {
           <Box
             className={
               language === "fr"
-                ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-green-400"
+                ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-green-400 text-white font-semibold"
                 : "w-[100px] h-10 flex justify-center flex-col cursor-pointer"
             }
             onClick={() => {
@@ -483,7 +483,7 @@ function ActualitesCopy() {
           <Box
             className={
               language === "en"
-                ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-green-400"
+                ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-green-400 text-white font-semibold"
                 : "w-[100px] h-10 flex justify-center flex-col cursor-pointer"
             }
             onClick={() => {

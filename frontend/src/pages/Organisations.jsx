@@ -27,6 +27,10 @@ function Organisations() {
   });
   let content;
 
+  useEffect(() => {
+    console.log(organisations);
+  }, [isLoading]);
+
   let isLoaded = true;
 
   if (organisations?.length === 0) {
@@ -79,9 +83,11 @@ function Organisations() {
               postType="Organisation"
               key={organisation?._id}
               title={organisation?.name}
-              description={organisation.description ? ParseSlice(
-                organisation?.description
-              ) : null}
+              description={
+                organisation.description
+                  ? ParseSlice(organisation?.description)
+                  : null
+              }
               imgUrl={organisation?.logo}
               isLoaded={isLoaded}
               link={"/organisations/" + organisation?.id}
