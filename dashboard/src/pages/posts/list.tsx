@@ -817,7 +817,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               )}
             />
           </AdminOrContributorOrUser>
-          <Table.Column
+          {/* <Table.Column
             width={120}
             dataIndex={["image"]}
             title="Couverture"
@@ -828,9 +828,9 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 return "-";
               }
             }}
-          />
+          /> */}
           <Table.Column dataIndex="title" title="Titre" ellipsis={true} />
-          <Table.Column
+          {/* <Table.Column
             dataIndex={["categorie"]}
             title="Categorie"
             render={(value) => {
@@ -847,10 +847,30 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 return "";
               }
             }}
-          />
-          <Table.Column
+          /> */}
+          {/* <Table.Column
             dataIndex={["user", "complete_name"]}
             title="Contributeur"
+          /> */}
+          <Table.Column
+            dataIndex="labels"
+            title="Etiquettes"
+            render={(value: any[]) =>
+              labelsIsLoading ? (
+                <>Loading ...</>
+              ) : (
+                <>
+                  {value?.map((item, index) => (
+                    <CustomLink
+                      target="_blank"
+                      to={`/post_labels/show/${item._id}`}
+                    >
+                      <TagField key={index} value={item?.name} />
+                    </CustomLink>
+                  ))}
+                </>
+              )
+            }
           />
           <Table.Column
             dataIndex="organisations"
@@ -872,7 +892,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               )
             }
           />
-          <Table.Column
+          {/* <Table.Column
             dataIndex="editors"
             title="Editeurs"
             render={(value: any[]) =>
@@ -891,8 +911,8 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 </>
               )
             }
-          />
-          <Table.Column
+          /> */}
+          {/* <Table.Column
             dataIndex="authors"
             title="Auteurs"
             render={(value: any[]) =>
@@ -908,26 +928,9 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 </>
               )
             }
-          />
+          /> */}
 
-          <Table.Column
-            dataIndex="labels"
-            title="Etiquettes"
-            render={(value: any[]) =>
-              labelsIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <CustomLink target="_blank" to={`/post_labels/show/${item._id}`}>
-                      <TagField key={index} value={item?.name} />
-                    </CustomLink>
-                  ))}
-                </>
-              )
-            }
-          />
-          <Table.Column
+          {/* <Table.Column
             dataIndex="countries"
             title="Pays"
             render={(value: any[]) =>
@@ -944,8 +947,8 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 </>
               )
             }
-          />
-          <Table.Column dataIndex="slug" title="Slug" ellipsis={true} />
+          /> */}
+          {/* <Table.Column dataIndex="slug" title="Slug" ellipsis={true} /> */}
           <Table.Column
             dataIndex="publication_language"
             title="Langue"

@@ -46,7 +46,12 @@ function App() {
                   />
                 </Route>
                 <Route path="/actualites">
-                  <Route index path="/actualites" element={<Actualites />} />
+                  {/* <Route index path="/actualites" element={<Actualites />} /> */}
+                  <Route
+                    index
+                    path="/actualites"
+                    element={<ActualitesCopy />}
+                  />
                   <Route path="/actualites/:slug" element={<OneActualite />} />
                 </Route>
                 <Route path="/actualites2">

@@ -248,9 +248,9 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Slug" name={["slug"]}>
+        {/* <Form.Item label="Slug" name={["slug"]}>
           <Input />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label="Source" name={["source"]}>
           <Input />
         </Form.Item>
