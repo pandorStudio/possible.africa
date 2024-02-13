@@ -59,7 +59,7 @@ function CardComponent({
   activity_areas,
   organisation_types,
   language,
-  sitWebLink
+  sitWebLink,
 }) {
   let card = <></>;
 
@@ -86,7 +86,7 @@ function CardComponent({
             h={{ base: "40%" }}
           >
             {/* Badge */}
-            {editors?.length > 1 ? (
+            {/* {editors?.length > 1 ? (
               <Box
                 as="span"
                 zIndex={1}
@@ -107,7 +107,7 @@ function CardComponent({
                   +{editors?.length - 1}
                 </Text>
               </Box>
-            ) : null}
+            ) : null} */}
             <Box
               as="div"
               mt={editors?.length > 1 ? { base: "5px" } : { base: "5px" }}
@@ -576,7 +576,8 @@ function CardComponent({
           countries?.length > 0 ||
           organisations?.length > 0 ||
           authors?.length > 0 ? (
-            <CardFooter className="cardFooter"
+            <CardFooter
+              className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
@@ -950,7 +951,8 @@ function CardComponent({
           countries?.length > 0 ||
           contacts?.length > 0 ||
           activity_areas?.length > 0 ? (
-            <CardFooter className="cardFooter"
+            <CardFooter
+              className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
@@ -1292,7 +1294,8 @@ function CardComponent({
           activity_areas?.length > 0 ||
           countries?.length > 0 ||
           type ? (
-            <CardFooter className="cardFooter"
+            <CardFooter
+              className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
@@ -1556,9 +1559,7 @@ function CardComponent({
                 alignItems="center"
                 justifyContent="flex-start"
               >
-                <Box>
-                  {company?.name ? company?.name : "Possible.Africa"}
-                </Box>
+                <Box>{company?.name ? company?.name : "Possible.Africa"}</Box>
                 {source ? (
                   <Link target="_blank" to={source}>
                     <ReturnIcon boxSize="18px" ml="5px" />
@@ -1609,7 +1610,8 @@ function CardComponent({
           activity_areas?.length > 0 ||
           countries?.length > 0 ||
           type ? (
-            <CardFooter className="cardFooter"
+            <CardFooter
+              className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
@@ -1930,7 +1932,8 @@ function CardComponent({
           contacts?.length > 0 ||
           activity_areas?.length > 0 ||
           organisation_types?.length > 0 ? (
-            <CardFooter className="cardFooter"
+            <CardFooter
+              className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"
