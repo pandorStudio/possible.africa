@@ -108,11 +108,14 @@ exports.getAllPostFromAirtable = async (req, res) => {
 };
 
 exports.getEnglishPostFromAirtable = async (req, res) => {
+  const { limit, page, sort, fields } = req.query;
+  // const queryObj = CustomUtils.advancedQuery(req.query);
   try {
     const result = await fetchAllRecords(
       AIRTABLE_API_KEY,
       ENGLISH_BASE_ID,
-      ENGLISH_ARTICLE_TABLE_ID
+      ENGLISH_ARTICLE_TABLE_ID,
+      limit * 1
     );
     res.status(200).json(result);
   } catch (error) {
