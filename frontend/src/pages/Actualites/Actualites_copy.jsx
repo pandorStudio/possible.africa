@@ -463,7 +463,7 @@ function ActualitesCopy() {
     <>
       <Container maxW="container.lg" pt={8}>
         {/* <DataTabs data={language} /> */}
-        <Box className="ml-10 w-[200px] h-10 flex justify-center text-center rounded-lg border border-gray-500 overflow-hidden">
+        <Box className="ml-10 w-[200px] h-10 flex justify-center text-center rounded-lg shadow-sm drop-shadow-xl overflow-hidden">
           <Box
             className={
               language === "fr"
