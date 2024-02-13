@@ -109,10 +109,10 @@ exports.protect = async (req, res, next) => {
     // console.log("token found", token);
 
     if (!token) {
-      return res.status(401).json({
-        message: CustomUtils.consts.NOT_LOGGED_IN,
-      });
-      // return next();
+      // return res.status(401).json({
+      //   message: CustomUtils.consts.NOT_LOGGED_IN,
+      // });
+      return next();
     }
 
     let decoded;

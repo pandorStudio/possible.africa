@@ -35,31 +35,30 @@ export const HomeHeader = () => {
             lg: '5',
           }}
           px={0}
-          maxW={{ base: '100%', md: "container.xl" }}
+          maxW={{ base: '100%', md: "49%" }}
           
 
         >
           
             
             {isDesktop ? (
-              <Flex justify="center" gap="14">
+              <Flex justify="evenly" gap="14">
 
                   {
                   [
                     {name:'Actualités', link:"/actualites" || "", icons: <NewspaperIcon/> },
-                    {name:'Podcast/Interview', link:"/interviews", icons: <PodcastIcon/> },
-                    {name:'Agenda', link:"/agenda", icons: <CalendarIcon/> },
-                    {name:'Financement', link:"/opportunites", icons: <LawIcon/> },
+                    // {name:'Podcast/Interview', link:"/interviews", icons: <PodcastIcon/> },
+                    // {name:'Agenda', link:"/agenda", icons: <CalendarIcon/> },
+                    // {name:'Financement', link:"/opportunites", icons: <LawIcon/> },
                     {name:'Emplois', link:"/emplois", icons: <WorkIcon/> },
                     {name:'Organisations', link:"/organisations", icons: <OrganisationsIcon/> }
                 ].map((item) => (
-
                     <MenuLink  key={item.name} as={ReachLink} to={item.link}>
                         <Flex flexDir="row" gap={1}>
                             {item.icons}
                             <Text fontWeight="400" fontSize="md">{item.name}</Text>
                         </Flex>
-                        </MenuLink>
+                    </MenuLink>
                   ))}
 
               </Flex>

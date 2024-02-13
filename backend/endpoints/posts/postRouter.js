@@ -6,6 +6,7 @@ const {
   createPost,
   updatePost,
   deletePost,
+  getFrenchPostFromAirtable,
 } = require("./postController");
 
 router.route("/").get(getAllPosts).post(createPost);

@@ -25,10 +25,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: baseUrl,
     prepareHeaders: (headers, { getState }) => {
-      headers.set(
-        "authorization",
-        `ApiKey ${api_key}`
-      );
+      headers.set("authorization", `ApiKey ${api_key}`);
       headers.set("content-type", "application/json");
       headers.set("access-control-allow-origin", "*");
       return headers;
@@ -44,6 +41,27 @@ export const apiSlice = createApi({
     getPosts: builder.query({
       query: (queryArgs = baseQueryArgs) => {
         return queryTransformer(queryArgs, "posts");
+      },
+      transformResponse: (res) => res.sort((a, b) => b.id - a.id),
+      providesTags: ["Posts"],
+    }),
+    getAirtableFrPosts: builder.query({
+      query: (queryArgs = baseQueryArgs) => {
+        return queryTransformer(queryArgs, "airtable_posts/fr");
+      },
+      transformResponse: (res) => res.sort((a, b) => b.id - a.id),
+      providesTags: ["Posts"],
+    }),
+    getAirtableEngPosts: builder.query({
+      query: (queryArgs = baseQueryArgs) => {
+        return queryTransformer(queryArgs, "airtable_posts/eng");
+      },
+      transformResponse: (res) => res.sort((a, b) => b.id - a.id),
+      providesTags: ["Posts"],
+    }),
+    getAirtableAllPosts: builder.query({
+      query: (queryArgs = baseQueryArgs) => {
+        return "airtable_posts/all";
       },
       transformResponse: (res) => res.sort((a, b) => b.id - a.id),
       providesTags: ["Posts"],
@@ -220,6 +238,9 @@ export const apiSlice = createApi({
 
 export const {
   useGetPostsQuery,
+  useGetAirtableAllPostsQuery,
+  useGetAirtableEngPostsQuery,
+  useGetAirtableFrPostsQuery,
   useAddPostMutation,
   useDeletePostMutation,
   useUpdatePostMutation,

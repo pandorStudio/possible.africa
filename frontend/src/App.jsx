@@ -4,6 +4,7 @@ import { Header } from "./components/Header";
 import { HomeHeader } from "./components/HomeHeader";
 import Accueil from "./pages/Accueil";
 import Actualites from "./pages/Actualites/Actualites.jsx";
+import ActualitesCopy from "./pages/Actualites/Actualites_copy.jsx";
 import OneActualite from "./pages/Actualites/OneActualite";
 import Agenda from "./pages/Agenda";
 import Emplois from "./pages/Emplois";
@@ -47,6 +48,13 @@ function App() {
                 <Route path="/actualites">
                   <Route index path="/actualites" element={<Actualites />} />
                   <Route path="/actualites/:slug" element={<OneActualite />} />
+                </Route>
+                <Route path="/actualites2">
+                  <Route
+                    index
+                    path="/actualites2"
+                    element={<ActualitesCopy />}
+                  />
                 </Route>
                 <Route path="/interviews">
                   <Route index path="/interviews" element={<Interviews />} />

@@ -121,7 +121,8 @@ function CardComponent({
             >
               <Image
                 key={editors?.length > 0 ? editors[0]._id : ""}
-                src={editors?.length > 0 ? editors[0].logo : ""}
+                src={imgUrl}
+                // src={editors?.length > 0 ? editors[0].logo : ""}
                 alt={editors?.length > 0 ? editors[0].logo : ""}
                 fallbackSrc="/placeholder_org.jpeg"
                 fit="contain"
@@ -145,7 +146,8 @@ function CardComponent({
                 justifyContent="flex-start"
               >
                 <Box>
-                  {editors?.length > 0 ? editors[0].name : "Possible.Africa"}
+                  {/* {editors?.length > 0 ? editors[0].name : "Possible.Africa"} */}
+                  {editors || "Possible.Africa"}
                 </Box>
                 {source ? (
                   <Link target="_blank" to={source}>
@@ -159,8 +161,10 @@ function CardComponent({
                 fontSize="70%"
                 fontStyle="italic"
               >
-                En ligne depuis le {createdAt}, langue :{" "}
-                <Box as="span" color="#2BB19C">{language}</Box>
+                En ligne depuis le {createdAt}, language d&apos; origine :{" "}
+                <Box as="span" color="#2BB19C">
+                  {language}
+                </Box>
               </Box>
             </Box>
           </CardHeader>
@@ -198,7 +202,8 @@ function CardComponent({
           countries?.length > 0 ||
           editors?.length > 0 ||
           authors?.length > 0 ? (
-            <CardFooter className="cardFooter"
+            <CardFooter
+              className="cardFooter"
               paddingY={{ base: 2 }}
               color="#50625F"
               display="flex"

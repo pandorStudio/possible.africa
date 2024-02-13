@@ -50,6 +50,7 @@ const eventRoutes = require("./endpoints/events/eventRoutes");
 const postCategorieRoutes = require("./endpoints/postCategories/postCategorieRoutes");
 const postLabelRoutes = require("./endpoints/postLabel/postLabelRoutes");
 const postRoutes = require("./endpoints/posts/postRouter");
+const airtablePostRoutes = require("./endpoints/posts/airtablePostRouter");
 const activityAreaRoutes = require("./endpoints/activityAreas/activityAreaRoutes");
 const uploadRoutes = require("./endpoints/uploads/uploadRoutes");
 const searchRoutes = require("./endpoints/search/searchRoutes");
@@ -72,10 +73,8 @@ var corsOptions = {
 };
 // Middleware
 //
-const { protect } = require("./endpoints/auth/authController.js");
-app.use(cors({
-  origin: true
-}));
+// const { protect } = require("./endpoints/auth/authController.js");
+app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
@@ -86,7 +85,7 @@ app.use(express.static("public"));
 
 //protections
 app.use(API_URL_BASE, authRoutes);
-app.use(protect);
+// app.use(protect);
 app.use(API_URL_BASE + "users", userRoutes);
 app.use(API_URL_BASE + "permissions", permissionRoutes);
 app.use(API_URL_BASE + "api_keys", apiKeyRoutes);
@@ -105,6 +104,7 @@ app.use(API_URL_BASE + "events", eventRoutes);
 app.use(API_URL_BASE + "post_labels", postLabelRoutes);
 app.use(API_URL_BASE + "post_categories", postCategorieRoutes);
 app.use(API_URL_BASE + "posts", postRoutes);
+app.use(API_URL_BASE + "airtable_posts", airtablePostRoutes);
 app.use(API_URL_BASE + "upload", uploadRoutes);
 app.use(API_URL_BASE + "search", searchRoutes);
 app.use(API_URL_BASE + "countries", countryRoutes);
