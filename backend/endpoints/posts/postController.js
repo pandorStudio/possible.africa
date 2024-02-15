@@ -40,7 +40,16 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
   let allRecords = [];
   try {
     // Sélectionnez tous les records et attendez leur chargement complet
-    const records = await base(tableName).select().all();
+    const records = await base(tableName)
+      .select({
+        sort: [
+          {
+            field: "Date Added",
+            direction: "desc"
+          },
+        ],
+      })
+      .all();
 
     // Traitez chaque record individuellement
     records.forEach((record) => {

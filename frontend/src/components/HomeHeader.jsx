@@ -24,6 +24,7 @@ import { useLocation } from "react-router-dom";
 export const HomeHeader = () => {
   const location = useLocation().pathname;
 
+  console.log(location);
   const isDesktop = useBreakpointValue({
     base: false,
     lg: true,
@@ -117,7 +118,8 @@ export const HomeHeader = () => {
                     as={ReachLink}
                     to={item.link}
                     className={
-                      location == item.link
+                      location == item.link ||
+                      (location == "/" && item.link == "/actualites")
                         ? "bg-green-400 py-3 w-40 flex justify-center rounded-xl text-white"
                         : "py-3 w-40 flex justify-center rounded-xl"
                     }
