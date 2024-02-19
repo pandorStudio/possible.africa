@@ -22,7 +22,7 @@ require("dotenv").config();
 
 const app = express();
 const server = http.createServer(app);
-const { Server } = require("socket.io");
+// const { Server } = require("socket.io");
 
 const PORT = process.env.SERVER_PORT || 4534;
 const API_URL_BASE = process.env.API_URL_BASE ? process.env.API_URL_BASE : "/";
@@ -40,6 +40,7 @@ const userRolesRoutes = require("./endpoints/userRoles/userRoleRoutes");
 const userTypesRoutes = require("./endpoints/userTypes/userTypeRoutes");
 const organisationTypeRoutes = require("./endpoints/organisationTypes/organisationTypeRoutes");
 const organisationRoutes = require("./endpoints/organisations/organisationRoutes");
+const airtableOrganisationRoutes = require("./endpoints/organisations/airtableOrganisationRoutes");
 const authRoutes = require("./endpoints/auth/authRouter");
 const jobRoutes = require("./endpoints/jobs/jobRoutes");
 const opportunityTypeRoutes = require("./endpoints/opportunityTypes/opportunityTypeRoutes");
@@ -58,10 +59,7 @@ const countryRoutes = require("./endpoints/countries/countryRoutes");
 const dashboardRoutes = require("./endpoints/tableauDeBord/dashboardRoutes");
 const newsletterSuscriberRoutes = require("./endpoints/newslettersSuscriber/newsletterSuscriberRoutes");
 
-var whitelist = [
-  "https://possible.africa",
-  "https://app.possible.africa",
-];
+var whitelist = ["https://possible.africa", "https://app.possible.africa"];
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -94,6 +92,7 @@ app.use(API_URL_BASE + "profil", profilRoutes);
 app.use(API_URL_BASE + "user_roles", userRolesRoutes);
 app.use(API_URL_BASE + "organisation_types", organisationTypeRoutes);
 app.use(API_URL_BASE + "organisations", organisationRoutes);
+app.use(API_URL_BASE + "airtable_organisations", airtableOrganisationRoutes);
 app.use(API_URL_BASE + "jobs", jobRoutes);
 app.use(API_URL_BASE + "opportunity_types", opportunityTypeRoutes);
 app.use(API_URL_BASE + "opportunity_targets", opportunityTargetRoutes);

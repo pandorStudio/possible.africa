@@ -5,6 +5,91 @@ const CustomUtils = require("../../utils/index.js");
 const axios = require("axios");
 const { Buffer } = require("buffer");
 const fs = require("fs");
+require("dotenv").config();
+
+
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+const ORGANISATIONS_BASE_ID = process.env.ENGLISH_BASE_ID;
+const ORGANISATION_TABLE_ID = process.env.FRENCH_ARTICLE_TABLE_ID;
+
+var Airtable = require("airtable");
+
+const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
+  var base = new Airtable({
+    apiKey: apiKey,
+  }).base(baseId);
+
+  let allRecords = [];
+  try {
+    // Sélectionnez tous les records et attendez leur chargement complet
+    const records = await base(tableName)
+      .select({
+        sort: [
+          {
+            field: "Date Added",
+            direction: "desc",
+          },
+        ],
+      })
+      .all();
+
+    // Traitez chaque record individuellement
+    records.forEach((record) => {
+      // console.log("Retrieved", record.get("Article ID"));
+      if (record.get("Logo")) {
+        allRecords.push({
+          _id: record.get("Name"),
+          name: record.get("Name"),
+          logo: record.get("Logo"),
+          description: record.get("Description"),
+          region: record.get("Region"),
+          headquarter: record.get("Headquarter"),
+          oerationnal_countries: record.get("Operating Countries"),
+          sector: record.get("Sector"),
+          related_articles: record.get("Articles Related"),
+          website: record.get("Website"),
+          publication_date: record.get("Date Added"),
+        });
+      } else {
+        allRecords.push({
+          _id: record.get("Name"),
+          name: record.get("Name"),
+          description: record.get("Description"),
+          region: record.get("Region"),
+          headquarter: record.get("Headquarter"),
+          oerationnal_countries: record.get("Operating Countries"),
+          sector: record.get("Sector"),
+          related_articles: record.get("Articles Related"),
+          website: record.get("Website"),
+          publication_date: record.get("Date Added"),
+        });
+      }
+    });
+
+    // console.log(allRecords.slice(0,5));
+    // Retournez ou traitez `allRecords` comme nécessaire
+    return allRecords.slice(0, limit);
+  } catch (err) {
+    console.error(err);
+    // Gérez l'erreur comme nécessaire
+  }
+};
+
+exports.getOrganisationsFromAirtable = async (req, res) => {
+  const { limit, page, sort, fields } = req.query;
+  // const queryObj = CustomUtils.advancedQuery(req.query);
+  try {
+    const result = await fetchAllRecords(
+      AIRTABLE_API_KEY,
+      ORGANISATIONS_BASE_ID,
+      ORGANISATION_TABLE_ID,
+      limit * 1
+    );
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
 
 async function downloadMedia(mediaUrl) {
   try {
@@ -41,6 +126,22 @@ exports.getMetaData = async (req, res) => {
 exports.getWpImageBuffer = async (req, res) => {
   const dataUrl = await downloadMedia(req.body.url);
   return res.status(200).json({ dataUrl });
+};
+
+
+exports.getAllOrganisationsFromAirtable = async (req, res) => {
+  const { limit, page, sort, fields } = req.query;
+  const queryObj = CustomUtils.advancedQuery(req.query);
+  // console.log(queryObj);
+  try {
+    const organisations = await Organisation.find(queryObj)
+      .limit(limit * 1)
+      .sort({ createdAt: -1, ...sort })
+      .select(fields);
+    res.status(200).json(organisations);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 };
 
 // @Get all organisations
