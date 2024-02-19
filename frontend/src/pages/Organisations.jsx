@@ -41,7 +41,7 @@ function Organisations() {
   let content;
 
   useEffect(() => {
-    console.log(organisations);
+    // console.log(organisations);
   }, [isLoading]);
 
   let isLoaded = true;
