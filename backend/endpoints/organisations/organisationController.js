@@ -7,10 +7,9 @@ const { Buffer } = require("buffer");
 const fs = require("fs");
 require("dotenv").config();
 
-
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
-const ORGANISATIONS_BASE_ID = process.env.ENGLISH_BASE_ID;
-const ORGANISATION_TABLE_ID = process.env.FRENCH_ARTICLE_TABLE_ID;
+const ORGANISATIONS_BASE_ID = process.env.ORGANISATIONS_BASE_ID;
+const ORGANISATION_TABLE_ID = process.env.ORGANISATION_TABLE_ID;
 
 var Airtable = require("airtable");
 
@@ -34,17 +33,18 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
       .all();
 
     // Traitez chaque record individuellement
+    // console.log(records);
     records.forEach((record) => {
       // console.log("Retrieved", record.get("Article ID"));
       if (record.get("Logo")) {
         allRecords.push({
           _id: record.get("Name"),
           name: record.get("Name"),
-          logo: record.get("Logo"),
+          logo: record.get("Logo")[0].url,
           description: record.get("Description"),
           region: record.get("Region"),
           headquarter: record.get("Headquarter"),
-          oerationnal_countries: record.get("Operating Countries"),
+          operationnal_countries: record.get("Operating Countries"),
           sector: record.get("Sector"),
           related_articles: record.get("Articles Related"),
           website: record.get("Website"),
@@ -57,7 +57,7 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
           description: record.get("Description"),
           region: record.get("Region"),
           headquarter: record.get("Headquarter"),
-          oerationnal_countries: record.get("Operating Countries"),
+          operationnal_countries: record.get("Operating Countries"),
           sector: record.get("Sector"),
           related_articles: record.get("Articles Related"),
           website: record.get("Website"),
@@ -118,16 +118,15 @@ exports.getMetaData = async (req, res) => {
     // Vous pouvez ensuite renvoyer ces données au frontend.
     res.json(response.data);
   } catch (error) {
-    console.error('Une erreur s\'est produite :', error);
-    res.status(500).send('Erreur lors de la récupération des données.');
+    console.error("Une erreur s'est produite :", error);
+    res.status(500).send("Erreur lors de la récupération des données.");
   }
-}
+};
 
 exports.getWpImageBuffer = async (req, res) => {
   const dataUrl = await downloadMedia(req.body.url);
   return res.status(200).json({ dataUrl });
 };
-
 
 exports.getAllOrganisationsFromAirtable = async (req, res) => {
   const { limit, page, sort, fields } = req.query;

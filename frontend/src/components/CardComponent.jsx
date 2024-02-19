@@ -1005,7 +1005,8 @@ function CardComponent({
                   >
                     <EarthIcon boxSize="18px" mr="5px" />
                     <Box as="div">
-                      {countries[0]?.translations?.fra?.common}
+                      {/* {countries[0]?.translations?.fra?.common} */}
+                      {countries[0]}
                     </Box>
                   </Box>
                   <Box
@@ -1038,7 +1039,8 @@ function CardComponent({
                   >
                     <EarthIcon boxSize="18px" mr="5px" />
                     <Box as="div">
-                      {countries[0]?.translations?.fra?.common}
+                      {/* {countries[0]?.translations?.fra?.common} */}
+                      {countries[0]}
                     </Box>
                   </Box>
                 </Box>
@@ -2347,7 +2349,7 @@ function CardComponent({
               {postType === "Organisation" && (
                 <>
                   <Flex gap={5} marginTop={1.5} marginLeft={-1}>
-                    {country && (
+                    {country ? (
                       <Flex
                         alignItems="center"
                         justifyContent="center"
@@ -2356,7 +2358,7 @@ function CardComponent({
                       >
                         <CountryIcon /> <Text fontSize="xs">{country}</Text>
                       </Flex>
-                    )}
+                    ) : null}
                     {type && (
                       <Flex
                         alignItems="center"

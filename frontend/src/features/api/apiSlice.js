@@ -91,6 +91,14 @@ export const apiSlice = createApi({
       invalidatesTags: ["Posts"],
     }),
 
+    getAirtableOrganisations: builder.query({
+      query: (queryArgs = baseQueryArgs) => {
+        return queryTransformer(queryArgs, "airtable_organisations");
+      },
+      // transformResponse: (res) => res.sort((a, b) => b.id - a.id),
+      providesTags: ["Organisations"],
+    }),
+
     getOrganisations: builder.query({
       query: (queryArgs = baseQueryArgs) => {
         return queryTransformer(queryArgs, "organisations");
@@ -247,6 +255,7 @@ export const {
   useGetOrganisationQuery,
   useSearchAllQuery,
   useGetOrganisationsQuery,
+  useGetAirtableOrganisationsQuery,
   useAddOrganisationMutation,
   useDeleteOrganisationMutation,
   useUpdateOrganisationMutation,

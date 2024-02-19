@@ -1,6 +1,6 @@
 import { Box, Flex, Spinner, Text, VStack } from "@chakra-ui/react";
 import CardComponent from "../components/CardComponent";
-import { useGetOrganisationsQuery } from "../features/api/apiSlice";
+import { useGetAirtableOrganisationsQuery, useGetOrganisationsQuery } from "../features/api/apiSlice";
 import CustomContainer from "../utils/CustomContainer";
 import { ParseSlice } from "../utils/htmlParser";
 import { useState, useEffect } from "react";
@@ -12,6 +12,19 @@ function Organisations() {
   const [page, setPage] = useState(1);
   const [infiniteScrollIsFetching, setinfiniteScrollIsFetching] =
     useState(false);
+  // const {
+  //   data: organisations = [],
+  //   isLoading,
+  //   isFetching,
+  //   isError,
+  //   isSuccess,
+  //   error,
+  // } = useGetOrganisationsQuery({
+  //   limit: 10 * page,
+  //   page: page,
+  //   fields: [],
+  //   eq: [],
+  // });
   const {
     data: organisations = [],
     isLoading,
@@ -19,7 +32,7 @@ function Organisations() {
     isError,
     isSuccess,
     error,
-  } = useGetOrganisationsQuery({
+  } = useGetAirtableOrganisationsQuery({
     limit: 10 * page,
     page: page,
     fields: [],
@@ -69,7 +82,7 @@ function Organisations() {
         endMessage={<Text>Yay! You have seen it all</Text>}
       >
         {organisations.map((organisation, index) => {
-          const createdAt = new Date(organisation?.createdAt);
+          const createdAt = new Date(organisation?.publication_date);
           // transform date to french format
           const date =
             createdAt.getDate() +
@@ -90,14 +103,15 @@ function Organisations() {
               }
               imgUrl={organisation?.logo}
               isLoaded={isLoaded}
-              link={"/organisations/" + organisation?.id}
+              // link={"/organisations/" + organisation?.id}
+              link={organisation?.website || ""}
               type={organisation?.type?.name}
               organisation_types={
                 organisation?.types?.length > 0 ? organisation?.types : []
               }
               countries={
-                organisation?.covered_countries?.length > 0
-                  ? organisation?.covered_countries
+                organisation?.operationnal_countries?.length > 0
+                  ? organisation?.operationnal_countries.split(", ")
                   : []
               }
               activity_areas={
@@ -106,8 +120,8 @@ function Organisations() {
                   : []
               }
               createdAt={date}
-              country={organisation?.country?.translations?.fra?.common || ""}
-              sitWebLink={organisation?.site_web || ""}
+              country={organisation?.region}
+              sitWebLink={organisation?.website || ""}
             />
           );
           return <>{instanceCard}</>;
