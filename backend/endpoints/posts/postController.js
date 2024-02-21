@@ -1,8 +1,39 @@
 const Post = require("./postModel.js");
 const CustomUtils = require("../../utils/index.js");
+const fetch = require("node-fetch");
+const fs = require("fs");
+const stream = require("stream");
+const { promisify } = require("util");
+const pipeline = promisify(stream.pipeline);
+const Path = require("path");
 // const Airtable = require("airtable");
 require("dotenv").config();
 const axios = require("axios");
+
+async function fileExists(filePath) {
+  try {
+    await fs.access(filePath);
+    return true; // Le fichier existe
+  } catch (error) {
+    return false; // Le fichier n'existe pas
+  }
+}
+
+async function downloadImage(url, path) {
+  if (await fileExists(path)) {
+    console.log(`Le fichier existe déjà : ${path}`);
+    return false;
+  }
+
+  const response = await fetch(url);
+  if (!response.ok)
+    throw new Error(
+      `Échec du téléchargement de l'image : ${response.statusText}`
+    );
+  await pipeline(response.body, fs.createWriteStream(path));
+  // console.log(`Image téléchargée et sauvegardée comme ${path}`);
+  return path;
+}
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
 const ENGLISH_BASE_ID = process.env.ENGLISH_BASE_ID;
@@ -11,6 +42,8 @@ const FRENCH_ARTICLE_TABLE_ID = process.env.FRENCH_ARTICLE_TABLE_ID;
 const ENGLISH_ARTICLE_TABLE_ID = process.env.ENGLISH_ARTICLE_TABLE_ID;
 const ALL_ARTICLE_BASE_ID = process.env.ALL_ARTICLE_BASE_ID;
 const ALL_ARTICLE_TABLE_ID = process.env.ALL_ARTICLE_TABLE_ID;
+const ENV = process.env.ENV;
+const PORT = process.env.PORT;
 
 // const endpointUrl = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`;
 
@@ -45,7 +78,7 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
         sort: [
           {
             field: "Date Added",
-            direction: "desc"
+            direction: "desc",
           },
         ],
       })
@@ -54,7 +87,7 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
     // Traitez chaque record individuellement
     records.forEach((record) => {
       // console.log("Retrieved", record.get("Article ID"));
-      if (record.get("Logo")) {
+      if (record.get("Logo copy")) {
         allRecords.push({
           _id: record.get("Article ID"),
           title: record.get("Article Title"),
@@ -63,7 +96,7 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
           language: record.get("Language"),
           link: record.get("Link to Article"),
           publication_date: record.get("Date Added"),
-          logo: record.get("Logo")[0],
+          logo: record.get("Logo copy"),
         });
       } else {
         allRecords.push({
@@ -78,9 +111,46 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
       }
     });
 
-    // console.log(allRecords.slice(0,5));
+    // console.log(allRecords.slice(0, 5));
     // Retournez ou traitez `allRecords` comme nécessaire
-    return allRecords.slice(0, limit);
+    const recordsToBeReturned = allRecords.slice(0, limit);
+    const recordsToBeRetured = await Promise.all(
+      recordsToBeReturned.map(async (e) => {
+        if (e.logo && e.link) {
+          let link = e.link.slice(8);
+          const regex = /\//g;
+          const index = link.search(regex);
+          link = link.slice(0, index);
+          // console.log(link);
+          const path = `${Path.resolve(
+            __dirname,
+            "../../public/storage/logos/airtable"
+          )}/${link}.jpg`;
+          const result = downloadImage(e.logo, path);
+          // console.log(result);
+
+          // if (result) {
+          const regex2 = /public\\/;
+          const publicIndex = path.search(regex2);
+          const reformedPath = path.slice(publicIndex + 6);
+          if (ENV === "dev") {
+            e.logo = `http://localhost:${PORT}${reformedPath}`;
+          } else {
+            e.logo = `https://api.possible.africa${reformedPath}`;
+          }
+          // console.log(e);
+          return e;
+          // } else {
+          //   e.logo = path;
+          //   return e;
+          // }
+        }
+        return e;
+      })
+    );
+
+    // console.log(recordsToBeRetured);
+    return recordsToBeRetured;
   } catch (err) {
     console.error(err);
     // Gérez l'erreur comme nécessaire

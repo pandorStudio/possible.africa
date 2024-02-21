@@ -124,7 +124,7 @@ function CardComponent({
                 src={imgUrl}
                 // src={editors?.length > 0 ? editors[0].logo : ""}
                 alt={editors?.length > 0 ? editors[0].logo : ""}
-                fallbackSrc="/placeholder_org.jpeg"
+                // fallbackSrc="/placeholder_org.jpeg"
                 fit="contain"
                 w={{ base: "35px" }}
                 h={{ base: "35px" }}

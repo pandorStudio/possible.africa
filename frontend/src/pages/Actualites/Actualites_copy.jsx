@@ -146,7 +146,7 @@ function ActualitesCopy() {
     //   console.log("Loading...");
     // }
     // if (allAirtableAllNews.length) {
-    //   console.log(allAirtableAllNews);
+    // console.log(FrAirtableFrNews);
     // }
     // console.log(allNewsLength);
     // return () => {
@@ -158,6 +158,7 @@ function ActualitesCopy() {
     // allAirtableAllNewsLengthIsFetching,
     // allAirtableAllNewsIsFetching,
     language,
+    FrAirtableFrNewsIsLoading,
   ]);
 
   function handleLanguageTabClick() {
@@ -332,7 +333,7 @@ function ActualitesCopy() {
                 postType="Actualités"
                 key={news?.title}
                 title={news?.title}
-                imgUrl={news?.logo?.url}
+                imgUrl={news?.logo}
                 isLoaded={isLoaded}
                 link={news?.link}
                 // countries={news?.countries?.length > 0 ? news?.countries : []}
@@ -412,7 +413,7 @@ function ActualitesCopy() {
                 postType="Actualités"
                 key={news?.title}
                 title={news?.title}
-                imgUrl={news?.logo?.url}
+                imgUrl={news?.logo}
                 isLoaded={isLoaded}
                 link={news?.link}
                 // countries={news?.countries?.length > 0 ? news?.countries : []}
@@ -467,7 +468,7 @@ function ActualitesCopy() {
           <Box
             className={
               language === "fr"
-                ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-green-400 text-white font-semibold"
+                ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-[#2BB19C] text-white font-semibold"
                 : "w-[100px] h-10 flex justify-center flex-col cursor-pointer"
             }
             onClick={() => {
@@ -483,7 +484,7 @@ function ActualitesCopy() {
           <Box
             className={
               language === "en"
-                ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-green-400 text-white font-semibold"
+                ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-[#2BB19C] text-white font-semibold"
                 : "w-[100px] h-10 flex justify-center flex-col cursor-pointer"
             }
             onClick={() => {

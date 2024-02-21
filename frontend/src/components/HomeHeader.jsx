@@ -70,7 +70,7 @@ export const HomeHeader = () => {
                     to={item.link}
                     className={
                       location == item.link
-                        ? "bg-green-400 py-3 w-40 flex justify-center rounded-xl text-white"
+                        ? " py-3 w-40 flex justify-center rounded-xl text-[#2BB19C]"
                         : "py-3 w-40 flex justify-center rounded-xl"
                     }
                   >
@@ -78,7 +78,7 @@ export const HomeHeader = () => {
                       flexDir="row"
                       gap={1}
                       className={
-                        location == item.link ? "text-white font-bold" : ""
+                        location == item.link ? "text-[#2BB19C] font-bold" : ""
                       }
                     >
                       {item.icons}
@@ -120,7 +120,7 @@ export const HomeHeader = () => {
                     className={
                       location == item.link ||
                       (location == "/" && item.link == "/actualites")
-                        ? "bg-green-400 py-3 w-40 flex justify-center rounded-xl text-white"
+                        ? " py-3 w-40 flex justify-center rounded-xl text-[#2BB19C]"
                         : "py-3 w-40 flex justify-center rounded-xl"
                     }
                   >
@@ -128,7 +128,7 @@ export const HomeHeader = () => {
                       flexDir="row"
                       gap={1}
                       className={
-                        location == item.link ? "text-white font-bold" : ""
+                        location == item.link ? "text-[#2BB19C] font-bold" : ""
                       }
                     >
                       {item.icons}
