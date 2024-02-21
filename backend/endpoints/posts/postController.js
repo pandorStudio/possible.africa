@@ -130,13 +130,13 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
           // console.log(result);
 
           // if (result) {
-          const regex2 = /public\\/;
+          const regex2 = /storage/;
           const publicIndex = path.search(regex2);
-          const reformedPath = path.slice(publicIndex + 6);
+          const reformedPath = path.slice(publicIndex);
           if (ENV === "dev") {
-            e.logo = `http://localhost:${PORT}${reformedPath}`;
+            e.logo = `http://localhost:${PORT}/${reformedPath}`;
           } else {
-            e.logo = `https://api.possible.africa${reformedPath}`;
+            e.logo = `https://api.possible.africa/${reformedPath}`;
           }
           // console.log(e);
           return e;
