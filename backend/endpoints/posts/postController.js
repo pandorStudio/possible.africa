@@ -116,16 +116,16 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
     const recordsToBeReturned = allRecords.slice(0, limit);
     const recordsToBeRetured = await Promise.all(
       recordsToBeReturned.map(async (e) => {
-        if (e.logo && e.link) {
-          let link = e.link.slice(8);
+        if (e.logo && e.media) {
+          let media = e.media.split(" ").join("").toLowerCase();
           const regex = /\//g;
-          const index = link.search(regex);
-          link = link.slice(0, index);
+          // const index = link.search(regex);
+          // link = link.slice(0, index);
           // console.log(link);
           const path = `${Path.resolve(
             __dirname,
             "../../public/storage/logos/airtable"
-          )}/${link}.jpg`;
+          )}/${media}.jpg`;
           const result = downloadImage(e.logo, path);
           // console.log(result);
 

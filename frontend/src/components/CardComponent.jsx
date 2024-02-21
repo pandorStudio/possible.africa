@@ -60,6 +60,11 @@ function CardComponent({
   organisation_types,
   language,
   sitWebLink,
+  airtableRegion,
+  airtableHeadquarter,
+  airtableOperationnalCountries,
+  airtableSector,
+  airtableRelaredArticles,
 }) {
   let card = <></>;
 
@@ -1999,6 +2004,344 @@ function CardComponent({
                     <Box as="div">
                       {countries[0]?.translations?.fra?.common}
                     </Box>
+                  </Box>
+                </Box>
+              ) : null}
+
+              {contacts?.length > 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderLeftRadius="10px"
+                    px="5px"
+                  >
+                    <AuthorIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{contacts[0]?.complete_name}</Box>
+                  </Box>
+                  <Box
+                    as="div"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    transform="translate(-1px, 0px)"
+                    borderRightRadius="10px"
+                    px="3px"
+                  >
+                    +{contacts?.length - 1}
+                  </Box>
+                </Box>
+              ) : contacts?.length === 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderRadius="10px"
+                    px="5px"
+                  >
+                    <AuthorIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{contacts[0]?.complete_name}</Box>
+                  </Box>
+                </Box>
+              ) : null}
+              {organisation_types?.length > 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderLeftRadius="10px"
+                    px="5px"
+                  >
+                    <BusinessIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{organisation_types[0]?.name}</Box>
+                  </Box>
+                  <Box
+                    as="div"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    transform="translate(-1px, 0px)"
+                    borderRightRadius="10px"
+                    px="3px"
+                  >
+                    +{organisation_types?.length - 1}
+                  </Box>
+                </Box>
+              ) : organisation_types?.length === 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderRadius="10px"
+                    px="5px"
+                  >
+                    <BusinessIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{organisation_types[0]?.name}</Box>
+                  </Box>
+                </Box>
+              ) : null}
+
+              {activity_areas?.length > 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderLeftRadius="10px"
+                    px="5px"
+                  >
+                    <SearchIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{activity_areas[0]?.name}</Box>
+                  </Box>
+                  <Box
+                    as="div"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    transform="translate(-1px, 0px)"
+                    borderRightRadius="10px"
+                    px="3px"
+                  >
+                    +{activity_areas?.length - 1}
+                  </Box>
+                </Box>
+              ) : activity_areas?.length === 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderRadius="10px"
+                    px="5px"
+                  >
+                    <SearchIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{activity_areas[0]?.name}</Box>
+                  </Box>
+                </Box>
+              ) : null}
+
+              {editors?.length > 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderLeftRadius="10px"
+                    px="5px"
+                  >
+                    <EditorIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{editors[0]?.name}</Box>
+                  </Box>
+                  <Box
+                    as="div"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    transform="translate(-1px, 0px)"
+                    borderRightRadius="10px"
+                    px="3px"
+                  >
+                    +{editors?.length - 1}
+                  </Box>
+                </Box>
+              ) : editors?.length === 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderRadius="10px"
+                    px="5px"
+                  >
+                    <EditorIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{editors[0]?.name}</Box>
+                  </Box>
+                </Box>
+              ) : null}
+
+              {authors?.length > 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderLeftRadius="10px"
+                    px="5px"
+                  >
+                    <AuthorIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{authors[0]?.complete_name}</Box>
+                  </Box>
+                  <Box
+                    as="div"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    transform="translate(-1px, 0px)"
+                    borderRightRadius="10px"
+                    px="3px"
+                  >
+                    +{authors?.length - 1}
+                  </Box>
+                </Box>
+              ) : authors?.length === 1 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderRadius="10px"
+                    px="5px"
+                  >
+                    <AuthorIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{authors[0]?.complete_name}</Box>
+                  </Box>
+                </Box>
+              ) : null}
+            </CardFooter>
+          ) : null}
+          {airtableRegion?.length > 0 ||
+          airtableHeadquarter?.length > 0 ||
+          airtableOperationnalCountries?.length > 0 ||
+          airtableSector?.length > 0 ||
+          airtableRelaredArticles?.length > 0 ? (
+            <CardFooter
+              className="cardFooter"
+              paddingY={{ base: 2 }}
+              color="#50625F"
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+              overflowX="scroll"
+              overflowY="hidden"
+            >
+              {airtableRegion?.length > 0 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderRadius="10px"
+                    px="5px"
+                  >
+                    <EarthIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{airtableRegion}</Box>
+                  </Box>
+                </Box>
+              ) : null}
+
+              {airtableSector?.length > 0 ? (
+                <Box
+                  as="div"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  paddingX={{ base: 1 }}
+                  paddingY={{ base: 0.5 }}
+                  rounded="full"
+                >
+                  <Box
+                    as="div"
+                    display="flex"
+                    alignItems="center"
+                    border="1px solid rgba(217, 217, 217, 0.5)"
+                    borderRadius="10px"
+                    px="5px"
+                  >
+                    <SearchIcon boxSize="18px" mr="5px" />
+                    <Box as="div">{airtableSector}</Box>
                   </Box>
                 </Box>
               ) : null}

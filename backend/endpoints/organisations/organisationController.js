@@ -10,7 +10,8 @@ require("dotenv").config();
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
 const ORGANISATIONS_BASE_ID = process.env.ORGANISATIONS_BASE_ID;
 const ORGANISATION_TABLE_ID = process.env.ORGANISATION_TABLE_ID;
-
+const ENV = process.env.ENV;
+const PORT = process.env.PORT;
 var Airtable = require("airtable");
 
 const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
@@ -36,6 +37,10 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
     // console.log(records);
     records.forEach((record) => {
       // console.log("Retrieved", record.get("Article ID"));
+      const logoPrefix =
+        ENV === "dev"
+          ? `http://localhost:${PORT}/storage/logos/airtable/`
+          : `https://api.possible.africa/storage/logos/airtable/`;
       if (record.get("Logo")) {
         allRecords.push({
           _id: record.get("Name"),
@@ -54,6 +59,11 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
         allRecords.push({
           _id: record.get("Name"),
           name: record.get("Name"),
+          logo: `${logoPrefix}${record
+            .get("Name")
+            .split(" ")
+            .join("")
+            .toLowerCase()}.jpg`,
           description: record.get("Description"),
           region: record.get("Region"),
           headquarter: record.get("Headquarter"),

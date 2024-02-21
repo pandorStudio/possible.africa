@@ -109,11 +109,11 @@ function Organisations() {
               organisation_types={
                 organisation?.types?.length > 0 ? organisation?.types : []
               }
-              countries={
-                organisation?.operationnal_countries?.length > 0
-                  ? organisation?.operationnal_countries.split(", ")
-                  : []
-              }
+              // countries={
+              //   organisation?.operationnal_countries?.length > 0
+              //     ? organisation?.operationnal_countries.split(", ")
+              //     : []
+              // }
               activity_areas={
                 organisation?.activity_areas?.length > 0
                   ? organisation?.activity_areas
@@ -122,6 +122,13 @@ function Organisations() {
               createdAt={date}
               country={organisation?.region}
               sitWebLink={organisation?.website || ""}
+              airtableRegion={organisation?.region}
+              airtableHeadquarter={organisation?.headquarter}
+              airtableOperationnalCountries={
+                organisation?.operationnal_countries
+              }
+              airtableSector={organisation?.sector}
+              airtableRelaredArticles={organisation?.related_articles}
             />
           );
           return <>{instanceCard}</>;
