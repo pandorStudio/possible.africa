@@ -44,6 +44,7 @@ const ALL_ARTICLE_BASE_ID = process.env.ALL_ARTICLE_BASE_ID;
 const ALL_ARTICLE_TABLE_ID = process.env.ALL_ARTICLE_TABLE_ID;
 const ENV = process.env.ENV;
 const PORT = process.env.PORT;
+const API_URL = process.env.API_URL;
 
 // const endpointUrl = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`;
 
@@ -136,7 +137,7 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
           if (ENV === "dev") {
             e.logo = `http://localhost:${PORT}/${reformedPath}`;
           } else {
-            e.logo = `https://api.possible.africa/${reformedPath}`;
+            e.logo = `${API_URL}:${PORT}/${reformedPath}`;
           }
           // console.log(e);
           return e;
