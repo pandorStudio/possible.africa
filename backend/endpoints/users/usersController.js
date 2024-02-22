@@ -8,7 +8,7 @@ const bcrypt = require("bcryptjs");
 // @access Private
 exports.getMe = async (req, res) => {
   try {
-    // console.log(req.user);
+    console.log(req.user);
     const user = await User.find({ _id: req.user._id });
     if (!user) return res.status(404).json({ message: `User not found !` });
     res.status(200).json(user);

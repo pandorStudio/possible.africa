@@ -71,7 +71,7 @@ var corsOptions = {
 };
 // Middleware
 //
-// const { protect } = require("./endpoints/auth/authController.js");
+const { protect } = require("./endpoints/auth/authController.js");
 app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -83,7 +83,7 @@ app.use(express.static("public"));
 
 //protections
 app.use(API_URL_BASE, authRoutes);
-// app.use(protect);
+app.use(protect);
 app.use(API_URL_BASE + "users", userRoutes);
 app.use(API_URL_BASE + "permissions", permissionRoutes);
 app.use(API_URL_BASE + "api_keys", apiKeyRoutes);
