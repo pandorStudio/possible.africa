@@ -79,6 +79,22 @@ class CustomUtils {
     return queryObj;
   };
 
+  static advancedQueryAirtable = (query) => {
+    const queryObj = { ...query };
+    const excludedFields = [
+      "page",
+      "sort",
+      "limit",
+      "fields",
+      "_end",
+      "_start",
+    ];
+    excludedFields.forEach((element) => {
+      delete queryObj[element];
+    });
+    return queryObj;
+  };
+
   static slugify = (from = "") => {
     return from.toLowerCase().split(" ").join("-");
   };

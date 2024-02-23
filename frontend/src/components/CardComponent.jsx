@@ -1846,10 +1846,10 @@ function CardComponent({
           >
             <Box
               as="div"
-              mt={organisations?.length > 1 ? { base: "5px" } : { base: "5px" }}
-              mr={
-                organisations?.length > 1 ? { base: "18px" } : { base: "13px" }
-              }
+              // mt={organisations?.length > 1 ? { base: "5px" } : { base: "5px" }}
+              // mr={
+              //   organisations?.length > 1 ? { base: "18px" } : { base: "13px" }
+              // }
               h={{ base: "35px" }}
               w={{ base: "35px" }}
               border="1px solid rgba(217, 217, 217, 0.5)"
@@ -1889,8 +1889,9 @@ function CardComponent({
                     lineHeight={{ base: "25px", md: "20px" }}
                     fontSize="xl"
                     paddingBottom={{ base: 1 }}
+                    className="px-3"
                   >
-                    {link ? <Link to={link}>{title}</Link> : { title }}
+                    {link ? <Link to={link}>{title}</Link> : <p>{title}</p>}
                   </Text>
                 </Box>
                 {source || sitWebLink ? (
@@ -1900,10 +1901,9 @@ function CardComponent({
                 ) : null}
               </Box>
               <Box
-                m={{ base: "0 0 0 0" }}
-                p={{ base: "0 0 0 0" }}
                 fontSize="70%"
                 fontStyle="italic"
+                className="px-3"
               >
                 En ligne depuis le {createdAt}
               </Box>

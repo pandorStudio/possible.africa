@@ -21,7 +21,7 @@ import {
 } from "../../features/api/apiSlice.js";
 import CustomContainer from "../../utils/CustomContainer.jsx";
 import { ParseSlice } from "../../utils/htmlParser.jsx";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NoData from "../../utils/NoData.jsx";
 import CenteredContainer from "../../utils/CenteredContainer.jsx";
@@ -49,12 +49,25 @@ function ActualitesCopy() {
   const [languageChanging, setLanguageChanging] = useState(false);
   const [language, setLanguage] = useState("fr");
   const [infiniteScrollIsFetching] = useState(false);
+  const [pageEq, setPageEq] = useState([
+    { field: "Article Title", value: "" },
+    { field: "Tags from Feedly", value: "" },
+    { field: "Name of Media", value: "" },
+    { field: "Language", value: "" },
+    { field: "Date Added", value: "" },
+  ]);
   const { data: interviewCategories = [] } = useGetPostCategoriesQuery({
     limit: 10,
     page: page,
     fields: [],
     eq: [{ field: "slug", value: "/actualites" }],
   });
+
+  const articleNameRef = useRef();
+  const articleTagRef = useRef();
+  const articleMediaRef = useRef();
+  const articleLanguageRef = useRef();
+  const articleAddedDateRef = useRef();
 
   // Chargement de tous les données qui viennent de la ase de données MongoDb
   const {
@@ -70,7 +83,7 @@ function ActualitesCopy() {
     page: page,
     fields: [],
     eq: [
-      { field: "categorie", value: `${interviewCategories[0]?._id}` },
+      { field: "Tags from feedly", value: `education` },
       { field: "status", value: "published" },
     ],
   });
@@ -109,7 +122,7 @@ function ActualitesCopy() {
     refetch: allAirtableAllNewsLengthRefetch,
   } = useGetAirtableEngPostsQuery({
     fields: [],
-    eq: [],
+    eq: pageEq,
   });
 
   // Chargement de tous les données qui viennent de la ase de données MongoDb
@@ -125,7 +138,7 @@ function ActualitesCopy() {
     limit: 10 * page,
     page: page,
     fields: [],
-    eq: [],
+    eq: pageEq,
   });
   const {
     data: FrAirtableFrNewsLength,
@@ -134,7 +147,7 @@ function ActualitesCopy() {
     refetch: FrAirtableFrNewsLengthRefetch,
   } = useGetAirtableFrPostsQuery({
     fields: [],
-    eq: [],
+    eq: pageEq,
   });
 
   useEffect(() => {
@@ -145,6 +158,9 @@ function ActualitesCopy() {
     // if (allNewsLengthIsFetching) {
     //   console.log("Loading...");
     // }
+    FrAirtableFrNewsLengthRefetch();
+    FrAirtableFrNewsRefetch();
+    allAirtableAllNewsLengthRefetch();
     // if (allAirtableAllNews.length) {
     // console.log(FrAirtableFrNews);
     // }
@@ -158,6 +174,10 @@ function ActualitesCopy() {
     // allAirtableAllNewsLengthIsFetching,
     // allAirtableAllNewsIsFetching,
     language,
+    pageEq,
+    // allAirtableAllNewsIsFetching,
+    // FrAirtableFrNewsIsFetching,
+    allAirtableAllNewsIsLoading,
     FrAirtableFrNewsIsLoading,
   ]);
 
@@ -464,40 +484,148 @@ function ActualitesCopy() {
     <>
       <Container maxW="container.lg" pt={8}>
         {/* <DataTabs data={language} /> */}
-        <Box className="ml-10 w-[200px] h-10 flex justify-center text-center rounded-lg shadow-sm drop-shadow-xl overflow-hidden">
-          <Box
-            className={
-              language === "fr"
-                ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-[#2BB19C] text-white font-semibold"
-                : "w-[100px] h-10 flex justify-center flex-col cursor-pointer"
-            }
-            onClick={() => {
-              setLanguageChanging(true);
-              setLanguage("fr");
-              setTimeout(() => {
-                setLanguageChanging(false);
-              }, 3000);
-            }}
-          >
-            <span>Français</span>
+        <div className="w-full flex justify-start gap-3 text-center">
+          <Box className="ml-10 w-[200px] h-10 flex justify-center text-center rounded-lg shadow-sm drop-shadow-xl overflow-hidden">
+            <Box
+              className={
+                language === "fr"
+                  ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-[#2BB19C] text-white font-semibold"
+                  : "w-[100px] h-10 flex justify-center flex-col cursor-pointer"
+              }
+              onClick={() => {
+                setLanguageChanging(true);
+                setLanguage("fr");
+                setTimeout(() => {
+                  setLanguageChanging(false);
+                }, 3000);
+              }}
+            >
+              <span>Français</span>
+            </Box>
+            <Box
+              className={
+                language === "en"
+                  ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-[#2BB19C] text-white font-semibold"
+                  : "w-[100px] h-10 flex justify-center flex-col cursor-pointer"
+              }
+              onClick={() => {
+                setLanguageChanging(true);
+                setLanguage("en");
+                setTimeout(() => {
+                  setLanguageChanging(false);
+                }, 3000);
+              }}
+            >
+              <span>Anglais</span>
+            </Box>
           </Box>
-          <Box
-            className={
-              language === "en"
-                ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-[#2BB19C] text-white font-semibold"
-                : "w-[100px] h-10 flex justify-center flex-col cursor-pointer"
-            }
-            onClick={() => {
-              setLanguageChanging(true);
-              setLanguage("en");
-              setTimeout(() => {
-                setLanguageChanging(false);
-              }, 3000);
-            }}
+          <div className="bg-transparent h-[40px] border-2 border-[#2BB19C]/40 w-[500px] rounded-lg overflow-hidden">
+            <input
+              className="w-full h-full bg-transparent text-center text-neutral-900 placeholder-shown:text-neutral-900 px-2"
+              type="text"
+              placeholder="Entrer le nom d'un article pour commencer à filtrer ..."
+              onChange={(e) => {
+                setPageEq(
+                  pageEq.map((a) => {
+                    if (a.field === "Article Title") {
+                      return { field: a.field, value: e.target.value };
+                    } else {
+                      return a;
+                    }
+                  })
+                );
+              }}
+            />
+          </div>
+          {/* <div className="bg-transparent h-[40px] border-2 border-[#2BB19C]/40 w-[100px] rounded-lg overflow-hidden">
+            <input
+              className="w-full h-full bg-transparent text-center text-neutral-900 placeholder-shown:text-neutral-900 px-2"
+              type="text"
+              placeholder="Tag"
+              onChange={(e) => {
+                setPageEq(
+                  pageEq.map((a) => {
+                    if (a.field === "Tags from Feedly") {
+                      return { field: a.field, value: e.target.value };
+                    } else {
+                      return a;
+                    }
+                  })
+                );
+              }}
+            />
+          </div> */}
+
+          {(FrAirtableFrNewsIsLoading ||
+            allAirtableAllNewsIsLoading ||
+            FrAirtableFrNewsIsFetching ||
+            allAirtableAllNewsIsFetching) && (
+            <Box
+              as="div"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              p={15}
+            >
+              <Spinner />
+            </Box>
+          )}
+          {/* 
+          <div className="bg-transparent border-2 border-[#2BB19C]/40 w-[100px] rounded-lg overflow-hidden">
+            <input
+              className="w-full h-full bg-transparent text-center text-neutral-900 placeholder-shown:text-neutral-900 px-2"
+              type="text"
+              placeholder="Nom media"
+              onChange={(e) => {
+                console.log(e.target.value)
+                setPageEq(
+                  pageEq.map((a) => {
+                    if (a.field === "Name of Media") {
+                      return { field: a.field, value: e.target.value };
+                    } else {
+                      return a;
+                    }
+                  })
+                );
+              }}
+            />
+          </div>
+          <div className="bg-transparent border-2 border-[#2BB19C]/40 w-[100px] rounded-lg overflow-hidden">
+            <select
+              className="bg-transparent w-full h-full text-center px-2"
+              name=""
+              id=""
+              ref={articleLanguageRef}
+            >
+              <option className="" value="">
+                Language
+              </option>
+              <option className="" value="fr">
+                Fr
+              </option>
+              <option className="" value="eng">
+                Eng
+              </option>
+            </select>
+          </div>
+          <div className="bg-transparent border-2 border-[#2BB19C]/40 w-[100px] rounded-lg overflow-hidden">
+            <input
+              className="w-full h-full bg-transparent text-center text-neutral-900 placeholder-shown:text-neutral-900 px-2"
+              type="date"
+              placeholder="Nom media"
+              ref={articleAddedDateRef}
+            />
+          </div>
+          <button
+            onClick={handleClickFilterBtn}
+            className="bg-[#2BB19C]/90 text-white w-[100px] rounded-lg overflow-hidden hover:rounded-md hover:bg-[#2BB19C] hover:scale-105 active:rounded-sm active:scale-100"
           >
-            <span>Anglais</span>
-          </Box>
-        </Box>
+            Filtrer
+          </button> */}
+        </div>
+        {/* {pageEq.map((e) => {
+          return JSON.stringify(e);
+        })} */}
         <CustomContainer
           content={language === "fr" ? airtableFrContent : airtableEngContent}
         />

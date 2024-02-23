@@ -14,7 +14,7 @@ const ENV = process.env.ENV;
 const PORT = process.env.PORT;
 var Airtable = require("airtable");
 
-const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
+const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
   var base = new Airtable({
     apiKey: apiKey,
   }).base(baseId);
@@ -76,6 +76,12 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
       }
     });
 
+    if (eq["Name"]) {
+      allRecords = allRecords.filter((r) =>
+        r.name.includes(eq["Name"].toLowerCase())
+      );
+    }
+
     // console.log(allRecords.slice(0,5));
     // Retournez ou traitez `allRecords` comme nécessaire
     return allRecords.slice(0, limit);
@@ -87,13 +93,14 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
 
 exports.getOrganisationsFromAirtable = async (req, res) => {
   const { limit, page, sort, fields } = req.query;
-  // const queryObj = CustomUtils.advancedQuery(req.query);
+  const queryObj = CustomUtils.advancedQueryAirtable(req.query);
   try {
     const result = await fetchAllRecords(
       AIRTABLE_API_KEY,
       ORGANISATIONS_BASE_ID,
       ORGANISATION_TABLE_ID,
-      limit * 1
+      limit * 1,
+      queryObj
     );
     res.status(200).json(result);
   } catch (error) {

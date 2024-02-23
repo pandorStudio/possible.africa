@@ -25,14 +25,18 @@ async function downloadImage(url, path) {
     return false;
   }
 
-  const response = await fetch(url);
-  if (!response.ok)
-    throw new Error(
-      `Échec du téléchargement de l'image : ${response.statusText}`
-    );
-  await pipeline(response.body, fs.createWriteStream(path));
-  // console.log(`Image téléchargée et sauvegardée comme ${path}`);
-  return path;
+  try {
+    const response = await fetch(url);
+    // if (!response.ok)
+    //   throw new Error(
+    //     `Échec du téléchargement de l'image : ${response.statusText}`
+    //   );
+    await pipeline(response.body, fs.createWriteStream(path));
+    // console.log(`Image téléchargée et sauvegardée comme ${path}`);
+    return path;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
@@ -65,13 +69,15 @@ const PORT = process.env.PORT;
 
 var Airtable = require("airtable");
 
-const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
+const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
   var base = new Airtable({
     apiKey: apiKey,
   }).base(baseId);
 
   let allRecords = [];
   try {
+    console.log(eq);
+
     // Sélectionnez tous les records et attendez leur chargement complet
     const records = await base(tableName)
       .select({
@@ -110,6 +116,54 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
         });
       }
     });
+
+    // eq["Name of Media"]
+    //   ? await base(tableName)
+    //       .select({
+    //         sort: [
+    //           {
+    //             field: "Date Added",
+    //             direction: "desc",
+    //           },
+    //         ],
+    //         filterByFormula:
+    //           "OR(" +
+    //           `${
+    //             eq["Name of Media"]
+    //               ? "FIND(LOWER('" +
+    //                 eq["Name of Media"] +
+    //                 "'), LOWER({Name of Media})) > 0"
+    //               : null
+    //           }` +
+    //           ")",
+    //       })
+    //       .all()
+    //   :
+
+    if (eq["Article Title"]) {
+      allRecords = allRecords.filter((r) =>
+        r.title.includes(eq["Article Title"].toLowerCase())
+      );
+    }
+    if (eq["Tags from Feedly"]) {
+      allRecords = allRecords.filter((r) =>
+        r.tags.includes(eq["Tags from Feedly"].toLowerCase())
+      );
+    }
+    if (eq["Name of Media"]) {
+      console.log(allRecords);
+      allRecords = allRecords.filter((r) =>
+        r.media.includes(eq["Name of Media"].toLowerCase())
+      );
+    }
+    if (eq["Language"]) {
+      allRecords = allRecords.filter((r) => r.language === eq["Language"]);
+    }
+    if (eq["Date Added"]) {
+      allRecords = allRecords.filter(
+        (r) => r.publication_date === eq["Date Added"]
+      );
+    }
 
     // console.log(allRecords.slice(0, 5));
     // Retournez ou traitez `allRecords` comme nécessaire
@@ -158,14 +212,16 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit) => {
 };
 
 exports.getFrenchPostFromAirtable = async (req, res) => {
-  const { limit, page, sort, fields } = req.query;
-  // const queryObj = CustomUtils.advancedQuery(req.query);
+  const { limit, page, sort, fields, eq } = req.query;
+  const queryObj = CustomUtils.advancedQueryAirtable(req.query);
+  // console.log(queryObj);
   try {
     const result = await fetchAllRecords(
       AIRTABLE_API_KEY,
       FRENCH_BASE_ID,
       FRENCH_ARTICLE_TABLE_ID,
-      limit * 1
+      limit * 1,
+      queryObj
     );
     res.status(200).json(result);
   } catch (error) {
@@ -187,14 +243,15 @@ exports.getAllPostFromAirtable = async (req, res) => {
 };
 
 exports.getEnglishPostFromAirtable = async (req, res) => {
-  const { limit, page, sort, fields } = req.query;
-  // const queryObj = CustomUtils.advancedQuery(req.query);
+  const { limit, page, sort, fields, eq } = req.query;
+  const queryObj = CustomUtils.advancedQueryAirtable(req.query);
   try {
     const result = await fetchAllRecords(
       AIRTABLE_API_KEY,
       ENGLISH_BASE_ID,
       ENGLISH_ARTICLE_TABLE_ID,
-      limit * 1
+      limit * 1,
+      queryObj
     );
     res.status(200).json(result);
   } catch (error) {
