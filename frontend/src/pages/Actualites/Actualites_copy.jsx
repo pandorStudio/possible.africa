@@ -484,7 +484,7 @@ function ActualitesCopy() {
     <>
       <Container maxW="container.lg" pt={8}>
         {/* <DataTabs data={language} /> */}
-        <div className="w-full flex flex-col justify-center md:justify-start gap-x-5 text-center lg:flex-row">
+        <div className="w-full flex flex-col justify-center md:justify-start gap-5 text-center lg:flex-row">
           <Box className="ml-10 w-[200px] h-10 flex justify-center text-center rounded-lg shadow-sm drop-shadow-xl overflow-hidden">
             <Box
               className={

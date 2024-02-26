@@ -20,6 +20,7 @@ import {
 import CustomLink from "./CustomLink";
 import MenuLink from "./MenuLink";
 import { useLocation } from "react-router-dom";
+import LogoAfricaLeads from "../assets/LogoAfrileads.svg";
 
 export const HomeHeader = () => {
   const location = useLocation().pathname;
@@ -66,7 +67,7 @@ export const HomeHeader = () => {
                   {
                     name: "Africa Leads",
                     link: "https://www.africaleads.ai",
-                    icons: <OrganisationsIcon />,
+                    icons: <img src={LogoAfricaLeads} height={20} width={20} />,
                   },
                 ].map((item) => (
                   <MenuLink
