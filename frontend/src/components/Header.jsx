@@ -2,6 +2,7 @@
 
 import { Link, Outlet, Link as ReachLink } from "react-router-dom";
 import Logo from "../assets/LogoPossible.png";
+import LogoExa from "../assets/logoEXA.svg";
 import { MenuIcon } from "../assets/icons";
 
 import {
@@ -58,24 +59,13 @@ export const Header = () => {
               md: "row",
             }}
           >
-            <Box
-              w={{ base: "100%", md: "10%" }}
-              h="70px"
-              display="flex"
-              flexDirection="row"
-              alignItems="space-between"
-              justifyContent="space-between"
-            >
+            <Flex justifyContent="space-between" alignItems="center">
               <Link to="/">
                 <Box w="100px">
                   <Image src={Logo} fit="contain" w="100%" h="100%" />
                 </Box>
               </Link>
-              <Box display="flex" alignItems="center">
-                {/* <Button   _hover={{ bg: 'teal.600' }}
-hideFrom="md" as="a" href='https://possible-africa.notion.site/POSSIBLE-AFRICA-ddb414537adf439f9f06c5e63914d1be?pvs=4' target='_blank'>En savoir plus</Button> */}
-              </Box>
-            </Box>
+            </Flex>
 
             <Flex
               w={{ base: "100%", md: "70%" }}
@@ -87,48 +77,13 @@ hideFrom="md" as="a" href='https://possible-africa.notion.site/POSSIBLE-AFRICA-d
             </Flex>
 
             <Flex justifyContent="space-between" alignItems="center">
-              {/* <Button   _hover={{ bg: 'teal.600' }}
-hideBelow="md"
-as="a" href='https://possible-africa.notion.site/POSSIBLE-AFRICA-ddb414537adf439f9f06c5e63914d1be?pvs=4'
-target='_blank'
->En savoir plus</Button> */}
+              <Link to="/">
+                <Box w="100px">
+                  <div className="text-center py-1 uppercase">Powered by</div>
+                  <Image src={LogoExa} fit="contain" w="100%" h="100%" />
+                </Box>
+              </Link>
             </Flex>
-
-            {/* {isDesktop ? (
-            ) : (
-              
-              <>
-              <IconButton
-                variant="ghost"
-                icon={<MenuIcon fontSize="1.25rem" />}
-                aria-label="Open Menu"
-                onClick={onOpen}
-                order={2}
-
-              />
-                 <Drawer placement={placement} onClose={onClose} isOpen={isOpen}>
-              <DrawerOverlay />
-              <DrawerContent>
-                <DrawerHeader borderBottomWidth='1px'>Menu</DrawerHeader>
-                <DrawerBody>
-                <Stack spacing='24px'>
-
-                  {[{name:'Possible', link:"/" }, {name:'Entrepreneurs', link:"/entrepreneurs" },{name:'Time For Africa', link:"/timeforafrica" }].map((item) => (
-
-                    <CustomLink  key={item.name} as={ReachLink} to={item.link} onClick={onClose}><Heading size="sm">
-                      {item.name}
-                      </Heading></CustomLink>
-                  
-                  )
-                  )
-                }
-                </Stack>
-               
-                </DrawerBody>
-              </DrawerContent>
-            </Drawer>
-              </>
-            )} */}
           </Flex>
         </Box>
       </Container>

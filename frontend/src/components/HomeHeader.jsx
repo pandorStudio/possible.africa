@@ -63,6 +63,11 @@ export const HomeHeader = () => {
                     link: "/organisations",
                     icons: <OrganisationsIcon />,
                   },
+                  {
+                    name: "Africa Leads",
+                    link: "https://www.africaleads.ai",
+                    icons: <OrganisationsIcon />,
+                  },
                 ].map((item) => (
                   <MenuLink
                     key={item.name}
@@ -110,6 +115,11 @@ export const HomeHeader = () => {
                   {
                     name: "Organisations",
                     link: "/organisations",
+                    icons: <OrganisationsIcon />,
+                  },
+                  {
+                    name: "Africa Leads",
+                    link: "https://www.africaleads.ai",
                     icons: <OrganisationsIcon />,
                   },
                 ].map((item) => (

@@ -484,7 +484,7 @@ function ActualitesCopy() {
     <>
       <Container maxW="container.lg" pt={8}>
         {/* <DataTabs data={language} /> */}
-        <div className="w-full flex justify-start gap-3 text-center">
+        <div className="w-full flex flex-col justify-center md:justify-start gap-x-5 text-center lg:flex-row">
           <Box className="ml-10 w-[200px] h-10 flex justify-center text-center rounded-lg shadow-sm drop-shadow-xl overflow-hidden">
             <Box
               className={
@@ -519,25 +519,26 @@ function ActualitesCopy() {
               <span>Anglais</span>
             </Box>
           </Box>
-          <div className="bg-transparent h-[40px] border-2 border-[#2BB19C]/40 w-[500px] rounded-lg overflow-hidden">
-            <input
-              className="w-full h-full bg-transparent text-center text-neutral-900 placeholder-shown:text-neutral-900 px-2"
-              type="text"
-              placeholder="Entrer le nom d'un article pour commencer à filtrer ..."
-              onChange={(e) => {
-                setPageEq(
-                  pageEq.map((a) => {
-                    if (a.field === "Article Title") {
-                      return { field: a.field, value: e.target.value };
-                    } else {
-                      return a;
-                    }
-                  })
-                );
-              }}
-            />
-          </div>
-          {/* <div className="bg-transparent h-[40px] border-2 border-[#2BB19C]/40 w-[100px] rounded-lg overflow-hidden">
+          <div className="w-full flex flex-col items-center gap-2 justify-center lg:flex-row">
+            <div className="bg-transparent h-[40px] border-2 border-[#2BB19C]/40 w-10/12 rounded-lg overflow-hidden">
+              <input
+                className="w-full h-full bg-transparent text-center text-neutral-900 placeholder-shown:text-neutral-900 px-2"
+                type="text"
+                placeholder="Entrer le nom d'un article pour commencer à filtrer ..."
+                onChange={(e) => {
+                  setPageEq(
+                    pageEq.map((a) => {
+                      if (a.field === "Article Title") {
+                        return { field: a.field, value: e.target.value };
+                      } else {
+                        return a;
+                      }
+                    })
+                  );
+                }}
+              />
+            </div>
+            {/* <div className="bg-transparent h-[40px] border-2 border-[#2BB19C]/40 w-[100px] rounded-lg overflow-hidden">
             <input
               className="w-full h-full bg-transparent text-center text-neutral-900 placeholder-shown:text-neutral-900 px-2"
               type="text"
@@ -556,20 +557,21 @@ function ActualitesCopy() {
             />
           </div> */}
 
-          {(FrAirtableFrNewsIsLoading ||
-            allAirtableAllNewsIsLoading ||
-            FrAirtableFrNewsIsFetching ||
-            allAirtableAllNewsIsFetching) && (
-            <Box
-              as="div"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              p={15}
-            >
-              <Spinner />
-            </Box>
-          )}
+            {(FrAirtableFrNewsIsLoading ||
+              allAirtableAllNewsIsLoading ||
+              FrAirtableFrNewsIsFetching ||
+              allAirtableAllNewsIsFetching) && (
+              <Box
+                as="div"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                p={15}
+              >
+                <Spinner />
+              </Box>
+            )}
+          </div>
           {/* 
           <div className="bg-transparent border-2 border-[#2BB19C]/40 w-[100px] rounded-lg overflow-hidden">
             <input
