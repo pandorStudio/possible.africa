@@ -77,9 +77,11 @@ export const Header = () => {
             </Flex>
 
             <Flex justifyContent="space-between" alignItems="center">
-              <Link to="/">
+              <Link to="https://expand-in-africa.com" target="_blank">
                 <Box w="100px">
-                  <div className="text-center py-1 uppercase">Powered by</div>
+                  <div className="text-center py-1 uppercase font-bold text-sm">
+                    Powered by
+                  </div>
                   <Image src={LogoExa} fit="contain" w="100%" h="100%" />
                 </Box>
               </Link>

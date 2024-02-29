@@ -267,16 +267,16 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Pays" name={["country"]}>
+        {/* <Form.Item label="Pays" name={["country"]}>
           <Select
             {...countrySelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
-          {/*<SelectCountry country={countryFromDB} />*/}
-        </Form.Item>
-        <Form.Item
+          <SelectCountry country={countryFromDB} />
+        </Form.Item> */}
+        {/* <Form.Item
           label="Pays couverts"
           name={["covered_countries"]}
           getValueProps={(value: any[]) => {
@@ -302,8 +302,8 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item label="Logo" name="logo">
+        </Form.Item> */}
+        <Form.Item label="Logo" name="airLogo">
           <Upload
             name="file"
             listType="picture-card"
@@ -338,7 +338,7 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
           </Upload>
           {/* </Form.Item> */}
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Types"
           name={["types"]}
           getValueProps={(value: any[]) => {
@@ -517,8 +517,26 @@ export const OrganisationEdit: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item label="Url Twitter" name={["twitter_url"]}>
           <Input />
+        </Form.Item> */}
+        <Form.Item label="Description" name={["airDescription"]}>
+          <Input />
         </Form.Item>
-        <Form.Item label="Url Facebook" name={["facebook_url"]}>
+        <Form.Item label="Secteur" name={["airSector"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Source" name={["airSource"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Pays" name={["airRegion"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Siège" name={["airHeadquarter"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Pays Couverts" name={["airOperatingCountries"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Site Web" name={["airWebsite"]}>
           <Input />
         </Form.Item>
       </Form>

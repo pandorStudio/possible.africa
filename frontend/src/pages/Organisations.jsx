@@ -17,39 +17,40 @@ function Organisations() {
   const [infiniteScrollIsFetching, setinfiniteScrollIsFetching] =
     useState(false);
   const [pageEq, setPageEq] = useState([
-    { field: "Name", value: "" },
-    { field: "Description", value: "" },
-    { field: "Region", value: "" },
-    { field: "Sector", value: "" },
-    { field: "Operating Countries", value: "" },
+    { field: "name", value: "" },
+    // { field: "Description", value: "" },
+    // { field: "Region", value: "" },
+    // { field: "Sector", value: "" },
+    // { field: "Operating Countries", value: "" },
   ]);
+  const {
+    data: organisations = [],
+    isLoading,
+    isFetching,
+    isError,
+    isSuccess,
+    refetch,
+    error,
+  } = useGetOrganisationsQuery({
+    limit: 10 * page,
+    page: page,
+    fields: [],
+    eq: pageEq[0].value ? pageEq : [],
+  });
   // const {
   //   data: organisations = [],
   //   isLoading,
   //   isFetching,
   //   isError,
+  //   refetch,
   //   isSuccess,
   //   error,
   // } = useGetOrganisationsQuery({
   //   limit: 10 * page,
   //   page: page,
   //   fields: [],
-  //   eq: [],
+  //   eq: pageEq,
   // });
-  const {
-    data: organisations = [],
-    isLoading,
-    isFetching,
-    isError,
-    refetch,
-    isSuccess,
-    error,
-  } = useGetAirtableOrganisationsQuery({
-    limit: 10 * page,
-    page: page,
-    fields: [],
-    eq: pageEq,
-  });
   let content;
 
   useEffect(() => {
@@ -98,7 +99,7 @@ function Organisations() {
         endMessage={<Text>Yay! You have seen it all</Text>}
       >
         {organisations.map((organisation, index) => {
-          const createdAt = new Date(organisation?.publication_date);
+          const createdAt = new Date(organisation?.createdAt);
           // transform date to french format
           const date =
             createdAt.getDate() +
@@ -112,11 +113,11 @@ function Organisations() {
               postType="Organisation"
               key={date}
               title={organisation?.name}
-              description={organisation?.description}
-              imgUrl={organisation?.logo}
+              description={organisation?.airDescription}
+              imgUrl={organisation?.airLogo}
               // isLoaded={isLoaded}
               // link={"/organisations/" + organisation?.id}
-              link={organisation?.website}
+              link={organisation?.airWebsite}
               // type={organisation?.type?.name}
               // organisation_types={
               //   organisation?.types?.length > 0 ? organisation?.types : []
@@ -132,15 +133,15 @@ function Organisations() {
               //     : []
               // }
               createdAt={date}
-              country={organisation?.region}
-              sitWebLink={organisation?.website || ""}
-              airtableRegion={organisation?.region}
-              airtableHeadquarter={organisation?.headquarter}
+              country={organisation?.airRegion}
+              sitWebLink={organisation?.airWebsite || ""}
+              airtableRegion={organisation?.airRegion}
+              airtableHeadquarter={organisation?.airHeadquarter}
               airtableOperationnalCountries={
-                organisation?.operationnal_countries
+                organisation?.airOperatingCountries
               }
-              airtableSector={organisation?.sector}
-              airtableRelaredArticles={organisation?.related_articles}
+              airtableSector={organisation?.airSector}
+              airtableRelaredArticles={organisation?.airRelatedArticles}
             />
           );
           return <>{instanceCard}</>;
@@ -163,7 +164,7 @@ function Organisations() {
             onChange={(e) => {
               setPageEq(
                 pageEq.map((a) => {
-                  if (a.field === "Name") {
+                  if (a.field === "name") {
                     return { field: a.field, value: e.target.value };
                   } else {
                     return a;

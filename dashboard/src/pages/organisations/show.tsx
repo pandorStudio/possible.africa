@@ -15,29 +15,29 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
 
   const record = data?.data;
 
-  const { data: coveredCountriesData, isLoading: coveredCountriesIsLoading } =
-    useMany({
-      resource: "countries",
-      ids:
-        record?.covered_countries?.map(
-          (item: any) => item?.covered_countries
-        ) ?? [],
-    });
+  // const { data: coveredCountriesData, isLoading: coveredCountriesIsLoading } =
+  //   useMany({
+  //     resource: "countries",
+  //     ids:
+  //       record?.covered_countries?.map(
+  //         (item: any) => item?.covered_countries
+  //       ) ?? [],
+  //   });
 
-  const { data: organisationTypesData, isLoading: organisationTypesIsLoading } = useMany({
-    resource: "organisation_types",
-    ids: record?.types?.map((item: any) => item?.types) ?? [],
-  });
-  const { data: contactsData, isLoading: contactsIsLoading } = useMany({
-    resource: "users",
-    ids: record?.contacts?.map((item: any) => item?.contacts) ?? [],
-  });
-  const { data: activityAreasData, isLoading: activityAreasIsLoading } =
-    useMany({
-      resource: "activity_areas",
-      ids:
-        record?.activity_areas?.map((item: any) => item?.activity_areas) ?? [],
-    });
+  // const { data: organisationTypesData, isLoading: organisationTypesIsLoading } = useMany({
+  //   resource: "organisation_types",
+  //   ids: record?.types?.map((item: any) => item?.types) ?? [],
+  // });
+  // const { data: contactsData, isLoading: contactsIsLoading } = useMany({
+  //   resource: "users",
+  //   ids: record?.contacts?.map((item: any) => item?.contacts) ?? [],
+  // });
+  // const { data: activityAreasData, isLoading: activityAreasIsLoading } =
+  //   useMany({
+  //     resource: "activity_areas",
+  //     ids:
+  //       record?.activity_areas?.map((item: any) => item?.activity_areas) ?? [],
+  //   });
 
   return (
     <Show
@@ -54,10 +54,10 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
     >
       <Title level={5}>Nom</Title>
       <TextField value={record?.name} />
-      <Title level={5}>Pays d'origine</Title>
-      <TextField value={record?.country?.translations?.fra?.common} />
-      <Title level={5}>Pays couverts</Title>
-      {coveredCountriesIsLoading ? (
+      {/* <Title level={5}>Pays d'origine</Title>
+      <TextField value={record?.country?.translations?.fra?.common} /> */}
+      {/* <Title level={5}>Pays couverts</Title> */}
+      {/* {coveredCountriesIsLoading ? (
         <>Loading ...</>
       ) : coveredCountriesData?.data?.length &&
         record?.covered_countries?.length ? (
@@ -80,7 +80,7 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
       )}
       <Title level={5}>Secteur d'activité</Title>
       {/*<TextField value={record?.activity_area} />*/}
-      {activityAreasIsLoading ? (
+      {/* {activityAreasIsLoading ? (
         <>Loading ...</>
       ) : activityAreasData?.data?.length && record?.activity_areas?.length ? (
         <>
@@ -90,8 +90,8 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
         </>
       ) : (
         "_"
-      )}
-      <Title level={5}>Types</Title>
+      )} */}
+      {/* <Title level={5}>Types</Title>
       {organisationTypesIsLoading ? (
         <>Loading ...</>
       ) : organisationTypesData?.data?.length && record?.types?.length ? (
@@ -102,11 +102,11 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
         </>
       ) : (
         "_"
-      )}
-      <Title level={5}>Contributeur</Title>
-      <TextField value={record?.contributeur?.complete_name} />
+      )} */}
+      {/* <Title level={5}>Contributeur</Title>
+      <TextField value={record?.contributeur?.complete_name} /> */}
 
-      <Title level={5}>Contacts</Title>
+      {/* <Title level={5}>Contacts</Title>
       {contactsIsLoading ? (
         <>Loading ...</>
       ) : contactsData?.data?.length && record?.contacts?.length ? (
@@ -117,18 +117,29 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
         </>
       ) : (
         "_"
-      )}
+      )} */}
       <Title level={5}>Description</Title>
       <span>
-        {record?.description &&
-          parse(
-            record?.description.replace(/\\n/g, "<br />"),
-            htmlParseOptions
-          )}
+        {
+          record?.airDescription
+          // &&
+          // parse(
+          //   record?.description.replace(/\\n/g, "<br />"),
+          //   htmlParseOptions
+          // )
+        }
       </span>
-      <Title level={5}>Email</Title>
-      <EmailField value={record?.email} />
-      <Title level={5}>Telephone</Title>
+      <Title level={5}>Secteur</Title>
+      <TextField value={record?.airSector} />
+      <Title level={5}>Source</Title>
+      <TextField value={record?.airSource} />
+      <Title level={5}>Pays</Title>
+      <TextField value={record?.airRegion} />
+      <Title level={5}>Siège</Title>
+      <TextField value={record?.airHeadquarter} />
+      <Title level={5}>Pays Couverts</Title>
+      <TextField value={record?.airOperatingCountries} />
+      {/* <Title level={5}>Telephone</Title>
       {record?.telephone ? (
         <Link
           href={
@@ -143,20 +154,20 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
         </Link>
       ) : (
         "-"
-      )}
+      )} */}
       <Title level={5}>Site Web</Title>
-      {record?.site_web ? (
+      {record?.airWebsite ? (
         <Link
           // href={"https://www.google.com/search?q=" + value}
-          href={record?.site_web}
+          href={record?.airWebsite}
           target="_blank"
         >
-          {record?.site_web}
+          {record?.airWebsite}
         </Link>
       ) : (
         "-"
       )}
-      <Title level={5}>Url Linkedin</Title>
+      {/* <Title level={5}>Url Linkedin</Title>
       {record?.linkedin_url ? (
         <Link
           // href={"https://www.google.com/search?q=" + value}
@@ -203,7 +214,7 @@ export const OrganisationShow: React.FC<IResourceComponentsProps> = () => {
         </Link>
       ) : (
         "-"
-      )}
+      )} */}
     </Show>
   );
 };

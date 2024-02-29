@@ -142,26 +142,26 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   const invalidate = useInvalidate();
   let checkboxRefs = useRef([]);
 
-  const { data: coveredCountriesData, isLoading: coveredCountriesIsLoading } =
-    useMany({
-      resource: "countries",
-      ids: tableProps?.dataSource?.map((item) => item?.covered_countries) ?? [],
-    });
+  // const { data: coveredCountriesData, isLoading: coveredCountriesIsLoading } =
+  //   useMany({
+  //     resource: "countries",
+  //     ids: tableProps?.dataSource?.map((item) => item?.covered_countries) ?? [],
+  //   });
 
-  const { data: organisationTypesData, isLoading: organisationTypesIsLoading } =
-    useMany({
-      resource: "organisation_types",
-      ids: tableProps?.dataSource?.map((item) => item?.types) ?? [],
-    });
-  const { data: contactsData, isLoading: contactsIsLoading } = useMany({
-    resource: "users",
-    ids: tableProps?.dataSource?.map((item) => item?.contacts) ?? [],
-  });
-  const { data: activityAreasData, isLoading: activityAreasIsLoading } =
-    useMany({
-      resource: "activity_areas",
-      ids: tableProps?.dataSource?.map((item) => item?.activity_areas) ?? [],
-    });
+  // const { data: organisationTypesData, isLoading: organisationTypesIsLoading } =
+  //   useMany({
+  //     resource: "organisation_types",
+  //     ids: tableProps?.dataSource?.map((item) => item?.types) ?? [],
+  //   });
+  // const { data: contactsData, isLoading: contactsIsLoading } = useMany({
+  //   resource: "users",
+  //   ids: tableProps?.dataSource?.map((item) => item?.contacts) ?? [],
+  // });
+  // const { data: activityAreasData, isLoading: activityAreasIsLoading } =
+  //   useMany({
+  //     resource: "activity_areas",
+  //     ids: tableProps?.dataSource?.map((item) => item?.activity_areas) ?? [],
+  //   });
 
   async function handleImport(e: any) {
     const file = e.target.files[0];
@@ -657,8 +657,9 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
           >
             <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
               <Table.Column
+                width="2%"
                 fixed="left"
-                width={68}
+                // width={68}
                 dataIndex=""
                 title={
                   visibleCheckAll ? (
@@ -701,12 +702,66 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 }}
               />
               <Table.Column
+                ellipsis={true}
                 fixed="left"
-                width="8%"
+                width="5%"
                 dataIndex="name"
                 title="Nom"
               />
               <Table.Column
+                ellipsis={true}
+                width="8%"
+                dataIndex="airDescription"
+                title="Description"
+              />
+              <Table.Column
+                ellipsis={true}
+                width="8%"
+                dataIndex="airSector"
+                title="Secteur"
+              />
+              <Table.Column
+                ellipsis={true}
+                width="8%"
+                dataIndex="airSource"
+                title="Source"
+              />
+              <Table.Column
+                ellipsis={true}
+                width="8%"
+                dataIndex="airRegion"
+                title="Pays"
+              />
+              <Table.Column
+                ellipsis={true}
+                width="8%"
+                dataIndex="airHeadquarter"
+                title="Siège"
+              />
+              <Table.Column
+                ellipsis={true}
+                width="8%"
+                dataIndex="airOperatingCountries"
+                title="Pays Couverts"
+              />
+              <Table.Column
+                ellipsis={true}
+                width="8%"
+                render={(value: any) => {
+                  if (value) {
+                    return (
+                      <Link href={value} target="_blank">
+                        {value}
+                      </Link>
+                    );
+                  } else {
+                    return "-";
+                  }
+                }}
+                dataIndex="airWebsite"
+                title="Site Web"
+              />
+              {/* <Table.Column
                 width="7%"
                 dataIndex="country"
                 title="Pays d'origine"
@@ -736,7 +791,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                     </>
                   )
                 }
-              />
+              /> */}
               {/* <Table.Column
             width="10%"
             dataIndex="couverture"
@@ -751,7 +806,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               }
             }}
           /> */}
-              <Table.Column
+              {/* <Table.Column
                 dataIndex="types"
                 title="Types"
                 render={(value: any[]) =>
@@ -800,7 +855,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               <Table.Column
                 dataIndex={["contributeur", "complete_name"]}
                 title="Contributeur"
-              />
+              /> */}
               {/* <Table.Column
             dataIndex="description"
             title="Description"
@@ -814,7 +869,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               }
             }}
           /> */}
-              <Table.Column
+              {/* <Table.Column
                 ellipsis={true}
                 dataIndex={["email"]}
                 title="Email"
@@ -933,8 +988,9 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                     return "-";
                   }
                 }}
-              />
+              /> */}
               <Table.Column
+                width="8%"
                 fixed="right"
                 title="Actions"
                 dataIndex="actions"

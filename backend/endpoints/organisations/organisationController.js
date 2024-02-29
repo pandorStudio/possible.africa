@@ -1,4 +1,5 @@
 const Organisation = require("./organisationModel");
+const Country = require("../countries/countryModel");
 const OrganisationType = require("../organisationTypes/organisationTypeModel");
 const download = require("image-downloader");
 const CustomUtils = require("../../utils/index.js");
@@ -54,6 +55,7 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
           related_articles: record.get("Articles Related"),
           website: record.get("Website"),
           publication_date: record.get("Date Added"),
+          source: record.get("Source"),
         });
       } else {
         allRecords.push({
@@ -72,6 +74,7 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
           related_articles: record.get("Articles Related"),
           website: record.get("Website"),
           publication_date: record.get("Date Added"),
+          source: record.get("Source"),
         });
       }
     });
@@ -84,7 +87,8 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
 
     // console.log(allRecords.slice(0,5));
     // Retournez ou traitez `allRecords` comme nécessaire
-    return allRecords.slice(0, limit);
+    // return allRecords.slice(0, 20);
+    return allRecords;
   } catch (err) {
     console.error(err);
     // Gérez l'erreur comme nécessaire
@@ -102,7 +106,31 @@ exports.getOrganisationsFromAirtable = async (req, res) => {
       limit * 1,
       queryObj
     );
-    res.status(200).json(result);
+    console.log(result);
+    // res.status(200).json(result);
+    const organisations = await result.map(async (organisation) => {
+      const ExistingOrg = await Organisation.find({
+        name: organisation.name,
+      });
+      console.log(ExistingOrg.length);
+      if (!ExistingOrg.length) {
+        const org = await Organisation.create({
+          name: organisation.name,
+          airLogo: organisation.logo,
+          airDescription: organisation.description,
+          airRegion: organisation.region,
+          airHeadquarter: organisation.headquarter,
+          airOperatingCountries: organisation.operationnal_countries,
+          airSector: organisation.sector,
+          airWebsite: organisation.website,
+          airRelatedArticles: organisation.related_articles,
+          airSource: organisation.source,
+        });
+        console.log(org);
+      }
+      console.log(ExistingOrg);
+    });
+    // console.log(organisations);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -166,12 +194,13 @@ exports.getAllOrganisationsFromAirtable = async (req, res) => {
 exports.getAllOrganisations = async (req, res) => {
   const { limit, page, sort, fields } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
-  // console.log(queryObj);
+  console.log(queryObj);
   try {
     const organisations = await Organisation.find(queryObj)
       .limit(limit * 1)
       .sort({ createdAt: -1, ...sort })
       .select(fields);
+    // console.log(organisations);
     res.status(200).json(organisations);
   } catch (error) {
     res.status(404).json({ message: error.message });

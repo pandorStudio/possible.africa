@@ -54,8 +54,35 @@ const organisationSchema = mongoose.Schema(
       ref: "User",
     },
     creation_year: {
-      type: String, 
-    }
+      type: String,
+    },
+    airLogo: {
+      type: String,
+    },
+    airDescription: {
+      type: String,
+    },
+    airSource: {
+      type: String,
+    },
+    airRegion: {
+      type: String,
+    },
+    airHeadquarter: {
+      type: String,
+    },
+    airOperatingCountries: {
+      type: String,
+    },
+    airSector: {
+      type: String,
+    },
+    airWebsite: {
+      type: String,
+    },
+    airRelatedArticles: {
+      type: String,
+    },
   },
   {
     timestamps: true,

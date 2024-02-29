@@ -115,50 +115,50 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
     onFinish(values);
   }
 
-  const { selectProps: contactsSelectProps } = useSelect({
-    resource: "users",
-    optionValue: "_id",
-    optionLabel: "complete_name",
-    filters: [
-      {
-        field: "role",
-        operator: "eq",
-        value: "contact",
-      },
-    ],
-  });
+  // const { selectProps: contactsSelectProps } = useSelect({
+  //   resource: "users",
+  //   optionValue: "_id",
+  //   optionLabel: "complete_name",
+  //   filters: [
+  //     {
+  //       field: "role",
+  //       operator: "eq",
+  //       value: "contact",
+  //     },
+  //   ],
+  // });
 
-  const { selectProps: activityAreasSelectProps } = useSelect({
-    resource: "activity_areas",
-    optionValue: "_id",
-    optionLabel: "name",
-  });
+  // const { selectProps: activityAreasSelectProps } = useSelect({
+  //   resource: "activity_areas",
+  //   optionValue: "_id",
+  //   optionLabel: "name",
+  // });
 
-  const { selectProps: organisationTypesSelectProps } = useSelect({
-    resource: "organisation_types",
-    optionValue: "_id",
-    optionLabel: "name",
-  });
+  // const { selectProps: organisationTypesSelectProps } = useSelect({
+  //   resource: "organisation_types",
+  //   optionValue: "_id",
+  //   optionLabel: "name",
+  // });
 
-  const { selectProps: countrySelectProps } = useSelect({
-    resource: "countries",
-    optionValue: "_id",
-    optionLabel: "translations.fra.common",
-    // defaultValue: "",
-  });
+  // const { selectProps: countrySelectProps } = useSelect({
+  //   resource: "countries",
+  //   optionValue: "_id",
+  //   optionLabel: "translations.fra.common",
+  //   // defaultValue: "",
+  // });
 
-  const { selectProps: indicatifSelectProps } = useSelect({
-    resource: "countries",
-    optionValue: "_id",
-    optionLabel: "translations.fra.common",
-    // defaultValue: "",
-  });
+  // const { selectProps: indicatifSelectProps } = useSelect({
+  //   resource: "countries",
+  //   optionValue: "_id",
+  //   optionLabel: "translations.fra.common",
+  //   // defaultValue: "",
+  // });
 
-  const { selectProps: coveredCountriesSelectProps } = useSelect({
-    resource: "countries",
-    optionValue: "_id",
-    optionLabel: "translations.fra.common",
-  });
+  // const { selectProps: coveredCountriesSelectProps } = useSelect({
+  //   resource: "countries",
+  //   optionValue: "_id",
+  //   optionLabel: "translations.fra.common",
+  // });
 
   const uploadButton = (
     <div>
@@ -215,7 +215,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         setCountries(countrieDatasFiltered);
       });
     }
-  }, [imageUrl, countries, uploadLoading, countrySelectProps]);
+  }, [imageUrl, countries, uploadLoading]);
 
   return (
     <Create saveButtonProps={saveButtonProps}>
@@ -232,16 +232,16 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item label="Pays d'origine" name={["country"]}>
-          {/*<SelectCountry />*/}
+        {/* <Form.Item label="Pays d'origine" name={["country"]}>
+          <SelectCountry />
           <Select
             {...countrySelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item
+        </Form.Item> */}
+        {/* <Form.Item
           label="Pays couverts"
           name={["covered_countries"]}
           getValueProps={(value: any[]) => {
@@ -256,7 +256,7 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
             return toBeReturned;
           }}
         >
-          {/*<SelectCountry />*/}
+          <SelectCountry />
           <Select
             mode="multiple"
             {...coveredCountriesSelectProps}
@@ -264,8 +264,8 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item label="Logo" name="logo">
+        </Form.Item> */}
+        <Form.Item label="Logo" name="airLogo">
           <Upload
             name="file"
             listType="picture-card"
@@ -300,7 +300,25 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
           </Upload>
           {/* </Form.Item> */}
         </Form.Item>
-        <Form.Item
+        <Form.Item label="Secteur" name={["airSector"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Description" name={["airDescription"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Source" name={["airSource"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Pays" name={["airRegion"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Siège" name={["airHeadquarter"]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="Pays Couverts" name={["airOperatingCountries"]}>
+          <Input />
+        </Form.Item>
+        {/* <Form.Item
           label="Type"
           name={["types"]}
           getValueProps={(value: any[]) => {
@@ -368,9 +386,9 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
             theme="snow"
             placeholder="Placez votre contenu ici..."
           />
-        </Form.Item>
+        </Form.Item> */}
         <CustomFormDivider text="Coordonnées" />
-        <Form.Item
+        {/* <Form.Item
           label="Contacts"
           name={["contacts"]}
           getValueProps={(value: any[]) => {
@@ -392,11 +410,12 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item label="Site Web" name={["site_web"]}>
+        </Form.Item> */}
+
+        <Form.Item label="Site Web" name={["airWebsite"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Email" name={["email"]}>
+        {/* <Form.Item label="Email" name={["email"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Telephone" name={["telephone"]}>
@@ -463,16 +482,16 @@ export const OrganisationCreate: React.FC<IResourceComponentsProps> = () => {
         </Form.Item>
         <Form.Item label="Adresse" name={["adresse"]}>
           <Input />
-        </Form.Item>
-        <Form.Item label="Url LinkeDin" name={["linkedin_url"]}>
+        </Form.Item> */}
+        {/* <Form.Item label="Url LinkeDin" name={["linkedin_url"]}>
           <Input />
         </Form.Item>
         <Form.Item label="Url Twitter" name={["twitter_url"]}>
           <Input />
-        </Form.Item>
-        <Form.Item label="Url Facebook" name={["facebook_url"]}>
+        </Form.Item> */}
+        {/* <Form.Item label="Url Facebook" name={["facebook_url"]}>
           <Input />
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </Create>
   );

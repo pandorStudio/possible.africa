@@ -65,15 +65,17 @@ export const HomeHeader = () => {
                     icons: <OrganisationsIcon />,
                   },
                   {
-                    name: "Africa Leads",
+                    name: "AfricaLeads",
                     link: "https://www.africaleads.ai",
                     icons: <img src={LogoAfricaLeads} height={20} width={20} />,
+                    target: "_blank",
                   },
                 ].map((item) => (
                   <MenuLink
                     key={item.name}
                     as={ReachLink}
                     to={item.link}
+                    target="_blank"
                     className={
                       location == item.link
                         ? " py-3 w-40 flex justify-center rounded-xl text-[#2BB19C]"
