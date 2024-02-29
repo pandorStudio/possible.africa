@@ -75,7 +75,7 @@ export const HomeHeader = () => {
                     key={item.name}
                     as={ReachLink}
                     to={item.link}
-                    target="_blank"
+                    target={item.target}
                     className={
                       location == item.link
                         ? " py-3 w-40 flex justify-center rounded-xl text-[#2BB19C]"
