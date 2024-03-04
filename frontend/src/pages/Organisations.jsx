@@ -54,8 +54,8 @@ function Organisations() {
   let content;
 
   useEffect(() => {
-    console.log(organisations);
-    console.log(pageEq);
+    // console.log(organisations);
+    // console.log(pageEq);
     refetch;
   }, [isLoading, pageEq]);
 
@@ -107,7 +107,7 @@ function Organisations() {
             (createdAt.getMonth() + 1) +
             "/" +
             createdAt.getFullYear();
-          console.log(organisation.description);
+          // console.log(organisation.description);
           const instanceCard = (
             <CardComponent
               postType="Organisation"

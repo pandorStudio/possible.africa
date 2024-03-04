@@ -25,7 +25,7 @@ import LogoAfricaLeads from "../assets/LogoAfrileads.svg";
 export const HomeHeader = () => {
   const location = useLocation().pathname;
 
-  console.log(location);
+  // console.log(location);
   const isDesktop = useBreakpointValue({
     base: false,
     lg: true,

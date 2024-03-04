@@ -19,6 +19,13 @@ async function fileExists(filePath) {
   }
 }
 
+function extraireDomaine(url) {
+  // Utilisation d'une expression régulière pour extraire le domaine
+  const regex = /^(https?:\/\/)?([\w\d-]+\.)+[\w\d-]+/;
+  const match = url.match(regex);
+  return match ? match[0] : null;
+}
+
 async function downloadImage(url, path) {
   if (await fileExists(path)) {
     console.log(`Le fichier existe déjà : ${path}`);
@@ -27,10 +34,7 @@ async function downloadImage(url, path) {
 
   try {
     const response = await fetch(url);
-    // if (!response.ok)
-    //   throw new Error(
-    //     `Échec du téléchargement de l'image : ${response.statusText}`
-    //   );
+
     await pipeline(response.body, fs.createWriteStream(path));
     // console.log(`Image téléchargée et sauvegardée comme ${path}`);
     return path;
@@ -48,24 +52,6 @@ const ALL_ARTICLE_BASE_ID = process.env.ALL_ARTICLE_BASE_ID;
 const ALL_ARTICLE_TABLE_ID = process.env.ALL_ARTICLE_TABLE_ID;
 const ENV = process.env.ENV;
 const PORT = process.env.PORT;
-
-// const endpointUrl = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`;
-
-// const airtable = Airtable.configure({
-//   endpointUrl: "https://api.airtable.com",
-//   apiKey: AIRTABLE_API_KEY,
-// });
-// // @Get all posts
-// // @route GET /api/v1/posts
-// // @access Public
-
-// const base_english = airtable.base(ENGLISH_TABLE_ID);
-
-// const base_french = airtable.base(FRENCH_TABLE_ID);
-
-// const base_all = new Airtable({
-//   apiKey: AIRTABLE_API_KEY,
-// }).base(ALL_TABLE_ID);
 
 var Airtable = require("airtable");
 

@@ -6,6 +6,10 @@ const CustomUtils = require("../../utils/index.js");
 const axios = require("axios");
 const { Buffer } = require("buffer");
 const fs = require("fs");
+const Path = require("path");
+const stream = require("stream");
+const { promisify } = require("util");
+const pipeline = promisify(stream.pipeline);
 require("dotenv").config();
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
@@ -15,6 +19,38 @@ const ENV = process.env.ENV;
 const PORT = process.env.PORT;
 var Airtable = require("airtable");
 
+function extraireDomaine(url) {
+  const regex = /^(https?:\/\/)?([\w\d-]+\.)+[\w\d-]+/;
+  const match = url.match(regex);
+  return match ? match[0] : null;
+}
+
+function fileExists(filePath) {
+  try {
+    fs.access(filePath);
+    return true; // Le fichier existe
+  } catch (error) {
+    return false; // Le fichier n'existe pas
+  }
+}
+
+async function downloadImage(url, path) {
+  if (fileExists(path)) {
+    // console.log(`Le fichier existe déjà : ${path}`);
+    return false;
+  }
+
+  try {
+    const response = await fetch(url);
+
+    await pipeline(response.body, fs.createWriteStream(path));
+    // console.log(`Image téléchargée et sauvegardée comme ${path}`);
+    return path;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
   var base = new Airtable({
     apiKey: apiKey,
@@ -22,7 +58,6 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
 
   let allRecords = [];
   try {
-    // Sélectionnez tous les records et attendez leur chargement complet
     const records = await base(tableName)
       .select({
         sort: [
@@ -33,11 +68,7 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
         ],
       })
       .all();
-
-    // Traitez chaque record individuellement
-    // console.log(records);
     records.forEach((record) => {
-      // console.log("Retrieved", record.get("Article ID"));
       const logoPrefix =
         ENV === "dev"
           ? `http://localhost:${PORT}/storage/logos/airtable/`
@@ -84,14 +115,9 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
         r.name.includes(eq["Name"].toLowerCase())
       );
     }
-
-    // console.log(allRecords.slice(0,5));
-    // Retournez ou traitez `allRecords` comme nécessaire
-    // return allRecords.slice(0, 20);
     return allRecords;
   } catch (err) {
     console.error(err);
-    // Gérez l'erreur comme nécessaire
   }
 };
 
@@ -106,7 +132,7 @@ exports.getOrganisationsFromAirtable = async (req, res) => {
       limit * 1,
       queryObj
     );
-    console.log(result);
+    // console.log(result);
     // res.status(200).json(result);
     const organisations = await result.map(async (organisation) => {
       const ExistingOrg = await Organisation.find({
@@ -128,7 +154,7 @@ exports.getOrganisationsFromAirtable = async (req, res) => {
         });
         console.log(org);
       }
-      console.log(ExistingOrg);
+      // console.log(ExistingOrg);
     });
     // console.log(organisations);
   } catch (error) {
@@ -194,14 +220,44 @@ exports.getAllOrganisationsFromAirtable = async (req, res) => {
 exports.getAllOrganisations = async (req, res) => {
   const { limit, page, sort, fields } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
-  console.log(queryObj);
+  // console.log(queryObj);
   try {
     const organisations = await Organisation.find(queryObj)
       .limit(limit * 1)
       .sort({ createdAt: -1, ...sort })
       .select(fields);
     // console.log(organisations);
-    res.status(200).json(organisations);
+    organisations.map(async (organisation) => {
+      let domain_racine = extraireDomaine(organisation.airWebsite);
+      domain_racine = domain_racine.slice(8);
+      const url = `https://logo.clearbit.com/${domain_racine}`;
+      const path = `${Path.resolve(
+        __dirname,
+        "../../public/storage/logos"
+      )}/${domain_racine.split(".").join("")}.jpg`;
+      await downloadImage(url, path);
+      let urla = "";
+      if (ENV === "dev") {
+        urla = `http://localhost:${PORT}/storage/logos/${domain_racine
+          .split(".")
+          .join("")}.jpg`;
+      } else {
+        urla = `https://api.possible.africa/storage/logos/${domain_racine
+          .split(".")
+          .join("")}.jpg`;
+      }
+      await Organisation.findByIdAndUpdate(
+        organisation._id,
+        { airLogo: urla }
+      );
+      // return orgaFin;
+    });
+
+    const orgs = await Organisation.find(queryObj)
+      .limit(limit * 1)
+      .sort({ createdAt: -1, ...sort })
+      .select(fields);
+    res.status(200).json(orgs);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
