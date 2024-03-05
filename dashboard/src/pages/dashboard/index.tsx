@@ -6,7 +6,7 @@ import {
   useRouterContext,
   useRouterType,
 } from "@refinedev/core";
-import { Card, Col, Row, Spin, Statistic } from "antd";
+import { Card, Col, Row, Spin, Statistic, Button } from "antd";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../custom-data-provider/data-provider";
 import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
@@ -21,14 +21,15 @@ import { userContext } from "../../UserContext";
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-function CustomSpiner() {
-  return <Spin indicator={antIcon} />;
+function CustomSpiner(props) {
+  return <Spin {...props} indicator={antIcon} />;
 }
 
 export default function CustomDashboard() {
   const apiUrl = useApiUrl();
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [synchWithAirtable, setSynchWithAirTable] = useState(false);
 
   const routerType = useRouterType();
   const NewLink = useLink();
@@ -46,10 +47,10 @@ export default function CustomDashboard() {
 
   useEffect(() => {
     if (dashboardData === null) {
+      setLoading(true);
       axiosInstance
         .get(`${apiUrl}/dashboard`)
         .then((res) => {
-          setLoading(true);
           setDashboardData(res.data);
           setLoading(false);
           // console.log(res);
@@ -78,16 +79,75 @@ export default function CustomDashboard() {
               {loading ? (
                 <CustomSpiner />
               ) : (
-                <Statistic
-                  style={{ color: "red" }}
-                  title={
-                    <h3>
-                      <CustomIconOrganisation />
-                      Total Organisations
-                    </h3>
-                  }
-                  value={dashboardData?.organisations}
-                />
+                <>
+                  <Statistic
+                    style={{ color: "red" }}
+                    title={
+                      <h3>
+                        <CustomIconOrganisation />
+                        Total Organisations
+                      </h3>
+                    }
+                    value={dashboardData?.organisations}
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      marginTop: "1rem",
+                    }}
+                  >
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        console.log(e);
+                        setSynchWithAirTable(true);
+                        axiosInstance
+                          .get(`${apiUrl}/airtable_organisations`)
+                          .then((res) => {
+                            setSynchWithAirTable(false);
+                            setLoading(true);
+                            axiosInstance
+                              .get(`${apiUrl}/dashboard`)
+                              .then((res) => {
+                                setDashboardData(res.data);
+                                setLoading(false);
+                                // console.log(res);
+                                // console.log(dashboardData);
+                              })
+                              .catch((err) => {
+                                if (
+                                  err?.response?.data?.message === "jwt expired"
+                                ) {
+                                  mutateLogout();
+                                }
+                                console.log(err);
+                              });
+                            // console.log(res);
+                            // console.log(res);
+                            // console.log(dashboardData);
+                          })
+                          .catch((err) => {
+                            if (
+                              err?.response?.data?.message === "jwt expired"
+                            ) {
+                              mutateLogout();
+                            }
+                            console.log(err);
+                          });
+                          
+                      }}
+                      type="primary"
+                    >
+                      Synchroniser avec Airtable{" "}
+                      {synchWithAirtable ? (
+                        <CustomSpiner
+                          style={{ color: "white", marginLeft: "8px" }}
+                        />
+                      ) : null}
+                    </Button>
+                  </div>
+                </>
               )}
             </Card>
           </Link>

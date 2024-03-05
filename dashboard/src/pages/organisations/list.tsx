@@ -42,6 +42,7 @@ import {
   AdminOrContributor,
 } from "../../custom-components/AccessControl";
 import { Dayjs } from "dayjs";
+import { current } from "@reduxjs/toolkit";
 
 const { RangePicker } = DatePicker;
 const ENV = import.meta.env.VITE_NODE_ENV;
@@ -96,12 +97,19 @@ export async function downloadMedia(mediaUrl) {
 
 export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   const [importLoading, setImportLoading] = useState(false);
+  // const [pageSize, setPageSize] = useState(10);
   const [importationDatas, setImportationDatas] = useState({
     total: 0,
     action: "Initialisation de l'import ...",
   });
   const fileImportInput = useRef(null);
-  const { tableProps, searchFormProps } = useTable<
+  const {
+    tableProps,
+    searchFormProps,
+    setPageSize,
+    pageSize,
+    tableQueryResult: { refetch },
+  } = useTable<
     IOrganisation,
     HttpError,
     { name: string; createdAt: [Dayjs, Dayjs] }
@@ -130,6 +138,9 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
       );
 
       return filters;
+    },
+    pagination: {
+      pageSize: 10,
     },
   });
   const apiUrl = useApiUrl();
@@ -655,7 +666,12 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               ),
             }}
           >
-            <Table {...tableProps} rowKey="id" scroll={{ x: 2500, y: "auto" }}>
+            <Table
+              {...tableProps}
+              rowKey="id"
+              pagination={false}
+              scroll={{ x: 2500, y: "auto" }}
+            >
               <Table.Column
                 width="2%"
                 fixed="left"
@@ -689,7 +705,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
               <Table.Column
                 fixed="left"
                 width="3%"
-                dataIndex="logo"
+                dataIndex="airLogo"
                 title="Logo"
                 render={(value: any) => {
                   if (value && !(value.split(".").pop() === "html")) {
@@ -1019,7 +1035,29 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 )}
               />
             </Table>
-
+            <Space
+              style={{
+                width: "full",
+                display: "flex",
+                justifyContent: "end",
+                marginTop: "1rem",
+              }}
+            >
+              <Button
+                onClick={() => {
+                  setPageSize((s) => {
+                    return s + 10;
+                  });
+                  refetch();
+                }}
+                type="primary"
+                style={{
+                  textTransform: "capitalize",
+                }}
+              >
+                {`${pageSize} élements affichés`} Charger plus
+              </Button>
+            </Space>
             <AdminOrContributor>
               <Space>
                 {checkedArray.length ? (

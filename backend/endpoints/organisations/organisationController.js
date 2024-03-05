@@ -138,24 +138,30 @@ exports.getOrganisationsFromAirtable = async (req, res) => {
       const ExistingOrg = await Organisation.find({
         name: organisation.name,
       });
-      console.log(ExistingOrg.length);
-      if (!ExistingOrg.length) {
-        const org = await Organisation.create({
-          name: organisation.name,
-          airLogo: organisation.logo,
-          airDescription: organisation.description,
-          airRegion: organisation.region,
-          airHeadquarter: organisation.headquarter,
-          airOperatingCountries: organisation.operationnal_countries,
-          airSector: organisation.sector,
-          airWebsite: organisation.website,
-          airRelatedArticles: organisation.related_articles,
-          airSource: organisation.source,
-        });
-        console.log(org);
+      // console.log(ExistingOrg.length);
+      if (ExistingOrg.length === 0) {
+        try {
+          const org = await Organisation.create({
+            name: organisation.name,
+            airLogo: organisation.logo,
+            airDescription: organisation.description,
+            airRegion: organisation.region,
+            airHeadquarter: organisation.headquarter,
+            airOperatingCountries: organisation.operationnal_countries,
+            airSector: organisation.sector,
+            airWebsite: organisation.website,
+            airRelatedArticles: organisation.related_articles,
+            airSource: organisation.source,
+          });
+          // console.log(org);
+        } catch (e) {
+          console.log(e);
+        }
       }
       // console.log(ExistingOrg);
     });
+
+    res.status(200).json({ success: true });
     // console.log(organisations);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -218,43 +224,60 @@ exports.getAllOrganisationsFromAirtable = async (req, res) => {
 // @route GET /api/v1/organisations
 // @access Public
 exports.getAllOrganisations = async (req, res) => {
-  const { limit, page, sort, fields } = req.query;
+  let { limit, page, sort, fields, _start, _end } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
   // console.log(queryObj);
   try {
+    if (_end && (_start || _start == 0)) {
+      limit = _end - _start;
+    }
     const organisations = await Organisation.find(queryObj)
       .limit(limit * 1)
+      .skip(_start ? _start : 0)
       .sort({ createdAt: -1, ...sort })
       .select(fields);
     // console.log(organisations);
     organisations.map(async (organisation) => {
-      let domain_racine = extraireDomaine(organisation.airWebsite);
-      domain_racine = domain_racine.slice(8);
-      const url = `https://logo.clearbit.com/${domain_racine}`;
-      const path = `${Path.resolve(
-        __dirname,
-        "../../public/storage/logos"
-      )}/${domain_racine.split(".").join("")}.jpg`;
-      await downloadImage(url, path);
-      let urla = "";
-      if (ENV === "dev") {
-        urla = `http://localhost:${PORT}/storage/logos/${domain_racine
-          .split(".")
-          .join("")}.jpg`;
-      } else {
-        urla = `https://api.possible.africa/storage/logos/${domain_racine
-          .split(".")
-          .join("")}.jpg`;
+      console.log(organisation.airWebsite);
+      if (
+        organisation.airWebsite !== null &&
+        organisation.airWebsite !== undefined
+      ) {
+        let domain_racine = extraireDomaine(organisation.airWebsite);
+        // console.log(domain_racine);
+        if (domain_racine) {
+          domain_racine = domain_racine.slice(8);
+          const url = `https://logo.clearbit.com/${domain_racine}`;
+          const path = `${Path.resolve(
+            __dirname,
+            "../../public/storage/logos"
+          )}/${domain_racine.split(".").join("")}.jpg`;
+          await downloadImage(url, path);
+          let urla = "";
+          if (ENV === "dev") {
+            urla = `http://localhost:${PORT}/storage/logos/${domain_racine
+              .split(".")
+              .join("")}.jpg`;
+          } else {
+            urla = `https://api.possible.africa/storage/logos/${domain_racine
+              .split(".")
+              .join("")}.jpg`;
+          }
+          await Organisation.findByIdAndUpdate(organisation._id, {
+            airLogo: urla,
+          });
+        } else {
+          await Organisation.findByIdAndUpdate(organisation._id, {
+            airLogo: organisation.logo,
+          });
+        }
       }
-      await Organisation.findByIdAndUpdate(
-        organisation._id,
-        { airLogo: urla }
-      );
       // return orgaFin;
     });
 
     const orgs = await Organisation.find(queryObj)
       .limit(limit * 1)
+      .skip(_start ? _start : 0)
       .sort({ createdAt: -1, ...sort })
       .select(fields);
     res.status(200).json(orgs);
