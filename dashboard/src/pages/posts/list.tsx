@@ -81,7 +81,12 @@ async function processContent(content: string) {
 }
 
 export const PostList: React.FC<IResourceComponentsProps> = () => {
-  const { tableProps } = useTable({
+  const {
+    tableProps,
+    setPageSize,
+    pageSize,
+    tableQueryResult: { refetch },
+  } = useTable({
     syncWithLocation: true,
   });
 
@@ -757,7 +762,12 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
           ),
         }}
       >
-        <Table {...tableProps} rowKey="_id" scroll={{ x: 1800, y: "auto" }}>
+        <Table
+          {...tableProps}
+          pagination={false}
+          rowKey="_id"
+          scroll={{ x: 1800, y: "auto" }}
+        >
           <Table.Column
             fixed="left"
             width={68}
@@ -988,6 +998,29 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             )}
           />
         </Table>
+        <Space
+          style={{
+            width: "full",
+            display: "flex",
+            justifyContent: "end",
+            marginTop: "1rem",
+          }}
+        >
+          <Button
+            onClick={() => {
+              setPageSize((s) => {
+                return s + 10;
+              });
+              refetch();
+            }}
+            type="primary"
+            style={{
+              textTransform: "capitalize",
+            }}
+          >
+            {`${pageSize * 2} élements affichés`} Charger plus
+          </Button>
+        </Space>
 
         <AdminOrContributor>
           <Space>
