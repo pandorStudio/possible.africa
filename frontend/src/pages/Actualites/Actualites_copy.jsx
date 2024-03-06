@@ -31,43 +31,22 @@ function ActualitesCopy() {
   const [page, setPage] = useState(1);
   const [engPage, setEngPage] = useState(1);
   const [frPage, setFrPage] = useState(1);
-  // const [language, setLanguage] = useState([
-  //   {
-  //     label: "Français",
-  //     content: "Perhaps the greatest dish ever invented.",
-  //     status: true,
-  //     index: 0,
-  //   },
-  //   {
-  //     label: "English",
-  //     content:
-  //       "Perhaps the surest dish ever invented but fills the stomach more than rice.",
-  //     status: false,
-  //     index: 1,
-  //   },
-  // ]);
   const [languageChanging, setLanguageChanging] = useState(false);
   const [language, setLanguage] = useState("fr");
   const [infiniteScrollIsFetching] = useState(false);
-  const [pageEq, setPageEq] = useState([
-    { field: "Article Title", value: "" },
-    { field: "Tags from Feedly", value: "" },
-    { field: "Name of Media", value: "" },
-    { field: "Language", value: "" },
-    { field: "Date Added", value: "" },
-  ]);
-  const { data: interviewCategories = [] } = useGetPostCategoriesQuery({
-    limit: 10,
-    page: page,
-    fields: [],
-    eq: [{ field: "slug", value: "/actualites" }],
-  });
+  const [pageEq, setPageEq] = useState([{ field: "title", value: "" }]);
+  // const { data: interviewCategories = [] } = useGetPostCategoriesQuery({
+  //   limit: 10,
+  //   page: page,
+  //   fields: [],
+  //   eq: [],
+  // });
 
-  const articleNameRef = useRef();
-  const articleTagRef = useRef();
-  const articleMediaRef = useRef();
-  const articleLanguageRef = useRef();
-  const articleAddedDateRef = useRef();
+  // const articleNameRef = useRef();
+  // const articleTagRef = useRef();
+  // const articleMediaRef = useRef();
+  // const articleLanguageRef = useRef();
+  // const articleAddedDateRef = useRef();
 
   // Chargement de tous les données qui viennent de la ase de données MongoDb
   const {
@@ -82,10 +61,7 @@ function ActualitesCopy() {
     limit: 10 * page,
     page: page,
     fields: [],
-    eq: [
-      { field: "Tags from feedly", value: `education` },
-      { field: "status", value: "published" },
-    ],
+    eq: pageEq[0].value ? pageEq : [],
   });
   const {
     data: allNewsLength,
@@ -94,61 +70,70 @@ function ActualitesCopy() {
     refetch: refechAllNewsLength,
   } = useGetPostsQuery({
     fields: [],
-    eq: [
-      { field: "categorie", value: `${interviewCategories[0]?._id}` },
-      { field: "status", value: "published" },
-    ],
+    eq: pageEq[0].value ? pageEq : [],
   });
+  // const {
+  //   data: allNewsLength,
+  //   isLoading: allNewsLengthIsLoading,
+  //   isFetching: allNewsLengthIsFetching,
+  //   refetch: refechAllNewsLength,
+  // } = useGetPostsQuery({
+  //   fields: [],
+  //   eq: [
+  //     { field: "categorie", value: `${interviewCategories[0]?._id}` },
+  //     { field: "status", value: "published" },
+  //   ],
+  // });
 
   // Chargement des données eng qui viennent de la base de données AirTable
-  const {
-    data: allAirtableAllNews = [],
-    isLoading: allAirtableAllNewsIsLoading,
-    isFetching: allAirtableAllNewsIsFetching,
-    isError: allAirtableAllNewsIsError,
-    isSuccess: allAirtableAllNewsIsSuccess,
-    error: allAirtableAllNewsError,
-    refetch: allAirtableAllNewsRefetch,
-  } = useGetAirtableEngPostsQuery({
-    limit: 10 * page,
-    page: page,
-    fields: [],
-    eq: [],
-  });
-  const {
-    data: allAirtableAllNewsLength,
-    isLoading: allAirtableAllNewsLengthIsLoading,
-    isFetching: allAirtableAllNewsLengthIsFetching,
-    refetch: allAirtableAllNewsLengthRefetch,
-  } = useGetAirtableEngPostsQuery({
-    fields: [],
-    eq: pageEq,
-  });
+  // const {
+  //   data: allAirtableAllNews = [],
+  //   isLoading: allAirtableAllNewsIsLoading,
+  //   isFetching: allAirtableAllNewsIsFetching,
+  //   isError: allAirtableAllNewsIsError,
+  //   isSuccess: allAirtableAllNewsIsSuccess,
+  //   error: allAirtableAllNewsError,
+  //   refetch: allAirtableAllNewsRefetch,
+  // } = useGetAirtableEngPostsQuery({
+  //   limit: 10 * page,
+  //   page: page,
+  //   fields: [],
+  //   eq: [],
+  // });
+  // const {
+  //   data: allAirtableAllNewsLength,
+  //   isLoading: allAirtableAllNewsLengthIsLoading,
+  //   isFetching: allAirtableAllNewsLengthIsFetching,
+  //   refetch: allAirtableAllNewsLengthRefetch,
+  // } = useGetAirtableEngPostsQuery({
+  //   fields: [],
+  //   eq: pageEq,
+  // });
 
   // Chargement de tous les données qui viennent de la ase de données MongoDb
-  const {
-    data: FrAirtableFrNews = [],
-    isLoading: FrAirtableFrNewsIsLoading,
-    isFetching: FrAirtableFrNewsIsFetching,
-    isError: FrAirtableFrNewsIsError,
-    isSuccess: FrAirtableFrNewsIsSuccess,
-    error: FrAirtableFrNewsError,
-    refetch: FrAirtableFrNewsRefetch,
-  } = useGetAirtableFrPostsQuery({
-    limit: 10 * page,
-    page: page,
-    fields: [],
-    eq: pageEq,
-  });
-  const {
-    data: FrAirtableFrNewsLength,
-    isLoading: FrAirtableFrNewsLengthIsLoading,
-    isFetching: FrAirtableFrNewsLengthIsFetching,
-    refetch: FrAirtableFrNewsLengthRefetch,
-  } = useGetAirtableFrPostsQuery({
-    fields: [],
-    eq: pageEq,
-  });
+  // const {
+  //   data: FrAirtableFrNews = [],
+  //   isLoading: FrAirtableFrNewsIsLoading,
+  //   isFetching: FrAirtableFrNewsIsFetching,
+  //   isError: FrAirtableFrNewsIsError,
+  //   isSuccess: FrAirtableFrNewsIsSuccess,
+  //   error: FrAirtableFrNewsError,
+  //   refetch: FrAirtableFrNewsRefetch,
+  // } = useGetAirtableFrPostsQuery({
+  //   limit: 10 * page,
+  //   page: page,
+  //   fields: [],
+  //   eq: pageEq,
+  // });
+  // const {
+  //   data: FrAirtableFrNewsLength,
+  //   isLoading: FrAirtableFrNewsLengthIsLoading,
+  //   isFetching: FrAirtableFrNewsLengthIsFetching,
+  //   refetch: FrAirtableFrNewsLengthRefetch,
+  // } = useGetAirtableFrPostsQuery({
+  //   fields: [],
+  //   eq: pageEq,
+  // });
 
   useEffect(() => {
     // const allNewsLengthInterval = setInterval(() => {
@@ -158,9 +143,12 @@ function ActualitesCopy() {
     // if (allNewsLengthIsFetching) {
     //   console.log("Loading...");
     // }
-    FrAirtableFrNewsLengthRefetch();
-    FrAirtableFrNewsRefetch();
-    allAirtableAllNewsLengthRefetch();
+    if (isSuccess) {
+      // console.log(allNews)
+    }
+    // FrAirtableFrNewsLengthRefetch();
+    // FrAirtableFrNewsRefetch();
+    // allAirtableAllNewsLengthRefetch();
     // if (allAirtableAllNews.length) {
     // console.log(FrAirtableFrNews);
     // }
@@ -173,56 +161,56 @@ function ActualitesCopy() {
     // isFetching,
     // allAirtableAllNewsLengthIsFetching,
     // allAirtableAllNewsIsFetching,
-    language,
-    pageEq,
+    // language,
+    // pageEq,
     // allAirtableAllNewsIsFetching,
     // FrAirtableFrNewsIsFetching,
-    allAirtableAllNewsIsLoading,
-    FrAirtableFrNewsIsLoading,
+    // allAirtableAllNewsIsLoading,
+    // FrAirtableFrNewsIsLoading,
+    allNews,
+    isLoading,
+    isFetching,
+    isSuccess,
   ]);
 
-  function handleLanguageTabClick() {
-    setLanguage((s) => {
-      return [[...s[0]], [...s[1]]];
-    });
-  }
+  // function handleLanguageTabClick() {
+  //   setLanguage((s) => {
+  //     return [[...s[0]], [...s[1]]];
+  //   });
+  // }
 
   // Changement de langues
-  function DataTabs({ data }) {
-    return (
-      <Tabs>
-        <TabList>
-          {data.map((el, index) => {
-            return (
-              <Tab key={index} onClick={handleLanguageTabClick}>
-                {el.label}
-              </Tab>
-            );
-          })}
-        </TabList>
-        <TabPanels>
-          {data.index === 0 && data.status ? (
-            <CustomContainer content={airtableFrContent} />
-          ) : (
-            <CustomContainer content={airtableEngContent} />
-          )}
-        </TabPanels>
-      </Tabs>
-    );
-  }
+  // function DataTabs({ data }) {
+  //   return (
+  //     <Tabs>
+  //       <TabList>
+  //         {data.map((el, index) => {
+  //           return (
+  //             <Tab key={index} onClick={handleLanguageTabClick}>
+  //               {el.label}
+  //             </Tab>
+  //           );
+  //         })}
+  //       </TabList>
+  //       <TabPanels>
+  //         {data.index === 0 && data.status ? (
+  //           <CustomContainer content={airtableFrContent} />
+  //         ) : (
+  //           <CustomContainer content={airtableEngContent} />
+  //         )}
+  //       </TabPanels>
+  //     </Tabs>
+  //   );
+  // }
 
   let content;
-  let airtableEngContent;
-  let airtableFrContent;
+  // let airtableEngContent;
+  // let airtableFrContent;
 
   let isLoaded = true;
 
-  if (allAirtableAllNews?.length === 0) {
-    if (
-      FrAirtableFrNewsIsLoading ||
-      FrAirtableFrNewsIsFetching ||
-      languageChanging
-    ) {
+  if (allNews?.length === 0) {
+    if (isLoading || isFetching || languageChanging) {
       return (
         <Box
           as="div"
@@ -237,6 +225,163 @@ function ActualitesCopy() {
     }
     return <NoData />;
   }
+
+  // if (allNews.length) {
+  //   content = (
+  //     <InfiniteScroll
+  //       dataLength={allNews.length}
+  //       next={() => setPage((prevPage) => prevPage + 1)}
+  //       hasMore={allNews.length === allNewsLength?.length ? false : true}
+  //       loader={
+  //         <Box
+  //           styles={{
+  //             display: "flex",
+  //             justifyContent: "center",
+  //           }}
+  //         >
+  //           <Spinner as="div" mx="45%" mt={10} />
+  //           {/* <p>{JSON.stringify(allNewsLength?)}</p> */}
+  //         </Box>
+  //       }
+  //       endMessage={<NoMoreDataToLoad />}
+  //     >
+  //       {allNews &&
+  //         allNews.map((news, index) => {
+  //           const createdAt = new Date(news?.createdAt);
+  //           // transform date to french format
+  //           const date =
+  //             createdAt.getDate() +
+  //             "/" +
+  //             (createdAt.getMonth() + 1) +
+  //             "/" +
+  //             createdAt.getFullYear();
+  //           const instanceCard = (
+  //             <CardComponent
+  //               postType="Actualités"
+  //               key={news?._id}
+  //               title={news?.title}
+  //               description={news?.content ? ParseSlice(news?.content) : null}
+  //               imgUrl={news?.image}
+  //               isLoaded={isLoaded}
+  //               link={"/actualites/" + news?.slug}
+  //               countries={news?.countries?.length > 0 ? news?.countries : []}
+  //               authors={news?.authors?.length > 0 ? news?.authors : []}
+  //               editors={news?.editors?.length > 0 ? news?.editors : []}
+  //               hideMeBellow="md"
+  //               organisations={
+  //                 news?.organisations?.length > 0 ? news?.organisations : []
+  //               }
+  //               labels={news?.labels?.length > 0 ? news?.labels : []}
+  //               createdAt={date}
+  //               source={news?.source}
+  //               language={news?.publication_language || "Français"}
+  //             />
+  //           );
+
+  //           // if (index === allNews.length - 1) {
+  //           //   setContinueDataLoading(false);
+  //           // }
+
+  //           return (
+  //             <>
+  //               {instanceCard}
+  //               {/* {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
+  //                 <Box
+  //                   as="div"
+  //                   display="flex"
+  //                   justifyContent="center"
+  //                   alignItems="center"
+  //                   p={15}
+  //                 >
+  //                   <Spinner />
+  //                 </Box>
+  //               )} */}
+  //             </>
+  //           );
+  //         })}
+  //     </InfiniteScroll>
+  //   );
+  // }
+
+  // if (allAirtableAllNews.length) {
+  //   airtableEngContent = (
+  //     <InfiniteScroll
+  //       dataLength={allAirtableAllNews.length}
+  //       next={() => setPage((prevPage) => prevPage + 1)}
+  //       hasMore={
+  //         allAirtableAllNews.length === allAirtableAllNewsLength?.length
+  //           ? false
+  //           : true
+  //       }
+  //       loader={
+  //         <Box
+  //           styles={{
+  //             display: "flex",
+  //             justifyContent: "center",
+  //           }}
+  //         >
+  //           <Spinner as="div" mx="45%" mt={10} />
+  //           {/* <p>{JSON.stringify(allNewsLength?)}</p> */}
+  //         </Box>
+  //       }
+  //       endMessage={<NoMoreDataToLoad />}
+  //     >
+  //       {allAirtableAllNews &&
+  //         allAirtableAllNews.map((news, index) => {
+  //           const createdAt = new Date(news?.publication_date);
+  //           // transform date to french format
+  //           const date =
+  //             createdAt.getDate() +
+  //             "/" +
+  //             (createdAt.getMonth() + 1) +
+  //             "/" +
+  //             createdAt.getFullYear();
+  //           const instanceCard = (
+  //             <CardComponent
+  //               postType="Actualités"
+  //               key={news?.title}
+  //               title={news?.title}
+  //               imgUrl={news?.logo}
+  //               isLoaded={isLoaded}
+  //               link={news?.link}
+  //               // countries={news?.countries?.length > 0 ? news?.countries : []}
+  //               // authors={news?.authors?.length > 0 ? news?.authors : []}
+  //               editors={news?.media}
+  //               hideMeBellow="md"
+  //               // organisations={
+  //               //   news?.organisations?.length > 0 ? news?.organisations : []
+  //               // }
+  //               // labels={news?.labels?.length > 0 ? news?.labels : []}
+  //               createdAt={date}
+  //               source={news?.link}
+  //               language={news?.language == "ENG" ? "English" : "French"}
+  //             />
+  //           );
+
+  //           // if (index === allNews.length - 1) {
+  //           //   setContinueDataLoading(false);
+  //           // }
+
+  //           return (
+  //             <>
+  //               {instanceCard}
+  //               {/* {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
+  //                 <Box
+  //                   as="div"
+  //                   display="flex"
+  //                   justifyContent="center"
+  //                   alignItems="center"
+  //                   p={15}
+  //                 >
+  //                   <Spinner />
+  //                 </Box>
+  //               )} */}
+  //             </>
+  //           );
+  //         })}
+  //     </InfiniteScroll>
+  //   );
+  // }
 
   if (allNews.length) {
     content = (
@@ -258,46 +403,47 @@ function ActualitesCopy() {
         endMessage={<NoMoreDataToLoad />}
       >
         {allNews &&
-          allNews.map((news, index) => {
-            const createdAt = new Date(news?.createdAt);
-            // transform date to french format
-            const date =
-              createdAt.getDate() +
-              "/" +
-              (createdAt.getMonth() + 1) +
-              "/" +
-              createdAt.getFullYear();
-            const instanceCard = (
-              <CardComponent
-                postType="Actualités"
-                key={news?._id}
-                title={news?.title}
-                description={news?.content ? ParseSlice(news?.content) : null}
-                imgUrl={news?.image}
-                isLoaded={isLoaded}
-                link={"/actualites/" + news?.slug}
-                countries={news?.countries?.length > 0 ? news?.countries : []}
-                authors={news?.authors?.length > 0 ? news?.authors : []}
-                editors={news?.editors?.length > 0 ? news?.editors : []}
-                hideMeBellow="md"
-                organisations={
-                  news?.organisations?.length > 0 ? news?.organisations : []
-                }
-                labels={news?.labels?.length > 0 ? news?.labels : []}
-                createdAt={date}
-                source={news?.source}
-                language={news?.publication_language || "Français"}
-              />
-            );
+          allNews
+            .filter((n) => n.airTrans === language)
+            .map((news, index) => {
+              const createdAt = new Date(news?.airDateAdded);
+              // transform date to french format
+              const date =
+                createdAt.getDate() +
+                "/" +
+                (createdAt.getMonth() + 1) +
+                "/" +
+                createdAt.getFullYear();
+              const instanceCard = (
+                <CardComponent
+                  postType="Actualités"
+                  key={news?.title}
+                  title={news?.title}
+                  imgUrl={news?.airLogo}
+                  isLoaded={isLoaded}
+                  link={news?.airLink}
+                  // countries={news?.countries?.length > 0 ? news?.countries : []}
+                  // authors={news?.authors?.length > 0 ? news?.authors : []}
+                  editors={news?.airMedia}
+                  hideMeBellow="md"
+                  // organisations={
+                  //   news?.organisations?.length > 0 ? news?.organisations : []
+                  // }
+                  // labels={news?.labels?.length > 0 ? news?.labels : []}
+                  createdAt={date}
+                  source={news?.airLink}
+                  language={news?.airLanguage == "ENG" ? "English" : "French"}
+                />
+              );
 
-            // if (index === allNews.length - 1) {
-            //   setContinueDataLoading(false);
-            // }
+              // if (index === allNews.length - 1) {
+              //   setContinueDataLoading(false);
+              // }
 
-            return (
-              <>
-                {instanceCard}
-                {/* {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
+              return (
+                <>
+                  {instanceCard}
+                  {/* {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
                   <Box
                     as="div"
                     display="flex"
@@ -308,177 +454,17 @@ function ActualitesCopy() {
                     <Spinner />
                   </Box>
                 )} */}
-              </>
-            );
-          })}
+                </>
+              );
+            })}
       </InfiniteScroll>
     );
   }
 
-  if (allAirtableAllNews.length) {
-    airtableEngContent = (
-      <InfiniteScroll
-        dataLength={allAirtableAllNews.length}
-        next={() => setPage((prevPage) => prevPage + 1)}
-        hasMore={
-          allAirtableAllNews.length === allAirtableAllNewsLength?.length
-            ? false
-            : true
-        }
-        loader={
-          <Box
-            styles={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Spinner as="div" mx="45%" mt={10} />
-            {/* <p>{JSON.stringify(allNewsLength?)}</p> */}
-          </Box>
-        }
-        endMessage={<NoMoreDataToLoad />}
-      >
-        {allAirtableAllNews &&
-          allAirtableAllNews.map((news, index) => {
-            const createdAt = new Date(news?.publication_date);
-            // transform date to french format
-            const date =
-              createdAt.getDate() +
-              "/" +
-              (createdAt.getMonth() + 1) +
-              "/" +
-              createdAt.getFullYear();
-            const instanceCard = (
-              <CardComponent
-                postType="Actualités"
-                key={news?.title}
-                title={news?.title}
-                imgUrl={news?.logo}
-                isLoaded={isLoaded}
-                link={news?.link}
-                // countries={news?.countries?.length > 0 ? news?.countries : []}
-                // authors={news?.authors?.length > 0 ? news?.authors : []}
-                editors={news?.media}
-                hideMeBellow="md"
-                // organisations={
-                //   news?.organisations?.length > 0 ? news?.organisations : []
-                // }
-                // labels={news?.labels?.length > 0 ? news?.labels : []}
-                createdAt={date}
-                source={news?.link}
-                language={news?.language == "ENG" ? "English" : "French"}
-              />
-            );
-
-            // if (index === allNews.length - 1) {
-            //   setContinueDataLoading(false);
-            // }
-
-            return (
-              <>
-                {instanceCard}
-                {/* {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
-                  <Box
-                    as="div"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    p={15}
-                  >
-                    <Spinner />
-                  </Box>
-                )} */}
-              </>
-            );
-          })}
-      </InfiniteScroll>
-    );
-  }
-
-  if (FrAirtableFrNews.length) {
-    airtableFrContent = (
-      <InfiniteScroll
-        dataLength={FrAirtableFrNews.length}
-        next={() => setPage((prevPage) => prevPage + 1)}
-        hasMore={
-          FrAirtableFrNews.length === FrAirtableFrNewsLength?.length
-            ? false
-            : true
-        }
-        loader={
-          <Box
-            styles={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Spinner as="div" mx="45%" mt={10} />
-            {/* <p>{JSON.stringify(allNewsLength?)}</p> */}
-          </Box>
-        }
-        endMessage={<NoMoreDataToLoad />}
-      >
-        {FrAirtableFrNews &&
-          FrAirtableFrNews.map((news, index) => {
-            const createdAt = new Date(news?.publication_date);
-            // transform date to french format
-            const date =
-              createdAt.getDate() +
-              "/" +
-              (createdAt.getMonth() + 1) +
-              "/" +
-              createdAt.getFullYear();
-            const instanceCard = (
-              <CardComponent
-                postType="Actualités"
-                key={news?.title}
-                title={news?.title}
-                imgUrl={news?.logo}
-                isLoaded={isLoaded}
-                link={news?.link}
-                // countries={news?.countries?.length > 0 ? news?.countries : []}
-                // authors={news?.authors?.length > 0 ? news?.authors : []}
-                editors={news?.media}
-                hideMeBellow="md"
-                // organisations={
-                //   news?.organisations?.length > 0 ? news?.organisations : []
-                // }
-                // labels={news?.labels?.length > 0 ? news?.labels : []}
-                createdAt={date}
-                source={news?.link}
-                language={news?.language == "ENG" ? "English" : "French"}
-              />
-            );
-
-            // if (index === allNews.length - 1) {
-            //   setContinueDataLoading(false);
-            // }
-
-            return (
-              <>
-                {instanceCard}
-                {/* {(index === allNews.length - 1 && infiniteScrollIsFetching) ?? (
-                  <Box
-                    as="div"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    p={15}
-                  >
-                    <Spinner />
-                  </Box>
-                )} */}
-              </>
-            );
-          })}
-      </InfiniteScroll>
-    );
-  }
-
-  if (allAirtableAllNewsIsError) {
-    console.log({ allAirtableAllNewsError });
-    return <Box>{allAirtableAllNewsError.status}</Box>;
-  }
+  // if (allAirtableAllNewsIsError) {
+  //   console.log({ allAirtableAllNewsError });
+  //   return <Box>{allAirtableAllNewsError.status}</Box>;
+  // }
 
   return (
     <>
@@ -504,13 +490,13 @@ function ActualitesCopy() {
             </Box>
             <Box
               className={
-                language === "en"
+                language === "eng"
                   ? "w-[100px] h-10 flex justify-center flex-col cursor-pointer bg-[#2BB19C] text-white font-semibold"
                   : "w-[100px] h-10 flex justify-center flex-col cursor-pointer"
               }
               onClick={() => {
                 setLanguageChanging(true);
-                setLanguage("en");
+                setLanguage("eng");
                 setTimeout(() => {
                   setLanguageChanging(false);
                 }, 3000);
@@ -528,7 +514,7 @@ function ActualitesCopy() {
                 onChange={(e) => {
                   setPageEq(
                     pageEq.map((a) => {
-                      if (a.field === "Article Title") {
+                      if (a.field === "title") {
                         return { field: a.field, value: e.target.value };
                       } else {
                         return a;
@@ -557,10 +543,7 @@ function ActualitesCopy() {
             />
           </div> */}
 
-            {(FrAirtableFrNewsIsLoading ||
-              allAirtableAllNewsIsLoading ||
-              FrAirtableFrNewsIsFetching ||
-              allAirtableAllNewsIsFetching) && (
+            {(isLoading || isFetching || isFetching) && (
               <Box
                 as="div"
                 display="flex"
@@ -572,7 +555,7 @@ function ActualitesCopy() {
               </Box>
             )}
           </div>
-          {/* 
+          {/*
           <div className="bg-transparent border-2 border-[#2BB19C]/40 w-[100px] rounded-lg overflow-hidden">
             <input
               className="w-full h-full bg-transparent text-center text-neutral-900 placeholder-shown:text-neutral-900 px-2"
@@ -628,9 +611,7 @@ function ActualitesCopy() {
         {/* {pageEq.map((e) => {
           return JSON.stringify(e);
         })} */}
-        <CustomContainer
-          content={language === "fr" ? airtableFrContent : airtableEngContent}
-        />
+        <CustomContainer content={content} />
       </Container>
     </>
   );

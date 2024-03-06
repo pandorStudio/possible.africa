@@ -785,7 +785,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               );
             }}
           />
-          <AdminOrContributorOrUser>
+          {/* <AdminOrContributorOrUser>
             <Table.Column
               fixed="left"
               title="Statut"
@@ -816,7 +816,7 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 </Space>
               )}
             />
-          </AdminOrContributorOrUser>
+          </AdminOrContributorOrUser> */}
           {/* <Table.Column
             width={120}
             dataIndex={["image"]}
@@ -853,44 +853,42 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             title="Contributeur"
           /> */}
           <Table.Column
-            dataIndex="labels"
+            dataIndex="airTags"
             title="Etiquettes"
-            render={(value: any[]) =>
-              labelsIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <CustomLink
-                      target="_blank"
-                      to={`/post_labels/show/${item._id}`}
-                    >
-                      <TagField key={index} value={item?.name} />
-                    </CustomLink>
-                  ))}
-                </>
-              )
-            }
+            // render={(value: any[]) =>
+            //   labelsIsLoading ? (
+            //     <>Loading ...</>
+            //   ) : (
+            //     <>
+            //         <CustomLink
+            //           target="_blank"
+            //           to={`/post_labels/show/${item._id}`}
+            //         >
+            //           <TagField value={value} />
+            //         </CustomLink>
+            //     </>
+            //   )
+            // }
           />
           <Table.Column
-            dataIndex="organisations"
-            title="Organisations"
-            render={(value: any[]) =>
-              organisationsIsLoading ? (
-                <>Loading ...</>
-              ) : (
-                <>
-                  {value?.map((item, index) => (
-                    <CustomLink
-                      target="_blank"
-                      to={`/organisations/show/${item._id}`}
-                    >
-                      <TagField key={index} value={item?.name} />
-                    </CustomLink>
-                  ))}
-                </>
-              )
-            }
+            dataIndex="airMedia"
+            title="Média"
+            // render={(value: any[]) =>
+            //   organisationsIsLoading ? (
+            //     <>Loading ...</>
+            //   ) : (
+            //     <>
+            //       {value?.map((item, index) => (
+            //         <CustomLink
+            //           target="_blank"
+            //           to={`/organisations/show/${item._id}`}
+            //         >
+            //           <TagField key={index} value={item?.name} />
+            //         </CustomLink>
+            //       ))}
+            //     </>
+            //   )
+            // }
           />
           {/* <Table.Column
             dataIndex="editors"
@@ -950,9 +948,9 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
           /> */}
           {/* <Table.Column dataIndex="slug" title="Slug" ellipsis={true} /> */}
           <Table.Column
-            dataIndex="publication_language"
-            title="Langue"
-            render={(value) => (value ? value : "_")}
+            dataIndex="airLanguage"
+            title="Langue de publication"
+            render={(value) => (value === "FR" ? "Français" : "Anglais")}
             ellipsis={true}
           />
           <Table.Column

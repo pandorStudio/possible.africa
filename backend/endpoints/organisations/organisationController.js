@@ -69,15 +69,9 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
       })
       .all();
     records.forEach((record) => {
-      const logoPrefix =
-        ENV === "dev"
-          ? `http://localhost:${PORT}/storage/logos/airtable/`
-          : `https://api.possible.africa/storage/logos/airtable/`;
-      if (record.get("Logo")) {
         allRecords.push({
           _id: record.get("Name"),
           name: record.get("Name"),
-          logo: record.get("Logo")[0].url,
           description: record.get("Description"),
           region: record.get("Region"),
           headquarter: record.get("Headquarter"),
@@ -88,33 +82,8 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
           publication_date: record.get("Date Added"),
           source: record.get("Source"),
         });
-      } else {
-        allRecords.push({
-          _id: record.get("Name"),
-          name: record.get("Name"),
-          logo: `${logoPrefix}${record
-            .get("Name")
-            .split(" ")
-            .join("")
-            .toLowerCase()}.jpg`,
-          description: record.get("Description"),
-          region: record.get("Region"),
-          headquarter: record.get("Headquarter"),
-          operationnal_countries: record.get("Operating Countries"),
-          sector: record.get("Sector"),
-          related_articles: record.get("Articles Related"),
-          website: record.get("Website"),
-          publication_date: record.get("Date Added"),
-          source: record.get("Source"),
-        });
-      }
     });
 
-    if (eq["Name"]) {
-      allRecords = allRecords.filter((r) =>
-        r.name.includes(eq["Name"].toLowerCase())
-      );
-    }
     return allRecords;
   } catch (err) {
     console.error(err);
@@ -132,8 +101,6 @@ exports.getOrganisationsFromAirtable = async (req, res) => {
       limit * 1,
       queryObj
     );
-    // console.log(result);
-    // res.status(200).json(result);
     const organisations = await result.map(async (organisation) => {
       const ExistingOrg = await Organisation.find({
         name: organisation.name,
@@ -238,7 +205,7 @@ exports.getAllOrganisations = async (req, res) => {
       .select(fields);
     // console.log(organisations);
     organisations.map(async (organisation) => {
-      console.log(organisation.airWebsite);
+      // console.log(organisation.airWebsite);
       if (
         organisation.airWebsite !== null &&
         organisation.airWebsite !== undefined

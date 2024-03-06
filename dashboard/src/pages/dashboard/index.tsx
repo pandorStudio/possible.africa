@@ -30,6 +30,7 @@ export default function CustomDashboard() {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [synchWithAirtable, setSynchWithAirTable] = useState(false);
+  const [synchWithArticleAirtable, setSynchWithArticleAirTable] = useState(false);
 
   const routerType = useRouterType();
   const NewLink = useLink();
@@ -135,7 +136,6 @@ export default function CustomDashboard() {
                             }
                             console.log(err);
                           });
-                          
                       }}
                       type="primary"
                     >
@@ -215,15 +215,74 @@ export default function CustomDashboard() {
               {loading ? (
                 <CustomSpiner />
               ) : (
-                <Statistic
-                  title={
-                    <h3>
-                      <CustomIconArticle />
-                      Total Articles
-                    </h3>
-                  }
-                  value={dashboardData?.posts}
-                />
+                <>
+                  <Statistic
+                    title={
+                      <h3>
+                        <CustomIconArticle />
+                        Total Articles
+                      </h3>
+                    }
+                    value={dashboardData?.posts}
+                  />
+
+                  <div
+                    style={{
+                      display: "flex",
+                      marginTop: "1rem",
+                    }}
+                  >
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        console.log(e);
+                            setSynchWithArticleAirTable(false);
+                        axiosInstance
+                          .get(`${apiUrl}/airtable_posts/all`)
+                          .then((res) => {
+                            setSynchWithArticleAirTable(false);
+                            setLoading(true);
+                            axiosInstance
+                              .get(`${apiUrl}/dashboard`)
+                              .then((res) => {
+                                setDashboardData(res.data);
+                                setLoading(false);
+                                // console.log(res);
+                                // console.log(dashboardData);
+                              })
+                              .catch((err) => {
+                                if (
+                                  err?.response?.data?.message === "jwt expired"
+                                ) {
+                                  mutateLogout();
+                                }
+                                console.log(err);
+                              });
+                            // console.log(res);
+                            // console.log(res);
+                            // console.log(dashboardData);
+                          })
+                          .catch((err) => {
+                            if (
+                              err?.response?.data?.message === "jwt expired"
+                            ) {
+                              mutateLogout();
+                            }
+                            console.log(err);
+                          });
+                      }}
+                      type="primary"
+                    >
+                      Synchroniser avec Airtable{" "}
+                      {synchWithArticleAirtable ? (
+                        <CustomSpiner
+                          style={{ color: "white", marginLeft: "8px" }}
+                        />
+                      ) : null}
+                    </Button>
+                  </div>
+                </>
               )}
             </Card>
           </Link>

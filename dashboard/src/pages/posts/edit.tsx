@@ -56,54 +56,54 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
   //   defaultValue: postsData?.user?._id,
   // });
 
-  const { selectProps: countriesSelectProps } = useSelect({
-    resource: "countries",
-    optionValue: "_id",
-    optionLabel: "translations.fra.common",
-    defaultValue: postsData?.countries?._id,
-  });
+  // const { selectProps: countriesSelectProps } = useSelect({
+  //   resource: "countries",
+  //   optionValue: "_id",
+  //   optionLabel: "translations.fra.common",
+  //   defaultValue: postsData?.countries?._id,
+  // });
 
-  const { selectProps: categorieSelectProps } = useSelect({
-    resource: "post_categories",
-    optionLabel: "name",
-    optionValue: "_id",
-    defaultValue: postsData?.categorie?._id,
-  });
+  // const { selectProps: categorieSelectProps } = useSelect({
+  //   resource: "post_categories",
+  //   optionLabel: "name",
+  //   optionValue: "_id",
+  //   defaultValue: postsData?.categorie?._id,
+  // });
 
-  const { selectProps: organisationsSelectProps } = useSelect({
-    resource: "organisations",
-    optionValue: "_id",
-    optionLabel: "name",
-    defaultValue: postsData?.organisations?._id,
-  });
+  // const { selectProps: organisationsSelectProps } = useSelect({
+  //   resource: "organisations",
+  //   optionValue: "_id",
+  //   optionLabel: "name",
+  //   defaultValue: postsData?.organisations?._id,
+  // });
 
-  const { selectProps: authorSelectProps } = useSelect({
-    resource: "users",
-    optionLabel: "complete_name",
-    optionValue: "_id",
-    defaultValue: postsData?.authors?._id,
-    // filters: [
-    //   {
-    //     field: "role",
-    //     operator: "eq",
-    //     value: "contact",
-    //   },
-    // ],
-  });
+  // const { selectProps: authorSelectProps } = useSelect({
+  //   resource: "users",
+  //   optionLabel: "complete_name",
+  //   optionValue: "_id",
+  //   defaultValue: postsData?.authors?._id,
+  //   // filters: [
+  //   //   {
+  //   //     field: "role",
+  //   //     operator: "eq",
+  //   //     value: "contact",
+  //   //   },
+  //   // ],
+  // });
 
-  const { selectProps: labelSelectProps } = useSelect({
-    resource: "post_labels",
-    optionLabel: "name",
-    optionValue: "_id",
-    defaultValue: postsData?.labels?._id,
-  });
+  // const { selectProps: labelSelectProps } = useSelect({
+  //   resource: "post_labels",
+  //   optionLabel: "name",
+  //   optionValue: "_id",
+  //   defaultValue: postsData?.labels?._id,
+  // });
 
-  const { selectProps: editorSelectProps } = useSelect({
-    resource: "organisations",
-    optionValue: "_id",
-    optionLabel: "name",
-    defaultValue: postsData?.editors?._id,
-  });
+  // const { selectProps: editorSelectProps } = useSelect({
+  //   resource: "organisations",
+  //   optionValue: "_id",
+  //   optionLabel: "name",
+  //   defaultValue: postsData?.editors?._id,
+  // });
 
   async function onSubmitCapture(values: any) {
     let imgTags = editorContent?.match(/<img[^>]+src="([^">]+)"/g);
@@ -251,18 +251,16 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
         {/* <Form.Item label="Slug" name={["slug"]}>
           <Input />
         </Form.Item> */}
-        <Form.Item label="Source" name={["source"]}>
+        <Form.Item label="Source" name={["airLink"]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Langue" name={["publication_language"]}>
+        <Form.Item label="Langue" name={["airLanguage"]}>
           <Select>
-            <Option value="Français">Français</Option>
-            <Option value="Anglais">Anglais</Option>
-            <Option value="Arabe">Arabe</Option>
-            <Option value="Chinois">Chinois</Option>
+            <Option value="FR">Français</Option>
+            <Option value="ENG">Anglais</Option>
           </Select>
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Pays"
           name={["countries"]}
           getValueProps={(value: any[]) => {
@@ -288,60 +286,14 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
             filterOption={true}
             optionFilterProp="label"
           />
+        </Form.Item> */}
+        <Form.Item label="Média" name={["airMedia"]}>
+          <Input />
         </Form.Item>
-        <Form.Item
-          label="Organisations"
-          name={["organisations"]}
-          getValueProps={(value: any[]) => {
-            return {
-              value: value?.map((item) => {
-                return item._id;
-              }),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReteurned = args[1].map((item: any) => {
-              return { _id: item.value, name: item.label };
-            });
-            return toBeReteurned;
-          }}
-        >
-          <Select
-            mode="multiple"
-            key={organisationsSelectProps.value?.toString()}
-            {...organisationsSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
+        <Form.Item label="Etiquettes" name={["airTags"]}>
+          <Input />
         </Form.Item>
-        <Form.Item
-          label="Etiquettes"
-          name={["labels"]}
-          getValueProps={(value: any[]) => {
-            return {
-              value: value?.map((item) => {
-                return item._id;
-              }),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReteurned = args[1].map((item: any) => {
-              return { _id: item.value, name: item.label };
-            });
-            return toBeReteurned;
-          }}
-        >
-          <Select
-            mode="multiple"
-            key={labelSelectProps.value?.toString()}
-            {...labelSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
-        </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="Auteurs"
           name={["authors"]}
           getValueProps={(value: any[]) => {
@@ -366,8 +318,8 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item
+        </Form.Item> */}
+        {/* <Form.Item
           label="Editeurs"
           name={["editors"]}
           getValueProps={(value: any[]) => {
@@ -392,8 +344,8 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item
+        </Form.Item> */}
+        {/* <Form.Item
           label="Contenu"
           name={["content"]}
           className="advancedEditor"
@@ -413,8 +365,8 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
             theme="snow"
             placeholder="Placez votre contenu ici..."
           />
-        </Form.Item>
-        <Form.Item name="image" label="Couverture">
+        </Form.Item> */}
+        {/* <Form.Item name="image" label="Couverture">
           <Upload
             name="file"
             listType="picture-card"
@@ -447,15 +399,15 @@ export const PostEdit: React.FC<IResourceComponentsProps> = () => {
               </div>
             )}
           </Upload>
-        </Form.Item>
-        <Form.Item label="Categorie" name={["categorie", "_id"]}>
+        </Form.Item> */}
+        {/* <Form.Item label="Categorie" name={["categorie", "_id"]}>
           <Select
             {...categorieSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </Edit>
   );

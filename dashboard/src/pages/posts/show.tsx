@@ -37,32 +37,32 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
   //   console.log(record);
   // }, [record]);
 
-  const { data: organisationsData, isLoading: organisationIsLoading } = useMany(
-    {
-      resource: "organisations",
-      ids: record?.organisations?.map((item: any) => item?.organisations) ?? [],
-    }
-  );
+  // const { data: organisationsData, isLoading: organisationIsLoading } = useMany(
+  //   {
+  //     resource: "organisations",
+  //     ids: record?.organisations?.map((item: any) => item?.organisations) ?? [],
+  //   }
+  // );
 
-  const { data: countriesData, isLoading: countryIsLoading } = useMany({
-    resource: "countries",
-    ids: record?.countries?.map((item: any) => item?.countries) ?? [],
-  });
+  // const { data: countriesData, isLoading: countryIsLoading } = useMany({
+  //   resource: "countries",
+  //   ids: record?.countries?.map((item: any) => item?.countries) ?? [],
+  // });
 
-  const { data: labelsData, isLoading: labelsIsLoading } = useMany({
-    resource: "countries",
-    ids: record?.labels?.map((item: any) => item?.labels) ?? [],
-  });
+  // const { data: labelsData, isLoading: labelsIsLoading } = useMany({
+  //   resource: "countries",
+  //   ids: record?.labels?.map((item: any) => item?.labels) ?? [],
+  // });
 
-  const { data: editorsData, isLoading: editorsIsLoading } = useMany({
-    resource: "organisations",
-    ids: record?.editors?.map((item: any) => item?.editors) ?? [],
-  });
+  // const { data: editorsData, isLoading: editorsIsLoading } = useMany({
+  //   resource: "organisations",
+  //   ids: record?.editors?.map((item: any) => item?.editors) ?? [],
+  // });
 
-  const { data: authorsData, isLoading: authorsIsLoading } = useMany({
-    resource: "users",
-    ids: record?.authors?.map((item: any) => item?.authors) ?? [],
-  });
+  // const { data: authorsData, isLoading: authorsIsLoading } = useMany({
+  //   resource: "users",
+  //   ids: record?.authors?.map((item: any) => item?.authors) ?? [],
+  // });
 
   return (
     <Show
@@ -77,23 +77,13 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
         ),
       }}
     >
-      <Title level={5}>Contributeur</Title>
-      <TextField value={record?.user?.complete_name} />
-      <Title level={5}>Organisations</Title>
-      {organisationIsLoading ? (
-        <>Loading ...</>
-      ) : organisationsData?.data?.length && record?.organisations?.length ? (
-        <>
-          {record?.organisations.map((organisation: any) => (
-            <TagField key={organisation?._id} value={organisation?.name} />
-          ))}
-        </>
-      ) : (
-        "_"
-      )}
+      {/* <Title level={5}>Contributeur</Title>
+      <TextField value={record?.user?.complete_name} /> */}
       <Title level={5}>Title</Title>
       <TextField value={record?.title} />
-      <Title level={5}>Pays</Title>
+      <Title level={5}>Média</Title>
+      <TextField value={record?.airMedia} />
+      {/* <Title level={5}>Pays</Title>
       {countryIsLoading ? (
         <>Loading ...</>
       ) : countriesData?.data?.length && record?.countries?.length ? (
@@ -113,21 +103,11 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
         </>
       ) : (
         "_"
-      )}
+      )} */}
       <Title level={5}>Etiquettes</Title>
-      {labelsIsLoading ? (
-        <>Loading ...</>
-      ) : labelsData?.data?.length && record?.labels?.length ? (
-        <>
-          {record?.labels?.map((label: any) => (
-            <TagField key={label?._id} value={label?.name} />
-          ))}
-        </>
-      ) : (
-        "_"
-      )}
+      <TagField value={record?.airTags} />
 
-      <Title level={5}>Editeurs</Title>
+      {/* <Title level={5}>Editeurs</Title>
       {editorsIsLoading ? (
         <>Loading ...</>
       ) : editorsData?.data?.length && record?.editors?.length ? (
@@ -138,9 +118,9 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
         </>
       ) : (
         "_"
-      )}
+      )} */}
 
-      <Title level={5}>Auteurs</Title>
+      {/* <Title level={5}>Auteurs</Title>
       {authorsIsLoading ? (
         <>Loading ...</>
       ) : authorsData?.data?.length && record?.authors?.length ? (
@@ -151,35 +131,29 @@ export const PostShow: React.FC<IResourceComponentsProps> = () => {
         </>
       ) : (
         "_"
-      )}
+      )} */}
 
-      <Title level={5}>Slug</Title>
-      <TextField value={record?.slug} />
+      {/* <Title level={5}>Slug</Title>
+      <TextField value={record?.slug} /> */}
       <Title level={5}>Source</Title>
       {/*<TextField value={record?.source} />*/}
-      {record?.source ? (
-        <Link href={record?.source}>{record?.source}</Link>
+      {record?.airLink ? (
+        <Link href={record?.airLink}>{record?.airLink}</Link>
       ) : (
         "-"
       )}
       <Title level={5}>Langue</Title>
       {/*<TextField value={record?.source} />*/}
-      {record?.publication_language ? (
-        <Link href={record?.publication_language}>
-          {record?.publication_language}
-        </Link>
-      ) : (
-        "-"
-      )}
-      <Title level={5}>Content</Title>
+      <TextField value={record?.airLanguage === "FR" ? "Français" : "Anglais"} />
+      {/* <Title level={5}>Content</Title>
       <span>
         {record?.content &&
           parse(record?.content.replace(/\\n/g, "<br />"), htmlParseOptions)}
-      </span>
-      <Title level={5}>Image</Title>
-      <ImageField style={{ maxWidth: 200 }} value={record?.image} />
-      <Title level={5}>Categorie</Title>
-      <TextField value={record?.categorie?.name} />
+      </span> */}
+      {/* <Title level={5}>Image</Title>
+      <ImageField style={{ maxWidth: 200 }} value={record?.image} /> */}
+      {/* <Title level={5}>Categorie</Title>
+      <TextField value={record?.categorie?.name} /> */}
     </Show>
   );
 };

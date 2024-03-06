@@ -228,7 +228,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
       // intercept onSubmit to add the editor content to the form data
     >
       <Form {...formProps} layout="vertical" onFinish={onSubmitCapture}>
-        <Form.Item label="Auteur" name={["authors"]}>
+        {/* <Form.Item label="Auteur" name={["authors"]}>
           <Select
             mode="multiple"
             {...authorSelectProps}
@@ -236,9 +236,9 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item
+        {/* <Form.Item
           label="Editeurs"
           name={["editors"]}
           getValueProps={(value: any[]) => {
@@ -260,30 +260,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item
-          label="Organisations"
-          name={["organisations"]}
-          getValueProps={(value: any[]) => {
-            return {
-              value: value?.map((item) => item),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReturned = args[1].map((item: any) => {
-              return item.value;
-            });
-            return toBeReturned;
-          }}
-        >
-          <Select
-            mode="multiple"
-            {...organisationsSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="Titre"
           name={["title"]}
@@ -295,7 +272,10 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
+        <Form.Item label="Média" name={["airMedia"]}>
+          <Input />
+        </Form.Item>
+        {/* <Form.Item
           label="Pays"
           name={["countries"]}
           getValueProps={(value: any[]) => {
@@ -310,7 +290,7 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             return toBeReturned;
           }}
         >
-          {/*<SelectCountry />*/}
+          <SelectCountry />
           <Select
             mode="multiple"
             {...countrySelectProps}
@@ -318,22 +298,20 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item label="Source" name={["source"]}>
+        <Form.Item label="Source" name={["airLink"]}>
           <Input />
         </Form.Item>
 
-        <Form.Item label="Langue" name={["publication_language"]}>
+        <Form.Item label="Langue" name={["airLanguage"]}>
           <Select>
-            <Option value="Français">Français</Option>
-            <Option value="Anglais">Anglais</Option>
-            <Option value="Arabe">Arabe</Option>
-            <Option value="Chinois">Chinois</Option>
+            <Option value="FR">Français</Option>
+            <Option value="ENG">Anglais</Option>
           </Select>
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           label="Contenu"
           name={["content"]}
           className="advancedEditor"
@@ -353,8 +331,8 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
             theme="snow"
             placeholder="Placez votre contenu ici..."
           />
-        </Form.Item>
-        <Form.Item label="Couverture" name="image">
+        </Form.Item> */}
+        {/* <Form.Item label="Couverture" name="image">
           <Upload
             name="file"
             listType="picture-card"
@@ -386,37 +364,17 @@ export const PostCreate: React.FC<IResourceComponentsProps> = () => {
               </div>
             )}
           </Upload>
-        </Form.Item>
-        <Form.Item label="Categorie" name={["categorie", "_id"]}>
+        </Form.Item> */}
+        {/* <Form.Item label="Categorie" name={["categorie", "_id"]}>
           <Select
             {...categorieSelectProps}
             onSearch={undefined}
             filterOption={true}
             optionFilterProp="label"
           />
-        </Form.Item>
-        <Form.Item
-          label="Etiquette"
-          name={["labels"]}
-          getValueProps={(value: any[]) => {
-            return {
-              value: value?.map((item) => item),
-            };
-          }}
-          getValueFromEvent={(...args: any) => {
-            const toBeReturned = args[1].map((item: any) => {
-              return item.value;
-            });
-            return toBeReturned;
-          }}
-        >
-          <Select
-            mode="multiple"
-            {...labelSelectProps}
-            onSearch={undefined}
-            filterOption={true}
-            optionFilterProp="label"
-          />
+        </Form.Item> */}
+        <Form.Item label="Etiquette" name={["airTags"]}>
+          <Input />
         </Form.Item>
       </Form>
     </Create>

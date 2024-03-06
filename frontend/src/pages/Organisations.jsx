@@ -37,6 +37,15 @@ function Organisations() {
     fields: [],
     eq: pageEq[0].value ? pageEq : [],
   });
+  const {
+    data: allOrganisationsLength,
+    isLoading: allOrganisationsLengthIsLoading,
+    isFetching: allOrganisationsLengthIsFetching,
+    refetch: refechAllOrganisationsLength,
+  } = useGetOrganisationsQuery({
+    fields: [],
+    eq: pageEq[0].value ? pageEq : [],
+  });
   // const {
   //   data: organisations = [],
   //   isLoading,
@@ -84,7 +93,9 @@ function Organisations() {
       <InfiniteScroll
         dataLength={organisations.length}
         next={() => setPage((prevPage) => prevPage + 1)}
-        hasMore={true}
+        hasMore={
+          organisations.length === allOrganisationsLength?.length ? false : true
+        }
         loader={
           // eslint-disable-next-line react/no-unknown-property
           <Box

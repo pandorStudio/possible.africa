@@ -37,12 +37,15 @@ export const apiSlice = createApi({
       query: (queryArgs = baseQueryArgs) =>
         queryTransformer(queryArgs, "post_categories"),
     }),
-
     getPosts: builder.query({
       query: (queryArgs = baseQueryArgs) => {
         return queryTransformer(queryArgs, "posts");
       },
-      transformResponse: (res) => res.sort((a, b) => b.id - a.id),
+      transformResponse: (res) => {
+        // res = [...res.fr, ...res.eng];
+        // console.log(res);
+        return res.sort((a, b) => b.id - a.id);
+      },
       providesTags: ["Posts"],
     }),
     getAirtableFrPosts: builder.query({
@@ -90,7 +93,6 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Posts"],
     }),
-
     getAirtableOrganisations: builder.query({
       query: (queryArgs = baseQueryArgs) => {
         return queryTransformer(queryArgs, "airtable_organisations");

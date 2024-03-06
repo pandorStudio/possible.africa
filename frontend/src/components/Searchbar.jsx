@@ -34,11 +34,11 @@ function Searchbar({ hideMeBellow }) {
 
   const {
     data: newsCategories = [],
-} = useGetPostCategoriesQuery({limit: 10, page: 1, fields: [], eq: [{field: "slug", value: "/actualites"}]});
+} = useGetPostCategoriesQuery({limit: 10, page: 1, fields: [], eq: []});
 
 const {
   data: interviewCategories = [],
-} = useGetPostCategoriesQuery({limit: 10, page: 1, fields: [], eq: [{field: "slug", value: "/podcast"}]});
+} = useGetPostCategoriesQuery({limit: 10, page: 1, fields: [], eq: []});
   
 
 
@@ -46,8 +46,8 @@ const {
   const { data: jobs } = useGetJobsQuery();
   const { data: opportunities } = useGetOpportunitiesQuery();
   const { data: events } = useGetEventsQuery();
-  const { data: news_posts } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: [{field: "categorie", value: `${newsCategories[0]?._id}`}]});
-  const { data: interview_posts } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: [{field: "categorie", value: `${interviewCategories[0]?._id}`}]});
+  const { data: news_posts } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: []});
+  const { data: interview_posts } = useGetPostsQuery({limit: 10, page: 1, fields: [], eq: []});
 
 
   useEffect(() => {

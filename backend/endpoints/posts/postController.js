@@ -62,7 +62,7 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
 
   let allRecords = [];
   try {
-    console.log(eq);
+    // console.log(eq);
 
     // Sélectionnez tous les records et attendez leur chargement complet
     const records = await base(tableName)
@@ -78,119 +78,55 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
 
     // Traitez chaque record individuellement
     records.forEach((record) => {
-      // console.log("Retrieved", record.get("Article ID"));
-      if (record.get("Logo copy")) {
-        allRecords.push({
-          _id: record.get("Article ID"),
-          title: record.get("Article Title"),
-          tags: record.get("Tags from Feedly"),
-          media: record.get("Name of Media"),
-          language: record.get("Language"),
-          link: record.get("Link to Article"),
-          publication_date: record.get("Date Added"),
-          logo: record.get("Logo copy"),
-        });
-      } else {
-        allRecords.push({
-          _id: record.get("Article ID"),
-          title: record.get("Article Title"),
-          tags: record.get("Tags from Feedly"),
-          media: record.get("Name of Media"),
-          language: record.get("Language"),
-          link: record.get("Link to Article"),
-          publication_date: record.get("Date Added"),
-        });
-      }
+      allRecords.push({
+        _id: record.get("Article ID"),
+        title: record.get("Article Title"),
+        tags: record.get("Tags from Feedly"),
+        media: record.get("Name of Media"),
+        language: record.get("Language"),
+        link: record.get("Link to Article"),
+        publication_date: record.get("Date Added"),
+        logo: record.get("Logo copy"),
+      });
     });
-
-    // eq["Name of Media"]
-    //   ? await base(tableName)
-    //       .select({
-    //         sort: [
-    //           {
-    //             field: "Date Added",
-    //             direction: "desc",
-    //           },
-    //         ],
-    //         filterByFormula:
-    //           "OR(" +
-    //           `${
-    //             eq["Name of Media"]
-    //               ? "FIND(LOWER('" +
-    //                 eq["Name of Media"] +
-    //                 "'), LOWER({Name of Media})) > 0"
-    //               : null
-    //           }` +
-    //           ")",
-    //       })
-    //       .all()
-    //   :
-
-    if (eq["Article Title"]) {
-      allRecords = allRecords.filter((r) =>
-        r.title.includes(eq["Article Title"].toLowerCase())
-      );
-    }
-    if (eq["Tags from Feedly"]) {
-      allRecords = allRecords.filter((r) =>
-        r.tags.includes(eq["Tags from Feedly"].toLowerCase())
-      );
-    }
-    if (eq["Name of Media"]) {
-      console.log(allRecords);
-      allRecords = allRecords.filter((r) =>
-        r.media.includes(eq["Name of Media"].toLowerCase())
-      );
-    }
-    if (eq["Language"]) {
-      allRecords = allRecords.filter((r) => r.language === eq["Language"]);
-    }
-    if (eq["Date Added"]) {
-      allRecords = allRecords.filter(
-        (r) => r.publication_date === eq["Date Added"]
-      );
-    }
 
     // console.log(allRecords.slice(0, 5));
     // Retournez ou traitez `allRecords` comme nécessaire
-    const recordsToBeReturned = allRecords.slice(0, limit);
-    const recordsToBeRetured = await Promise.all(
-      recordsToBeReturned.map(async (e) => {
-        if (e.logo && e.media) {
-          let media = e.media.split(" ").join("").toLowerCase();
-          const regex = /\//g;
-          // const index = link.search(regex);
-          // link = link.slice(0, index);
-          // console.log(link);
-          const path = `${Path.resolve(
-            __dirname,
-            "../../public/storage/logos/airtable"
-          )}/${media}.jpg`;
-          const result = downloadImage(e.logo, path);
-          // console.log(result);
+    // const recordsToBeReturned = allRecords.slice(0, limit);
+    // const recordsToBeRetured = await Promise.all(
+    //   recordsToBeReturned.map(async (e) => {
+    //     if (e.logo && e.media) {
+    //       let media = e.media.split(" ").join("").toLowerCase();
+    //       const regex = /\//g;
+    //       const path = `${Path.resolve(
+    //         __dirname,
+    //         "../../public/storage/logos/airtable"
+    //       )}/${media}.jpg`;
+    //       const result = downloadImage(e.logo, path);
+    //       // console.log(result);
 
-          // if (result) {
-          const regex2 = /storage/;
-          const publicIndex = path.search(regex2);
-          const reformedPath = path.slice(publicIndex);
-          if (ENV === "dev") {
-            e.logo = `http://localhost:${PORT}/${reformedPath}`;
-          } else {
-            e.logo = `https://api.possible.africa/${reformedPath}`;
-          }
-          // console.log(e);
-          return e;
-          // } else {
-          //   e.logo = path;
-          //   return e;
-          // }
-        }
-        return e;
-      })
-    );
+    //       // if (result) {
+    //       const regex2 = /storage/;
+    //       const publicIndex = path.search(regex2);
+    //       const reformedPath = path.slice(publicIndex);
+    //       if (ENV === "dev") {
+    //         e.logo = `http://localhost:${PORT}/${reformedPath}`;
+    //       } else {
+    //         e.logo = `https://api.possible.africa/${reformedPath}`;
+    //       }
+    //       // console.log(e);
+    //       return e;
+    //       // } else {
+    //       //   e.logo = path;
+    //       //   return e;
+    //       // }
+    //     }
+    //     return e;
+    //   })
+    // );
 
     // console.log(recordsToBeRetured);
-    return recordsToBeRetured;
+    return allRecords;
   } catch (err) {
     console.error(err);
     // Gérez l'erreur comme nécessaire
@@ -209,20 +145,99 @@ exports.getFrenchPostFromAirtable = async (req, res) => {
       limit * 1,
       queryObj
     );
-    res.status(200).json(result);
+
+    const articles = await result.map(async (article) => {
+      const existingArticle = await Post.find({
+        title: article.title,
+      });
+      if (existingArticle.length === 0) {
+        try {
+          await Post.create({
+            title: article.title,
+            airTags: article.tags,
+            airMedia: article.media,
+            airLink: article.link,
+            airLanguage: article.language,
+            airLogo: article.logo,
+            airDateAdded: article.publication_date,
+            airTrans: "fr",
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    });
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
 exports.getAllPostFromAirtable = async (req, res) => {
+  const { limit, page, sort, fields, eq } = req.query;
+  const queryObj = CustomUtils.advancedQueryAirtable(req.query);
   try {
-    const result = await fetchAllRecords(
+    const frResult = await fetchAllRecords(
       AIRTABLE_API_KEY,
-      ALL_ARTICLE_BASE_ID,
-      ALL_ARTICLE_TABLE_ID
+      FRENCH_BASE_ID,
+      FRENCH_ARTICLE_TABLE_ID,
+      limit * 1,
+      queryObj
     );
-    res.status(200).json(result);
+
+    const frArticles = await frResult.map(async (article) => {
+      const existingArticle = await Post.find({
+        title: article.title,
+      });
+      // console.log(existingArticle);
+      if (existingArticle.length === 0) {
+        try {
+          await Post.create({
+            title: article.title,
+            airTags: article.tags,
+            airMedia: article.media,
+            airLink: article.link,
+            airLanguage: article.language,
+            airLogo: article.logo,
+            airDateAdded: article.publication_date,
+            airTrans: "fr",
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    });
+
+    const engResult = await fetchAllRecords(
+      AIRTABLE_API_KEY,
+      ENGLISH_BASE_ID,
+      ENGLISH_ARTICLE_TABLE_ID,
+      limit * 1,
+      queryObj
+    );
+    const engArticles = await engResult.map(async (article) => {
+      const existingArticle = await Post.find({
+        title: article.title,
+      });
+      // console.log(existingArticle);
+      if (existingArticle.length === 0) {
+        try {
+          await Post.create({
+            title: article.title,
+            airTags: article.tags,
+            airMedia: article.media,
+            airLink: article.link,
+            airLanguage: article.language,
+            airLogo: article.logo,
+            airDateAdded: article.publication_date,
+            airTrans: "eng",
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    });
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -239,23 +254,136 @@ exports.getEnglishPostFromAirtable = async (req, res) => {
       limit * 1,
       queryObj
     );
-    res.status(200).json(result);
+    const articles = await result.map(async (article) => {
+      const existingArticle = await Post.find({
+        title: article.title,
+      });
+      if (existingArticle.length === 0) {
+        try {
+          await Post.create({
+            title: article.title,
+            airTags: article.tags,
+            airMedia: article.media,
+            airLink: article.link,
+            airLanguage: article.language,
+            airLogo: article.logo,
+            airDateAdded: article.publication_date,
+            airTrans: "eng",
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    });
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
 exports.getAllPosts = async (req, res) => {
-  const { limit, page, sort, fields } = req.query;
+  let { limit, page, sort, fields, _start, _end } = req.query;
   const queryObj = CustomUtils.advancedQuery(req.query);
+  // console.log(queryObj);
   try {
-    // console.log(base_french);
-    const posts = await Post.find(queryObj)
+    if (_end && (_start || _start == 0)) {
+      limit = _end - _start;
+    }
+    const frPosts = await Post.find({ ...queryObj, airTrans: "fr" })
       .limit(limit * 1)
+      .skip(_start ? _start : 0)
       .sort({ createdAt: -1, ...sort })
       .select(fields);
 
-    res.status(200).json(posts);
+    frPosts.map(async (post) => {
+      if (
+        post.airLogo !== null &&
+        post.airLogo !== undefined &&
+        post.airLogo.substring(post.airLogo.length - 3, post.airLogo.length) !==
+          "jpg"
+      ) {
+        if (post.airLink) {
+          let domain_racine = extraireDomaine(post.airLink);
+          if (domain_racine) {
+            domain_racine = domain_racine.slice(8);
+            const img_name = domain_racine.split(".").join("") + ".jpg";
+            const path = `${Path.resolve(
+              __dirname,
+              "../../public/storage/logos"
+            )}/${img_name}`;
+            // console.log(post.airLogo);
+            await downloadImage(post.airLogo, path);
+            let urla = "";
+            if (ENV === "dev") {
+              urla = `http://localhost:${PORT}/storage/logos/${img_name}`;
+            } else {
+              urla = `https://api.possible.africa/storage/logos/${img_name}`;
+            }
+            await Post.findByIdAndUpdate(post._id, {
+              airLogo: urla,
+            });
+          }
+        }
+      }
+    });
+
+    const engPosts = await Post.find({ ...queryObj, airTrans: "eng" })
+      .limit(limit * 1)
+      .skip(_start ? _start : 0)
+      .sort({ createdAt: -1, ...sort })
+      .select(fields);
+
+    engPosts.map(async (post) => {
+      if (
+        post.airLogo !== null &&
+        post.airLogo !== undefined &&
+        post.airLogo.substring(post.airLogo.length - 3, post.airLogo.length) !==
+          "jpg"
+      ) {
+        if (post.airLink) {
+          let domain_racine = extraireDomaine(post.airLink);
+          if (domain_racine) {
+            domain_racine = domain_racine.slice(8);
+            // console.log(domain_racine);
+            const img_name = domain_racine.split(".").join("") + ".jpg";
+            const path = `${Path.resolve(
+              __dirname,
+              "../../public/storage/logos"
+            )}/${img_name}`;
+            await downloadImage(post.airLogo, path);
+            let urla = "";
+            if (ENV === "dev") {
+              urla = `http://localhost:${PORT}/storage/logos/${img_name}`;
+            } else {
+              urla = `https://api.possible.africa/storage/logos/${img_name}`;
+            }
+            await Post.findByIdAndUpdate(post._id, {
+              airLogo: urla,
+            });
+          }
+        }
+      }
+    });
+
+    const postsFrFin = await Post.find({ ...queryObj, airTrans: "fr" })
+      .limit(limit * 1)
+      .skip(_start ? _start : 0)
+      .sort({ createdAt: -1, ...sort })
+      .select(fields);
+    const postsEngFin = await Post.find({ ...queryObj, airTrans: "eng" })
+      .limit(limit * 1)
+      .skip(_start ? _start : 0)
+      .sort({ createdAt: -1, ...sort })
+      .select(fields);
+
+    res.status(200).json([
+      ...postsFrFin,
+      ...postsEngFin,
+    ]);
+    // console.log({
+    //   fr: postsFrFin,
+    //   eng: postsEngFin,
+    // });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

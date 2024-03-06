@@ -22,7 +22,7 @@ const postSchema = mongoose.Schema(
       ref: "Country",
     },
     title: { type: String, required: true, unique: true },
-    slug: { type: String, required: true, unique: true },
+    slug: { type: String },
     content: { type: String },
     image: { type: String, default: "" },
     status: {
@@ -39,12 +39,33 @@ const postSchema = mongoose.Schema(
       ref: "Organisation",
     },
     publication_language: {
-      type: "String",
+      type: String,
     },
     labels: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "PostLabel",
     },
+    airTags: {
+      type: String,
+    },
+    airMedia: {
+      type: String,
+    },
+    airLink: {
+      type: String,
+    },
+    airLanguage: {
+      type: String,
+    },
+    airLogo: {
+      type: String,
+    },
+    airDateAdded: {
+      type: String,
+    },
+    airTrans: {
+      type: String
+    }
   },
   {
     timestamps: true,

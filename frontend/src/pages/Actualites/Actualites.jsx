@@ -20,7 +20,7 @@ function Actualites() {
     limit: 10,
     page: page,
     fields: [],
-    eq: [{ field: "slug", value: "/actualites" }],
+    eq: [],
   });
 
   const {
@@ -35,10 +35,7 @@ function Actualites() {
     limit: 10 * page,
     page: page,
     fields: [],
-    eq: [
-      { field: "categorie", value: `${interviewCategories[0]?._id}` },
-      { field: "status", value: "published" },
-    ],
+    eq: [],
   });
 
   const {
@@ -48,10 +45,7 @@ function Actualites() {
     refetch: refechAllNewsLength,
   } = useGetPostsQuery({
     fields: [],
-    eq: [
-      { field: "categorie", value: `${interviewCategories[0]?._id}` },
-      { field: "status", value: "published" },
-    ],
+    eq: [],
   });
 
   useEffect(() => {
