@@ -297,8 +297,7 @@ exports.getAllPosts = async (req, res) => {
 
     frPosts.map(async (post) => {
       if (
-        post.airLogo !== null &&
-        post.airLogo !== undefined &&
+        (post.airLogo !== null && post.airLogo !== undefined) ||
         post.airLogo.substring(post.airLogo.length - 3, post.airLogo.length) !==
           "jpg"
       ) {
@@ -313,12 +312,8 @@ exports.getAllPosts = async (req, res) => {
             )}/${img_name}`;
             // console.log(post.airLogo);
             await downloadImage(post.airLogo, path);
-            let urla = "";
-            if (ENV === "dev") {
-              urla = `http://localhost:${PORT}/storage/logos/${img_name}`;
-            } else {
-              urla = `https://api.possible.africa/storage/logos/${img_name}`;
-            }
+            let urla = "https://api.possible.africa/storage/logos/${img_name}";
+
             await Post.findByIdAndUpdate(post._id, {
               airLogo: urla,
             });
@@ -335,8 +330,7 @@ exports.getAllPosts = async (req, res) => {
 
     engPosts.map(async (post) => {
       if (
-        post.airLogo !== null &&
-        post.airLogo !== undefined &&
+        (post.airLogo !== null && post.airLogo !== undefined) ||
         post.airLogo.substring(post.airLogo.length - 3, post.airLogo.length) !==
           "jpg"
       ) {
@@ -351,12 +345,9 @@ exports.getAllPosts = async (req, res) => {
               "../../public/storage/logos"
             )}/${img_name}`;
             await downloadImage(post.airLogo, path);
-            let urla = "";
-            if (ENV === "dev") {
-              urla = `http://localhost:${PORT}/storage/logos/${img_name}`;
-            } else {
-              urla = `https://api.possible.africa/storage/logos/${img_name}`;
-            }
+            let urla =
+              "`https://api.possible.africa/storage/logos/${img_name}`";
+
             await Post.findByIdAndUpdate(post._id, {
               airLogo: urla,
             });
@@ -376,10 +367,7 @@ exports.getAllPosts = async (req, res) => {
       .sort({ createdAt: -1, ...sort })
       .select(fields);
 
-    res.status(200).json([
-      ...postsFrFin,
-      ...postsEngFin,
-    ]);
+    res.status(200).json([...postsFrFin, ...postsEngFin]);
     // console.log({
     //   fr: postsFrFin,
     //   eng: postsEngFin,
