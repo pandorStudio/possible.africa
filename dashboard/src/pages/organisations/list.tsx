@@ -144,6 +144,18 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
     },
   });
   const apiUrl = useApiUrl();
+  const socialMedias = [
+    "http://localhost:4534/storage/logos/wwwlinkedincom.jpg",
+    "http://localhost:4534/storage/logos/linkedincom.jpg",
+    "http://localhost:4534/storage/logos/wwwtwittercom.jpg",
+    "http://localhost:4534/storage/logos/twittercom.jpg",
+    "http://localhost:4534/storage/logos/wwwfacebookcom.jpg",
+    "http://localhost:4534/storage/logos/facebookcom.jpg",
+    "http://localhost:4534/storage/logos/wwwinstagramcom.jpg",
+    "http://localhost:4534/storage/logos/instagramcom.jpg",
+  ];
+  const logoPlaceholder =
+    "http://localhost:4534/storage/logos/placeholder_org.jpeg";
   const [checkedArray, setCheckedArray] = useState([]);
   const [allCheckedOnPage, setAllCheckedOnPage] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -710,7 +722,10 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 render={(value: any) => {
                   if (value && !(value.split(".").pop() === "html")) {
                     return (
-                      <ImageField style={{ maxWidth: "50px" }} value={value} />
+                      <ImageField
+                        style={{ maxWidth: "50px" }}
+                        value={socialMedias.includes(value) ? logoPlaceholder : value}
+                      />
                     );
                   } else {
                     return "-";
