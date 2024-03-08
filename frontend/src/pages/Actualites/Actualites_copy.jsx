@@ -49,6 +49,18 @@ function ActualitesCopy() {
   // const articleAddedDateRef = useRef();
 
   // Chargement de tous les données qui viennent de la ase de données MongoDb
+  const socialMedias = [
+    "http://localhost:4534/storage/logos/wwwlinkedincom.jpg",
+    "http://localhost:4534/storage/logos/linkedincom.jpg",
+    "http://localhost:4534/storage/logos/wwwtwittercom.jpg",
+    "http://localhost:4534/storage/logos/twittercom.jpg",
+    "http://localhost:4534/storage/logos/wwwfacebookcom.jpg",
+    "http://localhost:4534/storage/logos/facebookcom.jpg",
+    "http://localhost:4534/storage/logos/wwwinstagramcom.jpg",
+    "http://localhost:4534/storage/logos/instagramcom.jpg",
+  ];
+  const logoPlaceholder =
+    "http://localhost:4534/storage/logos/placeholder_org.jpeg";
   const {
     data: allNews = [],
     isLoading,
@@ -419,7 +431,11 @@ function ActualitesCopy() {
                   postType="Actualités"
                   key={news?.title}
                   title={news?.title}
-                  imgUrl={news?.airLogo}
+                  imgUrl={
+                    socialMedias.includes(news?.airLogo)
+                      ? logoPlaceholder
+                      : news?.airLogo
+                  }
                   isLoaded={isLoaded}
                   link={news?.airLink}
                   // countries={news?.countries?.length > 0 ? news?.countries : []}

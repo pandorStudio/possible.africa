@@ -23,6 +23,18 @@ function Organisations() {
     // { field: "Sector", value: "" },
     // { field: "Operating Countries", value: "" },
   ]);
+    const socialMedias = [
+      "http://localhost:4534/storage/logos/wwwlinkedincom.jpg",
+      "http://localhost:4534/storage/logos/linkedincom.jpg",
+      "http://localhost:4534/storage/logos/wwwtwittercom.jpg",
+      "http://localhost:4534/storage/logos/twittercom.jpg",
+      "http://localhost:4534/storage/logos/wwwfacebookcom.jpg",
+      "http://localhost:4534/storage/logos/facebookcom.jpg",
+      "http://localhost:4534/storage/logos/wwwinstagramcom.jpg",
+      "http://localhost:4534/storage/logos/instagramcom.jpg",
+    ];
+    const logoPlaceholder =
+      "http://localhost:4534/storage/logos/placeholder_org.jpeg";
   const {
     data: organisations = [],
     isLoading,
@@ -114,7 +126,11 @@ function Organisations() {
               key={date}
               title={organisation?.name}
               description={organisation?.airDescription}
-              imgUrl={organisation?.airLogo}
+              imgUrl={
+                socialMedias.includes(organisation?.airLogo)
+                  ? logoPlaceholder
+                  : organisation?.airLogo
+              }
               // isLoaded={isLoaded}
               // link={"/organisations/" + organisation?.id}
               link={organisation?.airWebsite}

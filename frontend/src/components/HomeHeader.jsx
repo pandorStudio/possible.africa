@@ -65,7 +65,7 @@ export const HomeHeader = () => {
                     icons: <OrganisationsIcon />,
                   },
                   {
-                    name: "AfricaLeads",
+                    name: "Africaleads",
                     link: "https://www.africaleads.ai",
                     icons: <img src={LogoAfricaLeads} height={20} width={20} />,
                     target: "_blank",
@@ -121,9 +121,10 @@ export const HomeHeader = () => {
                     icons: <OrganisationsIcon />,
                   },
                   {
-                    name: "Africa Leads",
+                    name: "Africaleads",
                     link: "https://www.africaleads.ai",
-                    icons: <OrganisationsIcon />,
+                    icons: <img src={LogoAfricaLeads} height={20} width={20} />,
+                    target: "_blank",
                   },
                 ].map((item) => (
                   <CustomLink
