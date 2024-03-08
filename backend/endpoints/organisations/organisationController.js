@@ -51,6 +51,25 @@ async function downloadImage(url, path) {
   }
 }
 
+async function downloadMedia(mediaUrl) {
+  try {
+    const options = {
+      url: mediaUrl,
+      dest: "../../endpoints/organisations/img",
+      extractFilename: true,
+    };
+    const res = await download.image(options);
+    const imageData = fs.readFileSync(res.filename).toString("base64");
+    const dataUrl = `data:${`image/${res.filename
+      .split(".")
+      .pop()}`};base64,${imageData}`;
+    fs.unlinkSync(res.filename);
+    return dataUrl;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
   var base = new Airtable({
     apiKey: apiKey,
@@ -108,18 +127,47 @@ exports.getOrganisationsFromAirtable = async (req, res) => {
       // console.log(ExistingOrg.length);
       if (ExistingOrg.length === 0) {
         try {
-          const org = await Organisation.create({
-            name: organisation.name,
-            airLogo: organisation.logo,
-            airDescription: organisation.description,
-            airRegion: organisation.region,
-            airHeadquarter: organisation.headquarter,
-            airOperatingCountries: organisation.operationnal_countries,
-            airSector: organisation.sector,
-            airWebsite: organisation.website,
-            airRelatedArticles: organisation.related_articles,
-            airSource: organisation.source,
-          });
+          let domain_racine = extraireDomaine(organisation.website);
+          // console.log(domain_racine);
+          if (domain_racine) {
+            domain_racine = domain_racine.slice(8);
+            const url = `https://logo.clearbit.com/${domain_racine}`;
+            const path = `${Path.resolve(
+              __dirname,
+              "../../public/storage/logos"
+            )}/${domain_racine.split(".").join("")}.jpg`;
+            await downloadImage(url, path);
+            let urla =  `https://api.possible.africa/storage/logos/${domain_racine
+                .split(".")
+                .join("")}.jpg`;
+            const org = await Organisation.create({
+              name: organisation.name,
+              airLogo: urla,
+              airDescription: organisation.description,
+              airRegion: organisation.region,
+              airHeadquarter: organisation.headquarter,
+              airOperatingCountries: organisation.operationnal_countries,
+              airSector: organisation.sector,
+              airWebsite: organisation.website,
+              airRelatedArticles: organisation.related_articles,
+              airSource: organisation.source,
+            });
+          } else {
+            const org = await Organisation.create({
+              name: organisation.name,
+              airLogo:
+                "https://api.possible.africa/storage/logos/placeholder_org.jpeg",
+              airDescription: organisation.description,
+              airRegion: organisation.region,
+              airHeadquarter: organisation.headquarter,
+              airOperatingCountries: organisation.operationnal_countries,
+              airSector: organisation.sector,
+              airWebsite: organisation.website,
+              airRelatedArticles: organisation.related_articles,
+              airSource: organisation.source,
+            });
+          }
+          
           // console.log(org);
         } catch (e) {
           console.log(e);
@@ -135,25 +183,6 @@ exports.getOrganisationsFromAirtable = async (req, res) => {
   }
 };
 
-async function downloadMedia(mediaUrl) {
-  try {
-    const options = {
-      url: mediaUrl,
-      dest: "../../endpoints/organisations/img",
-      extractFilename: true,
-    };
-    const res = await download.image(options);
-    const imageData = fs.readFileSync(res.filename).toString("base64");
-    const dataUrl = `data:${`image/${res.filename
-      .split(".")
-      .pop()}`};base64,${imageData}`;
-    fs.unlinkSync(res.filename);
-    return dataUrl;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
 
 exports.getMetaData = async (req, res) => {
   try {
@@ -198,50 +227,6 @@ exports.getAllOrganisations = async (req, res) => {
     if (_end && (_start || _start == 0)) {
       limit = _end - _start;
     }
-    const organisations = await Organisation.find(queryObj)
-      .limit(limit * 1)
-      .skip(_start ? _start : 0)
-      .sort({ createdAt: -1, ...sort })
-      .select(fields);
-    // console.log(organisations);
-    organisations.map(async (organisation) => {
-      // console.log(organisation.airWebsite);
-      if (
-        organisation.airWebsite !== null &&
-        organisation.airWebsite !== undefined
-      ) {
-        let domain_racine = extraireDomaine(organisation.airWebsite);
-        // console.log(domain_racine);
-        if (domain_racine) {
-          domain_racine = domain_racine.slice(8);
-          const url = `https://logo.clearbit.com/${domain_racine}`;
-          const path = `${Path.resolve(
-            __dirname,
-            "../../public/storage/logos"
-          )}/${domain_racine.split(".").join("")}.jpg`;
-          await downloadImage(url, path);
-          let urla = "";
-          if (ENV === "dev") {
-            urla = `http://localhost:${PORT}/storage/logos/${domain_racine
-              .split(".")
-              .join("")}.jpg`;
-          } else {
-            urla = `https://api.possible.africa/storage/logos/${domain_racine
-              .split(".")
-              .join("")}.jpg`;
-          }
-          await Organisation.findByIdAndUpdate(organisation._id, {
-            airLogo: urla,
-          });
-        } else {
-          await Organisation.findByIdAndUpdate(organisation._id, {
-            airLogo: organisation.logo,
-          });
-        }
-      }
-      // return orgaFin;
-    });
-
     const orgs = await Organisation.find(queryObj)
       .limit(limit * 1)
       .skip(_start ? _start : 0)

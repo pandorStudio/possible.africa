@@ -192,16 +192,55 @@ exports.getAllPostFromAirtable = async (req, res) => {
       // console.log(existingArticle);
       if (existingArticle.length === 0) {
         try {
-          await Post.create({
-            title: article.title,
-            airTags: article.tags,
-            airMedia: article.media,
-            airLink: article.link,
-            airLanguage: article.language,
-            airLogo: article.logo,
-            airDateAdded: article.publication_date,
-            airTrans: "fr",
-          });
+          if (article.link) {
+            let domain_racine = extraireDomaine(article.link);
+            if (domain_racine) {
+              domain_racine = domain_racine.slice(8);
+              // console.log(domain_racine);
+              const img_name = domain_racine.split(".").join("") + ".jpg";
+              const path = `${Path.resolve(
+                __dirname,
+                "../../public/storage/logos"
+              )}/${img_name}`;
+              await downloadImage(article.logo, path);
+              let urla = `https://api.possible.africa/storage/logos/${img_name}`;
+
+              await Post.create({
+                title: article.title,
+                airTags: article.tags,
+                airMedia: article.media,
+                airLink: article.link,
+                airLanguage: article.language,
+                airLogo: urla,
+                airDateAdded: article.publication_date,
+                airTrans: "fr",
+              });
+            } else {
+              await Post.create({
+                title: article.title,
+                airTags: article.tags,
+                airMedia: article.media,
+                airLink: article.link,
+                airLanguage: article.language,
+                airLogo:
+                  "https://api.possible.africa/storage/logos/placeholder_org.jpeg",
+                airDateAdded: article.publication_date,
+                airTrans: "fr",
+              });
+            }
+          } else {
+            await Post.create({
+              title: article.title,
+              airTags: article.tags,
+              airMedia: article.media,
+              airLink: article.link,
+              airLanguage: article.language,
+              airLogo:
+                "https://api.possible.africa/storage/logos/placeholder_org.jpeg",
+              airDateAdded: article.publication_date,
+              airTrans: "fr",
+            });
+          }
         } catch (e) {
           console.log(e);
         }
@@ -222,16 +261,57 @@ exports.getAllPostFromAirtable = async (req, res) => {
       // console.log(existingArticle);
       if (existingArticle.length === 0) {
         try {
-          await Post.create({
-            title: article.title,
-            airTags: article.tags,
-            airMedia: article.media,
-            airLink: article.link,
-            airLanguage: article.language,
-            airLogo: article.logo,
-            airDateAdded: article.publication_date,
-            airTrans: "eng",
-          });
+          if (article.link) {
+            let domain_racine = extraireDomaine(article.link);
+            if (domain_racine) {
+              domain_racine = domain_racine.slice(8);
+              // console.log(domain_racine);
+              const img_name = domain_racine.split(".").join("") + ".jpg";
+              const path = `${Path.resolve(
+                __dirname,
+                "../../public/storage/logos"
+              )}/${img_name}`;
+              await downloadImage(article.logo, path);
+              let urla =
+                `https://api.possible.africa/storage/logos/${img_name}`;
+
+              await Post.create({
+                title: article.title,
+                airTags: article.tags,
+                airMedia: article.media,
+                airLink: article.link,
+                airLanguage: article.language,
+                airLogo: urla,
+                airDateAdded: article.publication_date,
+                airTrans: "eng",
+              });
+            } else {
+              await Post.create({
+                title: article.title,
+                airTags: article.tags,
+                airMedia: article.media,
+                airLink: article.link,
+                airLanguage: article.language,
+                airLogo:
+                  "https://api.possible.africa/storage/logos/placeholder_org.jpeg",
+                airDateAdded: article.publication_date,
+                airTrans: "eng",
+              });
+            }
+          } else {
+            await Post.create({
+              title: article.title,
+              airTags: article.tags,
+              airMedia: article.media,
+              airLink: article.link,
+              airLanguage: article.language,
+              airLogo:
+                "https://api.possible.africa/storage/logos/placeholder_org.jpeg",
+              airDateAdded: article.publication_date,
+              airTrans: "eng",
+            });
+          }
+          
         } catch (e) {
           console.log(e);
         }
@@ -289,72 +369,6 @@ exports.getAllPosts = async (req, res) => {
     if (_end && (_start || _start == 0)) {
       limit = _end - _start;
     }
-    const frPosts = await Post.find({ ...queryObj, airTrans: "fr" })
-      .limit(limit * 1)
-      .skip(_start ? _start : 0)
-      .sort({ createdAt: -1, ...sort })
-      .select(fields);
-
-    frPosts.map(async (post) => {
-      if (
-        (post.airLogo !== null && post.airLogo !== undefined) ||
-        post.airLogo.substring(post.airLogo.length - 3, post.airLogo.length) !==
-          "jpg"
-      ) {
-        if (post.airLink) {
-          let domain_racine = extraireDomaine(post.airLink);
-          if (domain_racine) {
-            domain_racine = domain_racine.slice(8);
-            const img_name = domain_racine.split(".").join("") + ".jpg";
-            const path = `${Path.resolve(
-              __dirname,
-              "../../public/storage/logos"
-            )}/${img_name}`;
-            // console.log(post.airLogo);
-            await downloadImage(post.airLogo, path);
-            let urla = "https://api.possible.africa/storage/logos/${img_name}";
-
-            await Post.findByIdAndUpdate(post._id, {
-              airLogo: urla,
-            });
-          }
-        }
-      }
-    });
-
-    const engPosts = await Post.find({ ...queryObj, airTrans: "eng" })
-      .limit(limit * 1)
-      .skip(_start ? _start : 0)
-      .sort({ createdAt: -1, ...sort })
-      .select(fields);
-
-    engPosts.map(async (post) => {
-      if (
-        (post.airLogo !== null && post.airLogo !== undefined) ||
-        post.airLogo.substring(post.airLogo.length - 3, post.airLogo.length) !==
-          "jpg"
-      ) {
-        if (post.airLink) {
-          let domain_racine = extraireDomaine(post.airLink);
-          if (domain_racine) {
-            domain_racine = domain_racine.slice(8);
-            // console.log(domain_racine);
-            const img_name = domain_racine.split(".").join("") + ".jpg";
-            const path = `${Path.resolve(
-              __dirname,
-              "../../public/storage/logos"
-            )}/${img_name}`;
-            await downloadImage(post.airLogo, path);
-            let urla =
-              "`https://api.possible.africa/storage/logos/${img_name}`";
-
-            await Post.findByIdAndUpdate(post._id, {
-              airLogo: urla,
-            });
-          }
-        }
-      }
-    });
 
     const postsFrFin = await Post.find({ ...queryObj, airTrans: "fr" })
       .limit(limit * 1)
@@ -368,11 +382,7 @@ exports.getAllPosts = async (req, res) => {
       .select(fields);
 
     res.status(200).json([...postsFrFin, ...postsEngFin]);
-    // console.log({
-    //   fr: postsFrFin,
-    //   eng: postsEngFin,
-    // });
-  } catch (error) {
+    } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
