@@ -374,14 +374,18 @@ export const RegisterPage: React.FC<RegisterProps> = ({
             marginBottom: 0,
           }}
         >
-          <button
+          <Button
+            style={{
+              backgroundColor: "#6cd9cb",
+              color: "white",
+            }}
             className="btn-primary w-full"
             htmlType="submit"
             loading={isLoading}
             block
           >
             {translate("pages.register.buttons.submit", "Sign up")}
-          </button>
+          </Button>
         </Form.Item>
       </Form>
     </Card>
