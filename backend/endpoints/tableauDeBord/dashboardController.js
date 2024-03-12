@@ -5,7 +5,6 @@ const Job = require("../jobs/jobModel.js");
 const Event = require("../events/eventModel.js");
 const Opportunity = require("../opportunities/opportunityModel.js");
 const User = require("../users/userModel.js");
-const bcrypt = require("bcryptjs");
 const moment = require("moment");
 
 const startOfYear = moment().startOf("year").toDate();
