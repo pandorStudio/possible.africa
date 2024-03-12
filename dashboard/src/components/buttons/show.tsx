@@ -88,7 +88,7 @@ export const ShowButton: React.FC<ShowButtonProps> = ({
         }
       }}
     >
-      <button className="btn-primary"
+      <Button
         icon={<EyeOutlined />}
         disabled={data?.can === false}
         title={createButtonDisabledTitle()}
@@ -96,7 +96,7 @@ export const ShowButton: React.FC<ShowButtonProps> = ({
         {...rest}
       >
         {!hideText && (children ?? translate("buttons.show", "Show"))}
-      </button>
+      </Button>
     </ActiveLink>
   );
 };

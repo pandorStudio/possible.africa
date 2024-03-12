@@ -284,7 +284,6 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
               <AdminOrContributor>
                 <button
                   className="btn-primary"
-                  type="primary"
                   onClick={() => {
                     // log datas
                     if (tableProps?.dataSource) {

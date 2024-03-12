@@ -196,7 +196,6 @@ export const UserRoleList: React.FC<IResourceComponentsProps> = () => {
               />
               <button
                 className="btn-primary"
-                type="primary"
                 onClick={() => {
                   // log datas
                   if (tableProps?.dataSource) {

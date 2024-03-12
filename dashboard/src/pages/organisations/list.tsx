@@ -614,11 +614,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 <RangePicker placeholder={["Date de début", "Date de fin"]} />
               </Form.Item> */}
               <Form.Item>
-                <button
-                  className="btn-primary"
-                  htmlType="submit"
-                  type="primary"
-                >
+                <button className="btn-primary" htmlType="submit">
                   Filtrer
                 </button>
               </Form.Item>
@@ -648,7 +644,6 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                     />
                     <button
                       className="btn-primary"
-                      type="primary"
                       onClick={() => {
                         // log datas
                         if (tableProps?.dataSource) {
@@ -1087,7 +1082,6 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                   });
                   refetch();
                 }}
-                type="primary"
                 style={{
                   textTransform: "capitalize",
                 }}

@@ -264,7 +264,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       </Modal>
       <AntdLayout.Header style={headerStyles}>
         <Space>
-          <button className="btn-primary" type="primary" onClick={showModal}>
+          <button className="btn-primary" onClick={showModal}>
             Reporter Un Bug
           </button>
           <Dropdown
@@ -273,7 +273,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
               selectedKeys: currentLocale ? [currentLocale] : [],
             }}
           >
-            <button className="btn-primary" type="text">
+            <button className="btn-primary">
               <Space>
                 <Avatar size={16} src={`/images/flags/${currentLocale}.svg`} />
                 {currentLocale === "fr"

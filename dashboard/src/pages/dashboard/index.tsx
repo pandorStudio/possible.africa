@@ -230,7 +230,7 @@ export default function CustomDashboard() {
                             console.log(err);
                           });
                       }}
-                      type="primary"
+                      
                     >
                       Synchroniser avec Airtable{" "}
                       {synchWithAirtable ? (
@@ -360,7 +360,7 @@ export default function CustomDashboard() {
                             console.log(err);
                           });
                       }}
-                      type="primary"
+                      
                     >
                       Synchroniser avec Airtable{" "}
                       {synchWithArticleAirtable ? (

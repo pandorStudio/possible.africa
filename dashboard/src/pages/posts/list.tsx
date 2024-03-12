@@ -723,7 +723,6 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 />
                 <button
                   className="btn-primary"
-                  type="primary"
                   onClick={() => {
                     // log datas
                     if (tableProps?.dataSource) {
@@ -1021,7 +1020,6 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
               });
               refetch();
             }}
-            type="primary"
             style={{
               textTransform: "capitalize",
             }}

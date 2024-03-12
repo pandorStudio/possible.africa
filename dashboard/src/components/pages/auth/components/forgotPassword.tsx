@@ -178,7 +178,6 @@ export const ForgotPasswordPage: React.FC<ResetPassworProps> = ({
         >
           <button
             className="btn-primary"
-            type="primary"
             size="large"
             htmlType="submit"
             loading={isLoading}

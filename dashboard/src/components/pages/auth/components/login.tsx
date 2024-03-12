@@ -285,7 +285,6 @@ export const LoginPage: React.FC<LoginProps> = ({
         <Form.Item>
           <button
             className="btn-primary w-full"
-            type="primary"
             size="large"
             htmlType="submit"
             loading={isLoading}
