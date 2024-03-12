@@ -302,7 +302,7 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
       collapsedWidth={80}
       breakpoint="lg"
       trigger={
-        <button
+        <Button
           className="btn-primary"
           type="text"
           style={{
@@ -310,6 +310,7 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
             height: "100%",
             width: "100%",
             backgroundColor: token.colorBgElevated,
+            color: "white",
           }}
         >
           {drawerSiderVisible ? (
@@ -325,7 +326,7 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
               }}
             />
           )}
-        </button>
+        </Button>
       }
     >
       <div

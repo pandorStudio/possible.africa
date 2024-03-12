@@ -116,7 +116,7 @@ export const RegisterPage: React.FC<RegisterProps> = ({
         <>
           {providers.map((provider) => {
             return (
-              <button
+              <Button
                 className="btn-primary"
                 key={provider.name}
                 type="default"
@@ -128,6 +128,8 @@ export const RegisterPage: React.FC<RegisterProps> = ({
                   alignItems: "center",
                   width: "100%",
                   marginBottom: "8px",
+                  backgroundColor: "#6cd9cb",
+                  color: "white",
                 }}
                 onClick={() =>
                   register({
@@ -136,7 +138,7 @@ export const RegisterPage: React.FC<RegisterProps> = ({
                 }
               >
                 {provider.label}
-              </button>
+              </Button>
             );
           })}
           <Divider>

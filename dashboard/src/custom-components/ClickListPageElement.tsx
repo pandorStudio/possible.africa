@@ -88,9 +88,17 @@ export const ClickListPageElement: React.FC<ShowButtonProps> = ({
         }
       }}
     >
-      <button className="btn-primary" {...rest}>
+      <Button
+        className="btn-primary"
+        {...rest}
+        style={{
+          backgroundColor: "#6cd9cb",
+          color: "white",
+          ...rest.style
+        }}
+      >
         {children}
-      </button>
+      </Button>
     </ActiveLink>
   );
 };

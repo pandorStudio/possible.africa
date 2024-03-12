@@ -150,14 +150,18 @@ export const UpdatePasswordPage: React.FC<UpdatePasswordProps> = ({
             marginBottom: 0,
           }}
         >
-          <button
+          <Button
+            style={{
+              backgroundColor: "#6cd9cb",
+              color: "white",
+            }}
             className="btn-primary w-full"
             htmlType="submit"
             loading={isLoading}
             block
           >
             {translate("pages.updatePassword.buttons.submit", "Update")}
-          </button>
+          </Button>
         </Form.Item>
       </Form>
     </Card>
