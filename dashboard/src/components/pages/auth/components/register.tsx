@@ -374,7 +374,6 @@ export const RegisterPage: React.FC<RegisterProps> = ({
         >
           <button
             className="btn-primary w-full"
-            size="large"
             htmlType="submit"
             loading={isLoading}
             block

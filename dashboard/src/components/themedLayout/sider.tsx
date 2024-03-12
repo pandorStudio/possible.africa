@@ -271,13 +271,13 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
             </Layout.Sider>
           </Layout>
         </Drawer>
-        <button
-          className="btn-primary"
+        <Button
+          // className="btn-primary"
           style={drawerButtonStyles}
           size="large"
           onClick={() => setSiderVisible?.(true)}
           icon={<BarsOutlined />}
-        ></button>
+        ></Button>
       </>
     );
   };

@@ -103,7 +103,7 @@ export const LoginPage: React.FC<LoginProps> = ({
         <>
           {providers.map((provider) => {
             return (
-              <button
+              <Button
                 className="btn-primary"
                 key={provider.name}
                 block
@@ -114,6 +114,8 @@ export const LoginPage: React.FC<LoginProps> = ({
                   alignItems: "center",
                   width: "100%",
                   marginBottom: "8px",
+                  backgroundColor: "#6cd9cb",
+                  color: "white",
                 }}
                 onClick={() =>
                   login({
@@ -122,7 +124,7 @@ export const LoginPage: React.FC<LoginProps> = ({
                 }
               >
                 {provider.label}
-              </button>
+              </Button>
             );
           })}
           <Divider>
@@ -283,15 +285,18 @@ export const LoginPage: React.FC<LoginProps> = ({
           )}
         </div>
         <Form.Item>
-          <button
+          <Button
             className="btn-primary w-full"
-            size="large"
+            style={{
+              backgroundColor: "#6cd9cb",
+              color: "white",
+            }}
             htmlType="submit"
             loading={isLoading}
             block
           >
             {translate("pages.login.signin", "Sign in")}
-          </button>
+          </Button>
         </Form.Item>
       </Form>
       <div style={{ marginTop: 8 }}>

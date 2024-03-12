@@ -614,9 +614,16 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 <RangePicker placeholder={["Date de début", "Date de fin"]} />
               </Form.Item> */}
               <Form.Item>
-                <button className="btn-primary" htmlType="submit">
+                <Button
+                  className="btn-primary"
+                  style={{
+                    backgroundColor: "#6cd9cb",
+                    color: "white",
+                  }}
+                  htmlType="submit"
+                >
                   Filtrer
-                </button>
+                </Button>
               </Form.Item>
             </Space>
           </Form>

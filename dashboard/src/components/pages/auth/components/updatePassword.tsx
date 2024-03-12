@@ -151,8 +151,7 @@ export const UpdatePasswordPage: React.FC<UpdatePasswordProps> = ({
           }}
         >
           <button
-            className="btn-primary"
-            size="large"
+            className="btn-primary w-full"
             htmlType="submit"
             loading={isLoading}
             block
