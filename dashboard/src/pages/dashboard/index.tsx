@@ -63,7 +63,16 @@ export default function CustomDashboard() {
       radialBar: {
         hollow: {
           margin: 15,
-          size: "80%",
+          size: "70%",
+        },
+        track: {
+          dropShadow: {
+            enabled: true,
+            top: 0,
+            left: 0,
+            blur: 2,
+            opacity: 0.1,
+          },
         },
         dataLabels: {
           showOn: "always",
@@ -107,7 +116,16 @@ export default function CustomDashboard() {
       radialBar: {
         hollow: {
           margin: 15,
-          size: "80%",
+          size: "70%",
+        },
+        track: {
+          dropShadow: {
+            enabled: true,
+            top: 0,
+            left: 0,
+            blur: 2,
+            opacity: .1,
+          },
         },
         dataLabels: {
           showOn: "always",
@@ -404,11 +422,11 @@ export default function CustomDashboard() {
       </Row> */}
       {/* Add more cards and statistics as needed */}
       <div className="grid grid-cols-12 2xl:grid-cols-12 gap-x-5">
-        <div className="col-span-12 md:order-3 lg:col-span-6 2xl:col-span-3 card">
+        <div className="col-span-12 md:order-3 lg:col-span-6 2xl:col-span-3 rounded-lg shadow-lg p-3">
           <div className="card-body">
             <div className="grid grid-cols-12">
               <div className="col-span-7 md:col-span-7">
-                <p className="text-slate-500 dark:text-slate-200">
+                <p className="text-slate-900 font-semibold">
                   Total Organisations
                 </p>
                 <h5 className="mt-3 mb-4">
@@ -463,22 +481,22 @@ export default function CustomDashboard() {
                   ) : null}
                 </button>
               </div>
-              <div className="col-span-5 md:col-span-5">
+              <div className="col-span-5 md:col-span-5 text-slate-900 font-semibold">
                 <RadialBarChart className="" options={organisationOptions} />
               </div>
             </div>
             <div className="flex items-center gap-3 mt-3">
-              <p className="text-slate-500 dark:text-slate-200 grow">
-                <span className="font-semibold text-xl text-[#6cd9cb]">
+              <p className="text-slate-900 font-semibold grow">
+                <span className="font-semibold text-xl text-[#6cd9cb] mr-2">
                   {dashboardData?.organisations[organisationPeriode].length ||
                     0}
-                </span>{" "}
+                </span>
                 Nouvelles Organisations
               </p>
               <p className="text-slate-500 dark:text-slate-200">
                 <select
                   name="periode"
-                  className="bg-transparent border border-[#6cd9cb] px-2 py-1 rounded-md"
+                  className="bg-transparent border border-[#6cd9cb] px-2 py-1 rounded-md text-slate-900 font-semibold"
                   id=""
                   value={organisationPeriode}
                   onChange={(e) => setOrganisationsPeriode(e.target.value)}
@@ -492,13 +510,11 @@ export default function CustomDashboard() {
             </div>
           </div>
         </div>
-        <div className="col-span-12 md:order-3 lg:col-span-6 2xl:col-span-3 card">
+        <div className="col-span-12 md:order-3 lg:col-span-6 2xl:col-span-3 rounded-lg shadow-lg p-3">
           <div className="card-body">
             <div className="grid grid-cols-12">
               <div className="col-span-7 md:col-span-7">
-                <p className="text-slate-500 dark:text-slate-200">
-                  Total Articles
-                </p>
+                <p className="text-slate-900 font-semibold">Total Articles</p>
                 <h5 className="mt-3 mb-4">
                   <span
                     className="counter-value text-[#6cd9cb] text-5xl"
@@ -552,18 +568,18 @@ export default function CustomDashboard() {
                   ) : null}
                 </button>
               </div>
-              <div className="col-span-5 md:col-span-5">
+              <div className="col-span-5 md:col-span-5 text-slate-900 font-semibold">
                 <RadialBarChart className="" options={postsOptions} />
               </div>
             </div>
-            <div className="flex items-center gap-3 mt-3">
-              <p className="text-slate-500 dark:text-slate-200 grow">
+            <div className="flex items-center gap-3 mt-3 text-slate-900 font-semibold">
+              <p className="grow">
                 <span className="font-semibold text-xl text-[#6cd9cb]">
                   {dashboardData?.posts[postsPeriode].length || 0}
                 </span>{" "}
                 Nouveaux Articles
               </p>
-              <p className="text-slate-500 dark:text-slate-200">
+              <p className="">
                 <select
                   name="periode"
                   className="bg-transparent border border-[#6cd9cb] px-2 py-1 rounded-md"
