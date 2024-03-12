@@ -200,19 +200,21 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
             <AdminOrContributor>
               <Space>
                 {checkedArray.length ? (
-                  <Button
+                  <button
+                    className="btn-primary"
                     onClick={confirmDelete}
                     style={{ backgroundColor: "#ff4d4f", color: "white" }}
                   >
                     {`${checkedArray.length}`} Effacer Selection
-                  </Button>
+                  </button>
                 ) : null}
                 <Input
                   type="file"
                   ref={fileImportInput}
                   onChange={handleImport}
                 />
-                <Button
+                <button
+                  className="btn-primary"
                   type="primary"
                   onClick={() => {
                     // log datas
@@ -250,8 +252,13 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
                   }}
                 >
                   Exporter les données
-                </Button>
-                <CreateButton />
+                </button>
+                <CreateButton
+                  className="btn-primary"
+                  style={{
+                    backgroundColor: "#6cd9cb",
+                  }}
+                />
               </Space>
             </AdminOrContributor>
           ),
@@ -399,12 +406,13 @@ export const JobList: React.FC<IResourceComponentsProps> = () => {
         <AdminOrContributor>
           <Space>
             {checkedArray.length ? (
-              <Button
+              <button
+                className="btn-primary"
                 onClick={confirmDelete}
                 style={{ backgroundColor: "#ff4d4f", color: "white" }}
               >
                 {`${checkedArray.length}`} Effacer Selection
-              </Button>
+              </button>
             ) : null}
           </Space>
         </AdminOrContributor>

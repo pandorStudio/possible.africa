@@ -13,7 +13,7 @@ import { Button } from "antd";
 import type { ShowButtonProps } from "@refinedev/antd";
 
 /**
- * `<ShowButton>` uses Ant Design's {@link https://ant.design/components/button/ `<Button>`} component.
+ * `<ShowButton>` uses Ant Design's {@link https://ant.design/components/button/ `<button className="btn-primary">`} component.
  * It uses the {@link https://refine.dev/docs/api-reference/core/hooks/navigation/useNavigation#show `show`} method from {@link https://refine.dev/docs/api-reference/core/hooks/navigation/useNavigation `useNavigation`} under the hood.
  * It can be useful when redirecting the app to the show page with the record id route of resource.
  *
@@ -88,7 +88,9 @@ export const ClickListPageElement: React.FC<ShowButtonProps> = ({
         }
       }}
     >
-        <Button {...rest}>{children}</Button>
+      <button className="btn-primary" {...rest}>
+        {children}
+      </button>
     </ActiveLink>
   );
 };

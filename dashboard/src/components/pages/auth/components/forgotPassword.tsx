@@ -176,7 +176,8 @@ export const ForgotPasswordPage: React.FC<ResetPassworProps> = ({
             marginBottom: 0,
           }}
         >
-          <Button
+          <button
+            className="btn-primary"
             type="primary"
             size="large"
             htmlType="submit"
@@ -187,7 +188,7 @@ export const ForgotPasswordPage: React.FC<ResetPassworProps> = ({
               "pages.forgotPassword.buttons.submit",
               "Send reset instructions"
             )}
-          </Button>
+          </button>
         </Form.Item>
       </Form>
     </Card>

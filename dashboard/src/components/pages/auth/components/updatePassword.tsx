@@ -150,7 +150,8 @@ export const UpdatePasswordPage: React.FC<UpdatePasswordProps> = ({
             marginBottom: 0,
           }}
         >
-          <Button
+          <button
+            className="btn-primary"
             type="primary"
             size="large"
             htmlType="submit"
@@ -158,7 +159,7 @@ export const UpdatePasswordPage: React.FC<UpdatePasswordProps> = ({
             block
           >
             {translate("pages.updatePassword.buttons.submit", "Update")}
-          </Button>
+          </button>
         </Form.Item>
       </Form>
     </Card>

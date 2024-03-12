@@ -708,19 +708,21 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             <AdminOrContributor>
               <Space>
                 {checkedArray.length ? (
-                  <Button
+                  <button
+                    className="btn-primary"
                     onClick={confirmDelete}
                     style={{ backgroundColor: "#ff4d4f", color: "white" }}
                   >
                     {`${checkedArray.length}`} Effacer Selection
-                  </Button>
+                  </button>
                 ) : null}
                 <Input
                   type="file"
                   ref={fileImportInput}
                   onChange={handleImport}
                 />
-                <Button
+                <button
+                  className="btn-primary"
                   type="primary"
                   onClick={() => {
                     // log datas
@@ -755,8 +757,13 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                   }}
                 >
                   Exporter les données
-                </Button>
-                <CreateButton />
+                </button>
+                <CreateButton
+                  className="btn-primary"
+                  style={{
+                    backgroundColor: "#6cd9cb",
+                  }}
+                />
               </Space>
             </AdminOrContributor>
           ),
@@ -813,14 +820,14 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                     StatusInChange.state == true ? (
                       <Spin />
                     ) : (
-                      <Button
+                      <button className="btn-primary"
                         style={statusVariables[`${record.status}`].styles}
                         size="small"
                         shape="circle"
                         onClick={() => {
                           confirmStatusChange(record.id, record.status);
                         }}
-                      ></Button>
+                      ></button>
                     )}
                   </Tooltip>
                 </Space>
@@ -985,14 +992,14 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
                 {/*  color={statusVariables[`${record.status}`].color}*/}
                 {/*  key={record.id}*/}
                 {/*>*/}
-                {/*  <Button*/}
+                {/*  <button className="btn-primary"*/}
                 {/*    style={statusVariables[`${record.status}`].styles}*/}
                 {/*    size="small"*/}
                 {/*    shape="circle"*/}
                 {/*    onClick={() => {*/}
                 {/*      confirmStatusChange(record.id, record.status);*/}
                 {/*    }}*/}
-                {/*  ></Button>*/}
+                {/*  ></button>*/}
                 {/*</Tooltip>*/}
               </Space>
             )}
@@ -1006,7 +1013,8 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             marginTop: "1rem",
           }}
         >
-          <Button
+          <button
+            className="btn-primary"
             onClick={() => {
               setPageSize((s) => {
                 return s + 10;
@@ -1019,18 +1027,19 @@ export const PostList: React.FC<IResourceComponentsProps> = () => {
             }}
           >
             {`${pageSize * 2} élements affichés`} Charger plus
-          </Button>
+          </button>
         </Space>
 
         <AdminOrContributor>
           <Space>
             {checkedArray.length ? (
-              <Button
+              <button
+                className="btn-primary"
                 onClick={confirmDelete}
                 style={{ backgroundColor: "#ff4d4f", color: "white" }}
               >
                 {`${checkedArray.length}`} Effacer Selection
-              </Button>
+              </button>
             ) : null}
           </Space>
         </AdminOrContributor>

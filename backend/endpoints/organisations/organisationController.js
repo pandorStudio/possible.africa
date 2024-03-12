@@ -11,6 +11,7 @@ const stream = require("stream");
 const { promisify } = require("util");
 const pipeline = promisify(stream.pipeline);
 require("dotenv").config();
+const cron = require("node-cron");
 
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
 const ORGANISATIONS_BASE_ID = process.env.ORGANISATIONS_BASE_ID;
@@ -88,19 +89,19 @@ const fetchAllRecords = async (apiKey, baseId, tableName, limit, eq) => {
       })
       .all();
     records.forEach((record) => {
-        allRecords.push({
-          _id: record.get("Name"),
-          name: record.get("Name"),
-          description: record.get("Description"),
-          region: record.get("Region"),
-          headquarter: record.get("Headquarter"),
-          operationnal_countries: record.get("Operating Countries"),
-          sector: record.get("Sector"),
-          related_articles: record.get("Articles Related"),
-          website: record.get("Website"),
-          publication_date: record.get("Date Added"),
-          source: record.get("Source"),
-        });
+      allRecords.push({
+        _id: record.get("Name"),
+        name: record.get("Name"),
+        description: record.get("Description"),
+        region: record.get("Region"),
+        headquarter: record.get("Headquarter"),
+        operationnal_countries: record.get("Operating Countries"),
+        sector: record.get("Sector"),
+        related_articles: record.get("Articles Related"),
+        website: record.get("Website"),
+        publication_date: record.get("Date Added"),
+        source: record.get("Source"),
+      });
     });
 
     return allRecords;
@@ -137,9 +138,9 @@ exports.getOrganisationsFromAirtable = async (req, res) => {
               "../../public/storage/logos"
             )}/${domain_racine.split(".").join("")}.jpg`;
             await downloadImage(url, path);
-            let urla =  `https://api.possible.africa/storage/logos/${domain_racine
-                .split(".")
-                .join("")}.jpg`;
+            let urla = `https://api.possible.africa/storage/logos/${domain_racine
+              .split(".")
+              .join("")}.jpg`;
             const org = await Organisation.create({
               name: organisation.name,
               airLogo: urla,
@@ -167,7 +168,7 @@ exports.getOrganisationsFromAirtable = async (req, res) => {
               airSource: organisation.source,
             });
           }
-          
+
           // console.log(org);
         } catch (e) {
           console.log(e);
@@ -182,7 +183,6 @@ exports.getOrganisationsFromAirtable = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
-
 
 exports.getMetaData = async (req, res) => {
   try {
@@ -311,3 +311,7 @@ exports.deleteOrganisation = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+cron.schedule("*/30 * * * *", () => {
+  getOrganisationsFromAirtable();
+});

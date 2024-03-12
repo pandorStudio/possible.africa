@@ -168,11 +168,11 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                     {
                       name: el[9],
                     },
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
+                    {
+                      headers: {
+                        "Access-Control-Allow-Origin": "*",
+                      },
+                    }
                   );
                   eventType = result?.data?.id;
                 } else {
@@ -232,11 +232,11 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                       {
                         name: item,
                       },
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
+                      {
+                        headers: {
+                          "Access-Control-Allow-Origin": "*",
+                        },
+                      }
                     );
                     return result?.data?.id;
                   } else {
@@ -531,19 +531,21 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
             <AdminOrContributor>
               <Space>
                 {checkedArray.length ? (
-                  <Button
+                  <button
+                    className="btn-primary"
                     onClick={confirmDelete}
                     style={{ backgroundColor: "#ff4d4f", color: "white" }}
                   >
                     {`${checkedArray.length}`} Effacer Selection
-                  </Button>
+                  </button>
                 ) : null}
                 <Input
                   type="file"
                   ref={fileImportInput}
                   onChange={handleImport}
                 />
-                <Button
+                <button
+                  className="btn-primary"
                   type="primary"
                   onClick={() => {
                     // log datas
@@ -582,8 +584,13 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
                   }}
                 >
                   Exporter les données
-                </Button>
-                <CreateButton />
+                </button>
+                <CreateButton
+                  className="btn-primary"
+                  style={{
+                    backgroundColor: "#6cd9cb",
+                  }}
+                />
               </Space>
             </AdminOrContributor>
           ),
@@ -837,12 +844,13 @@ export const EventList: React.FC<IResourceComponentsProps> = () => {
         <AdminOrContributor>
           <Space>
             {checkedArray.length ? (
-              <Button
+              <button
+                className="btn-primary"
                 onClick={confirmDelete}
                 style={{ backgroundColor: "#ff4d4f", color: "white" }}
               >
                 {`${checkedArray.length}`} Effacer Selection
-              </Button>
+              </button>
             ) : null}
           </Space>
         </AdminOrContributor>

@@ -145,6 +145,14 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
   });
   const apiUrl = useApiUrl();
   const socialMedias = [
+    "https://api.possible.africa/storage/logos/wwwlinkedincom.jpg",
+    "https://api.possible.africa/storage/logos/linkedincom.jpg",
+    "https://api.possible.africa/storage/logos/wwwtwittercom.jpg",
+    "https://api.possible.africa/storage/logos/twittercom.jpg",
+    "https://api.possible.africa/storage/logos/wwwfacebookcom.jpg",
+    "https://api.possible.africa/storage/logos/facebookcom.jpg",
+    "https://api.possible.africa/storage/logos/wwwinstagramcom.jpg",
+    "https://api.possible.africa/storage/logos/instagramcom.jpg",
     "http://localhost:4534/storage/logos/wwwlinkedincom.jpg",
     "http://localhost:4534/storage/logos/linkedincom.jpg",
     "http://localhost:4534/storage/logos/wwwtwittercom.jpg",
@@ -155,7 +163,7 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
     "http://localhost:4534/storage/logos/instagramcom.jpg",
   ];
   const logoPlaceholder =
-    "http://localhost:4534/storage/logos/placeholder_org.jpeg";
+    "https://api.possible.africa/storage/logos/placeholder_org.jpeg";
   const [checkedArray, setCheckedArray] = useState([]);
   const [allCheckedOnPage, setAllCheckedOnPage] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -606,9 +614,13 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 <RangePicker placeholder={["Date de début", "Date de fin"]} />
               </Form.Item> */}
               <Form.Item>
-                <Button htmlType="submit" type="primary">
+                <button
+                  className="btn-primary"
+                  htmlType="submit"
+                  type="primary"
+                >
                   Filtrer
-                </Button>
+                </button>
               </Form.Item>
             </Space>
           </Form>
@@ -621,19 +633,21 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 <AdminOrContributor>
                   <Space>
                     {checkedArray.length ? (
-                      <Button
+                      <button
+                        className="btn-primary"
                         onClick={confirmDelete}
                         style={{ backgroundColor: "#ff4d4f", color: "white" }}
                       >
                         {`${checkedArray.length}`} Effacer Selection
-                      </Button>
+                      </button>
                     ) : null}
                     <Input
                       type="file"
                       ref={fileImportInput}
                       onChange={handleImport}
                     />
-                    <Button
+                    <button
+                      className="btn-primary"
                       type="primary"
                       onClick={() => {
                         // log datas
@@ -671,8 +685,13 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                       }}
                     >
                       Exporter les données
-                    </Button>
-                    <CreateButton />
+                    </button>
+                    <CreateButton
+                      className="btn-primary"
+                      style={{
+                        backgroundColor: "#6cd9cb",
+                      }}
+                    />
                   </Space>
                 </AdminOrContributor>
               ),
@@ -724,7 +743,9 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                     return (
                       <ImageField
                         style={{ maxWidth: "50px" }}
-                        value={socialMedias.includes(value) ? logoPlaceholder : value}
+                        value={
+                          socialMedias.includes(value) ? logoPlaceholder : value
+                        }
                       />
                     );
                   } else {
@@ -1058,7 +1079,8 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 marginTop: "1rem",
               }}
             >
-              <Button
+              <button
+                className="btn-primary"
                 onClick={() => {
                   setPageSize((s) => {
                     return s + 10;
@@ -1071,17 +1093,18 @@ export const OrganisationList: React.FC<IResourceComponentsProps> = () => {
                 }}
               >
                 {`${pageSize} élements affichés`} Charger plus
-              </Button>
+              </button>
             </Space>
             <AdminOrContributor>
               <Space>
                 {checkedArray.length ? (
-                  <Button
+                  <button
+                    className="btn-primary"
                     onClick={confirmDelete}
                     style={{ backgroundColor: "#ff4d4f", color: "white" }}
                   >
                     {`${checkedArray.length}`} Effacer Selection
-                  </Button>
+                  </button>
                 ) : null}
               </Space>
             </AdminOrContributor>

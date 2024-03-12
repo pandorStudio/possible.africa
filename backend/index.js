@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const connection = require("./db");
 const http = require("http");
 const multer = require("multer");
+// const cron = require("node-cron");
 // import dotenv
 require("dotenv").config();
 
@@ -116,6 +117,11 @@ app.get(API_URL_BASE, (req, res) => {
     message: "Bienvenue sur l'API de l'application Possible.Africa",
   });
 });
+
+// cron.schedule("* * * * *", () => {
+//   console.log("Exécution de la tâche toutes les minutes");
+//   // Placez ici le code de la tâche que vous souhaitez exécuter
+// });
 
 // const io = new Server(server, {
 //   cors: {

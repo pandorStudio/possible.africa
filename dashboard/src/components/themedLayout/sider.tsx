@@ -271,12 +271,13 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
             </Layout.Sider>
           </Layout>
         </Drawer>
-        <Button
+        <button
+          className="btn-primary"
           style={drawerButtonStyles}
           size="large"
           onClick={() => setSiderVisible?.(true)}
           icon={<BarsOutlined />}
-        ></Button>
+        ></button>
       </>
     );
   };
@@ -301,7 +302,8 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
       collapsedWidth={80}
       breakpoint="lg"
       trigger={
-        <Button
+        <button
+          className="btn-primary"
           type="text"
           style={{
             borderRadius: 0,
@@ -323,7 +325,7 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
               }}
             />
           )}
-        </Button>
+        </button>
       }
     >
       <div

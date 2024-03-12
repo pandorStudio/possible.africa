@@ -46,7 +46,7 @@ export const Profil: React.FC<IResourceComponentsProps> = () => {
               extra={
                 <AdminOrContributor>
                   <Link to={`edit/${userConnected?._id}`}>
-                    <Button>Modifier</Button>
+                    <button className="btn-primary">Modifier</button>
                   </Link>
                 </AdminOrContributor>
               }

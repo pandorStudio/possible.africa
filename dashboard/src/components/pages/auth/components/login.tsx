@@ -103,9 +103,9 @@ export const LoginPage: React.FC<LoginProps> = ({
         <>
           {providers.map((provider) => {
             return (
-              <Button
+              <button
+                className="btn-primary"
                 key={provider.name}
-                type="default"
                 block
                 icon={provider.icon}
                 style={{
@@ -122,7 +122,7 @@ export const LoginPage: React.FC<LoginProps> = ({
                 }
               >
                 {provider.label}
-              </Button>
+              </button>
             );
           })}
           <Divider>
@@ -283,7 +283,8 @@ export const LoginPage: React.FC<LoginProps> = ({
           )}
         </div>
         <Form.Item>
-          <Button
+          <button
+            className="btn-primary w-full"
             type="primary"
             size="large"
             htmlType="submit"
@@ -291,7 +292,7 @@ export const LoginPage: React.FC<LoginProps> = ({
             block
           >
             {translate("pages.login.signin", "Sign in")}
-          </Button>
+          </button>
         </Form.Item>
       </Form>
       <div style={{ marginTop: 8 }}>

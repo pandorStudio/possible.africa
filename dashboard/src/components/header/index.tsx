@@ -264,16 +264,16 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       </Modal>
       <AntdLayout.Header style={headerStyles}>
         <Space>
-          <Button type="primary" onClick={showModal}>
+          <button className="btn-primary" type="primary" onClick={showModal}>
             Reporter Un Bug
-          </Button>
+          </button>
           <Dropdown
             menu={{
               items: menuItems,
               selectedKeys: currentLocale ? [currentLocale] : [],
             }}
           >
-            <Button type="text">
+            <button className="btn-primary" type="text">
               <Space>
                 <Avatar size={16} src={`/images/flags/${currentLocale}.svg`} />
                 {currentLocale === "fr"
@@ -283,7 +283,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                   : "Deutsch"}
                 <DownOutlined />
               </Space>
-            </Button>
+            </button>
           </Dropdown>
           <Switch
             checkedChildren="🌛"

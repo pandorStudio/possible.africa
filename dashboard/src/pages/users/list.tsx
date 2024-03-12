@@ -268,12 +268,13 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
           extra: (
             <Space>
               {checkedArray.length ? (
-                <Button
+                <button
+                  className="btn-primary"
                   onClick={confirmDelete}
                   style={{ backgroundColor: "#ff4d4f", color: "white" }}
                 >
                   {`${checkedArray.length}`} Effacer Selection
-                </Button>
+                </button>
               ) : null}
               <Input
                 type="file"
@@ -281,7 +282,8 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
                 onChange={handleImport}
               />
               <AdminOrContributor>
-                <Button
+                <button
+                  className="btn-primary"
                   type="primary"
                   onClick={() => {
                     // log datas
@@ -323,10 +325,15 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
                   }}
                 >
                   Exporter les données
-                </Button>
+                </button>
               </AdminOrContributor>
 
-              <CreateButton />
+              <CreateButton
+                className="btn-primary"
+                style={{
+                  backgroundColor: "#6cd9cb",
+                }}
+              />
             </Space>
           ),
         }}
@@ -581,12 +588,13 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
 
         <Space>
           {checkedArray.length ? (
-            <Button
+            <button
+              className="btn-primary"
               onClick={confirmDelete}
               style={{ backgroundColor: "#ff4d4f", color: "white" }}
             >
               {`${checkedArray.length}`} Effacer Selection
-            </Button>
+            </button>
           ) : null}
         </Space>
       </List>

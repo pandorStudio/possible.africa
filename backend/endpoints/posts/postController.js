@@ -6,6 +6,7 @@ const stream = require("stream");
 const { promisify } = require("util");
 const pipeline = promisify(stream.pipeline);
 const Path = require("path");
+const cron = require("node-cron");
 // const Airtable = require("airtable");
 require("dotenv").config();
 const axios = require("axios");
@@ -272,8 +273,7 @@ exports.getAllPostFromAirtable = async (req, res) => {
                 "../../public/storage/logos"
               )}/${img_name}`;
               await downloadImage(article.logo, path);
-              let urla =
-                `https://api.possible.africa/storage/logos/${img_name}`;
+              let urla = `https://api.possible.africa/storage/logos/${img_name}`;
 
               await Post.create({
                 title: article.title,
@@ -311,7 +311,6 @@ exports.getAllPostFromAirtable = async (req, res) => {
               airTrans: "eng",
             });
           }
-          
         } catch (e) {
           console.log(e);
         }
@@ -382,7 +381,7 @@ exports.getAllPosts = async (req, res) => {
       .select(fields);
 
     res.status(200).json([...postsFrFin, ...postsEngFin]);
-    } catch (error) {
+  } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
@@ -467,3 +466,7 @@ exports.deletePost = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+cron.schedule("*/40 * * * *", () => {
+  getAllPostFromAirtable();
+});

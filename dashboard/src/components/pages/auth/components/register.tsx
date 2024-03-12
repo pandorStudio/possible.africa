@@ -116,7 +116,8 @@ export const RegisterPage: React.FC<RegisterProps> = ({
         <>
           {providers.map((provider) => {
             return (
-              <Button
+              <button
+                className="btn-primary"
                 key={provider.name}
                 type="default"
                 block
@@ -135,7 +136,7 @@ export const RegisterPage: React.FC<RegisterProps> = ({
                 }
               >
                 {provider.label}
-              </Button>
+              </button>
             );
           })}
           <Divider>
@@ -371,7 +372,8 @@ export const RegisterPage: React.FC<RegisterProps> = ({
             marginBottom: 0,
           }}
         >
-          <Button
+          <button
+            className="btn-primary w-full"
             type="primary"
             size="large"
             htmlType="submit"
@@ -379,7 +381,7 @@ export const RegisterPage: React.FC<RegisterProps> = ({
             block
           >
             {translate("pages.register.buttons.submit", "Sign up")}
-          </Button>
+          </button>
         </Form.Item>
       </Form>
     </Card>

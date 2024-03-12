@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn-primary{
+    @apply bg-[#6cd9cb] text-white text-sm px-3 py-2 rounded-md font-semibold hover:bg-gradient-to-r hover:from-[#6cd9cb] hover:to-[#53afa3] flex justify-center items-center transition-all duration-500;
+}
